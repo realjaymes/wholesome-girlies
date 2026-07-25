@@ -14,14 +14,14 @@ I believe every woman deserves immediate support, expert advice, and a community
 
 Wholesome Girlies is how I'm working to close a little of that gap.
 
-## Find me on the web
-
-- Website: https://www.jamespraise.xyz
-- LinkedIn: https://www.linkedin.com/in/jamespraise
-- X (Twitter): https://x.com/realjaymes
-
 ## What Wholesome Girlies is
 
 A home for women at every stage of life. We start around the journey into motherhood, one of the most searched and least supported stretches of a woman's life, and grow out from there into the rest of what women navigate: wellness, confidence, hormones, and relationships.
 
 Where it goes is bigger than tools and articles. We want the community to become the first place a woman turns to, and to grow into the software and products that make real, personal support immediate, wherever she is in the world. The free tools bring women in, the community keeps them close, and everything we build from there exists to help them feel healthier, more confident, and more supported.
+
+## Find me on the web
+
+- Website: https://www.jamespraise.xyz
+- LinkedIn: https://www.linkedin.com/in/jamespraise
+- X (Twitter): https://x.com/realjaymes
