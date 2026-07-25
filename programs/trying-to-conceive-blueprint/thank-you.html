@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap (see 01 §8, 04 Data & Identity Layer). -->
+<meta name="robots" content="noindex, nofollow">
+<title>Welcome to the Trying-to-Conceive Blueprint — Wholesome Girlies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<style>
+  /* Page-local styles for the onboarding form. Uses the site design tokens. */
+  .ty-form label{display:block;font-weight:700;margin:16px 0 6px;color:var(--plum);}
+  .ty-form input,.ty-form select{width:100%;padding:12px 14px;border:1px solid var(--line);
+    border-radius:var(--radius-sm);font-family:var(--sans);font-size:1rem;background:var(--white);color:var(--plum);}
+  .ty-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:560px){.ty-form .row{grid-template-columns:1fr;}}
+  .ty-form .consent{display:flex;gap:10px;align-items:flex-start;margin-top:18px;font-size:.92rem;color:var(--plum-soft);}
+  .ty-form .consent input{width:auto;margin-top:3px;}
+  .prefill{font-size:.82rem;color:var(--plum-soft);font-weight:400;}
+  .reveal{display:none;}
+  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
+    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+</style>
+</head>
+<body>
+
+<!-- Minimal brand header, matching the cold-traffic sales page (no site nav). -->
+<header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
+  <div class="wrap center">
+    <span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================= -->
+<!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
+<!-- ============================================================= -->
+<section class="sales-hero">
+  <div class="wrap narrow center">
+    <p class="eyebrow">Payment confirmed · welcome</p>
+    <h1>You're in. And you took a hopeful step for yourself.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Your Trying-to-Conceive Blueprint, all five parts (Understand, Optimise, It Takes Two, Know Your Numbers, and Hold Steady), the community, and the assistant, is ready right now. Everything is yours to keep.</p>
+    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
+    <a href="#" class="btn btn-primary btn-lg">Open your plan &amp; resources</a>
+    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- SECTION 2 — "Unlock your community" = the native onboarding form. -->
+<!-- Gates ONLY the Telegram invite (the shareable asset), not the product. -->
+<!-- On submit: POST to our endpoint (Apps Script or n8n), then reveal + email the invite. -->
+<!-- ============================================================= -->
+<section class="stage-band">
+  <div class="wrap narrow">
+    <div class="card">
+      <p class="eyebrow">One quick question</p>
+      <h2 style="margin-bottom:8px;">Let's make your guidance yours, not generic</h2>
+      <p class="muted">We already have your details from your purchase. Just one quick thing so the guidance we send actually fits you. Then your community invite appears right here (we email it to you too).</p>
+
+      <form class="ty-form" id="onboarding" novalidate>
+        <!-- Selar → Zapier → Brevo already captured name, email, phone, and product AT PURCHASE.
+             So this form asks ONLY what the sale can't tell us: her main concern.
+             No name/email/phone/product here — that would be re-asking what we already have.
+             MATCHING: attach this answer to the buyer's Brevo contact via a pre-identified welcome-email link
+             (recommended), or add one email field above as the join key. -->
+        <label for="concern">What's weighing on you most right now?</label>
+        <select id="concern" name="concern" required>
+          <option value="">Choose the one that fits best…</option>
+          <option value="cycle">Understanding my cycle and my fertile window</option>
+          <option value="prepare">Preparing my body to conceive</option>
+          <option value="partner">Getting my partner involved and tested</option>
+          <option value="help">Knowing what to ask my doctor, and when it's time</option>
+          <option value="waiting">The waiting, and staying hopeful through it</option>
+          <option value="support">Feeling supported by women who just get it</option>
+        </select>
+
+        <label class="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <span>Yes, send me guidance for my journey. I can leave any time. We treat your information with care (<a href="/legal/privacy.html">privacy</a>).</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:20px;">Save &amp; show my invite</button>
+        <p class="muted" style="font-size:.82rem; margin-top:10px;">We store only your stage and this one answer. Nothing more.</p>
+      </form>
+
+      <!-- Revealed on successful submit. Also emailed as a backup. -->
+      <div class="reveal" id="invite">
+        <p class="eyebrow">You're all set</p>
+        <h2 style="margin-bottom:8px;">Welcome to the Circle 💚</h2>
+        <p class="muted">Here is your private invite. We've emailed it to you too, so you always have it.</p>
+        <!-- WIRING: replace href with the real, single-use / rotating Telegram invite for the Trying-to-Conceive Blueprint space. -->
+        <a href="#" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- SECTION 3 — Next steps. -->
+<!-- ============================================================= -->
+<section>
+  <div class="wrap narrow">
+    <h2>Your first three steps</h2>
+    <div class="grid grid-3" style="margin-top:18px;">
+      <div class="card"><span class="tag"><span class="step-num">1</span>Understand</span><h3>Start with Part 1</h3><p>Open Understand Your Body & Cycle first. Read only what you need today. It waits for you, and it is yours forever.</p></div>
+      <div class="card"><span class="tag"><span class="step-num">2</span>Join</span><h3>Say hello in the Circle</h3><p>Introduce yourself when you're ready. It's calm and moderated, and you can stay read-only if you prefer.</p></div>
+      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask anything, any time</h3><p>Get answers in the community and from the education-only assistant, and know exactly when it is time to see your doctor.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- SECTION 4 — Cross-sell / upsell. -->
+<!-- ============================================================= -->
+<section class="stage-band">
+  <div class="wrap narrow center">
+    <!-- STAGE-AWARE upsell: a trying-to-conceive buyer is at the very start of the journey, so the whole
+         Complete Motherhood Journey bundle is still ahead of her — that is the right upsell here.
+         COUPON: applies ONLY to the Complete Motherhood Journey bundle upsell (this one). Never on
+         a next-stage cross-sell. Frame gently and hopefully — never presume pregnancy for a TTC buyer. -->
+    <p class="eyebrow">The whole journey, for less</p>
+    <h2>You're at the very start. Carry it all the way.</h2>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">The Complete Motherhood Journey adds pregnancy, postpartum, and the toddler years to what you have, for whenever you're ready. As a member you get a discount: use code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout. The button below applies it for you, or type <strong style="color:var(--terracotta-dark);">MOTHER</strong> into the coupon box at checkout yourself.</p>
+    <!-- WIRING: confirm Selar's coupon param (?coupon= assumed) applies MOTHER automatically. -->
+    <a href="https://selar.com/complete-motherhood-journey?coupon=MOTHER" class="btn btn-primary">Add the full journey at my member discount &rarr;</a>
+    <p class="muted" style="font-size:.9rem; margin-top:18px;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as an add-on. Details are in the community.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- Minimal footer, legal only, no site nav (matches the funnel pages). -->
+<footer class="site-footer" style="padding:28px 0;">
+  <div class="wrap narrow center">
+    <p style="margin:0 0 6px; color:#fff; font-family:var(--serif); font-size:1.1rem;">Wholesome Girlies</p>
+    <p style="margin:0; font-size:.82rem; color:#A9B3A3;">© 2026 Wholesome Girlies. Educational program, not medical advice. <a href="/legal/disclaimer.html" style="color:var(--blush);">Disclaimer &amp; privacy</a></p>
+  </div>
+</footer>
+
+<script>
+/* DEMO submit handler.
+   Real version POSTs the payload to our single shared endpoint (Apps Script web app — the proven
+   MIA pattern — or an n8n webhook). The endpoint appends to the Google Sheet AND upserts the contact
+   into Brevo (server-side, so the Brevo key is never in this file), then triggers the welcome + reveals
+   the invite. Never call the Brevo API directly from this page. */
+(function () {
+  var form = document.getElementById('onboarding');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    var payload = {
+      source: 'purchase',
+      product: 'trying-to-conceive-blueprint',
+      stage: 'fertility',
+      concern: document.getElementById('concern').value,
+      consent: document.getElementById('consent').checked
+      // No name/email/phone/product typed here — captured at purchase via Selar → Zapier → Brevo.
+      // Reminder cadence anchors to the enrollment/purchase date (from Zapier).
+    };
+
+    /* WIRING (replace the demo block below with the real call):
+    fetch('https://script.google.com/macros/s/XXXX/exec', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+      .then(function () { showInvite(); })
+      .catch(function () { showInvite(); }); // still reveal; the email backup covers failures
+    */
+
+    console.log('Onboarding payload (demo):', payload);
+    showInvite();
+  });
+
+  function showInvite() {
+    form.style.display = 'none';
+    document.getElementById('invite').style.display = 'block';
+    document.getElementById('invite').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+})();
+</script>
+<script src="/assets/petals.js"></script>
+</body>
+</html>

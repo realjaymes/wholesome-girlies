@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Are You Ready for Love? Quiz — Wholesome Girlies</title>
+<meta name="description" content="An honest, empowering self-reflection quiz for women. Answer a few questions about clarity, standards, healing, and dating from calm, and see where you are strong and where a little clarity helps. Runs in your browser.">
+<link rel="canonical" href="https://wholesomegirlies.xyz/relationships/tools/ready-for-love-quiz.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wholesome Girlies">
+<meta property="og:title" content="Are You Ready for Love? Quiz — Wholesome Girlies">
+<meta property="og:description" content="An honest, empowering self-reflection quiz. See where you are strong and where a little clarity helps, no pass or fail for anyone's approval.">
+<meta property="og:url" content="https://wholesomegirlies.xyz/relationships/tools/ready-for-love-quiz.html">
+<meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Are You Ready for Love? Quiz — Wholesome Girlies">
+<meta name="twitter:description" content="An honest, empowering self-reflection quiz. See where you are strong and where a little clarity helps.">
+<meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Are You Ready for Love? Quiz","applicationCategory":"LifestyleApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Relationships","item":"https://wholesomegirlies.xyz/relationships/"},{"@type":"ListItem","position":3,"name":"Are You Ready for Love? Quiz","item":"https://wholesomegirlies.xyz/relationships/tools/ready-for-love-quiz.html"}]}
+</script>
+<style>
+  .q { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .q:last-of-type { border-bottom: 0; margin-bottom: 8px; }
+  .q .qtext { font-weight: 800; margin-bottom: 10px; display: block; }
+  .opt { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; cursor: pointer; }
+  .opt input { margin-top: 3px; accent-color: var(--terracotta); flex: none; width: 18px; height: 18px; }
+  .result ul { margin: 10px 0 0; padding-left: 20px; }
+  .result ul li { margin: 4px 0; }
+  .result .sub { font-weight: 800; margin: 16px 0 4px; color: var(--terracotta-dark); }
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 8px 0 0; }
+  .steps li { position: relative; padding-left: 40px; margin-bottom: 14px; }
+  .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: -2px; width: 26px; height: 26px; border-radius: 50%; background: var(--terracotta); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: .9rem; }
+  .faq h4 { margin: 18px 0 4px; }
+  .faq p { margin: 0 0 6px; color: var(--plum-soft); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span> Wholesome Girlies</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul class="nav-links" id="nav">
+      <li><a href="/relationships/">Relationships</a></li>
+      <li><a href="/fertility/">Fertility</a></li>
+      <li><a href="/pregnancy/">Pregnancy</a></li>
+      <li><a href="/postpartum/">Postpartum</a></li>
+      <li><a href="/parenting/">Parenting</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/programs/" class="nav-cta">Programs</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="tool-hero">
+  <div class="wrap narrow">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/relationships/">Relationships</a> / Tools</div>
+    <h1>Are You Ready for Love? Quiz</h1>
+    <p class="muted">Eight honest questions about what you want, your standards, your healing, and whether you are dating from calm or from pressure. There is no pass or fail, and no score for any man's approval. This is a mirror for your own clarity.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap narrow">
+    <div class="tool-app">
+      <form id="quiz"></form>
+      <button class="btn btn-primary" onclick="scoreQuiz()">Show my read</button>
+
+      <div class="result" id="res">
+        <h3 id="band"></h3>
+        <p class="big" id="headline"></p>
+        <p id="summary" style="margin:6px 0 0;"></p>
+        <p class="sub" id="strongLabel">Where you are already strong</p>
+        <ul id="strong"></ul>
+        <p class="sub" id="growLabel">Where a little clarity helps</p>
+        <ul id="grow"></ul>
+        <p class="muted" style="margin:16px 0 0;">Wherever you landed, this is a starting point, not a verdict. You are allowed to be a work in progress and worthy at the same time.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This is reflection, not a rating.</strong> The quiz turns a few honest questions into a picture of where you are right now. It is not a test you can fail, and it says nothing about whether you deserve love. It runs entirely in your browser. Nothing you answer is saved or sent anywhere.
+    </div>
+
+    <div class="doctor-box">
+      <h4>How to use this</h4>
+      <ol class="steps">
+        <li>Answer each question honestly, for yourself, not for how you wish you felt.</li>
+        <li>Tap <em>Show my read</em> to see your strengths and the one or two areas where more clarity would help.</li>
+        <li>Sit with the "where a little clarity helps" list. That is your gentle to-do, not a flaw.</li>
+        <li>Retake it in a few months. Readiness is something you build, not something you are born with or without.</li>
+      </ol>
+    </div>
+
+    <div class="faq">
+      <h3>Questions women ask</h3>
+      <h4>Does a low score mean something is wrong with me?</h4>
+      <p>No. A lower score usually means life has been heavy lately, or you have not had the space to get clear. It is information, not a judgement. Nobody is behind.</p>
+      <h4>Is this about becoming "wife material"?</h4>
+      <p>No. There is no checklist to pass to earn a man. This is about your own clarity and calm, so you choose well and are chosen well, as you already are.</p>
+      <h4>Should I stay single until I score high?</h4>
+      <p>Not necessarily. You can date while you grow. The point is to date from a grounded place instead of from fear or pressure, and this shows you where that grounding is strong.</p>
+      <h4>Is my data private?</h4>
+      <p>Completely. The quiz runs on your device only. We never see your answers, and nothing is stored after you close the tab.</p>
+    </div>
+
+    <div class="card program-cta">
+      <p class="eyebrow">Go deeper</p>
+      <h3>The Wife Material Blueprint</h3>
+      <p class="muted">When you want the full plan to get clear, choose well, and become the woman a good man commits to, without games, shrinking, or performing.</p>
+      <a href="/programs/wife-material-blueprint.html" class="btn btn-primary">See the Blueprint &rarr;</a>
+    </div>
+
+    <div class="related">
+      <h3>Related</h3>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <a class="card" href="/relationships/tools/green-red-flags-checker.html"><span class="tag">Relationships</span><h3>Green &amp; Red Flags Checker</h3><p>Read what you are actually seeing in him.</p><span class="arrow">Open →</span></a>
+        <a class="card" href="/relationships/tools/situationship-checker.html"><span class="tag">Relationships</span><h3>Situationship Checker</h3><p>Is this thing actually going somewhere?</p><span class="arrow">Open →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="/" class="brand" style="color:#fff;"><span class="dot"></span> Wholesome Girlies</a><p style="margin-top:12px;max-width:34ch;color:#B9C3B2;">Tools and honest guidance for women, at every stage.</p></div>
+      <div><h4>Stages</h4><ul><li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li><li><a href="/pregnancy/">Pregnancy</a></li><li><a href="/postpartum/">Postpartum</a></li><li><a href="/parenting/">Parenting</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="/tools/">Tools</a></li><li><a href="/programs/">Programs</a></li><li><a href="/about/">About us</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/legal/disclaimer.html">Medical disclaimer</a></li><li><a href="/legal/privacy.html">Privacy</a></li><li><a href="/legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Wholesome Girlies. Educational content, not medical advice.</span><span>For African women, at home and in the diaspora.</span></div>
+  </div>
+</footer>
+
+<script>
+var QUESTIONS = [
+  { theme: "Knowing what you want",
+    q: "Do you actually know what you want in a relationship?",
+    opts: [ ["Yes, I am clear on the life and partnership I want", 2],
+            ["Roughly, but it gets fuzzy when someone new comes along", 1],
+            ["Not really, I mostly know what I do not want", 0] ] },
+  { theme: "Standards and dealbreakers",
+    q: "How solid are your standards and dealbreakers?",
+    opts: [ ["Clear, and I hold them even when I really like someone", 2],
+            ["I have them, but I bend them when I am afraid to lose him", 1],
+            ["I lower the bar to keep the peace or keep him around", 0] ] },
+  { theme: "Healing from the last one",
+    q: "How healed are you from your last relationship?",
+    opts: [ ["I have processed it and I am not carrying it into the next", 2],
+            ["Mostly, though it still stings sometimes", 1],
+            ["Honestly, I am still hurting or still hoping he comes back", 0] ] },
+  { theme: "Dating from calm, not pressure",
+    q: "When you date, where are you coming from?",
+    opts: [ ["Calm. I want a partner, I am not desperate for one", 2],
+            ["A mix of calm and quiet panic about time running out", 1],
+            ["Pressure. Family, age, or fear is driving my choices", 0] ] },
+  { theme: "Reading people early",
+    q: "How well do you read a person's character early?",
+    opts: [ ["I notice patterns fast and I trust what I see", 2],
+            ["I see the signs but talk myself out of them", 1],
+            ["I usually realise who someone is far too late", 0] ] },
+  { theme: "Whole either way",
+    q: "If the right partner took two more years to arrive, how would you be?",
+    opts: [ ["Settled. My life is full and I like it as it is", 2],
+            ["Okay, but restless and watching the clock", 1],
+            ["Not okay. I feel incomplete without a relationship", 0] ] },
+  { theme: "Communicating what you want",
+    q: "Can you say what you want and need without shrinking?",
+    opts: [ ["Yes, I can ask directly and hold a boundary", 2],
+            ["Sometimes, but I go quiet to avoid pushing him away", 1],
+            ["I rarely say it. I make myself smaller to keep things smooth", 0] ] },
+  { theme: "Choosing, not chasing",
+    q: "In dating, do you feel like you are choosing or auditioning?",
+    opts: [ ["Choosing. I am deciding if he is right for me", 2],
+            ["A bit of both, depending on how much I like him", 1],
+            ["Auditioning. I am mostly trying to be picked", 0] ] }
+];
+
+(function(){
+  var form = document.getElementById('quiz');
+  QUESTIONS.forEach(function(item, qi){
+    var wrap = document.createElement('div');
+    wrap.className = 'q';
+    var html = '<span class="qtext">' + (qi+1) + '. ' + item.q + '</span>';
+    item.opts.forEach(function(opt, oi){
+      html += '<label class="opt"><input type="radio" name="q' + qi + '" value="' + opt[1] + '"><span>' + opt[0] + '</span></label>';
+    });
+    wrap.innerHTML = html;
+    form.appendChild(wrap);
+  });
+})();
+
+function scoreQuiz(){
+  var total = 0, answered = 0, strong = [], grow = [];
+  QUESTIONS.forEach(function(item, qi){
+    var picked = document.querySelector('input[name="q' + qi + '"]:checked');
+    if(picked){
+      answered++;
+      var v = parseInt(picked.value, 10);
+      total += v;
+      if(v === 2) strong.push(item.theme);
+      else grow.push(item.theme);
+    }
+  });
+  if(answered < QUESTIONS.length){
+    alert('Answer all ' + QUESTIONS.length + ' questions to see your read. Take your time.');
+    return;
+  }
+  var max = QUESTIONS.length * 2;
+  var pct = total / max;
+  var band, headline, summary;
+  if(pct >= 0.7){
+    band = "You are dating from a grounded place";
+    headline = "Clear, calm, and ready.";
+    summary = "You know what you want, you hold your standards, and you are choosing rather than chasing. Keep protecting that calm, it is your best filter.";
+  } else if(pct >= 0.4){
+    band = "You are close, and a little clarity will sharpen it";
+    headline = "Strong in some places, foggy in others.";
+    summary = "You have real ground under you. A few areas are being run by pressure or old hurt rather than clarity. Those are learnable, not flaws.";
+  } else {
+    band = "This is a season to pour into you first";
+    headline = "You are worthy right now, and you are carrying a lot.";
+    summary = "Pressure, an unhealed chapter, or not yet knowing what you want is steering the wheel. None of that means anything is wrong with you. It means you get to come home to yourself before you choose anyone.";
+  }
+  document.getElementById('band').textContent = band;
+  document.getElementById('headline').textContent = headline;
+  document.getElementById('summary').textContent = summary;
+
+  var strongUl = document.getElementById('strong');
+  var growUl = document.getElementById('grow');
+  strongUl.innerHTML = '';
+  growUl.innerHTML = '';
+  if(strong.length){
+    strong.forEach(function(t){ var li = document.createElement('li'); li.textContent = t; strongUl.appendChild(li); });
+    document.getElementById('strongLabel').style.display = '';
+    strongUl.style.display = '';
+  } else {
+    document.getElementById('strongLabel').style.display = 'none';
+    strongUl.style.display = 'none';
+  }
+  if(grow.length){
+    grow.forEach(function(t){ var li = document.createElement('li'); li.textContent = t; growUl.appendChild(li); });
+    document.getElementById('growLabel').style.display = '';
+    growUl.style.display = '';
+  } else {
+    document.getElementById('growLabel').textContent = "Where a little clarity helps";
+    var li = document.createElement('li'); li.textContent = "Nothing stood out as shaky today. Enjoy that, and keep choosing from calm."; growUl.appendChild(li);
+  }
+
+  var res = document.getElementById('res');
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

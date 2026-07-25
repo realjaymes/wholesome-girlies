@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Situationship Checker — Wholesome Girlies</title>
+<meta name="description" content="Is this thing actually going somewhere? Answer a few honest questions about labels, consistency, future talk, and how he treats you, and get a clear read plus the words to ask for what you want or to walk. Runs in your browser.">
+<link rel="canonical" href="https://wholesomegirlies.xyz/relationships/tools/situationship-checker.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wholesome Girlies">
+<meta property="og:title" content="Situationship Checker — Wholesome Girlies">
+<meta property="og:description" content="Is this thing actually going somewhere? Get a clear, honest read plus the words to ask for what you want or to walk.">
+<meta property="og:url" content="https://wholesomegirlies.xyz/relationships/tools/situationship-checker.html">
+<meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Situationship Checker — Wholesome Girlies">
+<meta name="twitter:description" content="Is this thing actually going somewhere? Get a clear, honest read plus the words to ask for what you want or to walk.">
+<meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Situationship Checker","applicationCategory":"LifestyleApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Relationships","item":"https://wholesomegirlies.xyz/relationships/"},{"@type":"ListItem","position":3,"name":"Situationship Checker","item":"https://wholesomegirlies.xyz/relationships/tools/situationship-checker.html"}]}
+</script>
+<style>
+  .q { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .q:last-of-type { border-bottom: 0; margin-bottom: 8px; }
+  .q .qtext { font-weight: 800; margin-bottom: 10px; display: block; }
+  .opt { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; cursor: pointer; }
+  .opt input { margin-top: 3px; accent-color: var(--terracotta); flex: none; width: 18px; height: 18px; }
+  .result .sub { font-weight: 800; margin: 16px 0 4px; color: var(--terracotta-dark); }
+  .script { background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--terracotta); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 16px; margin: 4px 0 0; font-style: italic; }
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 8px 0 0; }
+  .steps li { position: relative; padding-left: 40px; margin-bottom: 14px; }
+  .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: -2px; width: 26px; height: 26px; border-radius: 50%; background: var(--terracotta); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: .9rem; }
+  .faq h4 { margin: 18px 0 4px; }
+  .faq p { margin: 0 0 6px; color: var(--plum-soft); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span> Wholesome Girlies</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul class="nav-links" id="nav">
+      <li><a href="/relationships/">Relationships</a></li>
+      <li><a href="/fertility/">Fertility</a></li>
+      <li><a href="/pregnancy/">Pregnancy</a></li>
+      <li><a href="/postpartum/">Postpartum</a></li>
+      <li><a href="/parenting/">Parenting</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/programs/" class="nav-cta">Programs</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="tool-hero">
+  <div class="wrap narrow">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/relationships/">Relationships</a> / Tools</div>
+    <h1>Situationship Checker</h1>
+    <p class="muted">Six honest questions about labels, consistency, future talk, and how he treats you, so you can see whether this is actually going somewhere. You get a clear read and the words to ask for what you want, or to walk with your dignity intact.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap narrow">
+    <div class="tool-app">
+      <form id="quiz"></form>
+      <button class="btn btn-primary" onclick="scoreQuiz()">Show my read</button>
+
+      <div class="result" id="res">
+        <h3 id="band"></h3>
+        <p class="big" id="headline"></p>
+        <p id="summary" style="margin:6px 0 0;"></p>
+        <p class="sub">The words you can use</p>
+        <p class="script" id="script"></p>
+        <p class="muted" style="margin:16px 0 0;">Asking clearly is not desperate. It is self-respect. His answer, or his dodge, is your answer.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This is clarity, not a verdict on him.</strong> The checker turns what you already feel into plain words so you can decide from a clear head, not from hope or fear. It cannot predict what he will do. It runs entirely in your browser, and nothing you answer is saved or sent anywhere.
+    </div>
+
+    <div class="doctor-box">
+      <h4>How to use this</h4>
+      <ol class="steps">
+        <li>Answer for what is actually happening, over the last few weeks, not the best day you had together.</li>
+        <li>Tap <em>Show my read</em> for an honest picture and a script you can adapt in your own words.</li>
+        <li>Use the words when you are calm, not mid-argument, and then listen to the full answer, including the silence.</li>
+        <li>Decide from there. Clarity is the win, whichever way it goes.</li>
+      </ol>
+    </div>
+
+    <div class="faq">
+      <h3>Questions women ask</h3>
+      <h4>Isn't asking for a label going to scare him off?</h4>
+      <p>Someone who wants you is not scared off by a calm, clear question. If a fair question ends it, it was already ending. You did not cause that by asking.</p>
+      <h4>What if I like it undefined too?</h4>
+      <p>Then that is a real answer, and this just helps you check it is a free choice, not something you settled for to avoid a hard talk.</p>
+      <h4>How long is too long without a label?</h4>
+      <p>There is no universal number. The signal is not the calendar, it is whether he is moving toward you or keeping you comfortable while he keeps his options open.</p>
+      <h4>Is this private?</h4>
+      <p>Yes. It runs on your device only. Nothing is stored once you close the tab.</p>
+    </div>
+
+    <div class="card program-cta">
+      <p class="eyebrow">Go deeper</p>
+      <h3>The Wife Material Blueprint</h3>
+      <p class="muted">When you want the full plan to define what you want, choose well, and become the woman a good man commits to, without games, shrinking, or performing.</p>
+      <a href="/programs/wife-material-blueprint.html" class="btn btn-primary">See the Blueprint &rarr;</a>
+    </div>
+
+    <div class="related">
+      <h3>Related</h3>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <a class="card" href="/relationships/tools/ready-for-love-quiz.html"><span class="tag">Relationships</span><h3>Are You Ready for Love? Quiz</h3><p>An honest look at your own clarity and calm.</p><span class="arrow">Open →</span></a>
+        <a class="card" href="/relationships/tools/green-red-flags-checker.html"><span class="tag">Relationships</span><h3>Green &amp; Red Flags Checker</h3><p>Read what you are actually seeing in him.</p><span class="arrow">Open →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="/" class="brand" style="color:#fff;"><span class="dot"></span> Wholesome Girlies</a><p style="margin-top:12px;max-width:34ch;color:#B9C3B2;">Tools and honest guidance for women, at every stage.</p></div>
+      <div><h4>Stages</h4><ul><li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li><li><a href="/pregnancy/">Pregnancy</a></li><li><a href="/postpartum/">Postpartum</a></li><li><a href="/parenting/">Parenting</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="/tools/">Tools</a></li><li><a href="/programs/">Programs</a></li><li><a href="/about/">About us</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/legal/disclaimer.html">Medical disclaimer</a></li><li><a href="/legal/privacy.html">Privacy</a></li><li><a href="/legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Wholesome Girlies. Educational content, not medical advice.</span><span>For African women, at home and in the diaspora.</span></div>
+  </div>
+</footer>
+
+<script>
+var QUESTIONS = [
+  { q: "Is there a label, have you actually had \"the talk\"?",
+    opts: [ ["Yes, we have defined it and we are on the same page", 2],
+            ["We have talked, but it stayed vague", 1],
+            ["No, and he changes the subject or dodges it", 0] ] },
+  { q: "How consistent is he week to week?",
+    opts: [ ["Steady and predictable, I can count on him", 2],
+            ["Hot and cold, I never quite know where I stand", 1],
+            ["Only around when it suits him", 0] ] },
+  { q: "Does he talk about the future and include you in it?",
+    opts: [ ["Yes, he makes real plans with me in them", 2],
+            ["Vaguely, lots of \"someday\" but nothing concrete", 1],
+            ["No, he shuts down future talk", 0] ] },
+  { q: "In public, and online, does he treat you as his?",
+    opts: [ ["Openly, he is happy for people to know about us", 2],
+            ["Only in private, rarely in front of others", 1],
+            ["He keeps me hidden or plays it down", 0] ] },
+  { q: "Is the effort mutual?",
+    opts: [ ["Balanced, we both show up and initiate", 2],
+            ["I carry most of it", 1],
+            ["It is almost all me, chasing and reaching out", 0] ] },
+  { q: "How do you feel most of the time in it?",
+    opts: [ ["Secure and at ease", 2],
+            ["Anxious sometimes, unsure where it is going", 1],
+            ["Anxious most days, walking on eggshells", 0] ] }
+];
+
+(function(){
+  var form = document.getElementById('quiz');
+  QUESTIONS.forEach(function(item, qi){
+    var wrap = document.createElement('div');
+    wrap.className = 'q';
+    var html = '<span class="qtext">' + (qi+1) + '. ' + item.q + '</span>';
+    item.opts.forEach(function(opt){
+      html += '<label class="opt"><input type="radio" name="q' + qi + '" value="' + opt[1] + '"><span>' + opt[0] + '</span></label>';
+    });
+    wrap.innerHTML = html;
+    form.appendChild(wrap);
+  });
+})();
+
+function scoreQuiz(){
+  var total = 0, answered = 0;
+  QUESTIONS.forEach(function(item, qi){
+    var picked = document.querySelector('input[name="q' + qi + '"]:checked');
+    if(picked){ answered++; total += parseInt(picked.value, 10); }
+  });
+  if(answered < QUESTIONS.length){
+    alert('Answer all ' + QUESTIONS.length + ' questions to see your read.');
+    return;
+  }
+  var max = QUESTIONS.length * 2; // 12
+  var band, headline, summary, script;
+
+  if(total >= 9){
+    band = "This is going somewhere";
+    headline = "There is real relationship here.";
+    summary = "He is consistent, open about the future, and treats you as his. If you want it named so you can relax into it, that is a fair and easy ask, not a risk.";
+    script = "\"I really like what we have. I want to be clear about it, are we officially together? I would love to call you mine.\"";
+  } else if(total >= 5){
+    band = "It is undefined, and that is costing you clarity";
+    headline = "Mixed signals, and you deserve a straight answer.";
+    summary = "There is something real, but it is vague enough to keep you guessing, and that limbo is quietly draining you. You are allowed to ask for a definition and a direction.";
+    script = "\"I have enjoyed this, and I want to be honest: I am looking for something committed, not undefined. Where do you see this going? It is okay if we want different things, I just need to know.\"";
+  } else {
+    band = "This is a situationship";
+    headline = "You deserve a clear yes, not a maybe you keep talking yourself into.";
+    summary = "The consistency, the future, and the way he shows up in public are not matching what you want. That is not a puzzle to solve by waiting or doing more. It is a mismatch, and you get to choose yourself.";
+    script = "\"I have realised I want a committed relationship, and this is not that. I am not asking you to change, I am choosing what I need. I am going to step back so I can find it.\"";
+  }
+
+  document.getElementById('band').textContent = band;
+  document.getElementById('headline').textContent = headline;
+  document.getElementById('summary').textContent = summary;
+  document.getElementById('script').textContent = script;
+
+  var res = document.getElementById('res');
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

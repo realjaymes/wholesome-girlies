@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Ad bridge / pre-sell pages and thank-you pages must not be crawled or indexed.
+Disallow: /go/
+Disallow: /programs/*/thank-you
+
+Sitemap: https://wholesomegirlies.xyz/sitemap.xml

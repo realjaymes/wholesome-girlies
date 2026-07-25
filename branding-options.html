@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Branding options — Wholesome Girlies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito+Sans:wght@400;700;800&family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;600;700;800&family=Poppins:wght@400;500;600;700;800&family=DM+Serif+Display&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<style>
+  body { background: #ECECEC; }
+  .chooser-intro { max-width: 760px; margin: 0 auto; padding: 44px 24px 8px; text-align: center; font-family: "Nunito Sans", sans-serif; color: #2b2b2b; }
+  .chooser-intro h1 { font-family: "Fraunces", serif; font-size: 2rem; margin-bottom: 8px; }
+  .group-head { max-width: 1180px; margin: 30px auto 12px; padding: 0 20px; font-family: "Nunito Sans", sans-serif; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; font-size: .82rem; color: #6b6b6b; }
+  .opt { margin: 0 auto 24px; max-width: 1180px; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 40px rgba(0,0,0,.12); background: var(--cream); color: var(--plum); font-family: var(--sans); }
+  .opt-label { background: #201a20; color: #fff; font-family: "Nunito Sans", sans-serif; padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .opt-label b { font-size: 1.02rem; }
+  .opt-label .sw { display: inline-flex; gap: 6px; align-items: center; }
+  .opt-label .sw i { width: 18px; height: 18px; border-radius: 50%; display: inline-block; border: 1px solid rgba(255,255,255,.3); }
+  .opt-label .meta { font-size: .8rem; opacity: .8; }
+  .opt .mini-header { display:flex; align-items:center; justify-content:space-between; padding:16px 30px; border-bottom:1px solid var(--line); }
+  .opt .mini-header .brand { font-size:1.2rem; }
+  .opt .mini-nav { display:flex; gap:18px; font-family:var(--sans); font-weight:700; font-size:.85rem; }
+  .opt .mini-nav a { color: var(--plum); }
+  .opt .mini-nav .cta { background: var(--plum); color:#fff; padding:7px 14px; border-radius:999px; }
+  .opt .hero { padding: 50px 30px 36px; text-align:center; }
+  .opt .hero .eyebrow { color: var(--terracotta-dark); }
+  .opt .hero h1 { max-width: 20ch; margin: 6px auto 14px; }
+  .opt .hero .lead { max-width: 54ch; margin: 0 auto 20px; color: var(--plum-soft); font-size:1.1rem; }
+  .opt .row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .opt .toolrow { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding: 8px 30px 34px; }
+  @media (max-width:800px){ .opt .toolrow { grid-template-columns:1fr; } .opt .mini-nav { display:none; } }
+  .opt .prog { margin: 0 30px 30px; }
+  .opt .footstrip { background: var(--plum); color: #d8d0d4; padding: 20px 30px; font-family:var(--sans); font-size:.85rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+  /* GREEN */
+  .g1 { --cream:#FBF9F3; --cream-2:#EFF2EA; --sand:#DDE4D5; --blush:#E6EFE0; --terracotta:#5E8A63; --terracotta-dark:#456B4A; --sage:#C98A5E; --plum:#33302A; --plum-soft:#6A655C; --line:#E4DFD3; --serif:"Fraunces",serif; --sans:"Nunito Sans",sans-serif; }
+  .g2 { --cream:#FAF6EC; --cream-2:#F0EAD8; --sand:#DED3B8; --blush:#E7E2CF; --terracotta:#2F5D45; --terracotta-dark:#22452F; --sage:#C79A3E; --plum:#2B2620; --plum-soft:#5E594F; --line:#E2DAC6; --serif:"Fraunces",serif; --sans:"Inter",sans-serif; }
+  .g3 { --cream:#FBFDFC; --cream-2:#EEF5F1; --sand:#D8E6DE; --blush:#E4F1EB; --terracotta:#2E9E86; --terracotta-dark:#237A68; --sage:#E8836B; --plum:#23302E; --plum-soft:#5C6A66; --line:#E1EAE6; --serif:"Inter",sans-serif; --sans:"Inter",sans-serif; }
+  .g4 { --cream:#FBF8EF; --cream-2:#F1EFDF; --sand:#DFDCC0; --blush:#EAE9D2; --terracotta:#6E7A3F; --terracotta-dark:#55602F; --sage:#C0763F; --plum:#33322A; --plum-soft:#66645A; --line:#E4E1CE; --serif:"DM Serif Display",serif; --sans:"Nunito Sans",sans-serif; }
+  /* BLUE */
+  .b1 { --cream:#FBF8F2; --cream-2:#ECF0EF; --sand:#D6E1DF; --blush:#E1EDEC; --terracotta:#3E8C93; --terracotta-dark:#2E6B70; --sage:#D89A5E; --plum:#24333A; --plum-soft:#59666B; --line:#E2DDD2; --serif:"Fraunces",serif; --sans:"Nunito Sans",sans-serif; }
+  .b2 { --cream:#FBFAFD; --cream-2:#EEEFF7; --sand:#D6D9EC; --blush:#E6E8F6; --terracotta:#6C7AD1; --terracotta-dark:#4E5CB3; --sage:#E88A6B; --plum:#262A44; --plum-soft:#5A5E77; --line:#E4E2EC; --serif:"Fraunces",serif; --sans:"Poppins",sans-serif; }
+  /* PINK */
+  .p1 { --cream:#FDF7F4; --cream-2:#F7EAE4; --sand:#EBD3C9; --blush:#F6E0D8; --terracotta:#B07C88; --terracotta-dark:#935F6B; --sage:#A9846F; --plum:#4A3630; --plum-soft:#7A655E; --line:#EBDDD5; --serif:"Cormorant Garamond",serif; --sans:"Nunito Sans",sans-serif; }
+  .p2 { --cream:#FFF8F6; --cream-2:#FBECE9; --sand:#F3D9D2; --blush:#FCE3DD; --terracotta:#DB6B79; --terracotta-dark:#C24E5F; --sage:#2C7A78; --plum:#34282B; --plum-soft:#6A585C; --line:#F0DDD7; --serif:"Fraunces",serif; --sans:"Poppins",sans-serif; }
+  /* PURPLE */
+  .u1 { --cream:#FBF6F7; --cream-2:#F1E9EE; --sand:#E2D2DD; --blush:#EEE0EA; --terracotta:#7A4E86; --terracotta-dark:#613D6C; --sage:#C79A3E; --plum:#33223A; --plum-soft:#66566E; --line:#E7DCE2; --serif:"Playfair Display",serif; --sans:"Inter",sans-serif; }
+  .u2 { --cream:#FBFAFD; --cream-2:#F2EEF8; --sand:#E0D7EE; --blush:#EDE6F6; --terracotta:#8B6FC4; --terracotta-dark:#6E52A8; --sage:#D89A5E; --plum:#2E2740; --plum-soft:#605A73; --line:#E7E1EE; --serif:"Fraunces",serif; --sans:"Nunito Sans",sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="chooser-intro">
+  <h1>Branding options by colour family</h1>
+  <p>Same homepage, ten looks: four green, two blue, two pink, two purple. Scroll, then tell me the number. We build the whole site in the one you pick (and can tweak its colour or type after).</p>
+</div>
+
+<div class="group-head">Green</div>
+
+<div class="opt g1">
+  <div class="opt-label"><b>1 — Sage Natural</b> <span class="sw"><i style="background:#5E8A63"></i><i style="background:#E6EFE0"></i><i style="background:#33302A"></i><i style="background:#C98A5E"></i></span> <span class="meta">Muted sage + warm base · Fraunces + Nunito Sans · calm, health-forward</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="opt g2">
+  <div class="opt-label"><b>2 — Deep Emerald &amp; Gold</b> <span class="sw"><i style="background:#2F5D45"></i><i style="background:#E7E2CF"></i><i style="background:#2B2620"></i><i style="background:#C79A3E"></i></span> <span class="meta">Deep green + gold · Fraunces + Inter · rich, regal, pan-African</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="opt g3">
+  <div class="opt-label"><b>3 — Fresh Mint &amp; Charcoal</b> <span class="sw"><i style="background:#2E9E86"></i><i style="background:#E4F1EB"></i><i style="background:#23302E"></i><i style="background:#E8836B"></i></span> <span class="meta">Mint + coral · Inter · clean, modern, femtech-clinical</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="opt g4">
+  <div class="opt-label"><b>4 — Olive &amp; Cream</b> <span class="sw"><i style="background:#6E7A3F"></i><i style="background:#EAE9D2"></i><i style="background:#33322A"></i><i style="background:#C0763F"></i></span> <span class="meta">Warm olive + rust · DM Serif Display + Nunito Sans · earthy, organic, grounded</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="group-head">Blue</div>
+
+<div class="opt b1">
+  <div class="opt-label"><b>5 — Soft Teal &amp; Sand</b> <span class="sw"><i style="background:#3E8C93"></i><i style="background:#E1EDEC"></i><i style="background:#24333A"></i><i style="background:#D89A5E"></i></span> <span class="meta">Calm teal + warm sand · Fraunces + Nunito Sans · trustworthy, serene</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="opt b2">
+  <div class="opt-label"><b>6 — Periwinkle &amp; Ink</b> <span class="sw"><i style="background:#6C7AD1"></i><i style="background:#E6E8F6"></i><i style="background:#262A44"></i><i style="background:#E88A6B"></i></span> <span class="meta">Soft periwinkle + coral · Fraunces + Poppins · fresh, modern, calm</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="group-head">Pink</div>
+
+<div class="opt p1">
+  <div class="opt-label"><b>7 — Blush &amp; Cocoa</b> <span class="sw"><i style="background:#B07C88"></i><i style="background:#F6E0D8"></i><i style="background:#4A3630"></i><i style="background:#A9846F"></i></span> <span class="meta">Soft blush + cocoa · Cormorant Garamond + Nunito Sans · soft, feminine, beauty-led</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="opt p2">
+  <div class="opt-label"><b>8 — Rose &amp; Charcoal</b> <span class="sw"><i style="background:#DB6B79"></i><i style="background:#FCE3DD"></i><i style="background:#34282B"></i><i style="background:#2C7A78"></i></span> <span class="meta">Coral-rose + teal · Fraunces + Poppins · fresh, modern, youthful</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="group-head">Purple</div>
+
+<div class="opt u1">
+  <div class="opt-label"><b>9 — Plum &amp; Gold</b> <span class="sw"><i style="background:#7A4E86"></i><i style="background:#EEE0EA"></i><i style="background:#33223A"></i><i style="background:#C79A3E"></i></span> <span class="meta">Aubergine + gold · Playfair Display + Inter · premium, editorial, aspirational</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="opt u2">
+  <div class="opt-label"><b>10 — Lavender &amp; Violet</b> <span class="sw"><i style="background:#8B6FC4"></i><i style="background:#EDE6F6"></i><i style="background:#2E2740"></i><i style="background:#D89A5E"></i></span> <span class="meta">Soft lavender + deep violet · Fraunces + Nunito Sans · gentle, calming, feminine</span></div>
+  <div class="mini-header"><span class="brand"><span class="dot"></span> Wholesome Girlies</span><nav class="mini-nav"><a href="#">Fertility</a><a href="#">Pregnancy</a><a href="#">Postpartum</a><a href="#" class="cta">Programs</a></nav></div>
+  <div class="hero"><p class="eyebrow">For African women, at home and in the diaspora</p><h1>Women's health you can trust, at every stage.</h1><p class="lead">Simple tools, honest guidance reviewed by professionals, and a community with real support when you want to go further.</p><div class="row"><a class="btn btn-primary btn-lg" href="#">Explore Postpartum Reset</a><a class="btn btn-ghost btn-lg" href="#">Browse the tools</a></div></div>
+  <div class="toolrow"><div class="card"><span class="tag">Postpartum</span><h3>Recovery Timeline</h3><p>See what to expect, week by week.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Fertility</span><h3>Ovulation Calculator</h3><p>Find your fertile window.</p><span class="arrow">Open tool →</span></div><div class="card"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Estimate your due date.</p><span class="arrow">Open tool →</span></div></div>
+  <div class="prog card" style="border:2px solid var(--terracotta); text-align:center;"><p class="eyebrow">Go further</p><h3>Postpartum Reset</h3><p class="muted">A plan, a community of mums, and weekly sessions with a professional.</p><a class="btn btn-primary" href="#">Explore the program →</a></div>
+  <div class="footstrip"><span>© Wholesome Girlies · Not medical advice</span><span>For African women, at home and in the diaspora.</span></div>
+</div>
+
+<div class="chooser-intro" style="padding-top:8px;">
+  <p><strong>Tell me the number (1–10)</strong> and I will apply it across the whole site. We can also swap a font, nudge a colour, or blend two on whichever you pick.</p>
+</div>
+
+</body>
+</html>

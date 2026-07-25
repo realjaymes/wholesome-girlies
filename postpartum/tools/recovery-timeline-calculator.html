@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Postpartum Recovery Timeline Calculator — Wholesome Girlies</title>
+<meta name="description" content="Enter your delivery date and type to see a gentle, week-by-week postpartum recovery timeline. Free, private, and built on research and real data. Educational, not medical advice.">
+<link rel="canonical" href="https://wholesomegirlies.xyz/postpartum/tools/recovery-timeline-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wholesome Girlies">
+<meta property="og:title" content="Postpartum Recovery Timeline Calculator — Wholesome Girlies">
+<meta property="og:description" content="Enter your delivery date and type to see a gentle, week-by-week postpartum recovery timeline. Free, private, and built on research and real data. Educational, not medical advice.">
+<meta property="og:url" content="https://wholesomegirlies.xyz/postpartum/tools/recovery-timeline-calculator.html">
+<meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Postpartum Recovery Timeline Calculator — Wholesome Girlies">
+<meta name="twitter:description" content="Enter your delivery date and type to see a gentle, week-by-week postpartum recovery timeline. Free, private, and built on research and real data. Educational, not medical advice.">
+<meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Postpartum Recovery Timeline Calculator",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Postpartum","item":"https://wholesomegirlies.xyz/postpartum/"},{"@type":"ListItem","position":3,"name":"Postpartum Recovery Timeline Calculator","item":"https://wholesomegirlies.xyz/postpartum/tools/recovery-timeline-calculator.html"}]}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span> Wholesome Girlies</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul class="nav-links" id="nav">
+      <li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li>
+      <li><a href="/pregnancy/">Pregnancy</a></li>
+      <li><a href="/postpartum/">Postpartum</a></li>
+      <li><a href="/parenting/">Parenting</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/programs/" class="nav-cta">Programs</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="tool-hero">
+  <div class="wrap narrow">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/postpartum/">Postpartum</a> / Tools</div>
+    <h1>Postpartum Recovery Timeline Calculator</h1>
+    <p class="muted">Enter your delivery date and how you delivered, and we will show you gentle, week-by-week milestones for what many women experience as they heal. Every body is different, this is a guide, not a rule.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap narrow">
+    <div class="tool-app">
+      <div class="field">
+        <label for="dd">Your delivery date</label>
+        <input type="date" id="dd">
+      </div>
+      <div class="field">
+        <label for="dt">How did you deliver?</label>
+        <select id="dt">
+          <option value="vaginal">Vaginal birth</option>
+          <option value="csection">Caesarean (C-section)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="calcTimeline()">Show my timeline</button>
+
+      <div class="result" id="res">
+        <h3>Your gentle recovery timeline</h3>
+        <p class="muted" id="resWhere"></p>
+        <div id="milestones"></div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Educational, not medical advice.</strong> This tool shows general patterns of postpartum recovery. It does not diagnose or treat anything, and your own recovery may look different. It runs entirely in your browser, we do not store your date.
+    </div>
+
+    <div class="doctor-box">
+      <h4>When to see a doctor</h4>
+      <p class="muted" style="margin:0;">Call your doctor or go to a clinic straight away if you have heavy bleeding that soaks a pad an hour, a fever, severe pain, a bad headache with blurred vision, foul-smelling discharge, or thoughts of harming yourself or your baby. These need real care, not a calculator.</p>
+    </div>
+
+    <div class="byline"><span class="av">✓</span> <span>Built on research and real data. Educational, not medical advice.</span></div>
+
+    <div class="card program-cta">
+      <p class="eyebrow">Go further</p>
+      <h3>More than a tool: The 6-Week Postpartum Reset</h3>
+      <p class="muted">The guided program for your body, your marriage, and your mind after birth, plus a community of mums and a resource library you keep, one payment. Start when you are ready.</p>
+      <a href="/programs/postpartum-reset.html" class="btn btn-primary">Explore The 6-Week Postpartum Reset →</a>
+    </div>
+
+    <div class="related">
+      <h3>Related</h3>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <a class="card" href="/postpartum/tools/recovery-checklist.html"><span class="tag">Checklist</span><h3>Recovery Checklist</h3><p>Tick off your first six weeks.</p><span class="arrow">Open →</span></a>
+        <a class="card" href="/postpartum/guides/postpartum-recovery-timeline.html"><span class="tag">Guide</span><h3>Recovery timeline explained</h3><p>What is normal, and what is not.</p><span class="arrow">Read →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="/" class="brand" style="color:#fff;"><span class="dot"></span> Wholesome Girlies</a><p style="margin-top:12px;max-width:34ch;color:#B9C3B2;">Tools and honest guidance for women, at every stage.</p></div>
+      <div><h4>Stages</h4><ul><li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li><li><a href="/pregnancy/">Pregnancy</a></li><li><a href="/postpartum/">Postpartum</a></li><li><a href="/parenting/">Parenting</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="/tools/">Tools</a></li><li><a href="/programs/">Programs</a></li><li><a href="/about/">About us</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/legal/disclaimer.html">Medical disclaimer</a></li><li><a href="/legal/privacy.html">Privacy</a></li><li><a href="/legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Wholesome Girlies. Educational content, not medical advice.</span><span>For African women, at home and in the diaspora.</span></div>
+  </div>
+</footer>
+
+<script>
+function addWeeks(date, w){ var d = new Date(date.getTime()); d.setDate(d.getDate() + w*7); return d; }
+function fmt(d){ return d.toLocaleDateString(undefined, {weekday:'short', day:'numeric', month:'long', year:'numeric'}); }
+
+function calcTimeline(){
+  var val = document.getElementById('dd').value;
+  var type = document.getElementById('dt').value;
+  if(!val){ alert('Please enter your delivery date.'); return; }
+  var start = new Date(val + 'T00:00:00');
+  var now = new Date();
+  var weeksSince = Math.floor((now - start) / (1000*60*60*24*7));
+
+  var common = [
+    {w:1, t:'Week 1', d:'Rest as much as you can. Bleeding (lochia) is heaviest now. Feeding is being established. Accept every bit of help offered.'},
+    {w:2, t:'Weeks 2 to 3', d:'Bleeding eases and lightens. Baby blues can peak around now and usually lift within two weeks. Keep meals and water close.'},
+    {w:4, t:'Weeks 4 to 5', d:'Energy slowly returns. Gentle movement and short walks feel good for most women. Watch your mood, and speak up if it stays low.'},
+    {w:6, t:'Week 6', d:'The typical six-week check with your doctor. This is when many women discuss activity, contraception, and how they are truly coping.'}
+  ];
+  var extra = (type === 'csection')
+    ? {w:8, t:'Weeks 6 to 8 (C-section)', d:'Your incision keeps healing internally for weeks after it looks closed. Avoid heavy lifting beyond your baby, and check the scar for redness, swelling, or discharge.'}
+    : {w:8, t:'Weeks 6 to 8', d:'Any stitches or tears continue to settle. Pelvic-floor exercises help recovery. Discomfort that is getting worse rather than better is worth a check.'};
+  var list = common.concat([extra]);
+
+  var where = weeksSince < 0
+    ? 'Your delivery date is in the future, so this is what the weeks ahead may look like.'
+    : 'You are about ' + weeksSince + ' week' + (weeksSince===1?'':'s') + ' postpartum. Your current stage is highlighted.';
+  document.getElementById('resWhere').textContent = where;
+
+  var html = '';
+  list.forEach(function(m){
+    var here = (weeksSince >= (m.w-1) && weeksSince < (m.w+1));
+    var when = fmt(addWeeks(start, m.w-1));
+    html += '<div style="padding:14px 0; border-bottom:1px solid var(--line);'+(here?'background:var(--blush); border-radius:12px; padding:14px 16px;':'')+'">'
+      + '<div class="big">'+m.t+ (here?' <span class="tag" style="vertical-align:middle;">You are here</span>':'') +'</div>'
+      + '<p class="muted" style="margin:4px 0 6px;">Around '+when+'</p>'
+      + '<p style="margin:0;">'+m.d+'</p></div>';
+  });
+  document.getElementById('milestones').innerHTML = html;
+  document.getElementById('res').classList.add('show');
+  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

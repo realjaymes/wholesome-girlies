@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap (see 01 §8, 04 Data & Identity Layer). -->
+<meta name="robots" content="noindex, nofollow">
+<title>Welcome to the Complete Motherhood Journey — Wholesome Girlies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<style>
+  /* Page-local styles for the onboarding form. Uses the site design tokens. */
+  .ty-form label{display:block;font-weight:700;margin:16px 0 6px;color:var(--plum);}
+  .ty-form input,.ty-form select{width:100%;padding:12px 14px;border:1px solid var(--line);
+    border-radius:var(--radius-sm);font-family:var(--sans);font-size:1rem;background:var(--white);color:var(--plum);}
+  .ty-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:560px){.ty-form .row{grid-template-columns:1fr;}}
+  .ty-form .consent{display:flex;gap:10px;align-items:flex-start;margin-top:18px;font-size:.92rem;color:var(--plum-soft);}
+  .ty-form .consent input{width:auto;margin-top:3px;}
+  .prefill{font-size:.82rem;color:var(--plum-soft);font-weight:400;}
+  .reveal{display:none;}
+  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
+    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+</style>
+</head>
+<body>
+
+<!-- Minimal brand header, matching the cold-traffic sales page (no site nav). -->
+<header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
+  <div class="wrap center">
+    <span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================= -->
+<!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
+<!-- ============================================================= -->
+<section class="sales-hero">
+  <div class="wrap narrow center">
+    <p class="eyebrow">Payment confirmed · welcome</p>
+    <h1>You've got the whole journey.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">All four toolkits and every resource are ready right now. Everything is yours to keep, for every stage ahead.</p>
+    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
+    <a href="#" class="btn btn-primary btn-lg">Open your toolkit &amp; resources</a>
+    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- SECTION 2 — One quick question = the STAGE ROUTER. -->
+<!-- Diaspora bundle has NO community, so this gates NOTHING — it only sets which -->
+<!-- reminder cadence / guidance the buyer starts in. On submit: POST to our endpoint -->
+<!-- (Apps Script or n8n), then reveal a simple "you're all set" and email a copy. -->
+<!-- ============================================================= -->
+<section class="stage-band">
+  <div class="wrap narrow">
+    <div class="card">
+      <p class="eyebrow">One quick question</p>
+      <h2 style="margin-bottom:8px;">Let's make your guidance yours, not generic</h2>
+      <p class="muted">We already have your details from your purchase. Just one quick thing so the guidance we send actually fits you. Then you're all set to start.</p>
+
+      <form class="ty-form" id="onboarding" novalidate>
+        <!-- Selar → Zapier → Brevo already captured name, email, phone, and product AT PURCHASE.
+             So this form asks ONLY what the sale can't tell us. Because this is the BUNDLE, the buyer could
+             be at ANY stage — so the one question is a STAGE ROUTER, not a concern. It decides which
+             guidance cadence and reminder sequence she starts in. There is NO community, so it gates nothing.
+             No name/email/phone/product here — that would be re-asking what we already have.
+
+             MATCHING (open design decision): to attach this answer to the buyer's Brevo contact
+             we need a join key. Selar passes nothing to this anonymous page, so there is no email in the
+             URL to match on. Two clean options:
+               (A) RECOMMENDED — collect this question from a PRE-IDENTIFIED link in the welcome
+                   email (email token in the URL), so matching is automatic and nothing is re-asked.
+               (B) keep it on this page but add back ONE email field purely as the match key.
+             This demo shows the field on-page (option-B layout minus the email); wire per the decision. -->
+        <!-- No date of birth asked: too specific / low trust right after purchase. Any reminder
+             cadence anchors to the ENROLLMENT date (from the Selar → Zapier purchase record). -->
+        <label for="stage">Where are you right now?</label>
+        <select id="stage" name="stage" required>
+          <option value="">Choose the one that fits best…</option>
+          <option value="ttc">Trying to conceive</option>
+          <option value="pregnancy">Pregnant</option>
+          <option value="postpartum">Just had my baby</option>
+          <option value="parenting">Parenting a little one</option>
+        </select>
+
+        <label class="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <span>Yes, send me guidance for my journey. I can leave any time. We treat your information with care (<a href="/legal/privacy.html">privacy</a>).</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:20px;">Save &amp; get started</button>
+        <p class="muted" style="font-size:.82rem; margin-top:10px;">We store only your stage and this one answer. Nothing more.</p>
+      </form>
+
+      <!-- Revealed on successful submit. No community, no Telegram — the diaspora bundle has neither.
+           Simply confirms she's set and points her to start where she is. -->
+      <div class="reveal" id="allset">
+        <p class="eyebrow">You're all set</p>
+        <h2 style="margin-bottom:8px;">You're all set, start where you are 💚</h2>
+        <p class="muted">Your guidance is now set to the stage you're in right now, and we'll adjust it as your journey changes. Open the toolkit for that stage and read only what you need today. The rest is yours, waiting for the moment you reach it.</p>
+        <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). -->
+        <a href="#" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your toolkit &amp; resources</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- SECTION 3 — Next steps. -->
+<!-- ============================================================= -->
+<section>
+  <div class="wrap narrow">
+    <h2>Your first three steps</h2>
+    <div class="grid grid-3" style="margin-top:18px;">
+      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Start where you are today</h3><p>Open the toolkit for your current stage. Read only what you need today. The rest waits for you.</p></div>
+      <div class="card"><span class="tag"><span class="step-num">2</span>Keep</span><h3>Save your resource libraries</h3><p>Download the checklists, templates, and planners to your phone. They're yours to keep, ready any time.</p></div>
+      <div class="card"><span class="tag"><span class="step-num">3</span>Move</span><h3>Move through the stages with us</h3><p>As your journey changes, the next toolkit is already yours. We're with you the whole way.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- SECTION 4 — Depth + referral (OWNS EVERYTHING). -->
+<!-- ============================================================= -->
+<section class="stage-band">
+  <div class="wrap narrow center">
+    <!-- BUNDLE buyer owns every stage, so there is NO upsell and NO bundle coupon here — there is nothing
+         further to sell up to. NO coupon, NO Selar link. Instead: a depth path (1:1 practitioner add-on)
+         and a referral ask. No community language anywhere on the diaspora funnel. -->
+    <p class="eyebrow">You're not on your own</p>
+    <h2>Two ways to get more from this</h2>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as a paid add-on, details are inside your toolkit.</p>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Know a mum who needs this? Sending her our way is the kindest thing, and it helps us keep building.</p>
+    <a href="/" class="btn btn-primary">Share Wholesome Girlies &rarr;</a>
+  </div>
+</section>
+
+</main>
+
+<!-- Minimal footer, legal only, no site nav (matches the funnel pages). -->
+<footer class="site-footer" style="padding:28px 0;">
+  <div class="wrap narrow center">
+    <p style="margin:0 0 6px; color:#fff; font-family:var(--serif); font-size:1.1rem;">Wholesome Girlies</p>
+    <p style="margin:0; font-size:.82rem; color:#A9B3A3;">© 2026 Wholesome Girlies. Educational program, not medical advice. <a href="/legal/disclaimer.html" style="color:var(--blush);">Disclaimer &amp; privacy</a></p>
+  </div>
+</footer>
+
+<script>
+/* DEMO submit handler.
+   Real version POSTs the payload to our single shared endpoint (Apps Script web app — the proven
+   MIA pattern — or an n8n webhook). The endpoint appends to the Google Sheet AND upserts the contact
+   into Brevo (server-side, so the Brevo key is never in this file), then triggers the welcome + reveals
+   the "you're all set" block. Never call the Brevo API directly from this page. */
+(function () {
+  var form = document.getElementById('onboarding');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    var payload = {
+      source: 'purchase',
+      product: 'complete-motherhood-journey-diaspora',
+      stage: document.getElementById('stage').value, // bundle: the one question IS the stage router (reminder cadence only)
+      consent: document.getElementById('consent').checked
+      // No concern field — the bundle's one question captures STAGE (the buyer could be anywhere).
+      // No community — diaspora bundle has none; stage only routes the guidance/reminder cadence.
+      // No name/email/phone/product typed here — captured at purchase via Selar → Zapier → Brevo.
+      // No date of birth — too specific. Reminder cadence anchors to the enrollment/purchase date (from Zapier).
+      // MATCHING: attach this answer to the buyer's Brevo contact via a pre-identified welcome-email link
+      // (recommended), or add one email field above as the join key.
+    };
+
+    /* WIRING (replace the demo block below with the real call):
+    fetch('https://script.google.com/macros/s/XXXX/exec', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+      .then(function () { showAllSet(); })
+      .catch(function () { showAllSet(); }); // still reveal; the email backup covers failures
+    */
+
+    console.log('Onboarding payload (demo):', payload);
+    showAllSet();
+  });
+
+  function showAllSet() {
+    form.style.display = 'none';
+    document.getElementById('allset').style.display = 'block';
+    document.getElementById('allset').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+})();
+</script>
+<script src="/assets/petals.js"></script>
+</body>
+</html>

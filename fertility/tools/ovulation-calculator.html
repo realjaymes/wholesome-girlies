@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ovulation &amp; Fertile Window Calculator — Wholesome Girlies</title>
+<meta name="description" content="Free ovulation and fertile-window calculator. Enter your last period and cycle length to estimate your most fertile days and likely ovulation. Educational, not medical advice.">
+<link rel="canonical" href="https://wholesomegirlies.xyz/fertility/tools/ovulation-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wholesome Girlies">
+<meta property="og:title" content="Ovulation &amp; Fertile Window Calculator — Wholesome Girlies">
+<meta property="og:description" content="Free ovulation and fertile-window calculator. Enter your last period and cycle length to estimate your most fertile days and likely ovulation. Educational, not medical advice.">
+<meta property="og:url" content="https://wholesomegirlies.xyz/fertility/tools/ovulation-calculator.html">
+<meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ovulation &amp; Fertile Window Calculator — Wholesome Girlies">
+<meta name="twitter:description" content="Free ovulation and fertile-window calculator. Enter your last period and cycle length to estimate your most fertile days and likely ovulation. Educational, not medical advice.">
+<meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Ovulation & Fertile Window Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Fertility","item":"https://wholesomegirlies.xyz/fertility/"},{"@type":"ListItem","position":3,"name":"Ovulation & Fertile Window Calculator","item":"https://wholesomegirlies.xyz/fertility/tools/ovulation-calculator.html"}]}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span> Wholesome Girlies</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul class="nav-links" id="nav">
+      <li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li>
+      <li><a href="/pregnancy/">Pregnancy</a></li>
+      <li><a href="/postpartum/">Postpartum</a></li>
+      <li><a href="/parenting/">Parenting</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/programs/" class="nav-cta">Programs</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="tool-hero">
+  <div class="wrap narrow">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/fertility/">Fertility</a> / Tools</div>
+    <h1>Ovulation &amp; Fertile Window Calculator</h1>
+    <p class="muted">Enter the first day of your last period and your usual cycle length, and we will estimate your fertile window and most likely day of ovulation. This is an estimate to help you plan, not a certainty.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap narrow">
+    <div class="tool-app">
+      <div class="field">
+        <label for="lmp">First day of your last period</label>
+        <input type="date" id="lmp">
+      </div>
+      <div class="field">
+        <label for="cyc">Your usual cycle length (days)</label>
+        <select id="cyc">
+          <!-- populated by JS 21..40, default 28 -->
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="calcOvulation()">Show my fertile window</button>
+
+      <div class="result" id="res">
+        <h3>Your estimated fertile window</h3>
+        <p class="big" id="window"></p>
+        <p id="ovday" style="margin:6px 0;"></p>
+        <p class="muted" id="nextp" style="margin:0;"></p>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Educational, not medical advice.</strong> This calculator uses the standard method (ovulation about 14 days before your next period, with a fertile window of roughly six days). Cycles vary, so treat this as a guide. It runs in your browser and stores nothing.
+    </div>
+
+    <div class="doctor-box">
+      <h4>When to see a doctor</h4>
+      <p class="muted" style="margin:0;">If you are under 35 and have been trying for a year, or over 35 and trying for six months, it is worth seeing a doctor. Also see one for very irregular or missing periods, severe period pain, or any bleeding that worries you. A calculator cannot diagnose fertility.</p>
+    </div>
+
+    <div class="byline"><span class="av">✓</span> <span>Built on research and real data. Educational, not medical advice.</span></div>
+
+    <div class="card program-cta">
+      <p class="eyebrow">Go further</p>
+      <h3>The Trying-to-Conceive Blueprint</h3>
+      <p class="muted">A private community for women trying to conceive, honest guidance, and a professional to ask.</p>
+      <a href="/programs/trying-to-conceive-blueprint.html" class="btn btn-primary">See the program &rarr;</a>
+    </div>
+
+    <div class="related">
+      <h3>Related</h3>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <a class="card" href="/fertility/"><span class="tag">Fertility</span><h3>More fertility tools</h3><p>Cycle tracker, TTC planner, and more.</p><span class="arrow">Explore →</span></a>
+        <a class="card" href="/pregnancy/tools/due-date-calculator.html"><span class="tag">Pregnancy</span><h3>Due Date Calculator</h3><p>Already expecting? Find your due date.</p><span class="arrow">Open →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="/" class="brand" style="color:#fff;"><span class="dot"></span> Wholesome Girlies</a><p style="margin-top:12px;max-width:34ch;color:#B9C3B2;">Tools and honest guidance for women, at every stage.</p></div>
+      <div><h4>Stages</h4><ul><li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li><li><a href="/pregnancy/">Pregnancy</a></li><li><a href="/postpartum/">Postpartum</a></li><li><a href="/parenting/">Parenting</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="/tools/">Tools</a></li><li><a href="/programs/">Programs</a></li><li><a href="/about/">About us</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/legal/disclaimer.html">Medical disclaimer</a></li><li><a href="/legal/privacy.html">Privacy</a></li><li><a href="/legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Wholesome Girlies. Educational content, not medical advice.</span><span>For African women, at home and in the diaspora.</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var sel = document.getElementById('cyc');
+  for(var d=21; d<=40; d++){
+    var o = document.createElement('option');
+    o.value = d; o.textContent = d + ' days';
+    if(d===28) o.selected = true;
+    sel.appendChild(o);
+  }
+})();
+function fmt(d){ return d.toLocaleDateString(undefined,{weekday:'short', day:'numeric', month:'long', year:'numeric'}); }
+function addDays(date, n){ var x = new Date(date.getTime()); x.setDate(x.getDate()+n); return x; }
+function calcOvulation(){
+  var v = document.getElementById('lmp').value;
+  var cyc = parseInt(document.getElementById('cyc').value, 10);
+  if(!v){ alert('Please enter the first day of your last period.'); return; }
+  var lmp = new Date(v + 'T00:00:00');
+  var ovulation = addDays(lmp, cyc - 14);
+  var winStart = addDays(ovulation, -5);
+  var winEnd = addDays(ovulation, 1);
+  var nextPeriod = addDays(lmp, cyc);
+  document.getElementById('window').textContent = fmt(winStart) + '  to  ' + fmt(winEnd);
+  document.getElementById('ovday').innerHTML = 'Most likely day of ovulation: <b>' + fmt(ovulation) + '</b>';
+  document.getElementById('nextp').textContent = 'If you do not conceive, your next period is expected around ' + fmt(nextPeriod) + '.';
+  document.getElementById('res').classList.add('show');
+  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pregnancy Week-by-Week Tracker — Wholesome Girlies</title>
+<meta name="description" content="Free pregnancy week-by-week tracker. Enter your last period to see how many weeks you are, your trimester, and what is happening now. Educational, not medical advice.">
+<link rel="canonical" href="https://wholesomegirlies.xyz/pregnancy/tools/week-by-week-tracker.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wholesome Girlies">
+<meta property="og:title" content="Pregnancy Week-by-Week Tracker — Wholesome Girlies">
+<meta property="og:description" content="Free pregnancy week-by-week tracker. Enter your last period to see how many weeks you are, your trimester, and what is happening now. Educational, not medical advice.">
+<meta property="og:url" content="https://wholesomegirlies.xyz/pregnancy/tools/week-by-week-tracker.html">
+<meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pregnancy Week-by-Week Tracker — Wholesome Girlies">
+<meta name="twitter:description" content="Free pregnancy week-by-week tracker. Enter your last period to see how many weeks you are, your trimester, and what is happening now. Educational, not medical advice.">
+<meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Pregnancy Week-by-Week Tracker","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Pregnancy","item":"https://wholesomegirlies.xyz/pregnancy/"},{"@type":"ListItem","position":3,"name":"Pregnancy Week-by-Week Tracker","item":"https://wholesomegirlies.xyz/pregnancy/tools/week-by-week-tracker.html"}]}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span> Wholesome Girlies</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul class="nav-links" id="nav">
+      <li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li>
+      <li><a href="/pregnancy/">Pregnancy</a></li>
+      <li><a href="/postpartum/">Postpartum</a></li>
+      <li><a href="/parenting/">Parenting</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/programs/" class="nav-cta">Programs</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="tool-hero">
+  <div class="wrap narrow">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/pregnancy/">Pregnancy</a> / Tools</div>
+    <h1>Pregnancy Week-by-Week Tracker</h1>
+    <p class="muted">Enter the first day of your last period to see how far along you are, your trimester (which third of pregnancy you are in), and a gentle note on what is often happening around now. Your scan gives the most accurate dates.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap narrow">
+    <div class="tool-app">
+      <div class="field">
+        <label for="lmp">First day of your last period</label>
+        <input type="date" id="lmp">
+      </div>
+      <button class="btn btn-primary" onclick="calcWeek()">Show my week</button>
+      <div class="result" id="res">
+        <p class="big" id="weekline"></p>
+        <p id="triline" style="margin:6px 0;"></p>
+        <p class="muted" id="note" style="margin:0;"></p>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Educational, not medical advice.</strong> These are general, typical notes, not a description of your specific pregnancy. Your midwife or doctor and your scans are the real guide. It runs in your browser and stores nothing.
+    </div>
+
+    <div class="doctor-box">
+      <h4>When to see a doctor</h4>
+      <p class="muted" style="margin:0;">Seek care for bleeding, severe pain, a high fever, severe vomiting, strong headaches with vision changes, or reduced baby movements later in pregnancy. When unsure, always call.</p>
+    </div>
+
+    <div class="byline"><span class="av">✓</span> <span>Built on research and real data. Educational, not medical advice.</span></div>
+
+    <div class="card program-cta">
+      <p class="eyebrow">Go further</p>
+      <h3>The First Pregnancy Plan</h3>
+      <p class="muted">A community for all pregnant women, week-by-week support, and a midwife or doctor to ask.</p>
+      <a href="/programs/first-pregnancy-plan.html" class="btn btn-primary">See the program &rarr;</a>
+    </div>
+
+    <div class="related">
+      <h3>Related</h3>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <a class="card" href="/pregnancy/tools/due-date-calculator.html"><span class="tag">Calculator</span><h3>Due Date Calculator</h3><p>Find your due date.</p><span class="arrow">Open →</span></a>
+        <a class="card" href="/pregnancy/guides/trimester-by-trimester.html"><span class="tag">Guide</span><h3>Trimester by trimester</h3><p>What each stage brings.</p><span class="arrow">Read →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="/" class="brand" style="color:#fff;"><span class="dot"></span> Wholesome Girlies</a><p style="margin-top:12px;max-width:34ch;color:#B9C3B2;">Tools and honest guidance for women, at every stage.</p></div>
+      <div><h4>Stages</h4><ul><li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li><li><a href="/pregnancy/">Pregnancy</a></li><li><a href="/postpartum/">Postpartum</a></li><li><a href="/parenting/">Parenting</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="/tools/">Tools</a></li><li><a href="/programs/">Programs</a></li><li><a href="/about/">About us</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/legal/disclaimer.html">Medical disclaimer</a></li><li><a href="/legal/privacy.html">Privacy</a></li><li><a href="/legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Wholesome Girlies. Educational content, not medical advice.</span><span>For African women, at home and in the diaspora.</span></div>
+  </div>
+</footer>
+
+<script>
+function noteFor(w){
+  if(w<5) return 'Very early. A test may only just be positive. Start folic acid if you have not.';
+  if(w<9) return 'The baby’s major organs are forming. Nausea and tiredness are common. Book your first antenatal appointment (your first pregnancy check-up).';
+  if(w<13) return 'Ending the first trimester. Your first scan is often around now. Sickness often begins to ease.';
+  if(w<19) return 'The second trimester. Many women feel more energy. You may start to show.';
+  if(w<25) return 'Around now many women feel the first movements. The detailed scan that checks how your baby is growing (the anomaly scan) usually happens near week 20.';
+  if(w<29) return 'Entering the third trimester. Baby is growing fast. Start thinking about your hospital bag and birth plan.';
+  if(w<37) return 'Getting closer. Rest when you can, watch baby’s movements, and pack your hospital bag by about week 36.';
+  if(w<=42) return 'Full term. Baby could arrive any time. Know the signs of labour and when to go in.';
+  return 'That is beyond a typical pregnancy length, please check the date with your midwife.';
+}
+function calcWeek(){
+  var v=document.getElementById('lmp').value;
+  if(!v){ alert('Please enter the first day of your last period.'); return; }
+  var lmp=new Date(v+'T00:00:00'), now=new Date();
+  var days=Math.floor((now-lmp)/(1000*60*60*24));
+  if(days<0){ document.getElementById('weekline').textContent='That date is in the future.'; document.getElementById('triline').textContent=''; document.getElementById('note').textContent=''; document.getElementById('res').classList.add('show'); return; }
+  var w=Math.floor(days/7), d=days%7;
+  document.getElementById('weekline').textContent='You are '+w+' weeks and '+d+' days pregnant';
+  var tri = w<13?'First trimester':(w<28?'Second trimester':'Third trimester');
+  document.getElementById('triline').textContent=tri;
+  document.getElementById('note').textContent=noteFor(w);
+  document.getElementById('res').classList.add('show');
+  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

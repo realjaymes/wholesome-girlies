@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Flags &amp; Red Flags Checker — Wholesome Girlies</title>
+<meta name="description" content="Tick the behaviours you are actually seeing in him and get an honest read on green flags and red flags, plus what to do next. A safety-first tool, not a diagnosis. Runs in your browser.">
+<link rel="canonical" href="https://wholesomegirlies.xyz/relationships/tools/green-red-flags-checker.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wholesome Girlies">
+<meta property="og:title" content="Green Flags &amp; Red Flags Checker — Wholesome Girlies">
+<meta property="og:description" content="Tick what you are seeing and get an honest read on the green and red flags, plus what to do next. Safety-first, not a diagnosis.">
+<meta property="og:url" content="https://wholesomegirlies.xyz/relationships/tools/green-red-flags-checker.html">
+<meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Green Flags &amp; Red Flags Checker — Wholesome Girlies">
+<meta name="twitter:description" content="Tick what you are seeing and get an honest read on the green and red flags, plus what to do next.">
+<meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20260725b">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Green Flags & Red Flags Checker","applicationCategory":"LifestyleApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Relationships","item":"https://wholesomegirlies.xyz/relationships/"},{"@type":"ListItem","position":3,"name":"Green Flags & Red Flags Checker","item":"https://wholesomegirlies.xyz/relationships/tools/green-red-flags-checker.html"}]}
+</script>
+<style>
+  .flag-head { font-family: var(--serif); font-weight: 600; font-size: 1.3rem; margin: 4px 0 10px; }
+  .flag-head.green { color: var(--terracotta-dark); }
+  .flag-head.red { color: var(--sage); }
+  .col-green { margin-bottom: 22px; }
+  .tally { display: flex; gap: 14px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .tally .pill { background: var(--blush); border-radius: 999px; padding: 8px 16px; font-weight: 800; }
+  .tally .pill.red { background: #F6ECE3; color: var(--sage); }
+  .tally .pill.green { color: var(--terracotta-dark); }
+  #safety { border: 2px solid var(--sage); background: #F6ECE3; border-radius: var(--radius-sm); padding: 18px 20px; margin: 18px 0 0; display: none; }
+  #safety.show { display: block; }
+  #safety h4 { margin: 0 0 8px; color: var(--sage); }
+  #safety a { color: var(--terracotta-dark); font-weight: 800; }
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 8px 0 0; }
+  .steps li { position: relative; padding-left: 40px; margin-bottom: 14px; }
+  .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: -2px; width: 26px; height: 26px; border-radius: 50%; background: var(--terracotta); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: .9rem; }
+  .faq h4 { margin: 18px 0 4px; }
+  .faq p { margin: 0 0 6px; color: var(--plum-soft); }
+  .result .sub { font-weight: 800; margin: 14px 0 4px; color: var(--terracotta-dark); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span> Wholesome Girlies</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <ul class="nav-links" id="nav">
+      <li><a href="/relationships/">Relationships</a></li>
+      <li><a href="/fertility/">Fertility</a></li>
+      <li><a href="/pregnancy/">Pregnancy</a></li>
+      <li><a href="/postpartum/">Postpartum</a></li>
+      <li><a href="/parenting/">Parenting</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/programs/" class="nav-cta">Programs</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="tool-hero">
+  <div class="wrap narrow">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/relationships/">Relationships</a> / Tools</div>
+    <h1>Green Flags &amp; Red Flags Checker</h1>
+    <p class="muted">Tick the behaviours you are actually seeing in him, not what you hope to see, and get an honest read on the green flags and the red flags, plus what to do next. This is a way to trust your own eyes, not a diagnosis of him.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap narrow">
+    <div class="tool-app">
+      <div class="col-green">
+        <p class="flag-head green">Green flags — signs of care, character, and readiness</p>
+        <ul class="checklist" id="greenList"></ul>
+      </div>
+      <div class="col-red">
+        <p class="flag-head red">Red flags — signs to slow down and pay attention</p>
+        <ul class="checklist" id="redList"></ul>
+      </div>
+
+      <button class="btn btn-primary" onclick="readFlags()">Give me an honest read</button>
+
+      <div class="result" id="res">
+        <div class="tally">
+          <span class="pill green" id="greenCount">0 green flags</span>
+          <span class="pill red" id="redCount">0 red flags</span>
+        </div>
+        <p class="big" id="headline"></p>
+        <p id="summary" style="margin:6px 0 0;"></p>
+        <p class="sub">What to do next</p>
+        <p id="next" style="margin:0;"></p>
+
+        <div id="safety">
+          <h4>Please read this first</h4>
+          <p style="margin:0 0 8px;">Some of what you ticked describes control, coercion, or abuse, not an ordinary relationship problem. That is not something a checklist, or you managing it better, can fix. Your safety comes first.</p>
+          <p style="margin:0 0 8px;"><strong>If you are in immediate danger, call 112</strong> (Nigeria's national emergency number) or your local emergency services.</p>
+          <p style="margin:0;">For confidential support in Nigeria, you can reach organisations like the <strong>Women at Risk International Foundation (WARIF)</strong>, the <strong>Mirabel Centre</strong> (Lagos), or the <strong>Lagos State Domestic and Sexual Violence Agency (DSVA)</strong>. In the diaspora, contact your local domestic-abuse helpline. Please talk to someone you trust. You deserve to be safe.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>This is a mirror, not a diagnosis.</strong> This checker helps you name what you are already seeing. It does not diagnose him, label him, or tell you what he will do next. Only you know your full story, and you are allowed to trust it. The tool runs entirely in your browser. Nothing you tick is saved or sent anywhere, so it stays private even on a shared device.
+    </div>
+
+    <div class="doctor-box" id="safety-standing" style="border-color:var(--sage);">
+      <h4 style="color:var(--sage);">A safety-first note</h4>
+      <p class="muted" style="margin:0;">If a relationship involves someone controlling where you go, who you see, or your money, monitoring your phone, threatening you, or hurting you physically or sexually, that is abuse, and it is not your fault. This is not a couples problem to communicate through. If you are in immediate danger, call <strong>112</strong>. For confidential help in Nigeria, reach out to <strong>WARIF</strong>, the <strong>Mirabel Centre</strong>, or the <strong>Lagos State DSVA</strong>; in the diaspora, your local domestic-abuse helpline. This tool is not a diagnosis and cannot keep you safe, but real people can.</p>
+    </div>
+
+    <div class="doctor-box">
+      <h4>How to use this</h4>
+      <ol class="steps">
+        <li>Tick only what you have actually seen him do, more than once, not what you are hoping for.</li>
+        <li>Be honest about the red list. The things we excuse early are usually the things that grow.</li>
+        <li>Tap <em>Give me an honest read</em> to see the balance and a clear next step.</li>
+        <li>If serious red flags come up, read the safety note. Your safety matters more than any relationship.</li>
+      </ol>
+    </div>
+
+    <div class="faq">
+      <h3>Questions women ask</h3>
+      <h4>He has some green and some red. What does that mean?</h4>
+      <p>Most people are a mix. The question is not "is he perfect," it is whether the red flags are small and workable or the kind that cost you your peace and safety. The read gives you an honest balance to sit with.</p>
+      <h4>Can one red flag be a dealbreaker?</h4>
+      <p>Yes. Anything on the safety list, control, coercion, or violence, outweighs a long list of green flags. One serious red flag is enough to step back.</p>
+      <h4>Does this tell me to leave him?</h4>
+      <p>No. It is not here to make your decision for you. It helps you see clearly so the decision is yours, made with open eyes instead of hope.</p>
+      <h4>Is this private?</h4>
+      <p>Yes. Nothing is saved or sent. Close the tab and it is gone, which matters if you share a phone or laptop.</p>
+    </div>
+
+    <div class="card program-cta">
+      <p class="eyebrow">Go deeper</p>
+      <h3>The Wife Material Blueprint</h3>
+      <p class="muted">When you want the full plan to read character early, hold your standards, and become the woman a good man commits to, without games, shrinking, or performing.</p>
+      <a href="/programs/wife-material-blueprint.html" class="btn btn-primary">See the Blueprint &rarr;</a>
+    </div>
+
+    <div class="related">
+      <h3>Related</h3>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <a class="card" href="/relationships/tools/ready-for-love-quiz.html"><span class="tag">Relationships</span><h3>Are You Ready for Love? Quiz</h3><p>An honest look at your own clarity and calm.</p><span class="arrow">Open →</span></a>
+        <a class="card" href="/relationships/tools/situationship-checker.html"><span class="tag">Relationships</span><h3>Situationship Checker</h3><p>Is this thing actually going somewhere?</p><span class="arrow">Open →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div><a href="/" class="brand" style="color:#fff;"><span class="dot"></span> Wholesome Girlies</a><p style="margin-top:12px;max-width:34ch;color:#B9C3B2;">Tools and honest guidance for women, at every stage.</p></div>
+      <div><h4>Stages</h4><ul><li><a href="/relationships/">Relationships</a></li><li><a href="/fertility/">Fertility</a></li><li><a href="/pregnancy/">Pregnancy</a></li><li><a href="/postpartum/">Postpartum</a></li><li><a href="/parenting/">Parenting</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="/tools/">Tools</a></li><li><a href="/programs/">Programs</a></li><li><a href="/about/">About us</a></li></ul></div>
+      <div><h4>Trust</h4><ul><li><a href="/legal/disclaimer.html">Medical disclaimer</a></li><li><a href="/legal/privacy.html">Privacy</a></li><li><a href="/legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Wholesome Girlies. Educational content, not medical advice.</span><span>For African women, at home and in the diaspora.</span></div>
+  </div>
+</footer>
+
+<script>
+var GREEN = [
+  "He is consistent, his words and actions match",
+  "He is clear about wanting you, no mixed signals",
+  "He respects your no and your boundaries without sulking",
+  "He is kind to people he does not need anything from",
+  "He talks openly about the future and includes you in it",
+  "He handles disagreements calmly, without contempt",
+  "He is proud to be seen with you, in public and online",
+  "He is honest even when it is not flattering",
+  "He supports your goals, friendships, and family",
+  "You feel calmer and more yourself around him, not on edge"
+];
+
+// serious:true items describe control, coercion, or abuse and trigger the safety route
+var RED = [
+  { t: "He is hot and cold, loving then distant with no reason", serious: false },
+  { t: "He avoids labels and keeps things undefined for months", serious: false },
+  { t: "He only reaches out when it suits him", serious: false },
+  { t: "He love-bombs, then pulls away when you get close", serious: false },
+  { t: "He hides you, or hides other people from you", serious: false },
+  { t: "His words and actions do not match", serious: false },
+  { t: "He dismisses your feelings or calls you dramatic", serious: false },
+  { t: "He tries to control where you go, who you see, or how you dress", serious: true },
+  { t: "He monitors your phone, messages, or location", serious: true },
+  { t: "He controls your money or stops you earning your own", serious: true },
+  { t: "He threatens you, or makes you afraid of his reaction", serious: true },
+  { t: "He has been physically or sexually forceful with you", serious: true }
+];
+
+(function(){
+  var g = document.getElementById('greenList');
+  GREEN.forEach(function(txt, i){
+    var li = document.createElement('li');
+    li.innerHTML = '<input type="checkbox" id="g'+i+'"><label for="g'+i+'">'+txt+'</label>';
+    g.appendChild(li);
+  });
+  var r = document.getElementById('redList');
+  RED.forEach(function(item, i){
+    var li = document.createElement('li');
+    li.innerHTML = '<input type="checkbox" id="r'+i+'" data-serious="'+(item.serious?'1':'0')+'"><label for="r'+i+'">'+item.t+'</label>';
+    r.appendChild(li);
+  });
+})();
+
+function readFlags(){
+  var greens = 0, reds = 0, serious = 0;
+  GREEN.forEach(function(_, i){ if(document.getElementById('g'+i).checked) greens++; });
+  RED.forEach(function(_, i){
+    var box = document.getElementById('r'+i);
+    if(box.checked){ reds++; if(box.getAttribute('data-serious') === '1') serious++; }
+  });
+
+  document.getElementById('greenCount').textContent = greens + (greens === 1 ? ' green flag' : ' green flags');
+  document.getElementById('redCount').textContent = reds + (reds === 1 ? ' red flag' : ' red flags');
+
+  var headline, summary, next;
+
+  if(greens === 0 && reds === 0){
+    headline = "Nothing ticked yet.";
+    summary = "Tick what you are actually seeing above, then ask for your read.";
+    next = "Come back when you have a few honest ticks. There is no rush.";
+  } else if(reds === 0 && greens >= 4){
+    headline = "This is looking healthy.";
+    summary = "You are seeing real care, consistency, and respect, and no red flags so far. That is worth appreciating out loud.";
+    next = "Keep seeing him clearly over time. Green flags are confirmed by consistency, not a good week. Enjoy it without over-managing it.";
+  } else if(reds >= 1 && reds <= 2 && greens > reds){
+    headline = "Mostly good, with a couple of things to watch.";
+    summary = "The care is real, and so are one or two patterns worth naming. Small red flags left unspoken tend to grow.";
+    next = "Name what you noticed, once and calmly, and watch how he responds. A good partner takes it in. Someone who gets defensive or flips it on you is showing you a bigger flag.";
+  } else if(reds > greens){
+    headline = "The red is outweighing the green.";
+    summary = "You are seeing more warning signs than reassurance. That gap is information. It usually does not close by you loving harder or waiting longer.";
+    next = "Get honest with yourself about what you are tolerating and why. You are allowed to step back from something that keeps costing you peace, even if he is not a bad person. Choosing your calm is not cruelty.";
+  } else {
+    headline = "A real mix. Read it carefully.";
+    summary = "There is genuine good here and there are real red flags. The question is whether the reds are workable or the kind that erode you over time.";
+    next = "Look at the red list again. Anything about control, safety, or repeated dishonesty is not a communication problem to fix, it is a reason to protect yourself.";
+  }
+
+  document.getElementById('headline').textContent = headline;
+  document.getElementById('summary').textContent = summary;
+  document.getElementById('next').textContent = next;
+
+  var safety = document.getElementById('safety');
+  if(serious >= 1){ safety.classList.add('show'); } else { safety.classList.remove('show'); }
+
+  var res = document.getElementById('res');
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>
