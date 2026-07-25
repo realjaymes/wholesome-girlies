@@ -1,10 +1,64 @@
-# Wholesome Girlies — website (v1)
+# Wholesome Girlies
 
-First version of the static site. Hand-coded HTML, no framework, in the MIA-website pattern. See the strategy and build plan in the Obsidian vault: `Areas/Work/Wholesome Girlies/`.
+Free tools and honest, research-backed guidance for women, at every stage: fertility, pregnancy, postpartum, parenting, and the relationships around them. Built for African women, at home and in the diaspora.
+
+Live site: https://wholesomegirlies.xyz (in setup) · Preview: https://realjaymes.github.io/wholesome-girlies/
+
+## Why I'm building this
+
+Over the years, I've become quite aware of the many complications women face for the simple fact that they have reproductive systems.
+
+I've also seen how frustrating it is to get specialized care for women, especially in Nigeria, where there is a dearth of obstetricians and gynaecologists, and even basic healthcare.
+
+I believe every woman deserves immediate support, expert advice, and a community that truly understands.
+
+Wholesome Girlies is how I'm working to close a little of that gap. It maps to those three needs directly: genuinely useful free tools for immediate support, plain-language guidance built on research and real data for expert advice, and a community of women who have been where you are. It starts with the journey into motherhood, one of the most searched and least supported stretches of a woman's life, and grows out from there into wellness, beauty, confidence, and relationships.
+
+## Find me on the web
+
+- Website: https://www.jamespraise.xyz
+- LinkedIn: https://www.linkedin.com/in/jamespraise
+- X (Twitter): https://x.com/realjaymes
+
+## What Wholesome Girlies is
+
+A free-tools-first ecosystem that turns search into support, built as a ladder:
+
+- **Tools and guides** that solve a real problem in a minute (calculators, trackers, checklists, and evergreen guides), one set per life stage. This is how women find us.
+
+- **Community** on Telegram, where women get answers and are actually understood.
+
+- **Programs**, the paid guidance-plus-community bundles that go deeper per stage.
+
+A woman finds a tool in search, the tool helps her for free, the guidance and community earn her trust, and the programs are there when she wants to go further.
+
+## What's built
+
+- Home and five stage sections: Fertility, Pregnancy, Postpartum, Parenting, and Relationships.
+
+- 20 working tools, checklists, and guides (five per launch stage), all client-side JavaScript, so no health input ever leaves the browser.
+
+- Six offers, each with a Nigerian and a diaspora sales page: The Trying-to-Conceive Blueprint, The First Pregnancy Plan, the Postpartum Reset, Raising Together, the Wife Material Blueprint, and the Complete Motherhood Journey bundle. Each ships with an ad-bridge (pre-sell) page and a thank-you page.
+
+- About and three legal pages (privacy, terms, medical disclaimer).
+
+- `robots.txt` and `sitemap.xml`, with ad-bridge and thank-you pages kept out of search on purpose.
+
+## Tech stack
+
+Static, hand-coded HTML, no framework, built and maintained with Claude Code in the same pattern as the Marketing In Action site.
+
+- **Hosting:** GitHub Pages, deployed on every push to `main` via GitHub Actions (`.github/workflows/static.yml`).
+
+- **DNS, CDN, and first-party analytics:** Cloudflare (in setup).
+
+- **Commerce:** Selar. **Community:** Telegram. **Newsletter:** Beehiiv, on a subdomain (planned).
+
+- **Design tokens** (the Olive and Cream palette, DM Serif Display + Nunito Sans) live in `assets/css/styles.css`.
 
 ## Preview locally
 
-Open `index.html` in a browser, or run a local server from this folder for clean absolute paths:
+Run a local server from this folder for clean absolute paths:
 
 ```
 python3 -m http.server 8080
@@ -12,42 +66,18 @@ python3 -m http.server 8080
 
 Then visit http://localhost:8080
 
-## What is built in v1
+## Compliance (baked into the templates)
 
-- **Home** (`index.html`) — free-tools hero, tool search, stage band, trust, newsletter capture.
-- **Postpartum hub** (`postpartum/index.html`) — stage landing with tools and guides.
-- **Tools** (working, client-side):
-  - `postpartum/tools/recovery-timeline-calculator.html` — date in, week-by-week milestones out.
-  - `postpartum/tools/recovery-checklist.html` — tickable, saves progress to the device (localStorage).
-- **Guide** (`postpartum/guides/postpartum-recovery-timeline.html`) — topical-authority article with FAQ schema.
-- **About** (`about/index.html`) — real-women-fronted, founder private, no fictional team.
-- **Sales page** (`programs/postpartum-reset.html`) — the info-product + community bundle.
-- **Ad bridge** (`go/postpartum-reset.html`) — noindex pre-sell page; ads point here.
-- **Legal** (`legal/disclaimer.html`) — placeholder medical disclaimer, privacy, terms.
-- `robots.txt`, `sitemap.xml` — `/go/` and thank-you pages excluded on purpose.
+This is a your-money-or-your-life health space, so the guardrails are built in, not bolted on:
 
-## Design
+- "Educational, not medical advice" and a "when to see a doctor" block on every health tool and guide.
 
-Warm & nurturing palette, all tokens in `assets/css/styles.css` (`:root` variables). Fonts: Fraunces + Nunito Sans (Google Fonts).
+- No diagnose, treat, or cure language.
 
-## Compliance components (baked in)
+- Health content is framed as research and data-backed; a named medical-reviewer byline is added as reviewers come on board.
 
-- "Educational, not medical advice" disclaimer on every health tool and guide.
-- "When to see a doctor" block on tools and guides.
-- Medically-reviewed-by byline (placeholder name/credentials).
-- No diagnose / treat / cure language.
+- Results-vary framing on any testimonial that mentions an outcome.
 
-## Placeholders to replace before launch
+## Status
 
-- Real analytics IDs (GTM, Google Ads, Meta Pixel, GA4, server-side GTM).
-- Selar checkout URLs and real pricing on the sales page.
-- Real medical reviewer name and credentials in the bylines.
-- Newsletter signup wired to Beehiiv.
-- Lawyer-reviewed legal pages (NDPR, GDPR).
-- Real brand handles, logo treatment, and imagery.
-
-## Not decided yet
-
-- Single brand vs a Wholesome Woman umbrella.
-- Free vs paid split per tool.
-- One retained medical reviewer vs a rotating bench.
+Pre-launch. Open before go-live: custom domain and analytics wiring (Cloudflare), Selar products and live pricing, a named medical reviewer, legal review of the three legal pages, real photography, and the newsletter.
