@@ -35,7 +35,8 @@ Email forms (homepage newsletter — now removed; and the **program waitlist for
 - [ ] Wire the newsletter to **Beehiiv** (or Substack) on `newsletter.wholesomegirlies.xyz` when the newsletter side is built; add a "latest posts" module on the homepage then.
 
 ## 7. Analytics and search (not yet added)
-- [ ] Add the tag stack with Wholesome Girlies' own IDs: **GTM, Google Ads gtag, Meta Pixel, GA4, server-side GTM**.
+- [ ] Add the tag stack with Wholesome Girlies' own IDs, all deployed through GTM as the single container: **GTM, Google Ads gtag, Meta Pixel, GA4, server-side GTM**.
+- [ ] Add **Microsoft Clarity** (heatmaps + session recordings) via GTM. Gate behind cookie/tracking consent for diaspora/GDPR.
 - [ ] Verify **Google Search Console** and **Bing Webmaster Tools**; submit `sitemap.xml`.
 
 ## 8. Brand assets (placeholders / missing)
