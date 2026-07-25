@@ -22,6 +22,8 @@ Where it goes is bigger than tools and articles. We want the community to become
 
 ## Find me on the web
 
+I'm James Praise, a marketer, founder, and internet entrepreneur who loves solving problems. I build things that close real gaps for people, and Wholesome Girlies is one of them.
+
 - Website: https://www.jamespraise.xyz
 - LinkedIn: https://www.linkedin.com/in/jamespraise
 - X (Twitter): https://x.com/realjaymes
