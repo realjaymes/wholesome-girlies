@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap (see 01 §8, 04 Data & Identity Layer). -->
+<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap. -->
 <meta name="robots" content="noindex, nofollow">
-<title>Welcome to The Confident-Parent Method — Wholesome Girlies</title>
+<title>Welcome to The First Baby Playbook — Wholesome Girlies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -18,11 +18,8 @@
   .ty-form label{display:block;font-weight:700;margin:16px 0 6px;color:var(--plum);}
   .ty-form input,.ty-form select{width:100%;padding:12px 14px;border:1px solid var(--line);
     border-radius:var(--radius-sm);font-family:var(--sans);font-size:1rem;background:var(--white);color:var(--plum);}
-  .ty-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  @media (max-width:560px){.ty-form .row{grid-template-columns:1fr;}}
   .ty-form .consent{display:flex;gap:10px;align-items:flex-start;margin-top:18px;font-size:.92rem;color:var(--plum-soft);}
   .ty-form .consent input{width:auto;margin-top:3px;}
-  .prefill{font-size:.82rem;color:var(--plum-soft);font-weight:400;}
   .reveal{display:none;}
   .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
     background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
@@ -39,25 +36,19 @@
 
 <main>
 
-<!-- ============================================================= -->
 <!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
-<!-- ============================================================= -->
 <section class="sales-hero">
   <div class="wrap narrow center">
     <p class="eyebrow">Payment confirmed · welcome</p>
     <h1>You're in. And you just made the hard days easier.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Your The Confident-Parent Method toolkit and resources are ready right now. Everything is yours to keep.</p>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Your First Baby Playbook — all five parts, the community, and the tools — is ready right now. Everything is yours to keep.</p>
     <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
-    <a href="#" class="btn btn-primary btn-lg">Open your toolkit &amp; resources</a>
+    <a href="#" class="btn btn-primary btn-lg">Open your playbook &amp; resources</a>
     <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 2 — "Unlock your community" = the native onboarding form. -->
-<!-- Gates ONLY the Telegram invite (the shareable asset), not the product. -->
-<!-- On submit: POST to our endpoint (Apps Script or n8n), then reveal + email the invite. -->
-<!-- ============================================================= -->
+<!-- SECTION 2 — "Unlock your community" = the native onboarding form. Gates ONLY the Telegram invite, not the product. -->
 <section class="stage-band">
   <div class="wrap narrow">
     <div class="card">
@@ -68,24 +59,15 @@
       <form class="ty-form" id="onboarding" novalidate>
         <!-- Selar → Zapier → Brevo already captured name, email, phone, and product AT PURCHASE.
              So this form asks ONLY what the sale can't tell us: her main concern.
-             No name/email/phone/product here — that would be re-asking what we already have.
-
-             MATCHING (open design decision): to attach this answer to the buyer's Brevo contact
-             we need a join key. Selar passes nothing to this anonymous page, so there is no email in the
-             URL to match on. Two clean options:
-               (A) RECOMMENDED — collect this question from a PRE-IDENTIFIED link in the welcome
-                   email (email token in the URL), so matching is automatic and nothing is re-asked.
-               (B) keep it on this page but add back ONE email field purely as the match key.
-             This demo shows the field on-page (option-B layout minus the email); wire per the decision. -->
-        <!-- No date of birth asked: too specific / low trust right after purchase. Any reminder
-             cadence anchors to the ENROLLMENT date (from the Selar → Zapier purchase record). -->
+             MATCHING: attach this answer to the buyer's Brevo contact via a pre-identified welcome-email link
+             (recommended), or add one email field above as the join key. -->
         <label for="concern">What's weighing on you most right now?</label>
         <select id="concern" name="concern" required>
           <option value="">Choose the one that fits best…</option>
+          <option value="normal">Knowing what's normal, and what needs a doctor</option>
           <option value="sleep">Sleep, mine and my little one's</option>
           <option value="feeding">Feeding and starting solids</option>
           <option value="milestones">Milestones, and whether we're on track</option>
-          <option value="behaviour">Toddler behaviour and big feelings</option>
           <option value="support">Feeling stretched, and needing support</option>
         </select>
 
@@ -103,35 +85,28 @@
         <p class="eyebrow">You're all set</p>
         <h2 style="margin-bottom:8px;">Welcome to the community 💚</h2>
         <p class="muted">Here is your private invite. We've emailed it to you too, so you always have it.</p>
-        <!-- WIRING: replace href with the real, single-use / rotating Telegram invite for the The Confident-Parent Method space. -->
+        <!-- WIRING: replace href with the real, single-use / rotating Telegram invite for the First Baby Playbook space. -->
         <a href="#" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
 <!-- SECTION 3 — Next steps. -->
-<!-- ============================================================= -->
 <section>
   <div class="wrap narrow">
     <h2>Your first three steps</h2>
     <div class="grid grid-3" style="margin-top:18px;">
-      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Open your toolkit</h3><p>Start with the first resource. Read only what you need today. It waits for you.</p></div>
+      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Start at your stage</h3><p>Open the playbook and jump to the month your baby is in. Read only what you need today. It waits for you.</p></div>
       <div class="card"><span class="tag"><span class="step-num">2</span>Join</span><h3>Say hello in the community</h3><p>Introduce yourself when you're ready. Many mums just read and listen at first. That's fine.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask anything, any time</h3><p>Get instant answers in the community, and book a 1:1 with a professional when you want private help.</p></div>
+      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask anything, any time</h3><p>Get answers in the community and from the education-only assistant, and know exactly when something belongs with your doctor.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 4 — Depth + referral (LAST STAGE). -->
-<!-- ============================================================= -->
+<!-- SECTION 4 — Depth + referral (LAST STAGE: no next-stage cross-sell, no bundle upsell). -->
 <section class="stage-band">
   <div class="wrap narrow center">
-    <!-- LAST STAGE: parenting is the end of the journey, so there is NO next-stage cross-sell and NO
-         bundle upsell here — the buyer has nowhere further to go up the ladder. NO coupon, NO Selar link.
-         Instead: a depth path (1:1 practitioner add-on) and a referral ask. -->
     <p class="eyebrow">You're not on your own</p>
     <h2>Two ways to get more from this</h2>
     <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as an add-on, details are in the community.</p>
@@ -151,11 +126,9 @@
 </footer>
 
 <script>
-/* DEMO submit handler.
-   Real version POSTs the payload to our single shared endpoint (Apps Script web app — the proven
-   MIA pattern — or an n8n webhook). The endpoint appends to the Google Sheet AND upserts the contact
-   into Brevo (server-side, so the Brevo key is never in this file), then triggers the welcome + reveals
-   the invite. Never call the Brevo API directly from this page. */
+/* DEMO submit handler. Real version POSTs the payload to our single shared endpoint (Apps Script web app
+   or an n8n webhook), which appends to the Google Sheet AND upserts the contact into Brevo (server-side),
+   then triggers the welcome + reveals the invite. Never call the Brevo API directly from this page. */
 (function () {
   var form = document.getElementById('onboarding');
   form.addEventListener('submit', function (e) {
@@ -164,14 +137,12 @@
 
     var payload = {
       source: 'purchase',
-      product: 'raising-together',
+      product: 'first-baby-playbook',
       stage: 'parenting',
       concern: document.getElementById('concern').value,
       consent: document.getElementById('consent').checked
       // No name/email/phone/product typed here — captured at purchase via Selar → Zapier → Brevo.
-      // No date of birth — too specific. Reminder cadence anchors to the enrollment/purchase date (from Zapier).
-      // MATCHING: attach this answer to the buyer's Brevo contact via a pre-identified welcome-email link
-      // (recommended), or add one email field above as the join key.
+      // Reminder cadence anchors to the enrollment/purchase date (from Zapier).
     };
 
     /* WIRING (replace the demo block below with the real call):
