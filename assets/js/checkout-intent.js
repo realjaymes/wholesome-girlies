@@ -76,6 +76,8 @@
       '#wgBuyModal .wgbm-title{margin:0 0 6px;font-family:var(--serif,inherit);font-size:1.4rem;}',
       '#wgBuyModal .wgbm-sub{margin:0 0 16px;font-size:.92rem;color:var(--plum-soft,#66645A);}',
       '#wgBuyModal label{display:block;font-weight:700;font-size:.85rem;margin:0 0 11px;}',
+      '#wgBuyModal .wgbm-req{color:#C0763F;font-weight:700;}',
+      '#wgBuyModal .wgbm-opt{font-weight:400;font-size:.82rem;color:var(--plum-soft,#66645A);}',
       '#wgBuyModal input{display:block;width:100%;margin-top:5px;padding:11px 13px;border:1px solid var(--line,#E4E1CE);border-radius:10px;font-size:1rem;font-family:inherit;background:#fff;color:var(--plum,#33322A);}',
       '#wgBuyModal .wgbm-go{width:100%;margin-top:6px;padding:13px;border:0;border-radius:10px;background:var(--terracotta,#6E7A3F);color:#fff;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;}',
       '#wgBuyModal .wgbm-note{margin:12px 0 0;font-size:.78rem;color:var(--plum-soft,#66645A);text-align:center;}',
@@ -95,9 +97,9 @@
         '<h3 class="wgbm-title">Almost there — Step 1 of 2</h3>' +
         '<p class="wgbm-sub">Enter your details and you\'ll be taken straight to checkout with everything prefilled.</p>' +
         '<form id="wgBuyForm" novalidate>' +
-          '<label>Full name<input type="text" id="wgbmName" autocomplete="name" placeholder="e.g. Adaeze Okonkwo" required></label>' +
-          '<label>Email address<input type="email" id="wgbmEmail" autocomplete="email" placeholder="e.g. adaeze@gmail.com" required></label>' +
-          '<label>Phone (WhatsApp)<input type="tel" id="wgbmPhone" autocomplete="tel" placeholder="e.g. 08012345678" required></label>' +
+          '<label>Full name <span class="wgbm-req">*</span><input type="text" id="wgbmName" autocomplete="name" placeholder="e.g. Adaeze Okonkwo" required></label>' +
+          '<label>Email address <span class="wgbm-req">*</span><input type="email" id="wgbmEmail" autocomplete="email" placeholder="e.g. adaeze@gmail.com" required></label>' +
+          '<label>Phone (WhatsApp) <span class="wgbm-opt">· optional</span><input type="tel" id="wgbmPhone" autocomplete="tel" placeholder="e.g. 08012345678"></label>' +
           '<button type="submit" class="wgbm-go">Proceed to payment →</button>' +
           '<p class="wgbm-note">Secure payment via Selar · Paystack · Bank Transfer</p>' +
         '</form>' +
