@@ -10,7 +10,7 @@
   'use strict';
 
   /* ── CONFIG ─────────────────────────────────────────────────────────────── */
-  var INTENT_SHEET = 'PASTE_APPS_SCRIPT_EXEC_URL_HERE'; // set after deploying the Apps Script
+  var INTENT_SHEET = 'https://script.google.com/macros/s/AKfycbwrnzqMHR42YRf--yNocE4y2LIv19oMDFxRivhi6KN0WdKS1MpkpmlSYbvpMHzDgSb6/exec';
   var SOURCE = 'wg-checkout-intent';
   var LEAD_KEY = 'wg_lead';
 

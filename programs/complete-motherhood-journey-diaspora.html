@@ -271,7 +271,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="muted">Four toolkits · four libraries · education-only assistant · yours to keep</p>
         <!-- WIRING: Selar checkout for the diaspora bundle. NO coupon code here — the MOTHER coupon lives only on the
              individual diaspora fertility/pregnancy thank-you pages as an upsell to this bundle. Direct price is plain $77. -->
-        <a href="https://selar.com/completemotherhoodjourneydiaspora?add_to_cart=1&email=&fullname=&mobile=" class="btn btn-primary btn-lg" style="width:100%; margin-top:10px;">Get the whole journey now</a>
+        <a href="https://selar.com/completemotherhoodjourneydiaspora?add_to_cart=1&email=&fullname=&mobile=" class="btn btn-primary btn-lg js-buy" style="width:100%; margin-top:10px;">Get the whole journey now</a>
         <p class="muted" style="font-size:.82rem; margin-top:10px;">Educational programs. Not a substitute for medical care.</p>
       </div>
     </div>
@@ -345,5 +345,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function(){var bar=document.getElementById("wgSticky");if(!bar)return;var pricing=document.getElementById("join");function onScroll(){var pastHero=window.scrollY>window.innerHeight*0.9;var pricingInView=false;if(pricing){var r=pricing.getBoundingClientRect();pricingInView=r.top<window.innerHeight&&r.bottom>0;}var nearBottom=(window.innerHeight+window.scrollY)>=document.body.offsetHeight-60;var show=pastHero&&!pricingInView&&!nearBottom;bar.classList.toggle("is-visible",show);bar.setAttribute("aria-hidden",show?"false":"true");}window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);onScroll();})();
 </script>
+<script src="/assets/js/checkout-intent.js" defer></script>
 </body>
 </html>

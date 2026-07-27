@@ -258,7 +258,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="muted" style="margin:4px 0 0;font-size:.88rem;"><s>₦19,700</s> standard &middot; save ₦80,300 today</p>
         <p class="muted">Week by week · is this normal · what to eat · scans · get ready for birth · community · yours to keep</p>
         <!-- WIRING: point to the real Selar checkout for this product (selar.com/[product]?add_to_cart=1&email=&fullname=&mobile=). -->
-        <a href="https://selar.com/firstpregnancyplan?add_to_cart=1&email=&fullname=&mobile=" class="btn btn-primary btn-lg" style="width:100%; margin-top:10px;">Start the plan now</a>
+        <a href="https://selar.com/firstpregnancyplan?add_to_cart=1&email=&fullname=&mobile=" class="btn btn-primary btn-lg js-buy" style="width:100%; margin-top:10px;">Start the plan now</a>
         <p class="muted" style="font-size:.82rem; margin-top:10px;">Educational program. Not a substitute for your antenatal care.</p>
       </div>
     </div>
@@ -327,5 +327,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function(){var bar=document.getElementById("wgSticky");if(!bar)return;var pricing=document.getElementById("join");function onScroll(){var pastHero=window.scrollY>window.innerHeight*0.9;var pricingInView=false;if(pricing){var r=pricing.getBoundingClientRect();pricingInView=r.top<window.innerHeight&&r.bottom>0;}var nearBottom=(window.innerHeight+window.scrollY)>=document.body.offsetHeight-60;var show=pastHero&&!pricingInView&&!nearBottom;bar.classList.toggle("is-visible",show);bar.setAttribute("aria-hidden",show?"false":"true");}window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);onScroll();})();
 </script>
+<script src="/assets/js/checkout-intent.js" defer></script>
 </body>
 </html>
