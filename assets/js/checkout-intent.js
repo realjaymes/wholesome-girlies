@@ -1,10 +1,10 @@
 /* Wholesome Girlies — checkout-intent capture.
- * On a buy click (a.js-buy → a Selar URL) we capture name/email/phone BEFORE the
- * redirect: known buyers go straight through; unknown buyers get a small prefill
+ * On a buy click (any Selar add-to-cart button) we capture name/email/phone BEFORE
+ * the redirect: known buyers go straight through; unknown buyers get a small prefill
  * modal. The intent is logged to an Apps Script endpoint (→ Google Sheet + Brevo)
  * so Brevo can run the abandoned-cart / recovery automation, and dataLayer events
  * fire so GTM routes GA4 + (later) the ad pixels. Selar checkout is prefilled.
- * Mirrors the proven MIA pattern. Zero effect on pages without an a.js-buy button.
+ * Mirrors the proven MIA pattern. Zero effect on pages without a Selar buy button.
  */
 (function () {
   'use strict';
@@ -92,14 +92,14 @@
       '<div class="wgbm-backdrop"></div>' +
       '<div class="wgbm-card" role="document">' +
         '<button type="button" class="wgbm-close" aria-label="Close">×</button>' +
-        '<h3 class="wgbm-title">Almost there</h3>' +
-        '<p class="wgbm-sub">Pop in your details so we can set up your access and reach you if anything goes wrong at checkout.</p>' +
+        '<h3 class="wgbm-title">Almost there — Step 1 of 2</h3>' +
+        '<p class="wgbm-sub">Enter your details and you\'ll be taken straight to checkout with everything prefilled.</p>' +
         '<form id="wgBuyForm" novalidate>' +
-          '<label>Your name<input type="text" id="wgbmName" autocomplete="name" required></label>' +
-          '<label>Email<input type="email" id="wgbmEmail" autocomplete="email" required></label>' +
-          '<label>Phone (WhatsApp)<input type="tel" id="wgbmPhone" autocomplete="tel" required></label>' +
-          '<button type="submit" class="wgbm-go">Continue to secure checkout →</button>' +
-          '<p class="wgbm-note">Payment is handled securely by Selar.</p>' +
+          '<label>Full name<input type="text" id="wgbmName" autocomplete="name" placeholder="e.g. Adaeze Okonkwo" required></label>' +
+          '<label>Email address<input type="email" id="wgbmEmail" autocomplete="email" placeholder="e.g. adaeze@gmail.com" required></label>' +
+          '<label>Phone (WhatsApp)<input type="tel" id="wgbmPhone" autocomplete="tel" placeholder="e.g. 08012345678" required></label>' +
+          '<button type="submit" class="wgbm-go">Proceed to payment →</button>' +
+          '<p class="wgbm-note">Secure payment via Selar · Paystack · Bank Transfer</p>' +
         '</form>' +
       '</div>';
     document.body.appendChild(modal);
@@ -107,9 +107,17 @@
     modal.querySelector('.wgbm-close').addEventListener('click', close);
     modal.querySelector('#wgBuyForm').addEventListener('submit', submit);
   }
-  function open() {
+  function open(k) {
     buildModal(); modal.classList.add('open'); document.body.style.overflow = 'hidden';
-    setTimeout(function () { try { document.getElementById('wgbmName').focus(); } catch (e) {} }, 60);
+    k = k || {};
+    try {
+      var nEl = document.getElementById('wgbmName'), eEl = document.getElementById('wgbmEmail'), pEl = document.getElementById('wgbmPhone');
+      if (k.name)  nEl.value = k.name;   // prefill if we already know them (returning / recovery-link)
+      if (k.email) eEl.value = k.email;  // …the form still opens every time, like MIA
+      if (k.phone) pEl.value = k.phone.indexOf('234') === 0 ? '0' + k.phone.substring(3) : k.phone;
+      var first = !nEl.value ? nEl : (!eEl.value ? eEl : (!pEl.value ? pEl : nEl)); // focus first empty field
+      setTimeout(function () { try { first.focus(); } catch (e) {} }, 60);
+    } catch (e) {}
   }
   function close() { if (modal) { modal.classList.remove('open'); document.body.style.overflow = ''; } pendingHref = ''; }
   function submit(ev) {
@@ -127,22 +135,13 @@
 
   /* ── click handler ──────────────────────────────────────────────────────── */
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a.js-buy');
-    if (!a) return;
+    var a = e.target.closest && e.target.closest('a[href*="selar.com"][href*="add_to_cart"]');
+    if (!a) return; // any Selar checkout button anywhere on the page (hero, sticky, pricing, final)
     var href = a.getAttribute('href') || '';
-    if (href.indexOf('selar.com') === -1) return; // only real Selar buttons
     e.preventDefault();
-    var product = productFromHref(href), k = known();
-    if (k.email) { // known → straight through, no modal
-      fireEvent(product, 'begin_checkout');
-      logIntent({ name: k.name, email: k.email, phone: k.phone, product: product });
-      openCheckout(selarUrl(href, k.name, k.email, k.phone));
-      return;
-    }
-    pendingHref = href; pendingProduct = product; // unknown → collect first
-    fireEvent(product, 'add_to_cart');
-    open();
-    if (k.name) { try { document.getElementById('wgbmName').value = k.name; } catch (e2) {} }
+    pendingHref = href; pendingProduct = productFromHref(href);
+    fireEvent(pendingProduct, 'add_to_cart');
+    open(known()); // ALWAYS open the form (like MIA) — prefilled if we already know them
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
