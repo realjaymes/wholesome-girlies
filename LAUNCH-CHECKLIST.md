@@ -34,10 +34,13 @@ Email forms (homepage newsletter — now removed; and the **program waitlist for
 - [ ] Wire the **program waitlist forms** to a real endpoint. Options: Netlify Forms (if hosted on Netlify, zero-code), Google Apps Script → Google Sheet (free, works on GitHub Pages), a form service (Tally/Formspree), or route into Beehiiv as a tagged signup. **The waitlist is the demand gauge, so this must be live before featuring the programs publicly.**
 - [ ] Wire the newsletter to **Beehiiv** (or Substack) on `newsletter.wholesomegirlies.xyz` when the newsletter side is built; add a "latest posts" module on the homepage then.
 
-## 7. Analytics and search (not yet added)
-- [ ] Add the tag stack with Wholesome Girlies' own IDs, all deployed through GTM as the single container: **GTM, Google Ads gtag, Meta Pixel, GA4, server-side GTM**.
-- [ ] Add **Microsoft Clarity** (heatmaps + session recordings) via GTM. Gate behind cookie/tracking consent for diaspora/GDPR.
-- [ ] Verify **Google Search Console** and **Bing Webmaster Tools**; submit `sitemap.xml`.
+## 7. Analytics and search
+- [x] **GTM** container `GTM-KW443M88` installed sitewide (single container) ✅ 2026-07-27
+- [x] **GA4** `G-3JFKC4KYD5` live through GTM ✅ 2026-07-27
+- [x] **Microsoft Clarity** live via GTM integration (+ linked to GA4) ✅ 2026-07-27
+- [x] **Google Search Console** verified (Domain); `sitemap.xml` submitted ✅ 2026-07-27
+- [ ] Still through GTM (with/before ads): **Google Ads gtag, Meta Pixel, TikTok/Snapchat/X pixels, server-side GTM**, consent banner; plus **Bing Webmaster Tools**.
+- [ ] GA4 hygiene: 14-month data retention, internal-traffic filter, link Search Console.
 
 ## 8. Brand assets (placeholders / missing)
 - [x] Logo: the **Sprig** mark (SVG) is applied in the header (olive) and footer (rust). Options at `/logo-options.html`. A polished/professional version can still be commissioned later; the leaf-badge option makes a good favicon/app icon.
