@@ -42,8 +42,7 @@
     return url.toString();
   }
   function openCheckout(u) {
-    try { var w = window.open(u, '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; } } catch (e) {}
-    window.location.href = u;
+    window.location.href = u; // SAME TAB — reliable inside IG/FB/TikTok in-app browsers (new tab breaks there)
   }
   function fireEvent(product, event) {
     window.dataLayer = window.dataLayer || [];
@@ -141,9 +140,16 @@
     if (!a) return; // any Selar checkout button anywhere on the page (hero, sticky, pricing, final)
     var href = a.getAttribute('href') || '';
     e.preventDefault();
-    pendingHref = href; pendingProduct = productFromHref(href);
-    fireEvent(pendingProduct, 'add_to_cart');
-    open(known()); // ALWAYS open the form (like MIA) — prefilled if we already know them
+    var product = productFromHref(href), k = known();
+    if (k.email) { // remembered buyer → skip the form, straight to Selar prefilled (same tab)
+      fireEvent(product, 'begin_checkout');
+      logIntent({ name: k.name, email: k.email, phone: k.phone, product: product });
+      openCheckout(selarUrl(href, k.name, k.email, k.phone));
+      return;
+    }
+    pendingHref = href; pendingProduct = product; // unknown → collect first
+    fireEvent(product, 'add_to_cart');
+    open(k); // show the form (prefilled if we already know the name)
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
