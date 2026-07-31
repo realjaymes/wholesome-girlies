@@ -128,6 +128,15 @@
     var phone = normPhone(document.getElementById('wgbmPhone').value);
     if (!name || !email) { return; }
     try { localStorage.setItem(LEAD_KEY, JSON.stringify({ name: name, email: email, phone: phone, ts: Date.now() })); } catch (e) {}
+    // Lead — the owned conversion, fired on form submit BEFORE the Selar redirect (mirrors MIA).
+    // event_id dedupes the browser Pixel Lead against the sGTM server CAPI Lead; lead_email/name/phone
+    // feed Advanced Matching. GTM (GTM-KW443M88) fires both Lead tags off this single push.
+    var leadId = 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'generate_lead', event_id: leadId, item_id: pendingProduct,
+      lead_email: email, lead_name: name, lead_phone: phone
+    });
     fireEvent(pendingProduct, 'begin_checkout');
     logIntent({ name: name, email: email, phone: phone, product: pendingProduct });
     openCheckout(selarUrl(pendingHref, name, email, phone));
