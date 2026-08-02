@@ -21,16 +21,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
-  /* Page-local styles for the onboarding form. Uses the site design tokens. */
-  .ty-form label{display:block;font-weight:700;margin:16px 0 6px;color:var(--plum);}
-  .ty-form input,.ty-form select{width:100%;padding:12px 14px;border:1px solid var(--line);
-    border-radius:var(--radius-sm);font-family:var(--sans);font-size:1rem;background:var(--white);color:var(--plum);}
-  .ty-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  @media (max-width:560px){.ty-form .row{grid-template-columns:1fr;}}
-  .ty-form .consent{display:flex;gap:10px;align-items:flex-start;margin-top:18px;font-size:.92rem;color:var(--plum-soft);}
-  .ty-form .consent input{width:auto;margin-top:3px;}
-  .prefill{font-size:.82rem;color:var(--plum-soft);font-weight:400;}
-  .reveal{display:none;}
+  /* Page-local style for the numbered next-steps. Uses the site design tokens. */
   .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
     background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
 </style>
@@ -65,9 +56,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ============================================================= -->
-<!-- SECTION 2 — "Unlock your community" = the native onboarding form. -->
+<!-- SECTION 2 — Community invite (one shared Telegram space, per-stage topics; diaspora included 2026-08-02). -->
 <!-- Gates ONLY the Telegram invite (the shareable asset), not the product. -->
-<!-- On submit: POST to our endpoint (Apps Script or n8n), then reveal + email the invite. -->
 <!-- ============================================================= -->
 <section class="stage-band" style="padding-top:10px">
   <div class="wrap narrow">
