@@ -72,46 +72,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="stage-band">
   <div class="wrap narrow">
     <div class="card">
-      <p class="eyebrow">One quick question</p>
-      <h2 style="margin-bottom:8px;">Let's make your guidance yours, not generic</h2>
-      <p class="muted">We already have your details from your purchase. Just one quick thing so the guidance we send actually fits you. Then your community invite appears right here (we email it to you too).</p>
-
-      <form class="ty-form" id="onboarding" novalidate>
-        <!-- Selar → Zapier → Brevo already captured name, email, phone, and product AT PURCHASE.
-             So this form asks ONLY what the sale can't tell us. Because this is the BUNDLE, the buyer could
-             be at ANY stage — so the one question is a STAGE ROUTER, not a concern. It decides which
-             community space and which guidance cadence she starts in.
-             No name/email/phone/product here — that would be re-asking what we already have.
-
-             MATCHING (open design decision): to attach this answer to the buyer's Brevo contact
-             we need a join key. Selar passes nothing to this anonymous page, so there is no email in the
-             URL to match on. Two clean options:
-               (A) RECOMMENDED — collect this question from a PRE-IDENTIFIED link in the welcome
-                   email (email token in the URL), so matching is automatic and nothing is re-asked.
-               (B) keep it on this page but add back ONE email field purely as the match key.
-             This demo shows the field on-page (option-B layout minus the email); wire per the decision. -->
-        <!-- No date of birth asked: too specific / low trust right after purchase. Any reminder
-             cadence anchors to the ENROLLMENT date (from the Selar → Zapier purchase record). -->
-        <label for="stage">Where are you right now?</label>
-        <select id="stage" name="stage" required>
-          <option value="">Choose the one that fits best…</option>
-          <option value="ttc">Trying to conceive</option>
-          <option value="pregnancy">Pregnant</option>
-          <option value="postpartum">Just had my baby</option>
-          <option value="parenting">Parenting a little one</option>
-        </select>
-
-        <label class="consent">
-          <input type="checkbox" id="consent" name="consent" required>
-          <span>Yes, send me guidance for my journey. I can leave any time. We treat your information with care (<a href="/legal/privacy">privacy</a>).</span>
-        </label>
-
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:20px;">Save &amp; show my invite</button>
-        <p class="muted" style="font-size:.82rem; margin-top:10px;">We store only your stage and this one answer. Nothing more.</p>
-      </form>
-
       <!-- Revealed on successful submit. Also emailed as a backup. -->
-      <div class="reveal" id="invite">
+      <div id="invite">
         <p class="eyebrow">You're all set</p>
         <h2 style="margin-bottom:8px;">Welcome to the whole community 💚</h2>
         <p class="muted">Here is your private invite to the space for the stage you're in right now. We've emailed it to you too, so you always have it, and you can move between the stage spaces as your journey changes.</p>
@@ -163,50 +125,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
-<script>
-/* DEMO submit handler.
-   Real version POSTs the payload to our single shared endpoint (Apps Script web app — the proven
-   MIA pattern — or an n8n webhook). The endpoint appends to the Google Sheet AND upserts the contact
-   into Brevo (server-side, so the Brevo key is never in this file), then triggers the welcome + reveals
-   the invite. Never call the Brevo API directly from this page. */
-(function () {
-  var form = document.getElementById('onboarding');
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-
-    var payload = {
-      source: 'purchase',
-      product: 'complete-motherhood-journey',
-      stage: document.getElementById('stage').value, // bundle: the one question IS the stage router
-      consent: document.getElementById('consent').checked
-      // No concern field — the bundle's one question captures STAGE (the buyer could be anywhere).
-      // No name/email/phone/product typed here — captured at purchase via Selar → Zapier → Brevo.
-      // No date of birth — too specific. Reminder cadence anchors to the enrollment/purchase date (from Zapier).
-      // MATCHING: attach this answer to the buyer's Brevo contact via a pre-identified welcome-email link
-      // (recommended), or add one email field above as the join key.
-    };
-
-    /* WIRING (replace the demo block below with the real call):
-    fetch('https://script.google.com/macros/s/XXXX/exec', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    })
-      .then(function () { showInvite(); })
-      .catch(function () { showInvite(); }); // still reveal; the email backup covers failures
-    */
-
-    console.log('Onboarding payload (demo):', payload);
-    showInvite();
-  });
-
-  function showInvite() {
-    form.style.display = 'none';
-    document.getElementById('invite').style.display = 'block';
-    document.getElementById('invite').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-})();
-</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>

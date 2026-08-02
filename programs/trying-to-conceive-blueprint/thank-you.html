@@ -72,38 +72,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="stage-band">
   <div class="wrap narrow">
     <div class="card">
-      <p class="eyebrow">One quick question</p>
-      <h2 style="margin-bottom:8px;">Let's make your guidance yours, not generic</h2>
-      <p class="muted">We already have your details from your purchase. Just one quick thing so the guidance we send actually fits you. Then your community invite appears right here (we email it to you too).</p>
-
-      <form class="ty-form" id="onboarding" novalidate>
-        <!-- Selar → Zapier → Brevo already captured name, email, phone, and product AT PURCHASE.
-             So this form asks ONLY what the sale can't tell us: her main concern.
-             No name/email/phone/product here — that would be re-asking what we already have.
-             MATCHING: attach this answer to the buyer's Brevo contact via a pre-identified welcome-email link
-             (recommended), or add one email field above as the join key. -->
-        <label for="concern">What's weighing on you most right now?</label>
-        <select id="concern" name="concern" required>
-          <option value="">Choose the one that fits best…</option>
-          <option value="cycle">Understanding my cycle and my fertile window</option>
-          <option value="prepare">Preparing my body to conceive</option>
-          <option value="partner">Getting my partner involved and tested</option>
-          <option value="help">Knowing what to ask my doctor, and when it's time</option>
-          <option value="waiting">The waiting, and staying hopeful through it</option>
-          <option value="support">Feeling supported by women who just get it</option>
-        </select>
-
-        <label class="consent">
-          <input type="checkbox" id="consent" name="consent" required>
-          <span>Yes, send me guidance for my journey. I can leave any time. We treat your information with care (<a href="/legal/privacy">privacy</a>).</span>
-        </label>
-
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:20px;">Save &amp; show my invite</button>
-        <p class="muted" style="font-size:.82rem; margin-top:10px;">We store only your stage and this one answer. Nothing more.</p>
-      </form>
-
       <!-- Revealed on successful submit. Also emailed as a backup. -->
-      <div class="reveal" id="invite">
+      <div id="invite">
         <p class="eyebrow">You're all set</p>
         <h2 style="margin-bottom:8px;">Welcome to the Circle 💚</h2>
         <p class="muted">Here is your private invite. We've emailed it to you too, so you always have it.</p>
@@ -156,48 +126,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
-<script>
-/* DEMO submit handler.
-   Real version POSTs the payload to our single shared endpoint (Apps Script web app — the proven
-   MIA pattern — or an n8n webhook). The endpoint appends to the Google Sheet AND upserts the contact
-   into Brevo (server-side, so the Brevo key is never in this file), then triggers the welcome + reveals
-   the invite. Never call the Brevo API directly from this page. */
-(function () {
-  var form = document.getElementById('onboarding');
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-
-    var payload = {
-      source: 'purchase',
-      product: 'trying-to-conceive-blueprint',
-      stage: 'fertility',
-      concern: document.getElementById('concern').value,
-      consent: document.getElementById('consent').checked
-      // No name/email/phone/product typed here — captured at purchase via Selar → Zapier → Brevo.
-      // Reminder cadence anchors to the enrollment/purchase date (from Zapier).
-    };
-
-    /* WIRING (replace the demo block below with the real call):
-    fetch('https://script.google.com/macros/s/XXXX/exec', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    })
-      .then(function () { showInvite(); })
-      .catch(function () { showInvite(); }); // still reveal; the email backup covers failures
-    */
-
-    console.log('Onboarding payload (demo):', payload);
-    showInvite();
-  });
-
-  function showInvite() {
-    form.style.display = 'none';
-    document.getElementById('invite').style.display = 'block';
-    document.getElementById('invite').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-})();
-</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>
