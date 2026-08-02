@@ -137,6 +137,21 @@
       event: 'generate_lead', event_id: leadId, item_id: pendingProduct,
       lead_email: email, lead_name: name, lead_phone: phone
     });
+    // Fire the ad-pixel Lead directly here (base pixels are already loaded via GTM, so fbq/ttq
+    // exist on the page). We do NOT rely on a GTM tag for this one: the modal is JS-injected and
+    // the submit redirects to Selar immediately, which the visual Event Setup Tool / Event Builder
+    // can't catch reliably. event_id/eventID lets a future server-side Lead dedupe against this
+    // browser event; email/phone feed advanced matching. sendBeacon under the hood survives the
+    // redirect. RULE: keep Lead in ONE layer only — do not also add a GTM Lead tag on generate_lead.
+    try {
+      if (window.ttq) {
+        ttq.identify({ email: email, phone_number: phone ? '+' + phone : undefined });
+        ttq.track('SubmitForm', { content_id: pendingProduct, content_type: 'product', currency: 'NGN' }, { event_id: leadId });
+      }
+      if (window.fbq) {
+        fbq('track', 'Lead', { content_name: pendingProduct, currency: 'NGN' }, { eventID: leadId });
+      }
+    } catch (e) {}
     fireEvent(pendingProduct, 'begin_checkout');
     logIntent({ name: name, email: email, phone: phone, product: pendingProduct });
     openCheckout(selarUrl(pendingHref, name, email, phone));
