@@ -2,18 +2,21 @@
  * AFRICA sees the Nigeria (naira) page; ANYONE OUTSIDE AFRICA is redirected
  * /programs/<slug> -> /programs/<slug>-diaspora (USD), keeping query/hash. Lets the
  * emails use ONE set of NG links and still land overseas buyers on the dollar pages.
- * (An African buyer relates to naira; a US/UK/EU buyer sees dollars.)
  *
- * Geolocation: a client-side geo-IP API (geojs, with api.country.is as fallback).
- * NOTE: the apex is served directly by GitHub Pages — Cloudflare is DNS-only (grey
- * cloud), so the Cloudflare-proxy endpoint /cdn-cgi/trace is NOT available here; that
- * is why we use a geo-IP API instead. If the site is ever put behind Cloudflare's
- * proxy (orange cloud), we can switch to the free same-origin /cdn-cgi/trace.
+ * Geolocation: two INDEPENDENT client-side geo-IP providers (geojs + ipwho.is). We
+ * redirect to the USD page ONLY when BOTH agree the visitor is outside Africa. This is
+ * deliberately biased toward the NG (naira) page: a single flaky/cached reading can
+ * never wrongly send a Nigerian to the dollar page (the costly error — ₦13,700 vs $27).
+ * The reverse error (a diaspora buyer seeing cheap naira) is the safe direction.
+ *
+ * Why not Cloudflare /cdn-cgi/trace: the apex is served directly by GitHub Pages
+ * (Cloudflare is DNS-only / grey cloud), so that same-origin endpoint 404s here. If the
+ * site is ever put behind Cloudflare's proxy (orange cloud), switch to the free,
+ * per-request-accurate /cdn-cgi/trace and drop the third-party calls.
  *
  * SEO-safe: declared crawlers are skipped, so the indexable NG page still gets indexed.
- * Fail-open: unknown country or both APIs down -> NO redirect (stay on NG), so an
- * African is never wrongly sent to the diaspora page. One shot per session. The
- * -diaspora pages never run it (guarded below).
+ * Fail-open: any provider down / unknown country -> NO redirect (stay on NG). One shot
+ * per session. The -diaspora pages never run it (guarded below).
  */
 (function () {
   'use strict';
@@ -27,27 +30,23 @@
   if (!/^\/programs\/[a-z0-9-]+$/.test(path) || /-diaspora$/.test(path)) return;
   try { if (sessionStorage.getItem('wg_geo')) return; } catch (e) {}
 
-  function decide(cc) {
-    try { sessionStorage.setItem('wg_geo', '1'); } catch (e) {}
-    // redirect only when we KNOW the country and it is outside Africa
-    if (cc && AFRICA.indexOf(cc) === -1) {
-      location.replace(path + '-diaspora' + location.search + location.hash);
-    }
+  function norm(v) { v = String(v || '').toUpperCase(); return /^[A-Z]{2}$/.test(v) ? v : ''; }
+  function outsideAfrica(cc) { return cc && AFRICA.indexOf(cc) === -1; }
+  function get(url, key) {
+    return fetch(url, { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (j) { return norm(j[key]); })
+      .catch(function () { return ''; });
   }
 
-  // geo-IP sources tried in order; each yields a 2-letter country code.
-  var sources = [
-    'https://get.geojs.io/v1/ip/country.json', // -> {"country":"US",...}
-    'https://api.country.is/'                   // -> {"country":"US","ip":"..."}
-  ];
-  (function tryNext(i) {
-    if (i >= sources.length) return; // all failed -> fail-open, stay on NG
-    fetch(sources[i], { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-      .then(function (j) {
-        var cc = String(j && j.country || '').toUpperCase();
-        if (/^[A-Z]{2}$/.test(cc)) decide(cc); else throw 0;
-      })
-      .catch(function () { tryNext(i + 1); });
-  })(0);
+  Promise.all([
+    get('https://get.geojs.io/v1/ip/country.json', 'country'),
+    get('https://ipwho.is/?fields=country_code', 'country_code')
+  ]).then(function (cc) {
+    try { sessionStorage.setItem('wg_geo', '1'); } catch (e) {}
+    // redirect only when BOTH providers returned a code AND both are outside Africa
+    if (outsideAfrica(cc[0]) && outsideAfrica(cc[1])) {
+      location.replace(path + '-diaspora' + location.search + location.hash);
+    }
+  });
 })();
