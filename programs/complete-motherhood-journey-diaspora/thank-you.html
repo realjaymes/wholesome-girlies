@@ -10,9 +10,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KW443M88');</script>
 <!-- End Google Tag Manager -->
-<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap (see 01 §8, 04 Data & Identity Layer). -->
+<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap. -->
 <meta name="robots" content="noindex, nofollow">
-<title>Welcome to the Complete Motherhood Journey — Wholesome Girlies</title>
+<title>Your Motherhood Journey home — Wholesome Girlies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -21,9 +21,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
-  /* Page-local style for the numbered next-steps. Uses the site design tokens. */
-  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
-    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+  /* Page-local: even card heights with the CTA pinned to the bottom. */
+  .tools-grid .card{display:flex;flex-direction:column;}
+  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
 </style>
 </head>
 <body>
@@ -42,60 +42,120 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
 
 <!-- ============================================================= -->
-<!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
+<!-- MOTHERHOOD JOURNEY HOME — the bundle buyer's persistent hub. Gathers all four motherhood toolkits, the
+<!-- community, and every motherhood tool in one place. Reached on purchase and returned to via the email + PDFs.
+<!-- Evergreen. noindex + not in sitemap. Sets all four motherhood member flags. -->
 <!-- ============================================================= -->
+
+<!-- Hero -->
 <section class="sales-hero" style="padding-bottom:28px">
   <div class="wrap narrow center">
-    <p class="eyebrow">Payment confirmed · welcome</p>
-    <h1>You've got the whole journey.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">All four toolkits and every resource are ready right now. Everything is yours to keep, for every stage ahead.</p>
-    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
-    <a href="#" class="btn btn-primary btn-lg">Open your toolkit &amp; resources</a>
-    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+    <p class="eyebrow">Your Motherhood Journey home 💚</p>
+    <h1>Welcome in. Your whole journey, in one place.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Your four toolkits, your community, your tools, and private help when you want it, from trying, through pregnancy, the weeks after birth, and the baby years.</p>
+    <p class="muted" style="font-size:.9rem; margin-top:16px; max-width:54ch; margin-left:auto; margin-right:auto;">Bookmark this page or copy the link so you can come back any time. A copy is in your email too.</p>
+    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page’s link</button>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 2 — Community invite (one shared Telegram space, per-stage topics; diaspora included 2026-08-02). -->
-<!-- ============================================================= -->
+<!-- Product access: the combined guide + the four stage toolkits -->
+<section style="padding-top:10px; padding-bottom:6px">
+  <div class="wrap narrow">
+    <div class="card center" style="border:2px solid var(--terracotta);">
+      <h2 style="margin-bottom:8px;">Your toolkits are ready</h2>
+      <p class="muted">Start with the complete guide, then open each stage as you reach it. A copy of everything is in your email too.</p>
+      <a href="https://drive.google.com/file/d/12Nd9B-Dv-2UkTLl3p9jRVRZY-YM2I8OP/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your Complete Motherhood Journey &rarr;</a>
+    </div>
+    <div class="grid grid-2 tools-grid" style="margin-top:18px;">
+      <div class="card">
+        <h3>The Trying-to-Conceive Blueprint</h3>
+        <p>For the trying stage: your body, your cycle, and when to get help.</p>
+        <a href="https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-ghost">Open the Blueprint &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>The First Pregnancy Plan</h3>
+        <p>Week by week, what is normal, what to eat, and getting ready for birth.</p>
+        <a href="https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-ghost">Open the Plan &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>The 6-Week Postpartum Reset</h3>
+        <p>Healing, feeding, rest, and your mind in the first weeks after birth.</p>
+        <a href="https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-ghost">Open the Reset &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>The First Baby Playbook</h3>
+        <p>Sleep, feeding and solids, milestones, and knowing what is normal.</p>
+        <a href="https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-ghost">Open the Playbook &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Community -->
 <section class="stage-band" style="padding-top:10px">
   <div class="wrap narrow">
     <div class="card center" id="invite">
       <p class="eyebrow">You’re not alone in this</p>
       <h2 style="margin-bottom:8px;">Join the community 💚</h2>
-      <p class="muted">One calm, moderated space that carries you through every stage, from trying to conceive to the toddler years, with women at every stage, wherever you are in the world. Because we’re spread across time zones, someone is usually there when you need to talk at 3am. We’ve emailed your invite too, so you always have it.</p>
+      <p class="muted">A calm, moderated space with mums at every stage, wherever you are in the world. Someone is usually awake when you need to talk, even at 3am. There is a private assistant inside for your questions any hour, that always points you to a doctor for anything clinical. We’ve emailed your invite too, so you always have it.</p>
       <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 3 — Next steps. -->
-<!-- ============================================================= -->
+<!-- Your tools (all four stages; shared, gathered for the buyer) -->
 <section>
   <div class="wrap narrow">
-    <h2>Your first three steps</h2>
-    <div class="grid grid-3" style="margin-top:18px;">
-      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Start where you are today</h3><p>Open the toolkit for your current stage. Read only what you need today. The rest waits for you.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">2</span>Keep</span><h3>Save your resource libraries</h3><p>Download the checklists, templates, and planners to your phone. They're yours to keep, ready any time.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">3</span>Move</span><h3>Move through the stages with us</h3><p>As your journey changes, the next toolkit is already yours. We're with you the whole way.</p></div>
+    <h2>Your tools</h2>
+    <p class="muted">Every tool across all four stages is yours, ready on the site whenever you need it. Browse them by stage below.</p>
+    <div class="grid grid-2 tools-grid" style="margin-top:18px;">
+      <div class="card">
+        <h3>Fertility tools</h3>
+        <p>Ovulation and period tracking, the trying checklist, appointment questions, and a gentle check-in.</p>
+        <a href="/fertility/" class="btn btn-ghost">Browse fertility tools &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Pregnancy tools</h3>
+        <p>Due-date and week-by-week trackers, safe-foods and hospital-bag checklists, a birth-plan builder.</p>
+        <a href="/pregnancy/" class="btn btn-ghost">Browse pregnancy tools &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Postpartum tools</h3>
+        <p>Recovery timeline and checklist, night-feed rota, check-up questions, and a mind check-in.</p>
+        <a href="/postpartum/" class="btn btn-ghost">Browse postpartum tools &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Baby &amp; parenting tools</h3>
+        <p>Milestones, feeding and sleep, routine and first-foods planners, safety and visit questions.</p>
+        <a href="/parenting/" class="btn btn-ghost">Browse parenting tools &rarr;</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 4 — Depth + referral (OWNS EVERYTHING). -->
-<!-- ============================================================= -->
+<!-- Help + safety -->
 <section class="stage-band">
+  <div class="wrap narrow">
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Want private help?</h3>
+        <p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical or urgent.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--terracotta);">
+        <h3>Your safety net</h3>
+        <p class="muted">Each toolkit has its own warning-signs guide. If you ever notice a red flag, at any stage, contact your doctor or clinic straight away. In Nigeria you can reach MANI on <a href="tel:08091116264">0809 111 6264</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Share (bundle owns the whole journey; no upsell, just referral) -->
+<section>
   <div class="wrap narrow center">
-    <!-- BUNDLE buyer owns every stage, so there is NO upsell and NO bundle coupon here — there is nothing
-         further to sell up to. NO coupon, NO Selar link. Instead: a depth path (1:1 practitioner add-on)
-         and a referral ask.  -->
-    <p class="eyebrow">You're not on your own</p>
-    <h2>Two ways to get more from this</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as a paid add-on, details are inside your toolkit.</p>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Know a mum who needs this? Sending her our way is the kindest thing, and it helps us keep building.</p>
-    <a href="/" class="btn btn-primary">Share Wholesome Girlies &rarr;</a>
+    <p class="eyebrow">Pass it on</p>
+    <h2>Know someone on this road too?</h2>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If a friend is trying, expecting, or in the thick of the newborn weeks, send her our way. This calm, judgement-free corner of the internet is better with her in it.</p>
+    <a href="/programs/" class="btn btn-ghost">See all the programs &rarr;</a>
   </div>
 </section>
 
@@ -109,6 +169,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script>
+// Bundle hub: mark this device as a member of ALL FOUR motherhood stages, so every
+// motherhood tool swaps its "buy the program" CTA for "back to your home" (see /assets/js/member-cta.js).
+try {
+  var v = JSON.stringify({u: location.pathname, l: 'Motherhood Journey home'});
+  ['wg_fertility_home','wg_pregnancy_home','wg_pp_home','wg_parenting_home'].forEach(function(k){ localStorage.setItem(k, v); });
+} catch(e){}
+function copyHubLink(btn){
+  var url = 'https://wholesomegirlies.xyz' + location.pathname;
+  function done(){ var o = btn.textContent; btn.textContent = 'Link copied ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); });
+  } else { window.prompt('Copy this link:', url); }
+}
+</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>
