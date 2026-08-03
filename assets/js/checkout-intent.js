@@ -14,6 +14,18 @@
   var SOURCE = 'wg-checkout-intent';
   var LEAD_KEY = 'wg_lead';
 
+  /* Selar slug → display name, so the logged `product` matches the Brevo automations
+   * (and reads cleanly in GA4 / the ad pixels). One name per offer, market-agnostic
+   * (NG and diaspora share the same Selar slug). */
+  var PRODUCTS = {
+    tryingtoconceiveblueprint: 'The Trying-to-Conceive Blueprint',
+    firstpregnancyplan:        'The First Pregnancy Plan',
+    postpartumreset:           'The 6-Week Postpartum Reset',
+    firstbabyplaybook:         'The First Baby Playbook',
+    wifematerialblueprint:     'The Wife Material Blueprint',
+    completemotherhoodjourney: 'The Complete Motherhood Journey'
+  };
+
   /* ── identity: URL param (survives WhatsApp/email in-app browsers) or localStorage ── */
   function known() {
     var qp; try { qp = new URLSearchParams(location.search); } catch (e) { qp = null; }
@@ -27,7 +39,11 @@
   }
 
   /* ── helpers ────────────────────────────────────────────────────────────── */
-  function productFromHref(href) { var m = href.match(/selar\.com\/([^/?#]+)/i); return m ? m[1] : 'unknown'; }
+  function productFromHref(href) {
+    var m = href.match(/selar\.com\/([^/?#]+)/i);
+    var slug = m ? m[1].toLowerCase() : 'unknown';
+    return PRODUCTS[slug] || slug; // display name for Brevo/analytics; raw slug if ever unmapped
+  }
   function normPhone(p) { // → 234XXXXXXXXXX
     p = (p || '').replace(/\D/g, '');
     if (p.indexOf('234') === 0) p = p.substring(3);
