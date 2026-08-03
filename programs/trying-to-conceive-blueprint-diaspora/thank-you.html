@@ -10,9 +10,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KW443M88');</script>
 <!-- End Google Tag Manager -->
-<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap. -->
+<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap (see 01 §8, 04 Data & Identity Layer). -->
 <meta name="robots" content="noindex, nofollow">
-<title>Welcome to the Trying-to-Conceive Blueprint — Wholesome Girlies</title>
+<title>Your Conception home — Wholesome Girlies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -21,9 +21,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
-  /* Page-local styles. Uses the site design tokens. */
-  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
-    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
+  .tools-grid .card{display:flex;flex-direction:column;}
+  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
 </style>
 </head>
 <body>
@@ -42,60 +42,75 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
 
 <!-- ============================================================= -->
-<!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
+<!-- CONCEPTION HOME — the buyer's persistent hub. Reached on purchase (Selar redirect) and returned to via
+<!-- the email + PDF link. Evergreen. noindex + not in sitemap. Tools stay FREE/shared; the buyer gets
+<!-- everything gathered in one place. (SEO leak accepted for launch per James 2026-08-03.) -->
 <!-- ============================================================= -->
+
+<!-- Hero -->
 <section class="sales-hero" style="padding-bottom:28px">
   <div class="wrap narrow center">
-    <p class="eyebrow">Payment confirmed · welcome</p>
-    <h1>You're in. And you took a hopeful step for yourself.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Your Trying-to-Conceive Blueprint, all five parts (Understand, Optimise, It Takes Two, Know Your Numbers, and Hold Steady), the resource library, and the assistant, is ready right now. Everything is yours to keep.</p>
-    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
-    <a href="#" class="btn btn-primary btn-lg">Open your plan &amp; resources</a>
-    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+    <p class="eyebrow">Your Conception home 💚</p>
+    <h1>Welcome in. Everything for your journey, in one place.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">This is your space, yours to keep and to come back to any time. Your Blueprint, your protected community, your tools, and private help when you want it.</p>
+    <!-- WIRING: replace href with the real toolkit PDF link (Google Doc export?format=pdf, or a stable Drive file link). Never gate. -->
+    <a href="#" class="btn btn-primary btn-lg">Open your Blueprint</a>
+    <p class="muted" style="font-size:.9rem; margin-top:16px; max-width:54ch; margin-left:auto; margin-right:auto;">This is your page to keep. Bookmark it, or copy the link and save it in your notes, so you can come back any time. A copy is in your email too.</p>
+    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page’s link</button>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 1b — Community invite (diaspora now included, 2026-08-02). -->
+<!-- Community (protected conception space) -->
 <section class="stage-band" style="padding-top:10px">
   <div class="wrap narrow">
     <div class="card center" id="invite">
       <p class="eyebrow">You’re not alone in this</p>
       <h2 style="margin-bottom:8px;">Join the community 💚</h2>
-      <p class="muted">A calm, private space with women trying to conceive at exactly your stage, wherever you are in the world. Because we’re spread across time zones, someone is usually there when you need to talk at 3am. We’ve emailed your invite too, so you always have it.</p>
+      <p class="muted">A calm, private, protected space, only for women who are trying too, kept separate from bump-and-baby content on purpose. No judgement, no comparison, wherever you are in the world. There is a private assistant inside for your cycle questions, any hour, that always points you to a doctor for anything clinical. We’ve emailed your invite too.</p>
       <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
     </div>
   </div>
 </section>
 
-<!-- SECTION 2 — Next steps. Product-centric. community invite above. -->
-<!-- ============================================================= -->
+<!-- Your tools -->
 <section>
   <div class="wrap narrow">
-    <h2>Your first three steps</h2>
-    <div class="grid grid-3" style="margin-top:18px;">
-      <div class="card"><span class="tag"><span class="step-num">1</span>Understand</span><h3>Start with Part 1</h3><p>Open Understand Your Body & Cycle first. Read only what you need today. It waits for you.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">2</span>Prepare</span><h3>Work through it at your pace</h3><p>Use the resource library, the checklists, and the trackers in your own time, in any time zone. Come back to it whenever you need.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask when you want</h3><p>Lean on the education-only assistant, book a 1:1 with a professional when you want private help, and lean on your own doctor day to day.</p></div>
+    <h2>Your tools</h2>
+    <p class="muted">Simple tools to use whenever you need them. They live on the site, ready any time.</p>
+    <div class="grid grid-3 tools-grid" style="margin-top:18px;">
+      <div class="card"><h3>Ovulation Calculator</h3><p>Estimate your fertile window and likely ovulation day.</p><a href="/fertility/tools/ovulation-calculator" class="btn btn-ghost">Open the calculator &rarr;</a></div>
+      <div class="card"><h3>Period Tracker</h3><p>Follow your cycle month to month and see your pattern.</p><a href="/fertility/tools/period-tracker" class="btn btn-ghost">Open the tracker &rarr;</a></div>
+      <div class="card"><h3>Trying-to-Conceive Checklist</h3><p>The steps to prepare your body and life, in one place.</p><a href="/fertility/tools/ttc-checklist" class="btn btn-ghost">Open the checklist &rarr;</a></div>
+      <div class="card"><h3>His Fertility Checklist</h3><p>Simple steps for him, and what to ask about testing.</p><a href="/fertility/tools/his-fertility-checklist" class="btn btn-ghost">Open the checklist &rarr;</a></div>
+      <div class="card"><h3>Fertility Appointment Questions</h3><p>A ready list to take to your doctor, so you forget nothing.</p><a href="/fertility/tools/fertility-appointment-questions" class="btn btn-ghost">Open the questions &rarr;</a></div>
+      <div class="card"><h3>The Wait Check-in</h3><p>A private space to notice how you are really doing.</p><a href="/fertility/tools/the-wait-check-in" class="btn btn-ghost">Open the check-in &rarr;</a></div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 3 — Cross-sell / upsell. -->
-<!-- ============================================================= -->
+<!-- Help + safety -->
 <section class="stage-band">
+  <div class="wrap narrow">
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Want private help?</h3>
+        <p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--terracotta);">
+        <h3>When to get help</h3>
+        <p class="muted">See a doctor after about a year of trying under 35, about six months at 35 or over, or sooner if your periods are irregular or you have a known condition. If the waiting is weighing heavily on your mind, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Continue the journey (bundle upsell for a TTC buyer; MOTHER coupon) -->
+<section>
   <div class="wrap narrow center">
-    <!-- STAGE-AWARE upsell: a trying-to-conceive buyer is at the very start of the journey, so the whole
-         Complete Motherhood Journey bundle is still ahead of her. COUPON applies ONLY to this bundle upsell.
-         Frame gently and hopefully — never presume pregnancy for a TTC buyer. MOTHER placeholder to confirm on
-         the diaspora bundle Selar product. -->
     <p class="eyebrow">The whole journey, for less</p>
-    <h2>You're at the very start. Carry it all the way.</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">The Complete Motherhood Journey adds pregnancy, postpartum, and the toddler years to what you have, for whenever you're ready, all for $77. As a member you get a discount: use code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout. The button below applies it for you, or type <strong style="color:var(--terracotta-dark);">MOTHER</strong> into the coupon box at checkout yourself.</p>
-    <!-- WIRING: confirm Selar's coupon param (?coupon= assumed) applies MOTHER automatically on the diaspora bundle. -->
-    <a href="https://selar.com/completemotherhoodjourney?currency=USD&coupon=MOTHER" class="btn btn-primary">Add the full journey at my member discount &rarr;</a>
-    <p class="muted" style="font-size:.9rem; margin-top:18px;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as an add-on.</p>
+    <h2>You’re at the very start. Carry it all the way.</h2>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout for your member discount on the bundle.</p>
+    <a href="/programs/complete-motherhood-journey-diaspora" class="btn btn-primary">See the Complete Motherhood Journey &rarr;</a>
   </div>
 </section>
 
@@ -109,6 +124,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script>
+try { localStorage.setItem('wg_fertility_home', JSON.stringify({u: location.pathname, l: 'Conception home'})); } catch(e){}
+function copyHubLink(btn){
+  var url = 'https://wholesomegirlies.xyz' + location.pathname;
+  function done(){ var o = btn.textContent; btn.textContent = 'Link copied ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); });
+  } else { window.prompt('Copy this link:', url); }
+}
+</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>
