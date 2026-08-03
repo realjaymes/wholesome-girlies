@@ -152,7 +152,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 // Mark this device as a member of this stage's home, so the tools swap their
 // "buy the program" CTA for a "back to your home" CTA (see /assets/js/member-cta.js).
-try { localStorage.setItem('wg_pp_home', location.pathname); } catch(e){}
+try { localStorage.setItem('wg_pp_home', JSON.stringify({u: location.pathname, l: 'Postpartum home'})); } catch(e){}
 function copyHubLink(btn){
   var url = 'https://wholesomegirlies.xyz' + location.pathname;
   function done(){ var o = btn.textContent; btn.textContent = 'Link copied ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); }
