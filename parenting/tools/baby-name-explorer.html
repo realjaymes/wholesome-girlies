@@ -63,7 +63,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap narrow">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/parenting/">Parenting</a> / Tools</div>
     <h1>Baby Name Explorer</h1>
-    <p class="muted">Find a name with meaning, including Nigerian and pan-African names alongside international ones. Search by meaning, or filter by gender.</p>
+    <p class="muted">Find a name with meaning, including Nigerian and pan-African names alongside international ones. Search by meaning, or filter by gender or origin.</p>
   </div>
 </section>
 
@@ -72,6 +72,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="tool-app">
       <div class="field"><label for="q">Search by name or meaning</label><input type="text" id="q" placeholder="e.g. joy, God, grace, gift" oninput="render()"></div>
       <div class="field"><label for="g">Gender</label><select id="g" onchange="render()"><option value="">All</option><option value="f">Girl</option><option value="m">Boy</option><option value="u">Unisex</option></select></div>
+      <div class="field"><label for="o">Origin</label><select id="o" onchange="render()"><option value="">All</option></select></div>
       <div id="list" style="margin-top:6px;"></div>
       <p class="muted" id="none" style="display:none;">No names match. Try another word.</p>
     </div>
@@ -131,6 +132,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 var NAMES=[
+ // — original set —
  {n:"Amara",g:"f",o:"Igbo",m:"grace"},
  {n:"Chidinma",g:"f",o:"Igbo",m:"God is good"},
  {n:"Zainab",g:"f",o:"Arabic",m:"fragrant flower"},
@@ -160,15 +162,127 @@ var NAMES=[
  {n:"Kelechi",g:"u",o:"Igbo",m:"thank God"},
  {n:"Bisi",g:"u",o:"Yoruba",m:"born ahead"},
  {n:"Nneka",g:"f",o:"Igbo",m:"mother is supreme"},
- {n:"Sadia",g:"f",o:"Arabic",m:"fortunate, happy"}
+ {n:"Sadia",g:"f",o:"Arabic",m:"fortunate, happy"},
+ // — Yoruba —
+ {n:"Adeola",g:"f",o:"Yoruba",m:"crown of wealth"},
+ {n:"Omotola",g:"f",o:"Yoruba",m:"a child is worth honour"},
+ {n:"Funmilayo",g:"f",o:"Yoruba",m:"give me joy"},
+ {n:"Yetunde",g:"f",o:"Yoruba",m:"mother has returned"},
+ {n:"Morenike",g:"f",o:"Yoruba",m:"I have one to cherish"},
+ {n:"Titilayo",g:"f",o:"Yoruba",m:"everlasting joy"},
+ {n:"Modupe",g:"f",o:"Yoruba",m:"I am grateful"},
+ {n:"Bolanle",g:"f",o:"Yoruba",m:"the wealth of the home"},
+ {n:"Aderonke",g:"f",o:"Yoruba",m:"a crown to cherish"},
+ {n:"Folasade",g:"f",o:"Yoruba",m:"honour confers a crown"},
+ {n:"Damilola",g:"f",o:"Yoruba",m:"bless me with wealth"},
+ {n:"Abosede",g:"f",o:"Yoruba",m:"born on a Sunday"},
+ {n:"Wuraola",g:"f",o:"Yoruba",m:"gold of wealth"},
+ {n:"Adunni",g:"f",o:"Yoruba",m:"sweet to have"},
+ {n:"Babatunde",g:"m",o:"Yoruba",m:"father has returned"},
+ {n:"Olumide",g:"m",o:"Yoruba",m:"my lord has come"},
+ {n:"Adewale",g:"m",o:"Yoruba",m:"the crown comes home"},
+ {n:"Oluwafemi",g:"m",o:"Yoruba",m:"God loves me"},
+ {n:"Kayode",g:"m",o:"Yoruba",m:"he brought joy"},
+ {n:"Adekunle",g:"m",o:"Yoruba",m:"the crown fills the home"},
+ {n:"Olusegun",g:"m",o:"Yoruba",m:"God is victorious"},
+ {n:"Oluwaseyi",g:"m",o:"Yoruba",m:"God did this"},
+ {n:"Ayomide",g:"m",o:"Yoruba",m:"my joy has arrived"},
+ {n:"Opeyemi",g:"u",o:"Yoruba",m:"worthy of thanks"},
+ {n:"Ayo",g:"u",o:"Yoruba",m:"joy"},
+ {n:"Ife",g:"u",o:"Yoruba",m:"love"},
+ {n:"Sola",g:"u",o:"Yoruba",m:"God grants wealth"},
+ {n:"Dolapo",g:"u",o:"Yoruba",m:"wealth joined together"},
+ {n:"Oluwaseun",g:"u",o:"Yoruba",m:"thank God"},
+ {n:"Temiloluwa",g:"u",o:"Yoruba",m:"mine belongs to God"},
+ {n:"Iyanuoluwa",g:"u",o:"Yoruba",m:"miracle of God"},
+ // — Igbo —
+ {n:"Adaeze",g:"f",o:"Igbo",m:"princess"},
+ {n:"Ngozi",g:"f",o:"Igbo",m:"blessing"},
+ {n:"Chinaza",g:"f",o:"Igbo",m:"God answers"},
+ {n:"Uchechi",g:"f",o:"Igbo",m:"God's will"},
+ {n:"Chinwe",g:"f",o:"Igbo",m:"God owns"},
+ {n:"Nkechi",g:"f",o:"Igbo",m:"the one that belongs to God"},
+ {n:"Ozioma",g:"f",o:"Igbo",m:"good news"},
+ {n:"Ebele",g:"f",o:"Igbo",m:"mercy"},
+ {n:"Adaora",g:"f",o:"Igbo",m:"daughter of all"},
+ {n:"Onyinye",g:"f",o:"Igbo",m:"a gift"},
+ {n:"Ihuoma",g:"f",o:"Igbo",m:"good fortune"},
+ {n:"Uzoamaka",g:"f",o:"Igbo",m:"the path is beautiful"},
+ {n:"Chukwuemeka",g:"m",o:"Igbo",m:"God has done well"},
+ {n:"Ikenna",g:"m",o:"Igbo",m:"father's strength"},
+ {n:"Chukwudi",g:"m",o:"Igbo",m:"God exists"},
+ {n:"Nnamdi",g:"m",o:"Igbo",m:"my father is alive"},
+ {n:"Chinedu",g:"m",o:"Igbo",m:"God leads"},
+ {n:"Obiora",g:"m",o:"Igbo",m:"the heart of the people"},
+ {n:"Chukwuma",g:"m",o:"Igbo",m:"God knows"},
+ {n:"Chidi",g:"u",o:"Igbo",m:"God lives"},
+ {n:"Uche",g:"u",o:"Igbo",m:"thought, will"},
+ {n:"Chika",g:"u",o:"Igbo",m:"God is supreme"},
+ {n:"Chibuzo",g:"u",o:"Igbo",m:"God leads the way"},
+ {n:"Ekene",g:"u",o:"Igbo",m:"praise, thanks"},
+ {n:"Chizoba",g:"u",o:"Igbo",m:"may God protect"},
+ {n:"Somto",g:"u",o:"Igbo",m:"praise God with me"},
+ // — Hausa & Northern —
+ {n:"Amina",g:"f",o:"Hausa",m:"trustworthy"},
+ {n:"Hauwa",g:"f",o:"Hausa",m:"Eve, life"},
+ {n:"Balkisu",g:"f",o:"Hausa",m:"queen of Sheba"},
+ {n:"Habiba",g:"f",o:"Hausa",m:"beloved"},
+ {n:"Jamila",g:"f",o:"Hausa",m:"beautiful"},
+ {n:"Hadiza",g:"f",o:"Hausa",m:"early baby"},
+ {n:"Rukayya",g:"f",o:"Hausa",m:"gentle, rising"},
+ {n:"Yakubu",g:"m",o:"Hausa",m:"Jacob"},
+ {n:"Aliyu",g:"m",o:"Hausa",m:"exalted"},
+ {n:"Bello",g:"m",o:"Hausa",m:"helper"},
+ {n:"Sani",g:"m",o:"Hausa",m:"brilliant"},
+ {n:"Danladi",g:"m",o:"Hausa",m:"born on Sunday"},
+ {n:"Nasiru",g:"m",o:"Hausa",m:"helper"},
+ {n:"Sulaiman",g:"m",o:"Hausa",m:"Solomon"},
+ // — Arabic —
+ {n:"Fatima",g:"f",o:"Arabic",m:"captivating"},
+ {n:"Maryam",g:"f",o:"Arabic",m:"beloved, Mary"},
+ {n:"Zahra",g:"f",o:"Arabic",m:"flower, radiant"},
+ {n:"Khadija",g:"f",o:"Arabic",m:"early baby"},
+ {n:"Yusuf",g:"m",o:"Arabic",m:"Joseph"},
+ {n:"Idris",g:"m",o:"Arabic",m:"studious"},
+ // — English & Christian (Nigerian) —
+ {n:"Blessing",g:"f",o:"English",m:"blessing"},
+ {n:"Precious",g:"f",o:"English",m:"precious"},
+ {n:"Favour",g:"f",o:"English",m:"favour"},
+ {n:"Peace",g:"f",o:"English",m:"peace"},
+ {n:"Joy",g:"f",o:"English",m:"joy"},
+ {n:"Faith",g:"f",o:"English",m:"faith"},
+ {n:"Goodness",g:"f",o:"English",m:"goodness"},
+ {n:"Gift",g:"u",o:"English",m:"gift"},
+ {n:"Miracle",g:"u",o:"English",m:"miracle"},
+ {n:"Divine",g:"u",o:"English",m:"divine"},
+ {n:"Deborah",g:"f",o:"Hebrew",m:"bee"},
+ {n:"Esther",g:"f",o:"Hebrew",m:"star"},
+ {n:"Elizabeth",g:"f",o:"Hebrew",m:"God's promise"},
+ {n:"Emmanuel",g:"m",o:"Hebrew",m:"God with us"},
+ {n:"Daniel",g:"m",o:"Hebrew",m:"God is my judge"},
+ {n:"Samuel",g:"m",o:"Hebrew",m:"God has heard"},
+ {n:"Michael",g:"m",o:"Hebrew",m:"who is like God"},
+ {n:"Joseph",g:"m",o:"Hebrew",m:"he will add"},
+ // — Pan-African (diaspora) —
+ {n:"Imani",g:"f",o:"Swahili",m:"faith"},
+ {n:"Amani",g:"u",o:"Swahili",m:"peace"},
+ {n:"Sanaa",g:"f",o:"Swahili",m:"art, brilliance"},
+ {n:"Makena",g:"f",o:"Kikuyu",m:"the happy one"},
+ {n:"Thandiwe",g:"f",o:"Zulu",m:"beloved"},
+ {n:"Zola",g:"u",o:"Zulu",m:"calm"},
+ {n:"Kofi",g:"m",o:"Akan",m:"born on Friday"},
+ {n:"Ama",g:"f",o:"Akan",m:"born on Saturday"},
+ {n:"Simba",g:"m",o:"Swahili",m:"lion"}
 ];
 function render(){
   var q=(document.getElementById('q').value||'').toLowerCase().trim();
   var g=document.getElementById('g').value;
+  var o=document.getElementById('o').value;
   var out=NAMES.filter(function(x){
     var okg = !g || x.g===g;
+    var oko = !o || x.o===o;
     var okq = !q || (x.n+' '+x.m+' '+x.o).toLowerCase().indexOf(q)>-1;
-    return okg && okq;
+    return okg && oko && okq;
   });
   var gl={f:'Girl',m:'Boy',u:'Unisex'};
   document.getElementById('list').innerHTML = out.map(function(x){
@@ -176,6 +290,13 @@ function render(){
   }).join('');
   document.getElementById('none').style.display = out.length? 'none':'block';
 }
+(function(){ // populate the Origin dropdown from the data (Nigerian origins first, then A–Z)
+  var pri=['Yoruba','Igbo','Hausa'];
+  var origins=NAMES.map(function(x){return x.o;}).filter(function(v,i,a){return a.indexOf(v)===i;});
+  origins.sort(function(a,b){var ia=pri.indexOf(a),ib=pri.indexOf(b);if(ia>-1||ib>-1)return (ia>-1?ia:99)-(ib>-1?ib:99);return a<b?-1:a>b?1:0;});
+  var sel=document.getElementById('o');
+  origins.forEach(function(o){var opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
+})();
 render();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
