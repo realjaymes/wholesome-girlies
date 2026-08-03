@@ -12,7 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap (see 01 §8, 04 Data & Identity Layer). -->
 <meta name="robots" content="noindex, nofollow">
-<title>Welcome to The 6-Week Postpartum Reset — Wholesome Girlies</title>
+<title>Your Postpartum home — Wholesome Girlies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -21,9 +21,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
-  /* Page-local style for the numbered next-steps. Uses the site design tokens. */
-  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
-    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
+  .tools-grid .card{display:flex;flex-direction:column;}
+  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
 </style>
 </head>
 <body>
@@ -42,67 +42,100 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
 
 <!-- ============================================================= -->
-<!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
+<!-- POSTPARTUM HOME — the buyer's persistent hub. Reached on purchase (Selar redirect) AND returned to via the
+<!-- email + PDF link. Evergreen (works first-visit and on return). noindex + not in sitemap. Tools stay FREE/shared;
+<!-- the buyer just gets everything gathered in one place. (SEO leak accepted for launch per James 2026-08-03.) -->
 <!-- ============================================================= -->
+
+<!-- Hero: welcome + the toolkit -->
 <section class="sales-hero" style="padding-bottom:28px">
   <div class="wrap narrow center">
-    <p class="eyebrow">Payment confirmed · welcome</p>
-    <h1>Welcome to The 6-Week Postpartum Reset. You just put yourself first.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Everything is ready right now, and it is all yours to keep: your body-recovery plan, your marriage and reconnection guide, your emotional-wellbeing support, the downloadable resource library, lifetime community access, and the When to See a Doctor red-flag guide.</p>
-    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
-    <a href="#" class="btn btn-primary btn-lg">Open your toolkit &amp; resources</a>
-    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+    <p class="eyebrow">Your Postpartum home 💚</p>
+    <h1>Welcome in. Everything for your first weeks, in one place.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">This is your space, yours to keep and to come back to any time. Your toolkit, your community, your tools, and private help when you want it.</p>
+    <!-- WIRING: replace href with the real toolkit PDF link (Google Doc export?format=pdf, or a stable Drive file link). Never gate. -->
+    <a href="#" class="btn btn-primary btn-lg">Open your toolkit</a>
+    <p class="muted" style="font-size:.9rem; margin-top:16px; max-width:54ch; margin-left:auto; margin-right:auto;">This is your page to keep. Bookmark it, or copy the link and save it in your notes, so you can come back any time. A copy is in your email too.</p>
+    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page’s link</button>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 2 — Community invite (one shared Telegram space, per-stage topics; diaspora included 2026-08-02). -->
-<!-- Gates ONLY the Telegram invite (the shareable asset), not the product. -->
-<!-- ============================================================= -->
+<!-- Community -->
 <section class="stage-band" style="padding-top:10px">
   <div class="wrap narrow">
-    <div class="card center">
-      <!-- Revealed on successful submit. Also emailed as a backup. -->
-      <div id="invite">
-        <p class="eyebrow">You’re not alone in this</p>
-        <h2 style="margin-bottom:8px;">Join the community 💚</h2>
-        <p class="muted">Here is your private invite. We've emailed it to you too, so you always have it.</p>
-        <!-- WIRING: replace href with the real, single-use / rotating Telegram invite for the Postpartum + Parenting space. -->
-        <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
+    <div class="card center" id="invite">
+      <p class="eyebrow">You’re not alone in this</p>
+      <h2 style="margin-bottom:8px;">Join the community 💚</h2>
+      <p class="muted">A calm, moderated space with mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We’ve emailed your invite too, so you always have it.</p>
+      <!-- WIRING: replace href with the real, single-use / rotating Telegram invite if you rotate it. -->
+      <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
+    </div>
+  </div>
+</section>
+
+<!-- Your tools (FREE + shared; gathered here for the buyer. Add new interactive tools here as they are built.) -->
+<section>
+  <div class="wrap narrow">
+    <h2>Your tools</h2>
+    <p class="muted">Simple tools to use whenever you need them. They live on the site, ready any time.</p>
+    <div class="grid grid-3 tools-grid" style="margin-top:18px;">
+      <div class="card">
+        <h3>Recovery Timeline</h3>
+        <p>See what usually heals when, week by week, so you know what to expect.</p>
+        <a href="/postpartum/tools/recovery-timeline-calculator" class="btn btn-ghost">Open the timeline &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Recovery Checklist</h3>
+        <p>A gentle daily check-in for your healing, your feeding, your rest, and you.</p>
+        <a href="/postpartum/tools/recovery-checklist" class="btn btn-ghost">Open the checklist &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Partner &amp; Family Planner</h3>
+        <p>Show the people around you exactly how to help, so you carry less.</p>
+        <a href="/postpartum/tools/partner-support-planner" class="btn btn-ghost">Open the planner &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Night Feed Rota</h3>
+        <p>Agree who does which feed, so the nights are not silently all on you.</p>
+        <a href="/postpartum/tools/night-feed-rota" class="btn btn-ghost">Open the rota &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Check-up Questions</h3>
+        <p>A ready list to take to your six-week check-up, so you forget nothing.</p>
+        <a href="/postpartum/tools/check-up-questions" class="btn btn-ghost">Open the questions &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Gentle Mind Check-in</h3>
+        <p>A private space to notice how you are really doing, with help when you need it.</p>
+        <a href="/postpartum/tools/mind-check-in" class="btn btn-ghost">Open the check-in &rarr;</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 3 — Next steps. -->
-<!-- ============================================================= -->
-<section>
+<!-- Help + safety -->
+<section class="stage-band">
   <div class="wrap narrow">
-    <h2>Your first three steps</h2>
-    <div class="grid grid-3" style="margin-top:18px;">
-      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Open your toolkit</h3><p>Start with week one. Read only what you need today. It waits for you.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">2</span>Join</span><h3>Say hello in the community</h3><p>Introduce yourself when you're ready. Many mums just read and listen at first. That's fine.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask anything, any time</h3><p>Get instant answers in the community, and book a 1:1 with a professional when you want private help.</p></div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Want private help?</h3>
+        <p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--terracotta);">
+        <h3>Your safety net</h3>
+        <p class="muted">The When to See a Doctor red-flag guide is inside your toolkit. If you ever notice a warning sign, contact your doctor or clinic straight away. In Nigeria you can call MANI on <a href="tel:08091116264">0809 111 6264</a>.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================= -->
-<!-- SECTION 4 — Cross-sell / upsell. -->
-<!-- ============================================================= -->
-<section class="stage-band">
+<!-- Continue the journey (next stage only for a postpartum buyer; no coupon here) -->
+<section>
   <div class="wrap narrow center">
-    <!-- STAGE-AWARE upsell: a postpartum buyer is near the end of the journey, so the full bundle is mostly
-         behind her. The logical cross-sell is the NEXT stage only — The First Baby Playbook (parenting) — not the
-         Complete Motherhood Journey bundle. (Bundle is the right upsell for fertility/pregnancy buyers.)
-         NO coupon on cross-sells: coupons apply ONLY to the Complete Motherhood Journey bundle upsell
-         (which appears on the fertility/pregnancy thank-you pages, not here). -->
-    <p class="eyebrow">What's next, when you're ready</p>
-    <h2>Your baby grows fast. We've got the next stage too.</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Your baby grows fast, and the next stage is here when you're ready. The First Baby Playbook picks up where The 6-Week Postpartum Reset leaves off: sleep, feeding, milestones, and the toddler years, with the same calm community.</p>
+    <p class="eyebrow">When you’re ready</p>
+    <h2>Your baby grows fast. The next stage is here too.</h2>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">The First Baby Playbook picks up where the Reset leaves off: sleep, feeding and solids, milestones, and knowing what’s normal, with the same calm community.</p>
     <a href="/programs/first-baby-playbook" class="btn btn-primary">See The First Baby Playbook &rarr;</a>
-    <p class="muted" style="font-size:.9rem; margin-top:18px;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as an add-on. Details are in the community.</p>
   </div>
 </section>
 
@@ -116,6 +149,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script>
+// Mark this device as a member of this stage's home, so the tools swap their
+// "buy the program" CTA for a "back to your home" CTA (see /assets/js/member-cta.js).
+try { localStorage.setItem('wg_pp_home', location.pathname); } catch(e){}
+function copyHubLink(btn){
+  var url = 'https://wholesomegirlies.xyz' + location.pathname;
+  function done(){ var o = btn.textContent; btn.textContent = 'Link copied ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); });
+  } else { window.prompt('Copy this link:', url); }
+}
+</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap. -->
 <meta name="robots" content="noindex, nofollow">
-<title>Welcome to The 6-Week Postpartum Reset — Wholesome Girlies</title>
+<title>Your Postpartum home — Wholesome Girlies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -21,9 +21,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
-  /* Page-local style for the numbered next-steps. Uses the site design tokens. */
-  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
-    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
+  .tools-grid .card{display:flex;flex-direction:column;}
+  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
 </style>
 </head>
 <body>
@@ -46,12 +46,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================= -->
 <section class="sales-hero" style="padding-bottom:28px">
   <div class="wrap narrow center">
-    <p class="eyebrow">Payment confirmed · welcome</p>
-    <h1>Welcome to The 6-Week Postpartum Reset. You just put yourself first.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Everything is ready right now, and it is all yours to keep: your body-recovery plan, your marriage and reconnection guide, your emotional-wellbeing support, the private community, the downloadable resource library, and the When to See a Doctor red-flag guide.</p>
-    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
-    <a href="#" class="btn btn-primary btn-lg">Open your toolkit &amp; resources</a>
-    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+    <p class="eyebrow">Your Postpartum home 💚</p>
+    <h1>Welcome in. Everything for your first weeks, in one place.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">This is your space, yours to keep and to come back to any time. Your toolkit, your community, your tools, and private help when you want it.</p>
+    <!-- WIRING: replace href with the real toolkit PDF link (Google Doc export?format=pdf, or a stable Drive file link). Never gate. -->
+    <a href="#" class="btn btn-primary btn-lg">Open your toolkit</a>
+    <p class="muted" style="font-size:.9rem; margin-top:16px; max-width:54ch; margin-left:auto; margin-right:auto;">This is your page to keep. Bookmark it, or copy the link and save it in your notes, so you can come back any time. A copy is in your email too.</p>
+    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page’s link</button>
   </div>
 </section>
 
@@ -72,13 +73,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================================================= -->
 <!-- SECTION 2 — Next steps. -->
 <!-- ============================================================= -->
+<!-- Your tools (FREE + shared; gathered here for the buyer) -->
 <section>
   <div class="wrap narrow">
-    <h2>Your first three steps</h2>
-    <div class="grid grid-3" style="margin-top:18px;">
-      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Open your toolkit</h3><p>Start with week one. Read only what you need today. It waits for you.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">2</span>Save</span><h3>Save the resource library</h3><p>Bookmark it on your phone. Checklists, templates, and planners are there whenever you need them, day or night.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask when you need to</h3><p>When you want private, expert help, book a 1:1 with a professional. And your own doctor stays your first call for anything urgent.</p></div>
+    <h2>Your tools</h2>
+    <p class="muted">Simple tools to use whenever you need them. They live on the site, ready any time.</p>
+    <div class="grid grid-3 tools-grid" style="margin-top:18px;">
+      <div class="card">
+        <h3>Recovery Timeline</h3>
+        <p>See what usually heals when, week by week, so you know what to expect.</p>
+        <a href="/postpartum/tools/recovery-timeline-calculator" class="btn btn-ghost">Open the timeline &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Recovery Checklist</h3>
+        <p>A gentle daily check-in for your healing, your feeding, your rest, and you.</p>
+        <a href="/postpartum/tools/recovery-checklist" class="btn btn-ghost">Open the checklist &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Partner &amp; Family Planner</h3>
+        <p>Show the people around you exactly how to help, so you carry less.</p>
+        <a href="/postpartum/tools/partner-support-planner" class="btn btn-ghost">Open the planner &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Night Feed Rota</h3>
+        <p>Agree who does which feed, so the nights are not silently all on you.</p>
+        <a href="/postpartum/tools/night-feed-rota" class="btn btn-ghost">Open the rota &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Check-up Questions</h3>
+        <p>A ready list to take to your six-week check-up, so you forget nothing.</p>
+        <a href="/postpartum/tools/check-up-questions" class="btn btn-ghost">Open the questions &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Gentle Mind Check-in</h3>
+        <p>A private space to notice how you are really doing, with help when you need it.</p>
+        <a href="/postpartum/tools/mind-check-in" class="btn btn-ghost">Open the check-in &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Help + safety -->
+<section class="stage-band">
+  <div class="wrap narrow">
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Want private help?</h3>
+        <p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--terracotta);">
+        <h3>Your safety net</h3>
+        <p class="muted">The When to See a Doctor red-flag guide is inside your toolkit. If you ever notice a warning sign, contact your doctor or clinic straight away. In Nigeria you can call MANI on <a href="tel:08091116264">0809 111 6264</a>.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -109,6 +155,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script>
+// Mark this device as a member of this stage's home, so the tools swap their
+// "buy the program" CTA for a "back to your home" CTA (see /assets/js/member-cta.js).
+try { localStorage.setItem('wg_pp_home', location.pathname); } catch(e){}
+function copyHubLink(btn){
+  var url = 'https://wholesomegirlies.xyz' + location.pathname;
+  function done(){ var o = btn.textContent; btn.textContent = 'Link copied ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); });
+  } else { window.prompt('Copy this link:', url); }
+}
+</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>
