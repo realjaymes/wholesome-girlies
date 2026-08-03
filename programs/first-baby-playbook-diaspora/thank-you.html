@@ -10,9 +10,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KW443M88');</script>
 <!-- End Google Tag Manager -->
-<!-- No-crawl: thank-you pages are noindex + robots-disallowed + never in sitemap. -->
+<!-- No-crawl: thank-you / home hub pages are noindex + robots-disallowed + never in sitemap. -->
 <meta name="robots" content="noindex, nofollow">
-<title>Welcome to The First Baby Playbook — Wholesome Girlies</title>
+<title>Your First Baby home &mdash; Wholesome Girlies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -21,9 +21,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <style>
-  /* Page-local styles for the next-steps numbering. Uses the site design tokens. */
-  .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
-    background:var(--terracotta);color:#fff;font-weight:800;font-size:.95rem;margin-right:10px;}
+  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
+  .tools-grid .card{display:flex;flex-direction:column;}
+  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
 </style>
 </head>
 <body>
@@ -32,72 +32,83 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- Minimal brand header, matching the cold-traffic sales page (no site nav). -->
 <header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
-  <div class="wrap center">
-    <span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span>
-  </div>
+  <div class="wrap center"><span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span></div>
 </header>
 
 <main>
-
-<!-- SECTION 1 — Confirmation + product delivery. IMMEDIATE. Never gated. -->
-<section class="sales-hero" style="padding-bottom:28px">
+<section class="sales-hero" style="padding-bottom:22px">
   <div class="wrap narrow center">
-    <p class="eyebrow">Payment confirmed · welcome</p>
-    <h1>You're in. And you just made the hard days easier.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Your First Baby Playbook — all five parts and the resource library — is ready right now. Everything is yours to keep.</p>
-    <!-- WIRING: replace href with the real Selar-delivered product/download link (or a members link). Never gate this. -->
-    <a href="#" class="btn btn-primary btn-lg">Open your playbook &amp; resources</a>
-    <p class="muted" style="font-size:.88rem; margin-top:12px;">A copy of this link is also on its way to your email.</p>
+    <p class="eyebrow">Your First Baby home &#128154;</p>
+    <h1>Welcome in. Everything for the baby years, in one place.</h1>
+    <p class="lead muted" style="margin-left:auto;margin-right:auto;">This is your space, yours to keep and to come back to any time. Your product, your community, your tools, and private help when you want it.</p>
+    <p class="muted" style="font-size:.9rem; margin-top:14px; max-width:54ch; margin-left:auto; margin-right:auto;">This is your page to keep. Bookmark it, or copy the link and save it in your notes, so you can come back any time.</p>
+    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page&#8217;s link</button>
   </div>
 </section>
-
-<!-- SECTION 1b — Community invite (diaspora now included, 2026-08-02). -->
+<section style="padding-top:10px; padding-bottom:6px">
+  <div class="wrap narrow">
+    <div class="card center" style="border:2px solid var(--terracotta);">
+      <p class="eyebrow">Payment confirmed &#183; your product</p>
+      <h2 style="margin-bottom:8px;">Your First Baby Playbook is ready</h2>
+      <p class="muted">Open it any time. A copy is in your email too.</p>
+      <!-- WIRING: replace href with the program's Google Drive PDF (Anyone with the link, Viewer). Opens in a new tab. -->
+      <a href="#" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your Playbook &rarr;</a>
+    </div>
+  </div>
+</section>
 <section class="stage-band" style="padding-top:10px">
   <div class="wrap narrow">
     <div class="card center" id="invite">
-      <p class="eyebrow">You’re not alone in this</p>
-      <h2 style="margin-bottom:8px;">Join the community 💚</h2>
-      <p class="muted">A calm, moderated space with new mums at exactly your stage, wherever you are in the world. Because we’re spread across time zones, someone is usually there when you need to talk at 3am. We’ve emailed your invite too, so you always have it.</p>
+      <p class="eyebrow">You&#8217;re not alone in this</p>
+      <h2 style="margin-bottom:8px;">Join the community &#128154;</h2>
+      <p class="muted">A calm, moderated space with mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We&#8217;ve emailed your invite too, so you always have it.</p>
       <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
     </div>
   </div>
 </section>
-
-<!-- SECTION 2 — Next steps. Product-centric (community invite above.). -->
+<section>
+  <div class="wrap narrow">
+    <h2>Your tools</h2>
+    <p class="muted">Simple tools to use whenever you need them. They live on the site, ready any time.</p>
+    <div class="grid grid-3 tools-grid" style="margin-top:18px;"><div class="card"><h3>Baby Routine Planner</h3><p>A gentle daily rhythm for baby's age.</p><a href="/parenting/tools/baby-routine-planner" class="btn btn-ghost">Open the planner &rarr;</a></div><div class="card"><h3>Feeding & Sleep Tracker</h3><p>Log feeds and naps, spot the rhythm.</p><a href="/parenting/tools/feeding-sleep-tracker" class="btn btn-ghost">Open the tracker &rarr;</a></div><div class="card"><h3>Milestone Tracker</h3><p>What to expect, by age.</p><a href="/parenting/tools/milestone-tracker" class="btn btn-ghost">Open the tracker &rarr;</a></div><div class="card"><h3>Vaccination Tracker</h3><p>Tick off each immunisation visit.</p><a href="/parenting/tools/vaccination-tracker" class="btn btn-ghost">Open the tracker &rarr;</a></div><div class="card"><h3>First Foods Planner</h3><p>Start solids gently, with local options.</p><a href="/parenting/tools/first-foods-planner" class="btn btn-ghost">Open the planner &rarr;</a></div><div class="card"><h3>Safety Checklist</h3><p>Safe sleep and babyproofing, room by room.</p><a href="/parenting/tools/babyproofing-safety-checklist" class="btn btn-ghost">Open the checklist &rarr;</a></div><div class="card"><h3>Paediatric Visit Questions</h3><p>What to ask the doctor.</p><a href="/parenting/tools/paediatric-visit-questions" class="btn btn-ghost">Open the questions &rarr;</a></div><div class="card"><h3>Baby Name Explorer</h3><p>Names and meanings, including local ones.</p><a href="/parenting/tools/baby-name-explorer" class="btn btn-ghost">Open the explorer &rarr;</a></div></div>
+  </div>
+</section>
 <section class="stage-band">
   <div class="wrap narrow">
-    <h2>Your first three steps</h2>
-    <div class="grid grid-3" style="margin-top:18px;">
-      <div class="card"><span class="tag"><span class="step-num">1</span>Open</span><h3>Start at your stage</h3><p>Open the playbook and jump to the month and stage your baby is in right now. Read only what you need today.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">2</span>Follow</span><h3>Sleep, feed, read the signs</h3><p>Use the trackers and planners and the month you are in, at your own pace and in your own time zone.</p></div>
-      <div class="card"><span class="tag"><span class="step-num">3</span>Ask</span><h3>Ask anything, any time</h3><p>Lean on the education-only assistant for the small questions, and know exactly when something belongs with your doctor.</p></div>
+    <div class="grid grid-2">
+      <div class="card"><h3>Want private help?</h3><p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
+      <div class="card" style="border-left:4px solid var(--terracotta);"><h3>When to get help</h3><p class="muted">Trust your instincts. Get medical help now for trouble breathing, a fit, a high fever in a young baby, a rash that does not fade when pressed, a very floppy or hard-to-wake baby, or choking. This never replaces an infant first-aid course or your doctor. If your own mind feels heavy, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>.</p></div>
     </div>
   </div>
 </section>
-
-<!-- SECTION 3 — Depth + referral (LAST STAGE: no next-stage cross-sell, no bundle upsell. diaspora community included). -->
 <section>
   <div class="wrap narrow center">
-    <p class="eyebrow">You're not on your own</p>
-    <h2>Two ways to get more from this</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Want private, expert answers? A 1:1 with a partner practitioner is available any time as a paid add-on. You can book one directly whenever you need it.</p>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">Know a mum who needs this? Send her our way. It is the kindest thing, and it helps us keep building.</p>
-    <a href="/" class="btn btn-primary">Share Wholesome Girlies &rarr;</a>
+    <p class="eyebrow">Pass it on</p>
+    <h2>Know a mum who needs this?</h2>
+    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If this has helped you, sending it to a friend who is in the thick of it is the kindest thing. And whenever you want an earlier stage, the whole journey is here for you.</p>
+    <a href="/programs/" class="btn btn-primary">See all the programs &rarr;</a>
   </div>
 </section>
 
 </main>
 
-<!-- Minimal footer, legal only, no site nav (matches the funnel pages). -->
 <footer class="site-footer" style="padding:28px 0;">
   <div class="wrap narrow center">
     <p style="margin:0 0 6px; color:#fff; font-family:var(--serif); font-size:1.1rem;">Wholesome Girlies</p>
-    <p style="margin:0; font-size:.82rem; color:#A9B3A3;">© 2026 Wholesome Girlies. Educational program, not medical advice. <a href="/legal/disclaimer" style="color:var(--blush);">Disclaimer &amp; privacy</a></p>
+    <p style="margin:0; font-size:.82rem; color:#A9B3A3;">&copy; 2026 Wholesome Girlies. Educational program, not medical advice. <a href="/legal/disclaimer" style="color:var(--blush);">Disclaimer &amp; privacy</a></p>
   </div>
 </footer>
 
+<script>
+try { localStorage.setItem('wg_parenting_home', JSON.stringify({u: location.pathname, l: 'First Baby home'})); } catch(e){}
+function copyHubLink(btn){
+  var url = 'https://wholesomegirlies.xyz' + location.pathname;
+  function done(){ var o = btn.textContent; btn.textContent = 'Link copied \u2713'; setTimeout(function(){ btn.textContent = o; }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); }); }
+  else { window.prompt('Copy this link:', url); }
+}
+</script>
 <script src="/assets/petals.js"></script>
 </body>
 </html>
