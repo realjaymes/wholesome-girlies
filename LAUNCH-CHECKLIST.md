@@ -23,14 +23,15 @@ Every health tool, guide, and the sales page shows a reviewer byline reading "Re
 - [ ] Add the real fronting women (e.g. Cynthia Obinatu), the medical reviewer(s), and partners, with real names and photos.
 - [ ] **"Come build this with us" partner card (about page):** change the messaging and CTA from the current "See what we are building" → `/programs/` link to a **real way to reach us — an email or WhatsApp number** — so women who want to partner or work with us can actually make contact. (James's reminder, 2026-07-18.)
 
-## 5. Commerce and pricing (placeholders)
-- [ ] Replace `₦ —` on `programs/postpartum-reset.html` with real pricing.
-- [ ] Wire the **Selar checkout URL** (`selar.com/[product]?add_to_cart=1&...`). Currently the sales-page "Join now" points to the `/go/` bridge as a stand-in; final flow is: ad → `/go/` bridge → sales page → **Selar checkout**.
-- [ ] Set up the thank-you page (post-purchase delivery + Telegram invite). A worked example exists at `programs/postpartum-reset/thank-you.html` (demo, placeholders); finalize and replicate per program.
-- [ ] **JAMES: create the bundle coupon code `MOTHER` on Selar** when building the Complete Motherhood Journey product (code chosen 2026-07-19; already wired into the conception-circle + pregnancy-village thank-you pages). Coupons apply ONLY to the bundle upsell (fertility/pregnancy thank-you pages), never on stage cross-sells. Confirm Selar's coupon URL param so the pre-applied `?coupon=MOTHER` link works; if it can't pre-apply, buyers enter `MOTHER` manually. Share the final Selar product links so the checkout URLs can be finalized.
+## 5. Commerce and pricing
+- [x] Real pricing live on all sales pages (individual early-bird ₦13,700 / $27, standard ₦19,700 / $37; bundle ₦39,700 / $77). ✅
+- [x] Wire the **Selar checkout URLs** via `assets/js/checkout-intent.js` (6 NG products; diaspora = NG slug + `?currency=USD`); flow is ad → `/go/` bridge → sales page → Selar checkout. ✅ 2026-08-03
+- [x] Thank-you pages built and finalized for all 6 programs (NG + diaspora = 12), now full **"[Stage] home" hubs** — product-access card opens the Drive PDF, community invite (motherhood), tools grid, safety, cross-sell. No placeholders. ✅ 2026-08-03
+- [x] **Bundle coupon `MOTHER` created + tested on Selar** (James), wired on the fertility + pregnancy thank-you pages via `?coupon=MOTHER` (NG) / `?currency=USD&coupon=MOTHER` (diaspora). One coupon serves both markets. Coupons apply ONLY to the bundle upsell, never on stage cross-sells. ✅ 2026-08-03
+- [ ] JAMES: confirm each program's Drive PDF contents match the reviewed manuscript (some links were placeholders populated after review).
 
 ## 6. Newsletter & waitlist capture (placeholder forms)
-Email forms (homepage newsletter — now removed; and the **program waitlist forms** on the Conception Circle and Pregnancy Village pages) currently just show a JavaScript confirmation and **discard the email**.
+Email forms (homepage newsletter — now removed). Note (2026-08-03): the programs are now **paid offers sold via Selar** with full sales pages + "[Stage] home" hubs, not waitlist pages — the old "Conception Circle / Pregnancy Village" waitlist model is superseded. Any remaining capture is the checkout-intent (abandoned-cart) flow in §5 of [[03 - Launch & Operations Plan]], not a waitlist form.
 - [ ] Wire the **program waitlist forms** to a real endpoint. Options: Netlify Forms (if hosted on Netlify, zero-code), Google Apps Script → Google Sheet (free, works on GitHub Pages), a form service (Tally/Formspree), or route into Beehiiv as a tagged signup. **The waitlist is the demand gauge, so this must be live before featuring the programs publicly.**
 - [ ] Wire the newsletter to **Beehiiv** (or Substack) on `newsletter.wholesomegirlies.xyz` when the newsletter side is built; add a "latest posts" module on the homepage then.
 
@@ -52,7 +53,7 @@ Email forms (homepage newsletter — now removed; and the **program waitlist for
 
 ## 9. Domain and infra
 - [ ] Point `wholesomegirlies.xyz` (and `.ng`/`.com` if bought) at the host.
-- [ ] Confirm `robots.txt` disallow of `/go/` and thank-you pages, and that neither is in `sitemap.xml`.
+- [x] Confirm `robots.txt` disallow of `/go/` and thank-you pages, and that neither is in `sitemap.xml`. ✅ 2026-08-03 (sitewide QA: all 12 thank-you hubs + 24 `/go/` pages are noindex + robots-disallowed + absent from sitemap; verified no `<loc>` leaks either).
 - [ ] Lock the `@wholesomegirlies` handles.
 
 ## 10. Plain-language editorial pass (brand rule)
