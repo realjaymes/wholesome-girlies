@@ -36,7 +36,7 @@
   } catch (e) {
     home = { u: raw, l: 'home' }; // legacy plain-string flag (old postpartum format)
   }
-  if (!home.u || !/^\/programs\/[a-z0-9-]+(-diaspora)?\/thank-you$/.test(home.u)) return;
+  if (!home.u || !/^\/programs\/[a-z0-9-]+(-diaspora)?\/thank-you(\.html)?$/.test(home.u)) return;
   var label = home.l || 'home';
   var cta = document.querySelector('.program-cta');
   if (!cta) return;
