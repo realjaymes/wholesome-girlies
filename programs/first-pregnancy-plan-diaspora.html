@@ -4,7 +4,7 @@
 <script>/* Identity links (?email=, ?lead=, ?fullname=, ?name=, ?mobile=, ?phone=) must never reach GTM or the ad pixels, which report the page address. This page's own scripts read the original query from window.__idq; the address bar is cleaned before any tag loads. Keep this as the first script in <head>. */(function(){try{var q=location.search;if(!q)return;var p=new URLSearchParams(q),k=['email','lead','fullname','name','mobile','phone'],hit=false;for(var i=0;i<k.length;i++){if(p.has(k[i])){p.delete(k[i]);hit=true;}}if(!hit)return;window.__idq=q;var s=p.toString();history.replaceState(history.state,'',location.pathname+(s?'?'+s:'')+location.hash);}catch(e){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="/assets/js/consent-defaults.js?v=20260915a"></script>
+<script src="/assets/js/consent-defaults.js?v=20260916a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

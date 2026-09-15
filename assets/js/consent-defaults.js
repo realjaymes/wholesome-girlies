@@ -109,6 +109,10 @@
     };
   }
   gtag('consent', 'default', consentFields(state));
+  // Tags granted at page load already fired on the page-view trigger. GTM's "once per page" option
+  // counts a consent-blocked attempt as fired, so the tags fire on every trigger and GTM starts them
+  // on wg_consent_update only when these flags say that group is starting for the first time.
+  var started = { analytics: state.analytics, advertising: state.advertising };
   w.dataLayer.push({ event: 'wg_consent_default', wg_region: region, wg_gpc: gpc });
 
   // Clarity's own loader uses this same queue, so calls made before Clarity loads are kept.
@@ -187,7 +191,11 @@
       if (!s.analytics) { try { w.clarity('consent', false); } catch (e) {} }
       if (s.remember && !rememberWas) saveMemoryToDevice();
       if (!s.remember && rememberWas) clearSavedEntries();
-      w.dataLayer.push({ event: 'wg_consent_update', wg_region: region, wg_analytics: s.analytics, wg_advertising: s.advertising, wg_remember: s.remember });
+      var analyticsStart = s.analytics && !started.analytics;
+      var advertisingStart = s.advertising && !started.advertising;
+      if (analyticsStart) started.analytics = true;
+      if (advertisingStart) started.advertising = true;
+      w.dataLayer.push({ event: 'wg_consent_update', wg_region: region, wg_analytics: s.analytics, wg_advertising: s.advertising, wg_remember: s.remember, wg_analytics_start: analyticsStart, wg_advertising_start: advertisingStart });
       try { d.dispatchEvent(new CustomEvent('wg:consent', { detail: { analytics: s.analytics, advertising: s.advertising, remember: s.remember } })); } catch (e) {}
       return true;
     }
