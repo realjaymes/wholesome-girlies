@@ -26,9 +26,11 @@
     completemotherhoodjourney: 'The Complete Motherhood Journey'
   };
 
-  /* ── identity: URL param (survives WhatsApp/email in-app browsers) or localStorage ── */
+  /* ── identity: URL param (survives WhatsApp/email in-app browsers) or localStorage ──
+   * The inline head script strips identity params from the address bar before GTM loads
+   * and keeps the original query in window.__idq, so read that first. */
   function known() {
-    var qp; try { qp = new URLSearchParams(location.search); } catch (e) { qp = null; }
+    var qp; try { qp = new URLSearchParams(window.__idq || location.search); } catch (e) { qp = null; }
     var lead = {}; try { lead = JSON.parse(localStorage.getItem(LEAD_KEY) || '{}') || {}; } catch (e) {}
     function pick(k) { return (qp && (qp.get(k) || '')) || ''; }
     return {

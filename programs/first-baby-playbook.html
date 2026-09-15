@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>/* Identity links (?email=, ?lead=, ?fullname=, ?name=, ?mobile=, ?phone=) must never reach GTM or the ad pixels, which report the page address. This page's own scripts read the original query from window.__idq; the address bar is cleaned before any tag loads. Keep this as the first script in <head>. */(function(){try{var q=location.search;if(!q)return;var p=new URLSearchParams(q),k=['email','lead','fullname','name','mobile','phone'],hit=false;for(var i=0;i<k.length;i++){if(p.has(k[i])){p.delete(k[i]);hit=true;}}if(!hit)return;window.__idq=q;var s=p.toString();history.replaceState(history.state,'',location.pathname+(s?'?'+s:'')+location.hash);}catch(e){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google Tag Manager -->
@@ -330,6 +331,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function(){var bar=document.getElementById("wgSticky");if(!bar)return;var pricing=document.getElementById("join");function onScroll(){var pastHero=window.scrollY>window.innerHeight*0.9;var pricingInView=false;if(pricing){var r=pricing.getBoundingClientRect();pricingInView=r.top<window.innerHeight&&r.bottom>0;}var nearBottom=(window.innerHeight+window.scrollY)>=document.body.offsetHeight-60;var show=pastHero&&!pricingInView&&!nearBottom;bar.classList.toggle("is-visible",show);bar.setAttribute("aria-hidden",show?"false":"true");}window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);onScroll();})();
 </script>
-<script src="/assets/js/checkout-intent.js?v=20260731a" defer></script>
+<script src="/assets/js/checkout-intent.js?v=20260915a" defer></script>
 </body>
 </html>
