@@ -46,7 +46,8 @@
     try { sessionStorage.setItem('wg_geo', '1'); } catch (e) {}
     // redirect only when BOTH providers returned a code AND both are outside Africa
     if (outsideAfrica(cc[0]) && outsideAfrica(cc[1])) {
-      location.replace(path + '-diaspora' + location.search + location.hash);
+      // window.__idq holds the original query when the head identity clean-up script stripped ?email= etc.
+      location.replace(path + '-diaspora' + (window.__idq || location.search) + location.hash);
     }
   });
 })();
