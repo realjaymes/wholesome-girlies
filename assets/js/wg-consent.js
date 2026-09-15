@@ -7,6 +7,9 @@
  *
  * Any element with data-cc="show-preferencesModal" (the footer "Privacy choices" links) opens the
  * settings view.
+ *
+ * Ad landing pages (/go/) never show the first-visit card. The region's consent rules from
+ * consent-defaults.js still apply there, and the card appears on the next page the visitor opens.
  */
 (function (w, d) {
   'use strict';
@@ -15,6 +18,7 @@
   if (!WG || !CC) return;
 
   var region = WG.region;
+  var onAdLandingPage = /^\/go\//.test(w.location.pathname);
   var note = null; // the note under tools, created by updateToolNote()
   var PRIVACY = '/legal/privacy';
 
@@ -39,7 +43,7 @@
 
   CC.run({
     mode: region === 'consent' ? 'opt-in' : 'opt-out',
-    autoShow: region !== 'open',
+    autoShow: region !== 'open' && !onAdLandingPage,
     revision: WG.REVISION,
     hideFromBots: true,
     disablePageInteraction: false,
