@@ -1,0 +1,247 @@
+/* Wholesome Girlies — consent banner styling.
+ * Restyles the self-hosted CookieConsent library (/assets/vendor/cookieconsent/cookieconsent.css)
+ * to the approved design: a small cream card in the bottom corner with equal Reject and Accept
+ * buttons, and a corner settings card. Uses the site tokens from /assets/css/styles.css, with fallbacks.
+ */
+#cc-main {
+  --cc-font-family: var(--sans, "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  --cc-bg: var(--cream, #FBF8EF);
+  --cc-primary-color: var(--plum, #33322A);
+  --cc-secondary-color: var(--plum-soft, #66645A);
+  --cc-link-color: var(--terracotta-dark, #55602F);
+  --cc-modal-border-radius: var(--radius, 18px);
+  --cc-btn-border-radius: 999px;
+  --cc-btn-primary-bg: var(--terracotta, #6E7A3F);
+  --cc-btn-primary-color: #fff;
+  --cc-btn-primary-border-color: var(--terracotta-dark, #55602F);
+  --cc-btn-primary-hover-bg: var(--terracotta-dark, #55602F);
+  --cc-btn-primary-hover-color: #fff;
+  --cc-btn-primary-hover-border-color: var(--terracotta-dark, #55602F);
+  --cc-btn-secondary-bg: #fff;
+  --cc-btn-secondary-color: var(--plum, #33322A);
+  --cc-btn-secondary-border-color: var(--plum, #33322A);
+  --cc-btn-secondary-hover-bg: var(--blush, #EAE9D2);
+  --cc-btn-secondary-hover-color: var(--plum, #33322A);
+  --cc-btn-secondary-hover-border-color: var(--plum, #33322A);
+  --cc-separator-border-color: var(--line, #E4E1CE);
+  --cc-toggle-on-bg: var(--terracotta, #6E7A3F);
+  --cc-toggle-off-bg: var(--sand, #DFDCC0);
+  --cc-toggle-on-knob-bg: #fff;
+  --cc-toggle-off-knob-bg: #fff;
+  --cc-toggle-enabled-icon-color: #fff;
+  --cc-toggle-disabled-icon-color: #fff;
+  --cc-toggle-readonly-bg: var(--blush, #EAE9D2);
+  --cc-toggle-readonly-knob-bg: var(--terracotta-dark, #55602F);
+  --cc-toggle-readonly-knob-icon-color: var(--blush, #EAE9D2);
+  --cc-cookie-category-block-bg: transparent;
+  --cc-cookie-category-block-border: transparent;
+  --cc-cookie-category-block-hover-bg: transparent;
+  --cc-cookie-category-block-hover-border: transparent;
+  --cc-cookie-category-expanded-block-bg: transparent;
+  --cc-cookie-category-expanded-block-hover-bg: transparent;
+  --cc-overlay-bg: transparent;
+  --cc-footer-bg: transparent;
+  --cc-footer-border-color: transparent;
+  --cc-footer-color: var(--plum-soft, #66645A);
+  --cc-modal-margin: 24px;
+  z-index: 9999;
+}
+
+/* ── Shared card look ───────────────────────────────────────────────────── */
+#cc-main .cm,
+#cc-main .pm {
+  border: 1.5px solid var(--plum, #33322A);
+  box-shadow: 0 24px 60px rgba(51, 50, 42, 0.22), 0 4px 0 var(--plum, #33322A);
+}
+
+/* ── First-visit card (bottom corner) ──────────────────────────────────── */
+#cc-main .cm--box { width: 360px; max-width: calc(100vw - 48px); }
+#cc-main .cm__btn--close { display: none !important; }
+#cc-main .cm__texts { padding-top: 18px; }
+#cc-main .cm__title,
+#cc-main .cm__desc { padding: 0 18px; }
+#cc-main .cm__title {
+  display: block;
+  font-family: var(--serif, "DM Serif Display", Georgia, serif);
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  color: var(--plum, #33322A);
+}
+#cc-main .cm__title::before,
+#cc-main .pm__title::before {
+  content: "Wholesome Girlies";
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--cc-font-family);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--terracotta-dark, #55602F);
+}
+#cc-main .pm__title::before { content: "Privacy choices"; }
+#cc-main .cm__title + .cm__desc { margin-top: 10px; }
+#cc-main .cm__desc {
+  color: var(--plum, #33322A);
+  font-size: .86rem;
+  line-height: 1.45;
+  max-height: none;
+  padding-bottom: 12px;
+}
+#cc-main .cm__desc b { font-weight: 800; }
+
+#cc-main .cm__btns { border-top: 0; padding: 0 18px 6px; }
+#cc-main .cm__btn-group:first-child { grid-auto-flow: column; gap: 10px; }
+#cc-main .cm__btn-group:first-child .cm__btn + .cm__btn { margin: 0; }
+#cc-main .cm__btn { font-size: .88rem; font-weight: 800; min-height: 40px; padding: 9px 12px; }
+#cc-main .cm__btn[data-role="necessary"] {
+  order: 1;
+  background: var(--cc-btn-secondary-bg);
+  color: var(--cc-btn-secondary-color);
+  border: 1.5px solid var(--cc-btn-secondary-border-color);
+}
+#cc-main .cm__btn[data-role="necessary"]:hover { background: var(--cc-btn-secondary-hover-bg); }
+#cc-main .cm__btn[data-role="all"] { order: 2; border-width: 1.5px; }
+#cc-main .cm__btn[data-role="show"] {
+  justify-self: center;
+  background: none;
+  border: 0;
+  min-height: 0;
+  margin-top: 6px;
+  padding: 4px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--terracotta-dark, #55602F);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+#cc-main .cm__btn[data-role="show"]:hover { background: none; color: var(--plum, #33322A); }
+
+#cc-main .cm__footer { border-top: 0; padding: 0 0 14px; }
+#cc-main .cm__links { padding: 0 18px; }
+#cc-main .cm__link-group { display: block; font-size: .74rem; line-height: 1.5; color: var(--plum-soft, #66645A); }
+#cc-main .cm__footer a,
+#cc-main .pm a { color: var(--terracotta-dark, #55602F); text-decoration: underline; text-underline-offset: 2px; background-image: none; }
+
+/* ── Settings card (bottom corner, page stays usable) ──────────────────── */
+#cc-main .pm-overlay { background: transparent; pointer-events: none; }
+#cc-main .pm--box {
+  top: auto;
+  right: auto;
+  bottom: 24px;
+  left: 24px;
+  margin: 0;
+  width: 400px;
+  max-width: calc(100vw - 48px);
+  height: auto;
+  max-height: calc(100vh - 48px);
+  transform: translateY(1.6em);
+}
+.show--preferences #cc-main .cc--anim .pm--box { transform: translateY(0); }
+#cc-main .pm__header { border-bottom: 0; padding: 18px 18px 6px; align-items: flex-start; }
+#cc-main .pm__title {
+  display: block;
+  font-family: var(--serif, "DM Serif Display", Georgia, serif);
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--plum, #33322A);
+}
+#cc-main .pm__close-btn { height: 34px; width: 34px; border-width: 1.5px; }
+#cc-main .pm__body { padding: 4px 18px 8px; }
+#cc-main .pm__section,
+#cc-main .pm__section--toggle {
+  border: 0;
+  border-top: 1px solid var(--line, #E4E1CE);
+  border-radius: 0;
+  margin: 0;
+  padding: 12px 0;
+  background: transparent;
+}
+#cc-main .pm__section:first-child { margin: 0; padding: 12px 0; border-top: 1px solid var(--line, #E4E1CE); }
+#cc-main .pm__section--toggle .pm__section-title {
+  min-height: 0;
+  padding: 0 64px 0 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+#cc-main .pm__section-title { font-size: .95rem; font-weight: 800; color: var(--plum, #33322A); }
+#cc-main .pm__section-arrow { display: none !important; }
+#cc-main .pm__section--toggle .pm__section-desc-wrapper { display: flex !important; border: 0; border-radius: 0 !important; margin-top: 4px !important; }
+#cc-main .pm__section-toggles + .pm__section { margin-top: 0; }
+#cc-main .pm__section--toggle .pm__section-desc,
+#cc-main .pm__section-desc { padding: 0 64px 0 0; font-size: .82rem; line-height: 1.45; color: var(--plum-soft, #66645A); }
+#cc-main .pm__section:not(.pm__section--toggle) .pm__section-desc { padding-right: 0; }
+#cc-main .section__toggle-wrapper { right: 0; }
+#cc-main .toggle__icon { box-shadow: 0 0 0 1.5px var(--plum, #33322A); }
+
+#cc-main .pm__footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid var(--line, #E4E1CE);
+  padding: 12px 18px 14px;
+}
+#cc-main .pm .pm__btn-group { display: contents !important; }
+#cc-main .pm .pm__btn + .pm__btn { margin: 0 !important; }
+#cc-main .pm__btn { min-width: 0; min-height: 40px; padding: 9px 12px; font-size: .88rem; font-weight: 800; border-width: 1.5px; }
+#cc-main .pm__btn[data-role="save"] {
+  order: 1;
+  background: var(--cc-btn-secondary-bg);
+  color: var(--cc-btn-secondary-color);
+  border-color: var(--cc-btn-secondary-border-color);
+}
+#cc-main .pm__btn[data-role="all"] { order: 2; }
+#cc-main .pm__btn[data-role="necessary"] {
+  order: 3;
+  grid-column: 1 / -1;
+  justify-self: center;
+  background: none;
+  border: 0;
+  min-height: 0;
+  padding: 4px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--terracotta-dark, #55602F);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── Phones ─────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 640px) {
+  #cc-main .cm { left: 12px !important; right: 12px !important; bottom: 12px !important; width: auto !important; margin: 0 !important; }
+  #cc-main .cm .cm__btns { border-top: 0 !important; padding-top: 0 !important; }
+  #cc-main .cm__btns { flex-direction: column !important; }
+  #cc-main .cm__btn-group:first-child { display: grid !important; flex-direction: row !important; grid-auto-flow: column; }
+  #cc-main .cm__btn-group:first-child .cm__btn + .cm__btn { margin: 0 !important; }
+  #cc-main .pm {
+    top: auto !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    width: auto !important;
+    max-height: calc(100vh - 24px) !important;
+    border-radius: var(--radius, 18px) !important;
+  }
+  #cc-main .pm .pm__footer { display: grid !important; flex-direction: row !important; }
+  #cc-main .pm .pm__btn + .pm__btn,
+  #cc-main .pm .pm__btn-group + .pm__btn-group { margin: 0 !important; }
+}
+
+/* ── Note under tools while remembering is off ─────────────────────────── */
+.wg-remember-note {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm, 12px);
+  background: var(--blush, #EAE9D2);
+  border: 1px dashed var(--terracotta, #6E7A3F);
+  font-size: .9rem;
+  line-height: 1.5;
+  color: var(--plum, #33322A);
+}
+.wg-remember-note a { color: var(--terracotta-dark, #55602F); font-weight: 700; }
+
+/* ── One-line legal links on ad landing pages ──────────────────────────── */
+.wg-legal-links { margin-top: 10px; font-size: .78rem; color: var(--plum-soft, #66645A); }
+.wg-legal-links a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }

@@ -4,6 +4,7 @@
 <script>/* Identity links (?email=, ?lead=, ?fullname=, ?name=, ?mobile=, ?phone=) must never reach GTM or the ad pixels, which report the page address. This page's own scripts read the original query from window.__idq; the address bar is cleaned before any tag loads. Keep this as the first script in <head>. */(function(){try{var q=location.search;if(!q)return;var p=new URLSearchParams(q),k=['email','lead','fullname','name','mobile','phone'],hit=false;for(var i=0;i<k.length;i++){if(p.has(k[i])){p.delete(k[i]);hit=true;}}if(!hit)return;window.__idq=q;var s=p.toString();history.replaceState(history.state,'',location.pathname+(s?'?'+s:'')+location.hash);}catch(e){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/assets/js/consent-defaults.js?v=20260915a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -44,6 +45,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {"@type":"Question","name":"What if it is not for me?","acceptedAnswer":{"@type":"Answer","text":"You have 30 days. Go through it and put it to use, and if it still is not right for you, tell us and we will refund you. You can also start with the free parenting tools first and buy when you are ready."}}
 ]}
 </script>
+<link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
+<link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -314,7 +317,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <footer class="site-footer" style="padding:28px 0;">
   <div class="wrap narrow center">
     <p style="margin:0 0 6px; color:#fff; font-family:var(--serif); font-size:1.1rem;">Wholesome Girlies</p>
-    <p style="margin:0; font-size:.82rem; color:#A9B3A3;">© 2026 Wholesome Girlies. Educational program, not medical advice. <a href="/legal/disclaimer" style="color:var(--blush);">Disclaimer &amp; privacy</a></p>
+    <p style="margin:0; font-size:.82rem; color:#A9B3A3;">© 2026 Wholesome Girlies. Educational program, not medical advice. <a href="/legal/disclaimer" style="color:var(--blush);">Disclaimer</a> &middot; <a href="/legal/privacy" style="color:var(--blush);">Privacy</a> &middot; <a href="/legal/consumer-health-data" style="color:var(--blush);">Consumer health data</a> &middot; <a href="#" data-cc="show-preferencesModal" style="color:var(--blush);">Privacy choices</a></p>
   </div>
 </footer>
 <div class="sticky-cta" id="wgSticky" aria-hidden="true">
@@ -327,5 +330,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 (function(){var bar=document.getElementById("wgSticky");if(!bar)return;var pricing=document.getElementById("join");function onScroll(){var pastHero=window.scrollY>window.innerHeight*0.9;var pricingInView=false;if(pricing){var r=pricing.getBoundingClientRect();pricingInView=r.top<window.innerHeight&&r.bottom>0;}var nearBottom=(window.innerHeight+window.scrollY)>=document.body.offsetHeight-60;var show=pastHero&&!pricingInView&&!nearBottom;bar.classList.toggle("is-visible",show);bar.setAttribute("aria-hidden",show?"false":"true");}window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);onScroll();})();
 </script>
 <script src="/assets/js/checkout-intent.js?v=20260915b" defer></script>
+<script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
+<script defer src="/assets/js/wg-consent.js?v=20260915a"></script>
 </body>
 </html>

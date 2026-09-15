@@ -40,8 +40,10 @@ Email forms (homepage newsletter — now removed). Note (2026-08-03): the progra
 - [x] **GA4** `G-3JFKC4KYD5` live through GTM ✅ 2026-07-27
 - [x] **Microsoft Clarity** live via GTM integration (+ linked to GA4) ✅ 2026-07-27
 - [x] **Google Search Console** verified (Domain); `sitemap.xml` submitted ✅ 2026-07-27
-- [ ] Still through GTM (with/before ads): **Google Ads gtag, Meta Pixel, TikTok/Snapchat/X pixels, server-side GTM**, consent banner; plus **Bing Webmaster Tools**.
-- [ ] GA4 hygiene: 14-month data retention, internal-traffic filter, link Search Console.
+- [x] GA4 hygiene: 14-month data retention, internal-traffic filter, Search Console linked ✅ 2026-07-27
+- [x] **Meta Pixel** + **TikTok Pixel** live through GTM; Selar's native CAPI and Events API handle server-side events, so there is no server-side GTM ✅ 2026-07-31
+- [ ] **Consent banner:** `assets/js/consent-defaults.js` (region by time zone, Google Consent Mode defaults, Remember-on-this-device guard) loads before GTM on every tracked page; `assets/js/wg-consent.js` + `assets/css/wg-consent.css` run the self-hosted CookieConsent library in `assets/vendor/cookieconsent/`. GTM tags require consent and also fire on `wg_consent_update`. New pages must keep these script and stylesheet tags and the footer "Privacy choices" link.
+- [ ] Optional: Google Ads, Snapchat, and X pixels only if those channels get used; Bing Webmaster Tools.
 
 ## 8. Brand assets (placeholders / missing)
 - [x] Logo: the **Sprig** mark (SVG) is applied in the header (olive) and footer (rust). Options at `/logo-options.html`. A polished/professional version can still be commissioned later; the leaf-badge option makes a good favicon/app icon.

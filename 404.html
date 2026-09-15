@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/assets/js/consent-defaults.js?v=20260915a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -28,6 +29,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .err__text{color:#66645A;max-width:48ch;margin:0 auto 28px;font-size:1.05rem;line-height:1.65}
   .err__links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 </style>
+<link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
+<link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -93,6 +96,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <li><a href="/legal/privacy">Privacy</a></li>
           <li><a href="/legal/consumer-health-data">Consumer health data</a></li>
           <li><a href="/legal/terms">Terms</a></li>
+          <li><a href="#" data-cc="show-preferencesModal">Privacy choices</a></li>
         </ul>
       </div>
     </div>
@@ -121,5 +125,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
   </div>
 </footer>
+<script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
+<script defer src="/assets/js/wg-consent.js?v=20260915a"></script>
 </body>
 </html>

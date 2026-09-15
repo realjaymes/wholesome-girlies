@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/assets/js/consent-defaults.js?v=20260915a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -42,6 +43,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .legal-wrap h2 { margin-top: 36px; scroll-margin-top: 80px; }
   .legal-wrap h3 { margin-top: 22px; }
 </style>
+<link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
+<link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -104,7 +107,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><strong>Payments:</strong> Selar.</li>
       <li><strong>Email and automation:</strong> Brevo and Zapier.</li>
       <li><strong>Storage and analytics:</strong> Google (Google Sheets and Google Analytics) and Microsoft (Clarity).</li>
-      <li><strong>Advertising measurement:</strong> Meta and TikTok. Our site tells them when a sign-up happens and which program it was for, and shares your email address and phone number with TikTok. Selar tells them about purchases, including your name, email address, and internet address.</li>
+      <li><strong>Advertising measurement:</strong> Meta and TikTok. Our site only loads their tools for US visitors who accept advertising in <a href="#" data-cc="show-preferencesModal">Privacy choices</a>. Once loaded, our site tells them when a sign-up happens and which program it was for, and shares your email address and phone number with TikTok. Selar tells them about purchases, including your name, email address, and internet address.</li>
       <li><strong>Hosting and security:</strong> GitHub and Cloudflare.</li>
     </ul>
     <p>We do not sell consumer health data.</p>
@@ -114,7 +117,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li>Confirm whether we collect, share, or sell your consumer health data, and get a copy of it.</li>
       <li>Get a list of the third parties we have shared it with.</li>
       <li>Ask us to delete it.</li>
-      <li>Withdraw your consent to us collecting or sharing it.</li>
+      <li>Withdraw your consent to us collecting or sharing it. You can switch off advertising and analytics at any time in <a href="#" data-cc="show-preferencesModal">Privacy choices</a>.</li>
     </ul>
     <p>To use these rights, email <a href="mailto:legal@wholesomegirlies.xyz">legal@wholesomegirlies.xyz</a> with the subject "Consumer health data request". We will respond within 45 days, or let you know if we need up to 45 more. If we decline your request, you can appeal by replying to our answer. If we deny your appeal, you can contact your state Attorney General.</p>
 
@@ -149,6 +152,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <li><a href="/legal/privacy">Privacy</a></li>
           <li><a href="/legal/consumer-health-data">Consumer health data</a></li>
           <li><a href="/legal/terms">Terms</a></li>
+          <li><a href="#" data-cc="show-preferencesModal">Privacy choices</a></li>
         </ul>
       </div>
     </div>
@@ -177,5 +181,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </footer>
+<script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
+<script defer src="/assets/js/wg-consent.js?v=20260915a"></script>
 </body>
 </html>

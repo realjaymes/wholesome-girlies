@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/assets/js/consent-defaults.js?v=20260915a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -44,6 +45,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .legal-wrap h3 { margin-top: 22px; }
   .placeholder { background: #F6E9D8; border-bottom: 1px dashed var(--sage); padding: 0 3px; }
 </style>
+<link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
+<link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -125,6 +128,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <h2 id="tools">Your tool data stays with you</h2>
     <p>Our calculators, trackers, and checklists are built to run inside your browser. When a tool remembers your entries, for example your last period date or a checklist you ticked, it saves that only on your own device, using your browser's local storage. It is not sent to us, and we cannot see it. If you clear your browser data or use a different device, those entries are gone. Please treat any sensitive health details you enter as private to your device.</p>
+    <p>Whether tools remember your entries is your choice, under <strong>Remember on this device</strong> in <a href="#" data-cc="show-preferencesModal">Privacy choices</a>. In the EU, the UK, Switzerland, and Canada it is off until you turn it on; everywhere else it is on unless you turn it off. When it is off, the tools still work, but your entries are cleared when you leave the page.</p>
 
     <h2 id="why">Why we use your information</h2>
     <ul>
@@ -141,7 +145,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <ul>
       <li><strong>Your consent</strong>, for the newsletter, which you give when you subscribe and can withdraw at any time by unsubscribing.</li>
       <li><strong>Performing a contract</strong>, when you buy a program and we deliver it.</li>
-      <li><strong>Our legitimate interests</strong>, in running, securing, and improving a service that people find useful — including the analytics and advertising cookies described below, which you can turn off at any time (see <a href="#cookies">Cookies and tracking</a>) — in a way that does not override your rights.</li>
+      <li><strong>Your consent</strong>, for the analytics and advertising tools described under <a href="#cookies">Cookies and tracking</a>, and for remembering your tool entries on this device. None of these run until you say yes, and you can change your choice at any time in <a href="#" data-cc="show-preferencesModal">Privacy choices</a>.</li>
+      <li><strong>Our legitimate interests</strong>, in running and securing a service that people find useful, in a way that does not override your rights.</li>
       <li><strong>Legal obligation</strong>, when the law requires us to keep or share certain records.</li>
     </ul>
 
@@ -156,6 +161,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </ul>
     <p><strong>When you start to buy a program.</strong> When you enter your details and continue to payment, our site tells Meta and TikTok that a sign-up happened and which program it was for. We also share your email address and phone number with TikTok so it can match the sign-up to a TikTok account.</p>
     <p><strong>On the payment page.</strong> Our payment provider, Selar, uses Meta's and TikTok's tools on its checkout pages. Selar tells them when you view a program, start checkout, or complete a purchase, and sends those details from its own servers, including your name, email address, and internet address, so our ads can be measured.</p>
+    <p><strong>Your choices.</strong> Visitors in the EU, the UK, Switzerland, and Canada see a short notice on their first visit, and none of these tools run until they choose. In the United States, Google Analytics and Microsoft Clarity run by default, and Meta and TikTok only run if you accept. Everywhere else, these tools run by default. Wherever you are, you can change what runs at any time with <a href="#" data-cc="show-preferencesModal">Privacy choices</a> at the bottom of every page. If your browser sends a Global Privacy Control signal, we treat it as a no to advertising. We work out which of these applies from your device's time zone, and we save your choice in a small cookie in your browser for 6 months.</p>
     <p>You can delete or block cookies in your browser settings, and you can manage ad tracking in your account settings on Google, Meta, and TikTok. Blocking cookies won't stop our tools working, but clearing your browser data removes any entries they saved. We may add or remove tools over time and will keep this list current.</p>
 
     <h2 id="sharing">Who we share it with</h2>
@@ -236,6 +242,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <li><a href="/legal/privacy">Privacy</a></li>
           <li><a href="/legal/consumer-health-data">Consumer health data</a></li>
           <li><a href="/legal/terms">Terms</a></li>
+          <li><a href="#" data-cc="show-preferencesModal">Privacy choices</a></li>
         </ul>
       </div>
     </div>
@@ -264,5 +271,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </footer>
+<script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
+<script defer src="/assets/js/wg-consent.js?v=20260915a"></script>
 </body>
 </html>

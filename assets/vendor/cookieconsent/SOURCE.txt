@@ -1,0 +1,2 @@
+vanilla-cookieconsent 3.1.0 (MIT), from https://registry.npmjs.org/vanilla-cookieconsent/-/vanilla-cookieconsent-3.1.0.tgz
+Integrity verified against the npm registry sha512 on 2026-09-15. Do not edit; restyle in /assets/css/wg-consent.css.
