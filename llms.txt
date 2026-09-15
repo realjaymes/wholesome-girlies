@@ -49,4 +49,5 @@ Wholesome Girlies is a women's health and life brand. Free interactive tools and
 - [About Wholesome Girlies](https://wholesomegirlies.xyz/about/)
 - [Medical disclaimer](https://wholesomegirlies.xyz/legal/disclaimer)
 - [Privacy policy](https://wholesomegirlies.xyz/legal/privacy)
+- [Consumer health data privacy policy](https://wholesomegirlies.xyz/legal/consumer-health-data)
 - [Terms of use](https://wholesomegirlies.xyz/legal/terms)
