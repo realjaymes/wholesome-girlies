@@ -1,7 +1,8 @@
 /* Wholesome Girlies — checkout-intent capture.
  * On a buy click (any Selar add-to-cart button) we capture name/email/phone BEFORE
- * the redirect: known buyers go straight through; unknown buyers get a small prefill
- * modal. The intent is logged to an Apps Script endpoint (→ Google Sheet + Brevo)
+ * the redirect: buyers arriving from their own recovery/WhatsApp link (details in the
+ * link) go straight through; everyone else gets a small prefill modal, filled in with a
+ * "Not you?" link when details were saved on this device in the last 30 days. The intent is logged to an Apps Script endpoint (→ Google Sheet + Brevo)
  * so Brevo can run the abandoned-cart / recovery automation, and dataLayer events
  * fire so GTM routes GA4 + (later) the ad pixels. Selar checkout is prefilled.
  * Mirrors the proven MIA pattern. Zero effect on pages without a Selar buy button.
@@ -29,15 +30,15 @@
   /* ── identity: URL param (survives WhatsApp/email in-app browsers) or localStorage ──
    * The inline head script strips identity params from the address bar before GTM loads
    * and keeps the original query in window.__idq, so read that first. */
+  var SAVED_TTL = 30 * 24 * 60 * 60 * 1000; // saved details are forgotten after 30 days
   function known() {
     var qp; try { qp = new URLSearchParams(window.__idq || location.search); } catch (e) { qp = null; }
     var lead = {}; try { lead = JSON.parse(localStorage.getItem(LEAD_KEY) || '{}') || {}; } catch (e) {}
+    if (lead.email && !(lead.ts && Date.now() - lead.ts < SAVED_TTL)) { lead = {}; try { localStorage.removeItem(LEAD_KEY); } catch (e) {} }
     function pick(k) { return (qp && (qp.get(k) || '')) || ''; }
-    return {
-      email: (pick('email') || pick('lead') || lead.email || '').trim(),
-      name:  (pick('fullname') || pick('name') || lead.name || '').trim(),
-      phone: (lead.phone || '').trim()
-    };
+    var ue = (pick('email') || pick('lead')).trim(), same = !!(lead.email && lead.email === ue);
+    if (ue) return { src: 'url', email: ue, name: (pick('fullname') || pick('name') || (same ? lead.name : '') || '').trim(), phone: (same ? (lead.phone || '') : '').trim() };
+    return { src: lead.email ? 'saved' : '', email: (lead.email || '').trim(), name: (lead.name || '').trim(), phone: (lead.phone || '').trim() };
   }
 
   /* ── helpers ────────────────────────────────────────────────────────────── */
@@ -98,6 +99,8 @@
       '#wgBuyModal input{display:block;width:100%;margin-top:5px;padding:11px 13px;border:1px solid var(--line,#E4E1CE);border-radius:10px;font-size:1rem;font-family:inherit;background:#fff;color:var(--plum,#33322A);}',
       '#wgBuyModal .wgbm-go{width:100%;margin-top:6px;padding:13px;border:0;border-radius:10px;background:var(--terracotta,#6E7A3F);color:#fff;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;}',
       '#wgBuyModal .wgbm-note{margin:12px 0 0;font-size:.78rem;color:var(--plum-soft,#66645A);text-align:center;}',
+      '#wgBuyModal .wgbm-notyou{margin:0 0 12px;font-size:.85rem;color:var(--plum-soft,#66645A);}',
+      '#wgBuyModal .wgbm-notyou a{color:inherit;text-decoration:underline;}',
       '#wgBuyModal .wgbm-close{position:absolute;top:8px;right:14px;background:none;border:0;font-size:1.6rem;line-height:1;color:var(--plum-soft,#66645A);cursor:pointer;}'
     ].join('');
     document.head.appendChild(s);
@@ -114,6 +117,7 @@
         '<h3 class="wgbm-title">Almost there — Step 1 of 2</h3>' +
         '<p class="wgbm-sub">Enter your details and you\'ll be taken straight to checkout with everything prefilled.</p>' +
         '<form id="wgBuyForm" novalidate>' +
+          '<p class="wgbm-notyou" id="wgbmNotYou" style="display:none">Not you? <a href="#">Use different details</a></p>' +
           '<label>Full name <span class="wgbm-req">*</span><input type="text" id="wgbmName" autocomplete="name" placeholder="e.g. Adaeze Okonkwo" required></label>' +
           '<label>Email address <span class="wgbm-req">*</span><input type="email" id="wgbmEmail" autocomplete="email" placeholder="e.g. adaeze@gmail.com" required></label>' +
           '<label>Phone (WhatsApp) <span class="wgbm-opt">· optional</span><input type="tel" id="wgbmPhone" autocomplete="tel" placeholder="e.g. 08012345678"></label>' +
@@ -125,18 +129,28 @@
     modal.querySelector('.wgbm-backdrop').addEventListener('click', close);
     modal.querySelector('.wgbm-close').addEventListener('click', close);
     modal.querySelector('#wgBuyForm').addEventListener('submit', submit);
+    modal.querySelector('#wgbmNotYou a').addEventListener('click', notYou);
   }
   function open(k) {
     buildModal(); modal.classList.add('open'); document.body.style.overflow = 'hidden';
     k = k || {};
     try {
+      document.getElementById('wgBuyForm').reset();
       var nEl = document.getElementById('wgbmName'), eEl = document.getElementById('wgbmEmail'), pEl = document.getElementById('wgbmPhone');
-      if (k.name)  nEl.value = k.name;   // prefill if we already know them (returning / recovery-link)
-      if (k.email) eEl.value = k.email;  // …the form still opens every time, like MIA
+      if (k.name)  nEl.value = k.name;   // details saved on this device (30-day expiry)
+      if (k.email) eEl.value = k.email;
       if (k.phone) pEl.value = k.phone.indexOf('234') === 0 ? '0' + k.phone.substring(3) : k.phone;
-      var first = !nEl.value ? nEl : (!eEl.value ? eEl : (!pEl.value ? pEl : nEl)); // focus first empty field
-      setTimeout(function () { try { first.focus(); } catch (e) {} }, 60);
+      document.getElementById('wgbmNotYou').style.display = k.src === 'saved' ? '' : 'none';
+      var first = !nEl.value ? nEl : (!eEl.value ? eEl : null); // focus the first empty required field; a filled form keeps the keyboard closed
+      if (first) setTimeout(function () { try { first.focus(); } catch (e) {} }, 60);
     } catch (e) {}
+  }
+  function notYou(ev) { // shared device: clear the saved details and start fresh
+    ev.preventDefault();
+    try { localStorage.removeItem(LEAD_KEY); } catch (e) {}
+    document.getElementById('wgBuyForm').reset();
+    document.getElementById('wgbmNotYou').style.display = 'none';
+    try { document.getElementById('wgbmName').focus(); } catch (e) {}
   }
   function close() { if (modal) { modal.classList.remove('open'); document.body.style.overflow = ''; } pendingHref = ''; }
   function submit(ev) {
@@ -183,7 +197,7 @@
     var href = a.getAttribute('href') || '';
     e.preventDefault();
     var product = productFromHref(href), k = known();
-    if (k.email) { // remembered buyer → skip the form, straight to Selar prefilled (same tab)
+    if (k.email && k.src === 'url') { // details from their own recovery/WhatsApp link → skip the form, straight to Selar prefilled (same tab)
       fireEvent(product, 'begin_checkout');
       logIntent({ name: k.name, email: k.email, phone: k.phone, product: product });
       openCheckout(selarUrl(href, k.name, k.email, k.phone));
@@ -191,7 +205,7 @@
     }
     pendingHref = href; pendingProduct = product; // unknown → collect first
     fireEvent(product, 'add_to_cart');
-    open(k); // show the form (prefilled if we already know the name)
+    open(k); // show the form, prefilled with "Not you?" when details were saved on this device
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
