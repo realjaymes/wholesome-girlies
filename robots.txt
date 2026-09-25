@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# Ad bridge / pre-sell pages and thank-you pages must not be crawled or indexed.
-Disallow: /go/
-Disallow: /programs/*/thank-you
+# The ad bridge pages under /go/ and the programme thank-you pages carry
+# noindex, nofollow in the page itself. They are deliberately NOT disallowed
+# here: a Disallow blocks the crawl, so the noindex is never read, and the
+# URL can still be indexed from a link with no snippet.
 
 Sitemap: https://wholesomegirlies.xyz/sitemap.xml
