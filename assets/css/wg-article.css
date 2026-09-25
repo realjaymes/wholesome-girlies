@@ -55,17 +55,3 @@
 
 /* Anchor targets clear the sticky header when jumped to */
 main h2[id] { scroll-margin-top: 90px; }
-
-/* A real woman's words, quoted with her permission. Never invented. */
-.voice {
-  margin: 26px 0; padding: 18px 22px;
-  border-left: 3px solid var(--terracotta, #C4714F);
-  background: rgba(196,113,79,.05); border-radius: 0 var(--radius, 14px) var(--radius, 14px) 0;
-}
-.voice blockquote { margin: 0; }
-.voice blockquote p { margin: 0; font-size: 1.02rem; line-height: 1.6; }
-.voice figcaption {
-  margin-top: 10px; font-size: .85rem; font-weight: 700;
-  color: var(--plum-soft, #6B6A5C);
-}
-.voice figcaption .voice-src { font-weight: 400; display: block; margin-top: 3px; font-size: .8rem; }
