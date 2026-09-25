@@ -275,3 +275,10 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
 .site-footer .footer-social a:hover{background:var(--sage);transform:translateY(-2px)}
 .site-footer .footer-social svg{width:18px;height:18px;fill:#C4CDBE;transition:fill .2s ease}
 .site-footer .footer-social a:hover svg{fill:#fff}
+
+/* Data tables. A schedule or comparison reads as a table or it does not read. */
+.data-table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 0.97rem; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.data-table th { text-align: left; background: var(--blush); color: var(--plum); font-weight: 800; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.data-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--plum); vertical-align: top; }
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.data-table tbody tr:nth-child(even) { background: var(--cream); }
