@@ -1,0 +1,71 @@
+/* Reading progress bar and section navigation for long guides.
+   Kept out of styles.css so adding it does not cache-bust every page. */
+
+.read-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: var(--terracotta, #C4714F); z-index: 120;
+  transition: width .08s linear;
+}
+@media (prefers-reduced-motion: reduce) { .read-progress { transition: none; } }
+
+/* Mobile and tablet: a collapsible jump list inside the article */
+.toc-inline {
+  border: 1px solid rgba(51,50,42,.14); border-radius: var(--radius, 14px);
+  padding: 14px 18px; margin: 24px 0; background: rgba(255,255,255,.55);
+}
+.toc-inline > summary {
+  cursor: pointer; font-weight: 800; font-size: .95rem;
+  color: var(--plum, #33322A); list-style: none;
+}
+.toc-inline > summary::-webkit-details-marker { display: none; }
+.toc-inline > summary::after { content: " ▾"; font-size: .8rem; }
+.toc-inline[open] > summary::after { content: " ▴"; }
+.toc-inline ol { margin: 12px 0 0; padding-left: 18px; }
+.toc-inline li { margin: 6px 0; font-size: .92rem; }
+.toc-inline a { color: var(--plum-soft, #6B6A5C); text-decoration: none; }
+.toc-inline a:hover { text-decoration: underline; }
+
+/* Desktop: a sticky list beside the article */
+.toc-rail { display: none; }
+@media (min-width: 1180px) {
+  .toc-inline { display: none; }
+  .toc-rail {
+    display: block; position: fixed; top: 120px; right: 28px; width: 216px;
+    max-height: calc(100vh - 180px); overflow-y: auto; z-index: 40;
+    padding-left: 14px; border-left: 2px solid rgba(51,50,42,.10);
+  }
+  .toc-rail h4 {
+    margin: 0 0 10px; font-size: .72rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--plum-soft, #6B6A5C);
+  }
+  .toc-rail ol { list-style: none; margin: 0; padding: 0; }
+  .toc-rail li { margin: 0 0 9px; line-height: 1.32; }
+  .toc-rail a {
+    display: block; font-size: .84rem; color: var(--plum-soft, #6B6A5C);
+    text-decoration: none; border-left: 2px solid transparent;
+    margin-left: -16px; padding-left: 14px;
+  }
+  .toc-rail a:hover { color: var(--plum, #33322A); }
+  .toc-rail a.is-current {
+    color: var(--plum, #33322A); font-weight: 800;
+    border-left-color: var(--terracotta, #C4714F);
+  }
+}
+@media (min-width: 1500px) { .toc-rail { right: calc((100vw - 760px) / 2 - 264px); } }
+
+/* Anchor targets clear the sticky header when jumped to */
+main h2[id] { scroll-margin-top: 90px; }
+
+/* A real woman's words, quoted with her permission. Never invented. */
+.voice {
+  margin: 26px 0; padding: 18px 22px;
+  border-left: 3px solid var(--terracotta, #C4714F);
+  background: rgba(196,113,79,.05); border-radius: 0 var(--radius, 14px) var(--radius, 14px) 0;
+}
+.voice blockquote { margin: 0; }
+.voice blockquote p { margin: 0; font-size: 1.02rem; line-height: 1.6; }
+.voice figcaption {
+  margin-top: 10px; font-size: .85rem; font-weight: 700;
+  color: var(--plum-soft, #6B6A5C);
+}
+.voice figcaption .voice-src { font-weight: 400; display: block; margin-top: 3px; font-size: .8rem; }
