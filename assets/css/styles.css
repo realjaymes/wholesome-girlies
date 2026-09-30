@@ -296,3 +296,9 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
   color: var(--plum-soft, #6B6A5C);
 }
 .voice figcaption .voice-src { font-weight: 400; display: block; margin-top: 3px; font-size: .8rem; }
+
+/* Scene images that sit alone in their own section: let the neighbouring
+   sections' padding supply the gap instead of stacking another one on top.
+   Was 56px + 56px + the image's own inline 22px; now a flat 56px each side. */
+section:has(> .wrap.narrow > img:only-child) { padding: 0; }
+section:has(> .wrap.narrow > img:only-child) > .wrap.narrow > img { margin: 0 auto !important; }
