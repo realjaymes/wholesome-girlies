@@ -55,3 +55,9 @@
 
 /* Anchor targets clear the sticky header when jumped to */
 main h2[id] { scroll-margin-top: 90px; }
+
+/* Article body rhythm: images need air below, headings need air above.
+   The !important is required because guide images carry an inline margin. */
+main .wrap.narrow > img { margin-bottom: 24px !important; }
+main .wrap.narrow > h2 { margin-top: 32px; }
+main .wrap.narrow > h2:first-child { margin-top: 0; }
