@@ -67,8 +67,39 @@
     h4.textContent = "In this guide";
     rail.appendChild(h4);
     rail.appendChild(list());
+
+    /* the guide's own program button, pinned under the headings so it
+       travels with the reader instead of waiting at the end */
+    var OFFERS = {
+      "/programs/trying-to-conceive-blueprint": ["Trying to conceive?", "Start the TTC Blueprint"],
+      "/programs/first-pregnancy-plan": ["Pregnant for the first time?", "Start the Pregnancy Plan"],
+      "/programs/postpartum-reset": ["Just had your baby?", "Start the Postpartum Reset"],
+      "/programs/first-baby-playbook": ["New baby at home?", "Start the First Baby Playbook"],
+      "/programs/wife-material-blueprint": ["Dating for marriage?", "Start the Wife Material Blueprint"]
+    };
+    var cta = main.querySelector(".program-cta a.btn");
+    var ctaName = main.querySelector(".program-cta h3");
+    if (cta) {
+      var href = cta.getAttribute("href");
+      var offer = OFFERS[href.replace(/\/$/, "")] ||
+        [null, "Start " + (ctaName ? ctaName.textContent.trim() : "the program")];
+      var box = document.createElement("div");
+      box.className = "toc-cta";
+      if (offer[0]) {
+        var hook = document.createElement("p");
+        hook.textContent = offer[0];
+        box.appendChild(hook);
+      }
+      var btn = document.createElement("a");
+      btn.className = "btn btn-primary";
+      btn.href = href;
+      btn.textContent = offer[1];
+      box.appendChild(btn);
+      rail.appendChild(box);
+    }
     document.body.appendChild(rail);
-    var links = rail.querySelectorAll("a");
+    var links = rail.querySelectorAll("ol a");
+    var footer = document.querySelector(".site-footer");
 
     function onScroll() {
       var start = main.offsetTop;
@@ -82,6 +113,12 @@
       }
       for (var j = 0; j < links.length; j++) {
         links[j].classList.toggle("is-current", j === here);
+      }
+
+      /* step aside before the dark footer slides under the rail */
+      if (footer) {
+        rail.classList.toggle("is-clear",
+          footer.getBoundingClientRect().top < rail.getBoundingClientRect().bottom + 32);
       }
     }
 
