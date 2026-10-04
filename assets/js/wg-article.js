@@ -48,7 +48,8 @@
     }
 
     /* inline, for phones: after the opening paragraph */
-    var intro = main.querySelector("section:nth-of-type(2) p, .wrap.narrow p");
+    var intro = main.querySelector(".tool-hero ~ section p") ||
+      main.querySelector("section:nth-of-type(2) p, .wrap.narrow p");
     if (intro && intro.parentNode) {
       var det = document.createElement("details");
       det.className = "toc-inline";
@@ -113,6 +114,14 @@
       }
       for (var j = 0; j < links.length; j++) {
         links[j].classList.toggle("is-current", j === here);
+      }
+
+      /* start level with the article's opening paragraph, then hold at
+         the same 120px the section highlight reads from */
+      if (intro) {
+        var top = Math.max(120, Math.round(intro.getBoundingClientRect().top));
+        rail.style.top = top + "px";
+        rail.style.maxHeight = (window.innerHeight - top - 60) + "px";
       }
 
       /* step aside before the dark footer slides under the rail */
