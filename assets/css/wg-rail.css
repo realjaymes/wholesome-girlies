@@ -1,0 +1,77 @@
+/* Reading progress bar and section navigation for long guides and tools.
+   Its own file so tool pages can load it without the guide body styles. */
+
+.read-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: var(--terracotta, #C4714F); z-index: 120;
+  transition: width .08s linear;
+}
+@media (prefers-reduced-motion: reduce) { .read-progress { transition: none; } }
+
+/* Mobile and tablet: a collapsible jump list inside the article */
+.toc-inline {
+  border: 1px solid rgba(51,50,42,.14); border-radius: var(--radius, 14px);
+  padding: 14px 18px; margin: 24px 0; background: rgba(255,255,255,.55);
+}
+.toc-inline > summary {
+  cursor: pointer; font-weight: 800; font-size: .95rem;
+  color: var(--plum, #33322A); list-style: none;
+}
+.toc-inline > summary::-webkit-details-marker { display: none; }
+.toc-inline > summary::after { content: " ▾"; font-size: .8rem; }
+.toc-inline[open] > summary::after { content: " ▴"; }
+.toc-inline ol { margin: 12px 0 0; padding-left: 18px; }
+.toc-inline li { margin: 6px 0; font-size: .92rem; }
+.toc-inline a { color: var(--plum-soft, #6B6A5C); text-decoration: none; }
+.toc-inline a:hover { text-decoration: underline; }
+
+/* Desktop: a sticky list beside the article */
+.toc-rail { display: none; }
+@media (min-width: 1180px) {
+  .toc-inline { display: none; }
+  .toc-rail {
+    display: flex; flex-direction: column;
+    position: fixed; top: 120px; right: 28px; width: 216px;
+    max-height: calc(100vh - 180px); overflow: hidden; z-index: 40;
+    padding-left: 14px; border-left: 2px solid rgba(51,50,42,.10);
+  }
+  .toc-rail h4 {
+    margin: 0 0 10px; font-size: .72rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--plum-soft, #6B6A5C);
+  }
+  .toc-rail h4, .toc-rail .toc-cta { flex: none; }
+  /* only the headings scroll, so the program button never drops out of view */
+  .toc-rail ol {
+    list-style: none; margin: 0; padding: 0;
+    flex: 1 1 auto; min-height: 0; overflow-y: auto;
+  }
+  .toc-rail li { margin: 0 0 9px; line-height: 1.32; }
+  .toc-rail ol a {
+    display: block; font-size: .84rem; color: var(--plum-soft, #6B6A5C);
+    text-decoration: none; border-left: 2px solid transparent;
+    margin-left: -16px; padding-left: 14px;
+  }
+  .toc-rail ol a:hover { color: var(--plum, #33322A); }
+  .toc-rail ol a.is-current {
+    color: var(--plum, #33322A); font-weight: 800;
+    border-left-color: var(--terracotta, #C4714F);
+  }
+}
+@media (min-width: 1180px) {
+  .toc-rail { transition: opacity .2s ease, visibility 0s linear 0s; }
+  .toc-rail.is-clear { opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility 0s linear .2s; }
+  .toc-rail .toc-cta { margin-top: 18px; }
+  .toc-rail .toc-cta p {
+    margin: 0 0 8px; font-size: .84rem; font-weight: 700;
+    color: var(--plum, #33322A);
+  }
+  .toc-rail .toc-cta .btn {
+    display: block; padding: 10px 14px; font-size: .84rem;
+    line-height: 1.25; text-align: center;
+  }
+}
+@media (min-width: 1500px) { .toc-rail { right: calc((100vw - 760px) / 2 - 264px); } }
+
+/* Anchor targets clear the sticky header when jumped to */
+main h2[id] { scroll-margin-top: 90px; }
+

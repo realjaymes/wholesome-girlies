@@ -47,16 +47,25 @@
       return ol;
     }
 
-    /* inline, for phones: after the opening paragraph */
-    var intro = main.querySelector(".tool-hero ~ section p") ||
-      main.querySelector("section:nth-of-type(2) p, .wrap.narrow p");
-    if (intro && intro.parentNode) {
-      var det = document.createElement("details");
-      det.className = "toc-inline";
-      var sum = document.createElement("summary");
-      sum.textContent = "In this guide";
-      det.appendChild(sum);
-      det.appendChild(list());
+    /* On a tool the calculator is the page, so the navigation starts at
+       the written answer below it rather than beside the tool. */
+    var isTool = /\/tools\//.test(window.location.pathname);
+    var label = isTool ? "On this page" : "In this guide";
+
+    /* inline, for phones: after the opening paragraph of a guide, or just
+       above the written section of a tool so the tool stays first */
+    var intro = isTool ? null : (main.querySelector(".tool-hero ~ section p") ||
+      main.querySelector("section:nth-of-type(2) p, .wrap.narrow p"));
+    var startAt = isTool ? heads[0] : intro;
+    var det = document.createElement("details");
+    det.className = "toc-inline";
+    var sum = document.createElement("summary");
+    sum.textContent = label;
+    det.appendChild(sum);
+    det.appendChild(list());
+    if (isTool) {
+      heads[0].parentNode.insertBefore(det, heads[0]);
+    } else if (intro && intro.parentNode) {
       intro.parentNode.insertBefore(det, intro.nextSibling);
     }
 
@@ -65,7 +74,7 @@
     rail.className = "toc-rail";
     rail.setAttribute("aria-label", "Sections in this guide");
     var h4 = document.createElement("h4");
-    h4.textContent = "In this guide";
+    h4.textContent = label;
     rail.appendChild(h4);
     rail.appendChild(list());
 
@@ -118,17 +127,21 @@
 
       /* start level with the article's opening paragraph, then hold at
          the same 120px the section highlight reads from */
-      if (intro) {
-        var top = Math.max(120, Math.round(intro.getBoundingClientRect().top));
+      var waiting = false;
+      if (startAt) {
+        var top = Math.max(120, Math.round(startAt.getBoundingClientRect().top));
         rail.style.top = top + "px";
-        rail.style.maxHeight = (window.innerHeight - top - 60) + "px";
+        /* keep its settled height while it slides up, like any content
+           arriving from below, rather than squeezing the list */
+        rail.style.maxHeight = (window.innerHeight - 180) + "px";
+        /* on a tool, stay out of sight until the written section arrives */
+        waiting = top > window.innerHeight - 220;
       }
 
       /* step aside before the dark footer slides under the rail */
-      if (footer) {
-        rail.classList.toggle("is-clear",
-          footer.getBoundingClientRect().top < rail.getBoundingClientRect().bottom + 32);
-      }
+      var footerNear = footer &&
+        footer.getBoundingClientRect().top < rail.getBoundingClientRect().bottom + 32;
+      rail.classList.toggle("is-clear", waiting || !!footerNear);
     }
 
     var ticking = false;
