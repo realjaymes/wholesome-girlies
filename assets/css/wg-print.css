@@ -1,0 +1,64 @@
+/* Print layout for printable tools. Loaded with media="print", so the screen never sees it.
+   Prints her answers under a branded header, keeps the disclaimer, and ends with a QR code
+   back to the tool (?ref=print). @page margins fit both A4 and US Letter.
+   The header and footer blocks are added by wg-print.js. */
+
+@page { margin: 14mm 14mm 16mm; }
+
+html, body { background: #fff !important; color: #33322A !important; }
+body { font-size: 11pt; line-height: 1.45; }
+* { box-shadow: none !important; }
+
+/* Site chrome and anything that only makes sense on screen */
+.site-header, .site-footer, .breadcrumb, .tool-hero, .byline, .program-cta, .related,
+.addrow, .tool-app button, .tool-app .btn, .tool-app .field, .del, .progress-bar,
+#cc-main, .toc-rail, .toc-inline, .read-progress, .wg-share, .wg-share-top, .wg-share-end, noscript, iframe { display: none !important; }
+
+/* Print the tool, not the article under it: only the tool, its disclaimer, and its safety box */
+main > section:not(:has(.tool-app)) { display: none !important; }
+main .wrap:has(> .tool-app) > :not(.tool-app):not(.disclaimer):not(.doctor-box) { display: none !important; }
+
+main section { padding: 0 !important; background: none !important; }
+main .wrap { max-width: none !important; padding: 0 !important; margin: 0 !important; }
+.tool-app { border: 0 !important; padding: 0 !important; margin: 0 !important; background: none !important; }
+
+/* Tools that build a note or plan: print only the result once she has made one */
+.tool-app:has(.result.show) > :not(.result) { display: none !important; }
+.result.show { display: block !important; background: none !important; padding: 0 !important; margin: 0 !important; }
+.result h3 { font-size: 14pt; margin: 0 0 8pt; color: #33322A !important; }
+
+/* Checklists */
+.checklist li { padding: 6pt 0; break-inside: avoid; border-bottom: .5pt solid #DDD9C4; }
+.checklist input { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.checklist .done label { color: #66645A; }
+#progText { display: block; font-size: 10pt; margin-bottom: 6pt; }
+.checklist.wg-print-cols { columns: 2; column-gap: 10mm; } /* short items: two columns, one page */
+.checklist.wg-print-cols li { padding: 3pt 0; }
+
+/* Night feed rota: inputs print as plain text */
+.rota th:last-child, .rota td:last-child { display: none !important; }
+.rota input { border: 0 !important; padding: 0 !important; background: none !important; font-size: 11pt !important; }
+.rota input::placeholder { color: transparent; }
+.rota input:placeholder-shown { border-bottom: .5pt solid #999 !important; } /* blank cell = a line to write on */
+.rota td { padding: 6pt 6pt 6pt 0 !important; }
+.rota tr { break-inside: avoid; }
+
+/* Safety box stays, kept compact */
+.doctor-box { background: none !important; border: .5pt solid #DDD9C4 !important; padding: 8pt 10pt !important; margin: 10pt 0 0 !important; font-size: 9pt !important; break-inside: avoid; }
+.doctor-box h4 { font-size: 10pt !important; margin: 0 0 3pt !important; }
+.doctor-box p { font-size: 9pt !important; }
+
+/* Disclaimer stays, kept small */
+.disclaimer { font-size: 8.5pt !important; color: #66645A !important; background: none !important;
+  border: 0 !important; border-top: .5pt solid #DDD9C4 !important; padding: 8pt 0 0 !important; margin: 16pt 0 0 !important; break-inside: avoid; }
+
+/* Branded header and QR footer (added by wg-print.js, hidden on screen) */
+.wg-print-head[hidden], .wg-print-foot[hidden] { display: block !important; }
+.wg-print-head { border-bottom: 1.5pt solid #6E7A3F; padding-bottom: 8pt; margin-bottom: 14pt; }
+.wg-print-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 9pt; color: #66645A; }
+.wg-print-brand { font-family: "DM Serif Display", Georgia, serif; font-size: 12pt; color: #6E7A3F; }
+.wg-print-title { font-family: "DM Serif Display", Georgia, serif; font-size: 22pt; line-height: 1.15; margin-top: 4pt; color: #33322A; }
+.wg-print-foot { margin-top: 14pt; break-inside: avoid; }
+.wg-print-qr { display: flex; align-items: center; gap: 10pt; font-size: 9pt; color: #66645A; }
+.wg-print-qr img { width: 22mm; height: 22mm; }
+.wg-print-qr strong { color: #33322A; }

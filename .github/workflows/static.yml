@@ -32,6 +32,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Check page rules
+        # Stops the deploy if a page is missing a standing component (see CLAUDE.md, "Page rules")
+        run: python3 scripts/check-pages.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

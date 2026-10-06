@@ -13,6 +13,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <title>Questions to Ask at Your Baby's Check-up — Wholesome Girlies</title>
 <meta name="description" content="A ready list of questions to take to your baby's doctor or clinic visit, so you do not forget anything. Tick, add your own, and print. Educational, not medical advice.">
+<meta name="wg:share" content="Baby has a clinic visit coming up? A ready list of questions to take to the doctor, so nothing gets forgotten.">
 <link rel="canonical" href="https://wholesomegirlies.xyz/parenting/tools/paediatric-visit-questions">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Wholesome Girlies">
@@ -38,6 +39,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Parenting","item":"https://wholesomegirlies.xyz/parenting/"},{"@type":"ListItem","position":3,"name":"Paediatric Visit Questions","item":"https://wholesomegirlies.xyz/parenting/tools/paediatric-visit-questions"}]}
 </script>
 <style>.addrow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}.addrow input{flex:1;min-width:200px;padding:11px 13px;border:1px solid var(--sand);border-radius:var(--radius-sm);font-family:var(--sans);font-size:1rem;background:var(--white);color:var(--plum);}.checklist .del{background:none;border:none;color:var(--plum-soft);font-size:1.15rem;cursor:pointer;margin-left:auto;padding:0 4px;}.checklist li{display:flex;align-items:flex-start;gap:4px;}</style>
+<link rel="stylesheet" href="/assets/css/wg-print.css?v=20261006c" media="print">
+<link rel="stylesheet" href="/assets/css/wg-rail.css?v=20261004i">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -72,7 +75,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="tool-app">
       <ul class="checklist" id="list"></ul>
       <div class="addrow"><input id="newq" placeholder="Add your own" onkeydown="if(event.key==='Enter')addQ()"><button class="btn btn-ghost" style="padding:9px 18px;" onclick="addQ()">Add</button></div>
-      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;"><button class="btn btn-ghost" style="padding:8px 16px;" onclick="resetList()">Reset</button><button class="btn btn-ghost" style="padding:8px 16px;" onclick="window.print()">Print</button></div>
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;"><button class="btn btn-ghost" style="padding:8px 16px;" onclick="resetList()">Reset</button><button class="btn btn-ghost" style="padding:8px 16px;" data-wg-print onclick="window.print()">Print or save as PDF</button></div>
     </div>
 
     <div class="disclaimer"><strong>Educational, not medical advice.</strong> General questions to help you get the most from your baby's own appointment. Your doctor knows your baby's full picture. It saves only on your own device.</div>
@@ -130,6 +133,8 @@ function resetList(){ save({custom:[],checked:{}}); render(); }
 render();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
+<script src="/assets/js/wg-article.js?v=20261006g" defer></script>
+<script src="/assets/js/wg-print.js?v=20261006b" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 </body>

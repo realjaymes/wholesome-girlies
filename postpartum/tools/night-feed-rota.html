@@ -13,6 +13,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <title>Night Feed Rota — share the nights — Wholesome Girlies</title>
 <meta name="description" content="A simple night rota for new mums: agree who does which feed, so the nights are not silently all on you. Saves on your device. Built on research and real data. Educational, not medical advice.">
+<meta name="wg:share" content="New baby at home? Agree who does which night feed, so the nights aren&#x27;t silently all on mum. A simple rota to fill in together.">
 <link rel="canonical" href="https://wholesomegirlies.xyz/postpartum/tools/night-feed-rota">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Wholesome Girlies">
@@ -46,6 +47,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .rota .del{background:none;border:none;color:var(--plum-soft);font-size:1.2rem;cursor:pointer;line-height:1;padding:4px 8px;}
   @media(max-width:560px){.rota,.rota tbody,.rota tr,.rota td{display:block;width:100%;}.rota thead{display:none;}.rota td{border:none;padding:4px 0;}.rota tr{border-bottom:1px solid var(--line);padding:10px 0;}.rota .part{margin-bottom:4px;}}
 </style>
+<link rel="stylesheet" href="/assets/css/wg-print.css?v=20261006c" media="print">
+<link rel="stylesheet" href="/assets/css/wg-rail.css?v=20261004i">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -89,7 +92,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
         <button class="btn btn-ghost" style="padding:8px 16px;" onclick="addRow()">Add a row</button>
         <button class="btn btn-ghost" style="padding:8px 16px;" onclick="resetRota()">Reset</button>
-        <button class="btn btn-ghost" style="padding:8px 16px;" onclick="window.print()">Print</button>
+        <button class="btn btn-ghost" style="padding:8px 16px;" data-wg-print onclick="window.print()">Print or save as PDF</button>
       </div>
     </div>
 
@@ -184,6 +187,8 @@ function resetRota(){ rows = DEFAULT.slice(); save(rows); render(); }
 render();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
+<script src="/assets/js/wg-article.js?v=20261006g" defer></script>
+<script src="/assets/js/wg-print.js?v=20261006b" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 </body>

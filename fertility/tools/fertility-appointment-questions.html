@@ -13,6 +13,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <title>Fertility Appointment Questions — Wholesome Girlies</title>
 <meta name="description" content="A ready list of questions to take to your fertility or GP appointment, so you do not forget anything. Tick, add your own, and print. It helps you ask, never interprets your results. Educational, not medical advice.">
+<meta name="wg:share" content="Got a fertility appointment coming up? A ready list of questions to take in, so nothing gets forgotten in the room. Tick, add your own, print.">
 <link rel="canonical" href="https://wholesomegirlies.xyz/fertility/tools/fertility-appointment-questions">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Wholesome Girlies">
@@ -43,6 +44,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .checklist .del{background:none;border:none;color:var(--plum-soft);font-size:1.15rem;cursor:pointer;margin-left:auto;padding:0 4px;}
   .checklist li{display:flex;align-items:flex-start;gap:4px;}
 </style>
+<link rel="stylesheet" href="/assets/css/wg-print.css?v=20261006c" media="print">
+<link rel="stylesheet" href="/assets/css/wg-rail.css?v=20261004i">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -86,7 +89,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
         <button class="btn btn-ghost" style="padding:8px 16px;" onclick="resetList()">Reset</button>
-        <button class="btn btn-ghost" style="padding:8px 16px;" onclick="window.print()">Print</button>
+        <button class="btn btn-ghost" style="padding:8px 16px;" data-wg-print onclick="window.print()">Print or save as PDF</button>
       </div>
     </div>
 
@@ -194,6 +197,8 @@ function resetList(){ save({custom:[],checked:{}}); render(); }
 render();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
+<script src="/assets/js/wg-article.js?v=20261006g" defer></script>
+<script src="/assets/js/wg-print.js?v=20261006b" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 </body>

@@ -1,13 +1,89 @@
-/* Reading progress + auto-built section navigation.
- * Reads the article's own <h2> elements, so a rewritten page gains its
- * contents list without any extra markup. Does nothing on short pages. */
+/* Reading progress, auto-built section navigation, and share icons.
+ * Reads the page's own <h2> elements, so a rewritten page gains its
+ * contents list without any extra markup. Pages with fewer than two
+ * headings get the share icons only. Load on every guide and tool. */
 (function () {
   "use strict";
-  var MIN_SECTIONS = 3;
+  var MIN_SECTIONS = 2;
 
   function slug(t) {
     return t.toLowerCase().trim()
       .replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").slice(0, 60);
+  }
+
+  /* Sharing runs on every guide and tool, with or without a contents panel.
+     Up to three places: the sticky rail on wide screens (share at any point
+     while reading), a row near the top (under the byline, or under the tool),
+     and a slim row at the end above the program card. On guides with a rail
+     the top row shows on phones only; on tools it always shows, because the
+     rail waits for the written section and the tool comes first. A tool with
+     no written guide under it gets the row under the tool only, because an
+     end row would sit straight below it and repeat it.
+     The share line is written per page in <meta name="wg:share">; an optional
+     <meta name="wg:share-label"> softens the prompt on loss and private pages.
+     Icons come from wg-share.js. */
+  function addShare(main, rail, isTool, hasGuide) {
+    var h1 = main.querySelector("h1");
+    if (!h1) return;
+    var meta = function (n) { var m = document.querySelector('meta[name="' + n + '"]'); return m ? m.content : ""; };
+    var line = meta("wg:share") || h1.textContent.trim();
+    var prompt = meta("wg:share-label") || (isTool ? "Know someone who'd use this?" : "Know someone who should read this?");
+    var path = location.pathname.replace(/\.html$/, "");
+    var makeShare = function (where, size) {
+      var t = document.createElement("div");
+      t.className = "wg-share";
+      t.setAttribute("data-share-id", path.split("/").pop());
+      t.setAttribute("data-share-surface", (isTool ? "tool_" : "article_") + where);
+      t.setAttribute("data-share-path", path);
+      t.setAttribute("data-share-text", line);
+      if (size) t.setAttribute("data-share-size", size);
+      return t;
+    };
+    var labelEl = function (text, css) {
+      var p = document.createElement("p");
+      p.textContent = text;
+      p.style.cssText = css;
+      return p;
+    };
+
+    if (rail) {
+      var railShare = document.createElement("div");
+      railShare.className = "toc-share";
+      railShare.style.cssText = "flex:none;margin-top:16px;";
+      railShare.appendChild(labelEl("Share this", "margin:0 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--plum-soft);"));
+      railShare.appendChild(makeShare("rail", "sm"));
+      rail.insertBefore(railShare, rail.querySelector(".toc-cta"));
+    }
+
+    var after = main.querySelector(".byline") || main.querySelector(".tool-app");
+    if (after) {
+      var top = document.createElement("div");
+      top.className = "wg-share-top";
+      top.style.cssText = "margin-top:14px;";
+      if (isTool) top.appendChild(labelEl(prompt, "margin:0 0 8px;font-size:.9rem;font-weight:700;color:var(--plum);"));
+      top.appendChild(makeShare("top", "sm"));
+      after.parentNode.insertBefore(top, after.nextSibling);
+      if (rail && !isTool) {
+        var hideTop = document.createElement("style");
+        hideTop.textContent = "@media (min-width:1180px){.wg-share-top{display:none}}";
+        document.head.appendChild(hideTop);
+      }
+    }
+
+    var anchor = main.querySelector(".program-cta");
+    if (anchor && (hasGuide || !after)) {
+      /* a slim row, not a card, so it never competes with the program card below */
+      var end = document.createElement("div");
+      end.className = "wg-share-end";
+      end.style.cssText = "margin:28px 0 22px;padding:16px 0 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);";
+      end.appendChild(labelEl(prompt, "margin:0 0 10px;font-size:.95rem;font-weight:700;color:var(--plum);"));
+      end.appendChild(makeShare("end"));
+      anchor.parentNode.insertBefore(end, anchor);
+    }
+
+    var s = document.createElement("script");
+    s.src = "/assets/js/wg-share.js?v=20261006c";
+    document.body.appendChild(s);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -17,7 +93,10 @@
     var heads = Array.prototype.filter.call(main.querySelectorAll("h2"), function (h) {
       return h.textContent.trim().length > 1;
     });
-    if (heads.length < MIN_SECTIONS) return;
+    var isTool = /\/tools\//.test(window.location.pathname);
+    /* a written guide = headings outside the tool and the program card */
+    var hasGuide = !isTool || heads.some(function (h) { return !h.closest(".tool-app, .program-cta"); });
+    if (heads.length < MIN_SECTIONS) { addShare(main, null, isTool, hasGuide); return; }
 
     var used = {};
     heads.forEach(function (h) {
@@ -49,7 +128,6 @@
 
     /* On a tool the calculator is the page, so the navigation starts at
        the written answer below it rather than beside the tool. */
-    var isTool = /\/tools\//.test(window.location.pathname);
     var label = isTool ? "On this page" : "In this guide";
 
     /* inline, for phones: after the opening paragraph of a guide, or just
@@ -91,8 +169,13 @@
     var ctaName = main.querySelector(".program-cta h3");
     if (cta) {
       var href = cta.getAttribute("href");
-      var offer = OFFERS[href.replace(/\/$/, "")] ||
-        [null, "Start " + (ctaName ? ctaName.textContent.trim() : "the program")];
+      /* buyers: member-cta.js has already pointed the button at their
+         thank-you home, so mirror its wording instead of a "Start" offer */
+      var member = /\/thank-you(\.html)?$/.test(href);
+      var offer = member
+        ? ["Your space", cta.textContent.replace(/\s*→\s*$/, "").trim()]
+        : OFFERS[href.replace(/\/$/, "")] ||
+          [null, "Start " + (ctaName ? ctaName.textContent.trim() : "the program")];
       var box = document.createElement("div");
       box.className = "toc-cta";
       if (offer[0]) {
@@ -108,6 +191,9 @@
       rail.appendChild(box);
     }
     document.body.appendChild(rail);
+
+    addShare(main, rail, isTool, hasGuide);
+
     var links = rail.querySelectorAll("ol a");
     var footer = document.querySelector(".site-footer");
 
