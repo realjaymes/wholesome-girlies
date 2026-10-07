@@ -1,8 +1,8 @@
 # Wholesome Girlies
 
-> Free tools and research-backed guidance for women, at every stage: fertility, pregnancy, postpartum, parenting, and the relationships around them. Built for African women, at home and in the diaspora. Everything is educational, never medical care, and always points to a doctor when something needs real attention.
+> Tools and research-backed guidance for women, at every stage: fertility, pregnancy, postpartum, parenting, and the relationships around them. Built for African women, at home and in the diaspora. Everything is educational, never medical care, and always points to a doctor when something needs real attention.
 
-Wholesome Girlies is a women's health and life brand. Free interactive tools and plain-language guides bring women in; one-time programs give the deeper roadmap for each stage. Content is written in a warm, plain, honest voice and follows a strict educational-not-medical policy: no diagnosis, no treatment claims, and clear routes to real care. The brand speaks as a community of women ("we"), not as invented individuals, and does not present fabricated people as real named contributors or clinicians.
+Wholesome Girlies is a women's health and life brand. Interactive tools and plain-language guides bring women in; one-time programs give the deeper roadmap for each stage. Content is written in a warm, plain, honest voice and follows a strict educational-not-medical policy: no diagnosis, no treatment claims, and clear routes to real care. The brand speaks as a community of women ("we"), not as invented individuals, and does not present fabricated people as real named contributors or clinicians.
 
 ## Stages
 
@@ -12,7 +12,7 @@ Wholesome Girlies is a women's health and life brand. Free interactive tools and
 - [Postpartum](https://wholesomegirlies.xyz/postpartum/): recovery for the mother, body, marriage, and mind
 - [Parenting](https://wholesomegirlies.xyz/parenting/): the baby years, what is normal, and keeping baby safe
 
-## Free tools
+## Tools
 
 - [Ovulation calculator](https://wholesomegirlies.xyz/fertility/tools/ovulation-calculator)
 - [Period tracker](https://wholesomegirlies.xyz/fertility/tools/period-tracker)
