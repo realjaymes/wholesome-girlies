@@ -1,4 +1,4 @@
-# Share copy bank: data + lint + markdown render
+# Share copy bank: data + lint + markdown render (+ --og-json for the guide preview hooks)
 import re, sys
 A = "approved in chat"
 D = [
@@ -136,7 +136,7 @@ D = [
  ("A caesarean recovery runs on a different clock.", "If you've just had a baby, this calculator takes your delivery date and how you delivered, and shows what many women experience week by week.", "curiosity gap", ""),
  ("Three weeks after birth and wondering if this is normal?", "For new mums, this calculator maps out gentle, week-by-week recovery milestones from your delivery date and type. Every body is different.", "genuine question", "")),
 ]),
-("Baby years", [
+("Parenting", [
 ("Starting solids", "guide", "/parenting/guides/starting-solids",
  ("Waking more at night doesn't mean a baby is ready for solids.", "If there's a baby around six months in your life, this guide covers the three signs of real readiness, the four that fool everybody, and first foods from the market.", "myth-busting", ""),
  ("A baby's first foods can come from the market you already use.", "For parents of babies around six months, this guide covers when to start solids, what to try first, what to skip, and why allergy foods go in early.", "Nigerian texture", "")),
@@ -209,7 +209,13 @@ for stage, pages in D:
                 probs.append(f"{name} {tag}: line 2 names no resource type")
 print("pages:", n); print("\n".join(probs) or "lint clean")
 
-if len(sys.argv) > 1:
+if len(sys.argv) > 1 and sys.argv[1] == "--og-json":
+    # guide hooks for the link preview cards (scripts/make-og.js reads scripts/og-hooks.json)
+    import json
+    hooks = {path: w[0] for _, pages in D for name, kind, path, w, a in pages if kind == "guide" and w[1]}
+    json.dump(hooks, open("scripts/og-hooks.json", "w"), indent=1, ensure_ascii=False)
+    print("wrote scripts/og-hooks.json:", len(hooks))
+elif len(sys.argv) > 1:
     out = []
     for stage, pages in D:
         out.append(f"## {stage}\n")

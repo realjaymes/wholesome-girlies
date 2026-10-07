@@ -230,7 +230,7 @@ for p in PAGES:
     if og and og.group(1) != u:
         fail(p, "og:url must equal the canonical URL")
     img = re.search(r'property="og:image" content="([^"]+)"', s)
-    if img and (not img.group(1).startswith(SITE) or not resolves(img.group(1)[len(SITE):])):
+    if img and (not img.group(1).startswith(SITE) or not resolves(img.group(1)[len(SITE):].split("?")[0])):
         fail(p, "og:image must be an absolute URL to a file that exists")
     for f in ["favicon.svg", "favicon-32.png", "apple-touch-icon.png"]:
         if f not in s:
@@ -328,6 +328,8 @@ for p in RESOURCES:
         fail(p, "member-cta.js must load before wg-article.js")
     if "program-cta" not in s:
         fail(p, "missing the program card (.program-cta)")
+    if KIND[p] == "GUIDE" and 'class="byline"' not in s:
+        fail(p, "guide is missing its author byline (the top share row sits under it)")
 
 for p in PAGES:
     s = SRC[p]
@@ -392,6 +394,37 @@ for name, vers in refs.items():
     if len(vers) > 1:
         detail = ", ".join(f"?v={v} on {len(ps)} file(s)" for v, ps in vers.items())
         problems.append(f"{name}: mixed cache versions ({detail}); bump every reference to one value")
+
+# Inline scripts must parse. One syntax error stops a whole tool working, so a broken
+# script never ships. Uses Node when it is available (it is on the GitHub runner).
+import shutil
+import subprocess
+if shutil.which("node"):
+    jobs = []
+    for p in PAGES:
+        for attrs, code in re.findall(r"<script([^>]*)>(.*?)</script>", read(p), flags=re.S):
+            if "src=" in attrs or "json" in attrs or not code.strip():
+                continue
+            jobs.append({"p": p, "code": code})
+    checker = ("const vm=require('vm');let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{"
+               "for(const j of JSON.parse(d)){try{new vm.Script(j.code)}catch(e){console.log(j.p+'\\t'+e.message)}}})")
+    out = subprocess.run(["node", "-e", checker], input=json.dumps(jobs), capture_output=True, text=True).stdout
+    for line in out.splitlines():
+        page, msg = line.split("\t", 1)
+        fail(page, f"inline script does not parse ({msg}); the tool on this page will not run")
+else:
+    print("check-pages: node not found, inline script check skipped")
+
+# Every tool and guide has its own link preview card from scripts/make-og.js
+for p in RESOURCES:
+    s = read(p)
+    img = re.search(r'property="og:image" content="([^"]+)"', s)
+    slug = os.path.basename(p)[:-5]
+    if not img or f"/assets/img/og/{slug}.jpg" not in img.group(1):
+        fail(p, f"og:image must be its own card, /assets/img/og/{slug}.jpg (run scripts/make-og.js)")
+    tw = re.search(r'name="twitter:image" content="([^"]+)"', s)
+    if img and tw and tw.group(1) != img.group(1):
+        fail(p, "twitter:image must match og:image")
 
 # ---------- Ratchet rules (frozen backlog, no new violations) ----------
 

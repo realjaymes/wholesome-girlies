@@ -13,7 +13,7 @@
 
   /* Sharing runs on every guide and tool, with or without a contents panel.
      Up to three places: the sticky rail on wide screens (share at any point
-     while reading), a row near the top (under the byline, or under the tool),
+     while reading), a row near the top (straight under the tool on tools, under the byline on guides),
      and a slim row at the end above the program card. On guides with a rail
      the top row shows on phones only; on tools it always shows, because the
      rail waits for the written section and the tool comes first. A tool with
@@ -55,7 +55,10 @@
       rail.insertBefore(railShare, rail.querySelector(".toc-cta"));
     }
 
-    var after = main.querySelector(".byline") || main.querySelector(".tool-app");
+    /* tools: straight under the tool, never inside the written guide below it,
+       where the byline sits; guides: under the byline at the top */
+    var after = isTool ? (main.querySelector(".tool-app") || main.querySelector(".byline"))
+                       : (main.querySelector(".byline") || (h1 && h1.parentNode.lastElementChild));
     if (after) {
       var top = document.createElement("div");
       top.className = "wg-share-top";
