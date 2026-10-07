@@ -24,10 +24,15 @@ SITE = "https://wholesomegirlies.xyz"
 BASELINE = "scripts/check-baseline.json"
 
 problems = []
+warnings = []
 
 
 def fail(page, msg):
     problems.append(f"{page}: {msg}")
+
+
+def warn(page, msg):
+    warnings.append(f"{page}: {msg}")
 
 
 def read(p):
@@ -478,6 +483,20 @@ def ratchet_counts():
     return c
 
 
+# ---------- Warnings (advisory, never fail the run) ----------
+
+FILLER = re.compile(r"\b(honest(?:ly)?|calm(?:ly|er|ing|ness)?|gentl(?:e|y|er|eness))\b", re.I)
+for p in PAGES:
+    if KIND[p] == "MOCKUP":
+        continue
+    # testimonial quotes are verbatim customer words, so they are not counted
+    body = re.sub(r'<p class="quote">.*?</p>', " ", SRC[p], flags=re.S)
+    body = re.sub(r"<(script|style|noscript)[^>]*>.*?</\1>|<!--.*?-->", " ", body, flags=re.S | re.I)
+    desc = re.findall(r'<meta name="description" content="([^"]*)"', SRC[p])
+    hits = FILLER.findall(html.unescape(re.sub(r"<[^>]+>", " ", body) + " ".join(desc)))
+    if len(hits) > 1:
+        warn(p, f'"honest", "calm" or "gentle" used {len(hits)} times; say the specific thing, one literal use per page at most')
+
 now = ratchet_counts()
 if "--update-baseline" in sys.argv:
     with open(BASELINE, "w") as f:
@@ -496,6 +515,9 @@ for rule, pages in base.items():
         if now.get(rule, {}).get(p, 0) < n:
             improved += 1
 
+if warnings:
+    print(f"check-pages: {len(warnings)} warning(s), not failing the run\n")
+    print("\n".join("  - " + x for x in warnings) + "\n")
 if problems:
     print(f"check-pages: {len(problems)} problem(s)\n")
     print("\n".join("  - " + x for x in problems))
