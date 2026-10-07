@@ -85,7 +85,7 @@
     }
 
     var s = document.createElement("script");
-    s.src = "/assets/js/wg-share.js?v=20261006c";
+    s.src = "/assets/js/wg-share.js?v=20261007a";
     document.body.appendChild(s);
   }
 

@@ -286,6 +286,24 @@ for line in read("llms.txt").splitlines():
 if re.search(r"hreflang", "".join(SRC.values())):
     fail("site", "no hreflang: the site is single-language")
 
+# brand profiles: the footer row, the X card handle, and the home page sameAs list the same five
+PROFILES = ["https://www.facebook.com/wholesomegirlies", "https://www.instagram.com/wholesomegirlieshq",
+            "https://www.tiktok.com/@wholesomegirlies", "https://x.com/wgirlieshq",
+            "https://www.linkedin.com/company/wholesomegirlies"]
+for p in PAGES:
+    s = SRC[p]
+    foot = re.search(r'<div class="footer-social">(.*?)<div class="footer-bottom">', s, re.S)
+    if foot:
+        for u in PROFILES:
+            if f'href="{u}"' not in foot.group(1):
+                fail(p, f"footer social row is missing {u}")
+    if 'name="twitter:card"' in s and '<meta name="twitter:site" content="@wgirlieshq">' not in s:
+        fail(p, 'missing <meta name="twitter:site" content="@wgirlieshq">')
+same = re.search(r'"sameAs":\[([^\]]*)\]', SRC.get("index.html", ""))
+for u in PROFILES:
+    if not same or f'"{u}"' not in same.group(1):
+        fail("index.html", f"Organization sameAs is missing {u}")
+
 # ---------- 4. Page structure ----------
 
 for p in PAGES:

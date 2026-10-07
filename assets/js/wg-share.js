@@ -98,7 +98,7 @@
     function icon(p) { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + p + '"/></svg>'; }
 
     add("whatsapp", "Send on WhatsApp", icon(ICONS.whatsapp), "https://wa.me/?text=" + enc(text + "\n" + url("wa")));
-    add("x", "Post on X", icon(ICONS.x), "https://x.com/intent/post?text=" + enc(shortText) + "&url=" + enc(url("x")));
+    add("x", "Post on X", icon(ICONS.x), "https://x.com/intent/post?text=" + enc(shortText) + "&url=" + enc(url("x")) + "&via=wgirlieshq");
     add("facebook", "Share on Facebook", icon(ICONS.facebook), "https://www.facebook.com/sharer/sharer.php?u=" + enc(url("fb")));
     add("threads", "Post on Threads", icon(ICONS.threads), "https://www.threads.net/intent/post?text=" + enc(shortText + " " + url("th")));
     add("linkedin", "Share on LinkedIn", icon(ICONS.linkedin), "https://www.linkedin.com/sharing/share-offsite/?url=" + enc(url("li")));
