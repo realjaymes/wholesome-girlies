@@ -184,7 +184,7 @@ function render(){
     ul.appendChild(li);
   });
   document.getElementById('empty').style.display = a.length? 'none':'block';
-  document.getElementById('counts').textContent = c.Feed+' feeds · '+c.Sleep+' sleeps · '+c.Nappy+' nappies';
+  document.getElementById('counts').textContent = c.Feed+(c.Feed===1?' feed':' feeds')+' · '+c.Sleep+(c.Sleep===1?' sleep':' sleeps')+' · '+c.Nappy+(c.Nappy===1?' nappy':' nappies');
 }
 render();
 </script>
