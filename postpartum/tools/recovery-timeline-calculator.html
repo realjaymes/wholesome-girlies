@@ -191,7 +191,7 @@ function calcTimeline(){
 
   var where = weeksSince < 0
     ? 'Your delivery date is in the future, so this is what the weeks ahead may look like.'
-    : 'You are about ' + weeksSince + ' week' + (weeksSince===1?'':'s') + ' postpartum. Your current stage is highlighted.';
+    : 'You are in week ' + (weeksSince + 1) + ' after birth. Your current stage is highlighted.';
   document.getElementById('resWhere').textContent = where;
 
   var html = '';
