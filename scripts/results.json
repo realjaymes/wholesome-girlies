@@ -3,12 +3,12 @@
     "stage": "relationships",
     "name": "Ready for Love quiz",
     "cta": "Take the quiz",
-    "share": "I got \"{title}\" on the Ready for Love quiz 👀 Eight honest questions on clarity, standards and healing. Take it and send me yours.",
+    "share": "I got \"{title}\" on the Ready for Love quiz 👀 Eight questions on what you want, your standards and what you are healing from. Take it and send me yours.",
     "results": {
       "grounded": {
-        "title": "Clear, calm, and ready.",
+        "title": "Clear on my standards, and ready.",
         "band": "Dating from a grounded place",
-        "summary": "You know what you want, you hold your standards, and you are choosing rather than chasing. Keep protecting that calm, it is your best filter."
+        "summary": "You know what you want, you hold your standards, and you are choosing rather than chasing. Keep protecting your time and your standards, they are your best filter."
       },
       "close": {
         "title": "Close. A little clarity and I'm there.",
@@ -36,12 +36,12 @@
       "watch": {
         "title": "Mostly good. A couple of things to watch.",
         "band": "Mostly good, with things to watch",
-        "summary": "The care is real, and so are one or two patterns worth naming. Small red flags left unspoken tend to grow, so name them once and calmly, and watch how he responds."
+        "summary": "The care is real, and so are one or two patterns worth naming. Small red flags left unspoken tend to grow, so name them once, in a private conversation, and watch how he responds."
       },
       "red-outweighs": {
         "title": "The red is outweighing the green.",
         "band": "More warning signs than reassurance",
-        "summary": "That gap is information. It usually does not close by loving harder or waiting longer. Choosing your calm is not cruelty."
+        "summary": "That gap is information. It usually does not close by loving harder or waiting longer. Stepping back from someone who keeps hurting you is not cruelty."
       },
       "mixed": {
         "title": "A real mix. Reading it carefully.",
