@@ -199,7 +199,7 @@ function calcTimeline(){
     var here = (weeksSince >= (m.w-1) && weeksSince < (m.w+1));
     var when = fmt(addWeeks(start, m.w-1));
     html += '<div style="padding:14px 0; border-bottom:1px solid var(--line);'+(here?'background:var(--blush); border-radius:12px; padding:14px 16px;':'')+'">'
-      + '<div class="big">'+m.t+ (here?' <span class="tag" style="vertical-align:middle;">You are here</span>':'') +'</div>'
+      + '<div class="big">'+m.t+ (here?' <span class="tag" style="vertical-align:middle;">(You are here)</span>':'') +'</div>'
       + '<p class="muted" style="margin:4px 0 6px;">Around '+when+'</p>'
       + '<p style="margin:0;">'+m.d+'</p></div>';
   });
