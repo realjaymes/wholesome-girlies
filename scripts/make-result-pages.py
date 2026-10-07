@@ -20,7 +20,7 @@ SITE = "https://wholesomegirlies.xyz"
 RESULT_VERSION = "20261007b"
 ART = {"ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship"}
 ALT = {
-    "ready-for-love-grounded": "Illustration of Tolu walking down a sunny Lagos street, calm and confident",
+    "ready-for-love-grounded": "Illustration of Tolu walking down a sunny Lagos street",
     "ready-for-love-close": "Illustration of Tolu writing in her journal while Kemi gives her a thumbs up",
     "ready-for-love-pour-into-you": "Illustration of Tolu on the sofa with tea and a face mask, phone face down",
     "flags-healthy": "Illustration of Tolu and Femi laughing at a table while Kemi gives a thumbs up",
