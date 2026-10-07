@@ -42,6 +42,7 @@ The full plans live in the Obsidian vault under `Areas/Work/Wholesome Girlies/`:
 ## 4. Page structure
 
 - Sales pages, `/go/` bridges, and thank-you hubs carry no site navigation. *(hard)*
+- Sales page sections alternate after the hero: plain, then `stage-band` (tinted), then plain, and so on. When you add or remove a section, re-alternate the rest of the page so two tinted or two plain sections never touch. *(judgement)*
 - **Images.** Stage hubs and guides use cast illustrations from `assets/img/cast/`: 16:9 JPG at 1100×618, under 200 KB, `width="1100" height="618"`, alt text that starts "Illustration of" and never presents a cast member as a real woman. No cast character on loss pages, the mental-health check-ins, or the postpartum warning signs guide; those get a still life with no person. Sales pages carry no scene or cast images (the bundle mockup is the only picture) and no separate mechanism or differentiator section, so they stay lean. New cast images are made from the approved masters in the vault (`Content/WG Cast/Masters/`), with GPT Image, attaching only the sheets of the people in the scene.
 - `/go/` bridges show no price, never link to Selar, link only to their own market's sales page, and carry the legal links row. Ads point only at `/go/`. *(hard)*
 - Nigerian sales pages show naira only and load `geo-redirect.js`; diaspora pages show dollars on the page. Every sales page has `id="join"` and loads `checkout-intent.js`. *(hard)*
