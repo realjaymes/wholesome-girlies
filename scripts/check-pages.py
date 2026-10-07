@@ -55,6 +55,8 @@ def kind(p):
         return "PROG-D"
     if re.match(r"programs/[^/]+\.html$", p) and p != "programs/index.html":
         return "PROG"
+    if re.search(r"/tools/[^/]+/result/[^/]+\.html$", p):
+        return "RESULT"
     if "/guides/" in p:
         return "GUIDE"
     if "/tools/" in p:
@@ -69,7 +71,7 @@ def kind(p):
 
 
 KIND = {p: kind(p) for p in PAGES}
-NOINDEX_KINDS = {"GO", "TY", "PROG-D", "404", "MOCKUP"}
+NOINDEX_KINDS = {"GO", "TY", "PROG-D", "404", "MOCKUP", "RESULT"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
 

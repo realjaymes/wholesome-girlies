@@ -1,0 +1,76 @@
+{
+  "ready-for-love-quiz": {
+    "stage": "relationships",
+    "name": "Ready for Love quiz",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the Ready for Love quiz 👀 Eight honest questions on clarity, standards and healing. Take it and send me yours.",
+    "results": {
+      "grounded": {
+        "title": "Clear, calm, and ready.",
+        "band": "Dating from a grounded place",
+        "summary": "You know what you want, you hold your standards, and you are choosing rather than chasing. Keep protecting that calm, it is your best filter."
+      },
+      "close": {
+        "title": "Close. A little clarity and I'm there.",
+        "band": "Close, and a little clarity will sharpen it",
+        "summary": "There is real ground under you. A few areas are being run by pressure or old hurt rather than clarity. Those are learnable, not flaws."
+      },
+      "pour-into-you": {
+        "title": "Pouring into me first.",
+        "band": "A season to pour into you first",
+        "summary": "Pressure, an unhealed chapter, or not yet knowing what you want is steering the wheel. None of that means anything is wrong with you. It means you get to come home to yourself before you choose anyone."
+      }
+    }
+  },
+  "green-red-flags-checker": {
+    "stage": "relationships",
+    "name": "Green and Red Flags checker",
+    "cta": "Check the flags",
+    "share": "I checked the green and red flags. My read: \"{title}\" 👀 Tick what you are actually seeing in him and get your own read.",
+    "results": {
+      "healthy": {
+        "title": "This is looking healthy.",
+        "band": "Healthy so far",
+        "summary": "Real care, consistency and respect, and no red flags so far. Green flags are confirmed by consistency over time, not by one good week."
+      },
+      "watch": {
+        "title": "Mostly good. A couple of things to watch.",
+        "band": "Mostly good, with things to watch",
+        "summary": "The care is real, and so are one or two patterns worth naming. Small red flags left unspoken tend to grow, so name them once and calmly, and watch how he responds."
+      },
+      "red-outweighs": {
+        "title": "The red is outweighing the green.",
+        "band": "More warning signs than reassurance",
+        "summary": "That gap is information. It usually does not close by loving harder or waiting longer. Choosing your calm is not cruelty."
+      },
+      "mixed": {
+        "title": "A real mix. Reading it carefully.",
+        "band": "A real mix",
+        "summary": "There is genuine good here and there are real red flags. The question is whether the reds are workable, or the kind that wear you down over time."
+      }
+    }
+  },
+  "situationship-checker": {
+    "stage": "relationships",
+    "name": "Situationship checker",
+    "cta": "Take the checker",
+    "share": "I took the Situationship checker. Verdict: \"{title}\" 😅 Six questions to see if it is a relationship or a situationship. Take it and send me yours.",
+    "results": {
+      "going-somewhere": {
+        "title": "This is going somewhere.",
+        "band": "A real relationship",
+        "summary": "He is consistent, open about the future, and treats you as his. If you want it named so you can relax into it, that is a fair and easy ask."
+      },
+      "undefined": {
+        "title": "Undefined. I deserve a straight answer.",
+        "band": "Undefined, and costing you clarity",
+        "summary": "There is something real, but it is vague enough to keep you guessing. You are allowed to ask for a definition and a direction."
+      },
+      "choose-you": {
+        "title": "Situationship. I'm choosing me.",
+        "band": "A situationship",
+        "summary": "The consistency, the future and the way he shows up in public do not match what you want. That is a mismatch, not a puzzle to solve by waiting, and you get to choose yourself."
+      }
+    }
+  }
+}

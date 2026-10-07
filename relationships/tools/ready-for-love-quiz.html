@@ -104,6 +104,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="sub" id="growLabel">Where a little clarity helps</p>
         <ul id="grow"></ul>
         <p class="muted" style="margin:16px 0 0;">Wherever you landed, this is a starting point, not a verdict. You are allowed to be a work in progress and worthy at the same time.</p>
+        <div id="wg-result-share" class="wg-result-share" hidden></div>
       </div>
     </div>
 
@@ -300,11 +301,13 @@ function scoreQuiz(){
     var li = document.createElement('li'); li.textContent = "Nothing stood out as shaky today. Enjoy that, and keep choosing from calm."; growUl.appendChild(li);
   }
 
+  if(window.wgShowResult) wgShowResult(pct >= 0.7 ? 'grounded' : pct >= 0.4 ? 'close' : 'pour-into-you');
   var res = document.getElementById('res');
   res.classList.add('show');
   res.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 </script>
+<script src="/assets/js/wg-result.js?v=20261007a" defer></script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>

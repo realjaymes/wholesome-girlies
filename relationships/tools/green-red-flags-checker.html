@@ -124,6 +124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p style="margin:0 0 8px;"><strong>If you are in immediate danger, call 112</strong> (Nigeria's national emergency number) or your local emergency services.</p>
           <p style="margin:0;">For confidential support in Nigeria, you can reach organisations like the <strong>Women at Risk International Foundation (WARIF)</strong>, the <strong>Mirabel Centre</strong> (Lagos), or the <strong>Lagos State Domestic and Sexual Violence Agency (DSVA)</strong>. In the diaspora, contact your local domestic-abuse helpline. Please talk to someone you trust. You deserve to be safe.</p>
         </div>
+        <div id="wg-result-share" class="wg-result-share" hidden></div>
       </div>
     </div>
 
@@ -297,11 +298,13 @@ function readFlags(){
   var safety = document.getElementById('safety');
   if(serious >= 1){ safety.classList.add('show'); } else { safety.classList.remove('show'); }
 
+  if(window.wgShowResult) wgShowResult(serious ? null : ({"This is looking healthy.":'healthy',"Mostly good, with a couple of things to watch.":'watch',"The red is outweighing the green.":'red-outweighs',"A real mix. Read it carefully.":'mixed'})[headline] || null);
   var res = document.getElementById('res');
   res.classList.add('show');
   res.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 </script>
+<script src="/assets/js/wg-result.js?v=20261007a" defer></script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>

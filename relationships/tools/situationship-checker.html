@@ -104,6 +104,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="sub">The words you can use</p>
         <p class="script" id="script"></p>
         <p class="muted" style="margin:16px 0 0;">Asking clearly is not desperate. It is self-respect. His answer, or his dodge, is your answer.</p>
+        <div id="wg-result-share" class="wg-result-share" hidden></div>
       </div>
     </div>
 
@@ -287,11 +288,13 @@ function scoreQuiz(){
   document.getElementById('summary').textContent = summary;
   document.getElementById('script').textContent = script;
 
+  if(window.wgShowResult) wgShowResult(total >= 9 ? 'going-somewhere' : total >= 5 ? 'undefined' : 'choose-you');
   var res = document.getElementById('res');
   res.classList.add('show');
   res.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 </script>
+<script src="/assets/js/wg-result.js?v=20261007a" defer></script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
