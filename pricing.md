@@ -47,7 +47,7 @@ Each individual program is the same price.
 
 ## Diaspora pricing
 
-For buyers outside Nigeria, the programs are sold in US dollars: $12 (early-bird) or $27 (standard) per individual program, and $34 (early-bird) or $77 (standard) for the Complete Motherhood Journey bundle. The diaspora versions do not include the community.
+For buyers outside Nigeria, the programs are sold in US dollars: $12 (early-bird) or $27 (standard) per individual program, and $34 (early-bird) or $77 (standard) for the Complete Motherhood Journey bundle. Diaspora buyers of the motherhood programs join the same community as Nigerian buyers. The Wife Material Blueprint has no community in either market.
 
 ## Notes
 
