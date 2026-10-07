@@ -6,7 +6,7 @@
  * Geolocation: two INDEPENDENT client-side geo-IP providers (geojs + ipwho.is). We
  * redirect to the USD page ONLY when BOTH agree the visitor is outside Africa. This is
  * deliberately biased toward the NG (naira) page: a single flaky/cached reading can
- * never wrongly send a Nigerian to the dollar page (the costly error — ₦13,700 vs $27).
+ * never wrongly send a Nigerian to the dollar page (the costly error — ₦5,700 vs $12).
  * The reverse error (a diaspora buyer seeing cheap naira) is the safe direction.
  *
  * Why not Cloudflare /cdn-cgi/trace: the apex is served directly by GitHub Pages

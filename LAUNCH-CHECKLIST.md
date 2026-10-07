@@ -24,7 +24,7 @@ Every health tool, guide, and the sales page shows a reviewer byline reading "Re
 - [ ] **"Come build this with us" partner card (about page):** change the messaging and CTA from the current "See what we are building" → `/programs/` link to a **real way to reach us — an email or WhatsApp number** — so women who want to partner or work with us can actually make contact. (James's reminder, 2026-07-18.)
 
 ## 5. Commerce and pricing
-- [x] Real pricing live on all sales pages (individual early-bird ₦13,700 / $27, standard ₦19,700 / $37; bundle ₦39,700 / $77). ✅
+- [x] Real pricing live on all sales pages (individual early-bird ₦5,700 / $12, standard ₦13,700 / $27; bundle early-bird ₦16,700 / $34, standard ₦39,700 / $77). ✅
 - [x] Wire the **Selar checkout URLs** via `assets/js/checkout-intent.js` (6 NG products; diaspora = NG slug + `?currency=USD`); flow is ad → `/go/` bridge → sales page → Selar checkout. ✅ 2026-08-03
 - [x] Thank-you pages built and finalized for all 6 programs (NG + diaspora = 12), now full **"[Stage] home" hubs** — product-access card opens the Drive PDF, community invite (motherhood), tools grid, safety, cross-sell. No placeholders. ✅ 2026-08-03
 - [x] **Bundle coupon `MOTHER` created + tested on Selar** (James), wired on the fertility + pregnancy thank-you pages via `?coupon=MOTHER` (NG) / `?currency=USD&coupon=MOTHER` (diaspora). One coupon serves both markets. Coupons apply ONLY to the bundle upsell, never on stage cross-sells. ✅ 2026-08-03

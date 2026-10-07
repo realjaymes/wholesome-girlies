@@ -75,7 +75,7 @@ The full plans live in the Obsidian vault under `Areas/Work/Wholesome Girlies/`:
 
 ## 8. Commerce
 
-- Prices: individual programs early-bird ₦13,700 / $27, standard ₦19,700 / $37; the bundle early-bird ₦39,700 / $77, standard ₦57,700. Diaspora pages are separate (`-diaspora`), dollar-priced, noindex, and reached only through diaspora bridges and the geo-redirect.
+- Prices: individual programs early-bird ₦5,700 / $12, standard ₦13,700 / $27; the bundle early-bird ₦16,700 / $34, standard ₦39,700 / $77. The bundle stays under three individual prices, so "four for the price of three" and "you save more than one stage" hold. The `MOTHER` coupon is 35% off in Selar, which gives an individual buyer back roughly what she paid, so keep that ratio whenever prices move. Diaspora pages are separate (`-diaspora`), dollar-priced, noindex, and reached only through diaspora bridges and the geo-redirect.
 - The 30-day guarantee is conditional on doing the work, never an outcome, and sits after the price. No price in ads, hooks, or emails.
 
 ## 9. Operations
