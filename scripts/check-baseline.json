@@ -1,8 +1,4 @@
 {
- "dashes: no em or en dashes in copy": {
-  "fertility/guides/male-fertility-supplements.html": 9,
-  "fertility/guides/preparing-to-conceive.html": 6
- },
  "description: meta description 155 characters or fewer": {
   "about/editorial-policy.html": 1,
   "about/index.html": 1,
