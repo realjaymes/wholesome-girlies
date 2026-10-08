@@ -63,8 +63,6 @@ main [hidden]{display:none!important} /* .card and .app-install set display, whi
 .app-pick .eyebrow{margin:0 0 6px}
 .app-pick h3{margin:0 0 6px}
 .app-pick p{margin:0 0 14px}
-.app-stages{display:flex;flex-wrap:wrap;gap:8px}
-.app-stages a{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);font-weight:700;font-size:.92rem;color:var(--plum)}
 .app-backup{margin-top:36px;border-top:1px solid var(--line);padding-top:14px}
 .app-backup summary{cursor:pointer;font-weight:800;color:var(--terracotta-dark)}
 .app-backup p{margin:10px 0 0;font-size:.95rem}
@@ -133,8 +131,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="app-block" id="appPick" hidden>
-      <h2 id="appPickTitle">A program for where you are</h2>
+      <h2>A program for where you are</h2>
       <div class="card app-pick" id="appPickCard"></div>
+    </div>
+
+    <div class="app-block" id="appStages" hidden>
+      <p class="eyebrow">Every stage</p>
+      <h2>Wherever you are, start here</h2>
+      <p class="muted">Pick the stage you are in. Each one has its own program.</p>
+      <div class="grid grid-2">
+        <a class="card stage-card" href="/programs/wife-material-blueprint">
+          <div class="emoji">💛</div>
+          <h3>Relationships</h3>
+          <p>Is it a relationship or a situationship? Questions and checkers for the talking stage.</p>
+          <span class="arrow">Explore now →</span>
+        </a>
+        <a class="card stage-card" href="/programs/trying-to-conceive-blueprint">
+          <div class="emoji">🌱</div>
+          <h3>Fertility</h3>
+          <p>Track your cycle, find your fertile window, and know what to ask at the clinic.</p>
+          <span class="arrow">Explore now →</span>
+        </a>
+        <a class="card stage-card" href="/programs/first-pregnancy-plan">
+          <div class="emoji">🤰🏾</div>
+          <h3>Pregnancy</h3>
+          <p>From booking your first antenatal visit to packing your hospital bag.</p>
+          <span class="arrow">Explore now →</span>
+        </a>
+        <a class="card stage-card" href="/programs/postpartum-reset">
+          <div class="emoji">🤱🏾</div>
+          <h3>Postpartum</h3>
+          <p>What your body is doing in the first six weeks, and how to plan omugwo, night feeds and rest.</p>
+          <span class="arrow">Explore now →</span>
+        </a>
+        <a class="card stage-card" href="/programs/first-baby-playbook">
+          <div class="emoji">👶🏾</div>
+          <h3>Parenting</h3>
+          <p>Milestones, vaccinations, routines and first foods, from newborn to toddler.</p>
+          <span class="arrow">Explore now →</span>
+        </a>
+      </div>
     </div>
 
     <div class="app-block">
@@ -244,20 +280,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="app-btns"><button type="button" class="btn btn-primary" id="appBackup">Save a backup</button>
         <label class="btn btn-ghost">Restore a backup<input type="file" id="appRestore" accept="application/json,.json" hidden></label></div>
     </details>
-    <div class="card" id="appMove" style="margin-top:18px;">
-      <div id="appMoveCopy">
-        <h3 style="margin-top:0;">Already added Girlies to your home screen?</h3>
-        <p class="muted">On iPhone the app keeps its own storage, apart from Safari. Copy your entries here, then open Girlies and paste them.</p>
-        <p style="margin:0;"><button type="button" class="btn btn-ghost" id="appCopy">Copy my saved entries</button></p>
-      </div>
-      <div id="appMovePaste">
-        <h3 style="margin-top:0;">Bring your entries from Safari</h3>
-        <p class="muted">Used the tools in Safari before? Open wholesomegirlies.xyz/app in Safari, tap <b>Copy my saved entries</b>, then paste the code here.</p>
-        <label for="appCode" style="display:block;font-weight:800;margin:14px 0 6px;">Paste my saved entries</label>
-        <textarea id="appCode" rows="3" style="width:100%;" placeholder="Paste the code you copied in Safari"></textarea>
-        <p style="margin:10px 0 0;"><button type="button" class="btn btn-primary" id="appPaste">Paste my saved entries</button></p>
-      </div>
-    </div>
     <p class="muted" id="appMsg" role="status" style="margin-top:12px;"></p>
   </div>
 </section>
@@ -345,50 +367,41 @@ function appRender(){
   document.getElementById('appProgram').hidden = progs.children.length === 0;
   appPick(progs.children.length === 0, keys);
 }
-// Not a buyer yet: recommend the program for the stage her saved tools point to, or let her pick a stage.
+// Not a buyer yet: recommend the program for the stage her saved tools point to, or show every stage's program
+// (the homepage's "Wherever you are, start here" cards, linking to the programs).
 // The names and lines are the approved program cards on each stage's tool pages.
 var APP_PROGRAMS = {
-  relationships: ['wife-material-blueprint', 'The Wife Material Blueprint', 'The full plan to heal, meet serious men, read character early and have the talk, with word-for-word scripts.', 'Dating and marriage'],
-  fertility: ['trying-to-conceive-blueprint', 'The Trying-to-Conceive Blueprint', 'A private community for women trying to conceive, with a professional to ask.', 'Trying to conceive'],
-  pregnancy: ['first-pregnancy-plan', 'The First Pregnancy Plan', 'A community for all pregnant women, week-by-week support, and a midwife or doctor to ask.', 'Pregnant'],
-  postpartum: ['postpartum-reset', 'The 6-Week Postpartum Reset', 'The guided program for your body, your marriage, and your mind after birth, plus a community of mums.', 'Just had a baby'],
-  parenting: ['first-baby-playbook', 'The First Baby Playbook', 'A community for parents in the baby and toddler years, guidance on sleep, feeding and milestones, and a professional to ask.', 'Baby or toddler']
+  relationships: ['wife-material-blueprint', 'The Wife Material Blueprint', 'The full plan to heal, meet serious men, read character early and have the talk, with word-for-word scripts.'],
+  fertility: ['trying-to-conceive-blueprint', 'The Trying-to-Conceive Blueprint', 'A private community for women trying to conceive, with a professional to ask.'],
+  pregnancy: ['first-pregnancy-plan', 'The First Pregnancy Plan', 'A community for all pregnant women, week-by-week support, and a midwife or doctor to ask.'],
+  postpartum: ['postpartum-reset', 'The 6-Week Postpartum Reset', 'The guided program for your body, your marriage, and your mind after birth, plus a community of mums.'],
+  parenting: ['first-baby-playbook', 'The First Baby Playbook', 'A community for parents in the baby and toddler years, guidance on sleep, feeding and milestones, and a professional to ask.']
 };
 function appPick(show, keys){
-  var box = document.getElementById('appPick'), card = document.getElementById('appPickCard');
-  box.hidden = !show; if (!show) return;
+  var box = document.getElementById('appPick'), card = document.getElementById('appPickCard'), all = document.getElementById('appStages');
   var count = {};
   APP_TOOLS.forEach(function(t){
     if (keys.some(function(k){ return k === t[0] || (t[0].slice(-1) === '_' && k.indexOf(t[0]) === 0); })) { var st = t[1].split('/')[1]; count[st] = (count[st] || 0) + 1; }
   });
-  var stage = Object.keys(count).sort(function(a, b){ return count[b] - count[a]; })[0];
-  card.innerHTML = '';
-  if (stage) {
-    var p = APP_PROGRAMS[stage];
-    document.getElementById('appPickTitle').textContent = 'A program for where you are';
-    card.innerHTML = '<p class="eyebrow">Picked from the tools you use</p><h3></h3><p class="muted"></p><a class="btn btn-primary"></a>';
-    card.querySelector('h3').textContent = p[1];
-    card.querySelector('p.muted').textContent = p[2];
-    var a = card.querySelector('a'); a.href = '/programs/' + p[0]; a.textContent = 'See the program \u2192';
-  } else {
-    document.getElementById('appPickTitle').textContent = 'Find your program';
-    card.innerHTML = '<p class="muted">Where are you right now? Each stage has its own program.</p><div class="app-stages"></div>';
-    var list = card.querySelector('.app-stages');
-    Object.keys(APP_PROGRAMS).forEach(function(st){ var a = document.createElement('a'); a.href = '/programs/' + APP_PROGRAMS[st][0]; a.textContent = APP_PROGRAMS[st][3]; list.appendChild(a); });
-  }
+  var stage = show && Object.keys(count).sort(function(a, b){ return count[b] - count[a]; })[0];
+  box.hidden = !stage; all.hidden = !show || !!stage;
+  if (!stage) return;
+  var p = APP_PROGRAMS[stage];
+  card.innerHTML = '<p class="eyebrow">Picked from the tools you use</p><h3></h3><p class="muted"></p><a class="btn btn-primary"></a>';
+  card.querySelector('h3').textContent = p[1];
+  card.querySelector('p.muted').textContent = p[2];
+  var a = card.querySelector('a'); a.href = '/programs/' + p[0]; a.textContent = 'See the program \u2192';
 }
 function appSay(t){ document.getElementById('appMsg').textContent = t; }
 document.addEventListener('DOMContentLoaded', function(){
   if (!window.WGApp) return;
   appRender();
-  var $ = function(id){ return document.getElementById(id); }, has = WGApp.savedKeys().length > 0;
+  var $ = function(id){ return document.getElementById(id); };
   if (WGApp.standalone) {
     WGApp.keep();
     var first = false; try { first = !localStorage.getItem('wg_app_welcomed'); localStorage.setItem('wg_app_welcomed', '1'); } catch (e) {}
     $('appTitle').textContent = first ? 'You are set' : 'Welcome back';
     $('appLead').textContent = first ? 'Girlies is on your home screen now. Every tool here works without data.' : 'Your saved tools, your program and the newest games.';
-    // On iPhone the app starts with empty storage, so bringing her entries across comes first.
-    if (WGApp.ios && !has) { $('appMove').style.marginTop = '18px'; $('appLead').parentNode.appendChild($('appMove')); }
   } else {
     $('appInstall').hidden = false;
     if (!WGApp.phone) {
@@ -404,25 +417,16 @@ document.addEventListener('DOMContentLoaded', function(){
     if (v.paused) { v.play().then(function(){ b.classList.add('is-playing'); }).catch(function(){}); } else { v.pause(); b.classList.remove('is-playing'); }
   });
   $('appInstallBtn').addEventListener('click', function(){ WGApp.install('app_home'); });
-  // iPhone only: Safari offers the copy when she has entries; the installed app offers the paste.
-  $('appMove').hidden = !WGApp.ios || (!WGApp.standalone && !has);
-  $('appMoveCopy').hidden = WGApp.standalone;
-  $('appMovePaste').hidden = !WGApp.standalone;
   document.getElementById('appBackup').addEventListener('click', function(){ WGApp.downloadBackup(); appSay('Backup saved. Keep the file somewhere you can find it, like Files or Google Drive.'); });
   document.getElementById('appRestore').addEventListener('change', function(e){
     var f = e.target.files[0]; if (!f) return;
     WGApp.restoreBackup(f).then(function(n){ appRender(); appSay(n + ' saved items restored.' + (WGApp.remembering() ? '' : ' Turn on Remember on this device to keep them.')); }, function(){ appSay('That file is not a Wholesome Girlies backup.'); });
   });
-  document.getElementById('appCopy').addEventListener('click', function(){ WGApp.copyEntries(this); });
-  document.getElementById('appPaste').addEventListener('click', function(){
-    try { var n = WGApp.pasteEntries(document.getElementById('appCode').value); appRender(); appSay(n + ' saved items moved across.'); document.getElementById('appCode').value = ''; }
-    catch (e) { appSay('That code did not work. Copy it again in Safari and paste the whole thing.'); }
-  });
 });
 </script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261008h"></script>
+<script defer src="/assets/js/wg-app.js?v=20261008i"></script>
 <script defer src="/assets/js/wg-tool-reel.js?v=20261008a"></script>
 </body>
 </html>

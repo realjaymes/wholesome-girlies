@@ -9,9 +9,9 @@
  *    browser", because nothing installs from inside them. A computer gets a QR code for her phone. The tool
  *    prompt shows at most once a visit, stays away for 14 days after "Not now", and never shows on sales
  *    pages, ad bridges or the pages in QUIET.
- * 3. Gives the /app home its saved-entries backup, restore and iPhone move (window.WGApp).
+ * 3. Gives the /app home its saved-entries backup and restore (window.WGApp).
  *
- * Her entries never leave her phone: the backup is a file she saves, the move is a code she copies, and
+ * Her entries never leave her phone: the backup is a file she saves, and
  * nothing here sends either anywhere. Analytics events carry where a prompt showed, never what she entered.
  */
 (function (w, d) {
@@ -23,10 +23,12 @@
   var android = /Android/.test(ua);
   var iosBrowser = /CriOS/.test(ua) ? 'chrome' : /EdgiOS/.test(ua) ? 'edge' : /FxiOS/.test(ua) ? 'firefox' : 'safari';
   var inApp = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|TikTok|musical_ly|Bytedance|Snapchat|\bLine\//i.test(ua);
-  // Preview another phone from a computer: ?preview=iphone, iphone-chrome, android, in-app or computer.
-  var preview = (/[?&]preview=(iphone-chrome|iphone|android|in-app|computer)\b/.exec(w.location.search) || [])[1];
+  // Preview another phone from a computer: ?preview=iphone, iphone-chrome, android, in-app or computer,
+  // or ?preview=installed for the app as it opens from her iPhone home screen.
+  var preview = (/[?&]preview=(iphone-chrome|iphone|android|in-app|computer|installed)\b/.exec(w.location.search) || [])[1];
   if (preview) {
-    ios = /^iphone/.test(preview); android = preview === 'android' || preview === 'in-app';
+    ios = /^iphone|installed/.test(preview); android = preview === 'android' || preview === 'in-app';
+    standalone = standalone || preview === 'installed';
     iosBrowser = preview === 'iphone-chrome' ? 'chrome' : 'safari'; inApp = preview === 'in-app';
   }
   var phone = ios || android;
@@ -48,7 +50,7 @@
   }
   function session(k, v) { try { if (v === undefined) return w.sessionStorage.getItem(k); w.sessionStorage.setItem(k, v); } catch (e) { return null; } }
 
-  if (standalone && !session('wgapp_open')) { session('wgapp_open', '1'); push('app_open'); }
+  if (standalone && !preview && !session('wgapp_open')) { session('wgapp_open', '1'); push('app_open'); }
   w.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; });
   w.addEventListener('appinstalled', function () { push('app_installed'); closeSheet(); });
 
@@ -195,7 +197,7 @@
     }
   });
 
-  // ── Saved entries: backup, restore and the iPhone move ──────────────────
+  // ── Saved entries: backup and restore ──────────────────
   function savedKeys() {
     var out = [];
     try { for (var i = 0; i < w.localStorage.length; i++) { var k = w.localStorage.key(i); if (/^wg_/.test(k) && !/^wg_app_/.test(k)) out.push(k); } } catch (e) {}
@@ -214,8 +216,6 @@
     });
     return n;
   }
-  function toCode(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
-  function fromCode(c) { return JSON.parse(decodeURIComponent(escape(atob(String(c).replace(/\s+/g, ''))))); }
   function copyText(text, btn, done) {
     var ok = function () { if (btn) { btn.textContent = done; } };
     if (nav.clipboard && nav.clipboard.writeText) { nav.clipboard.writeText(text).then(ok, function () { fallback(); }); } else fallback();
@@ -224,15 +224,12 @@
       d.body.appendChild(t); t.select(); try { d.execCommand('copy'); ok(); } catch (e) {} t.remove();
     }
   }
-  function copyEntries(btn) { copyText(toCode(pack()), btn, 'Copied. Now open Girlies and paste them.'); push('app_entries_copied'); }
 
   w.WGApp = {
     standalone: standalone, ios: ios, android: android, inApp: inApp, phone: phone, iosBrowser: iosBrowser,
     install: install,
     savedKeys: savedKeys,
     remembering: function () { return !w.WGConsent || !w.WGConsent.state || !!w.WGConsent.state.remember; },
-    copyEntries: copyEntries,
-    pasteEntries: function (code) { var n = unpack(fromCode(code)); push('app_entries_pasted'); return n; },
     downloadBackup: function () {
       var blob = new Blob([JSON.stringify(pack(), null, 1)], { type: 'application/json' });
       var a = d.createElement('a'); a.href = URL.createObjectURL(blob);

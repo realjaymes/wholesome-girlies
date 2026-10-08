@@ -38,8 +38,8 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   ok('app home shows saved tools', home.saved.includes('Hospital Bag Checklist') && home.saved.includes('Baby Feeding and Sleep Tracker'), home.saved.join(', ') + ' remember=' + home.remember);
   ok('app home shows program', !home.progHidden && home.prog.length === 1, home.prog.join(', '));
   // 4. backup round trip
-  const rt = await page.evaluate(() => { const code = btoa(unescape(encodeURIComponent(JSON.stringify({ app: "wholesome-girlies", v: 1, entries: { wg_hospitalbag_v1: localStorage.getItem('wg_hospitalbag_v1') } })))); localStorage.removeItem('wg_hospitalbag_v1'); const n = WGApp.pasteEntries(code); return { n, back: localStorage.getItem('wg_hospitalbag_v1') }; });
-  ok('paste code restores entries', rt.back === JSON.stringify({ a: 1 }), JSON.stringify(rt));
+  const rt = await page.evaluate(async () => { const file = new File([JSON.stringify({ app: "wholesome-girlies", v: 1, entries: { wg_hospitalbag_v1: localStorage.getItem('wg_hospitalbag_v1') } })], 'backup.json'); localStorage.removeItem('wg_hospitalbag_v1'); const n = await WGApp.restoreBackup(file); return { n, back: localStorage.getItem('wg_hospitalbag_v1') }; });
+  ok('backup file restores entries', rt.back === JSON.stringify({ a: 1 }), JSON.stringify(rt));
   // 5. result line and thank-you line (desktop)
   await page.goto(B + '/relationships/tools/red-flag-radar', { waitUntil: 'load' });
   await page.evaluate(() => wgShowResult('sharp'));
