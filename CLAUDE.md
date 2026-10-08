@@ -71,6 +71,7 @@ The full plans live in the Obsidian vault under `Areas/Work/Wholesome Girlies/`:
 - Never call the tools or content "free" in customer-facing copy. *(ratchet)*
 - No em or en dashes in copy, including `<title>` and meta descriptions; use commas and periods. *(ratchet)* Plain language, short sentences, medical terms explained where they appear, the collective "we", no hype, fear, or pressure. James's writing rules (`~/CLAUDE.md`, Writing Style Guidelines) apply to all copy.
 - Never use "honest", "calm" or "gentle" (or honestly, calmly, calmer, gently, gentler) as filler. Say the specific thing: name what the milestones, answers or plan actually hold, and use the Nigerian detail where it fits. Keep one only where it is the literal, precise word (a physical instruction like "press gently"), at most once per page, and never swap in "kind", "soft", "real" or "clear". `scripts/check-pages.py` warns on any page that uses them more than once. *(judgement)*
+- Program sales page heroes (eyebrow, h1, lead, price button) are approved copy. Copy and voice passes leave them alone unless James names them, and keep the allowed proof claims, including the Wife Material "300+ Nigerian women ... in less than 12 months" headline. *(judgement)*
 - James's own face never appears; women's faces are fine. Never present a stock or AI person as a real named woman. The founder stays private; Cynthia Obinatu is the named author and editor.
 
 ## 8. Commerce
