@@ -409,6 +409,14 @@ for p in PAGES:
         if hits:
             fail(p, f"{why} (found: {', '.join(sorted(hits))})")
 
+# Readers do not know the short name yet: copy says "Wholesome Girlies", never "WG". Checks the whole
+# source outside HTML comments, so text built by inline scripts (result bands, review lists) counts too.
+for p in PAGES:
+    if KIND[p] != "MOCKUP" and re.search(r"\bWG\b", re.sub(r"<!--[\s\S]*?-->", "", SRC[p])):
+        fail(p, 'write "Wholesome Girlies" in full, never "WG"')
+if re.search(r"\bWG\b", read("scripts/results.json")):
+    fail("scripts/results.json", 'write "Wholesome Girlies" in full, never "WG"')
+
 # ---------- 7. Operations: one cache version per asset ----------
 
 refs = {}
@@ -450,6 +458,19 @@ for p in RESOURCES:
     tw = re.search(r'name="twitter:image" content="([^"]+)"', s)
     if img and tw and tw.group(1) != img.group(1):
         fail(p, "twitter:image must match og:image")
+
+# Every tool, game and quiz has a tool short brief in the vault video waves, written the day the
+# tool is built. Runs only where the vault exists (James's machine); the GitHub runner skips it.
+VIDEO_DIR = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Content/AI Video")
+if os.path.isdir(VIDEO_DIR):
+    briefed = set()
+    for f in glob.glob(os.path.join(VIDEO_DIR, "Wave */*.md")):
+        m = re.search(r"^destination:\s*\"?([^\"\s]+)", read(f), re.M)
+        if m:
+            briefed.add(m.group(1).rstrip("/"))
+    for p in PAGES:
+        if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in briefed:
+            fail(p, f"no tool short brief: add one under Content/AI Video/Wave N/ with destination: /{p[:-5]} (see 01 - Video Roadmap)")
 
 # ---------- Ratchet rules (frozen backlog, no new violations) ----------
 

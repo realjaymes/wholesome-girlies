@@ -186,6 +186,7 @@ function defaultCard(sq = false) {
 }
 
 async function screenshot(page, p) {
+  await page.bringToFront(); // Chrome throttles a background tab, and the card tab opens after this one
   await page.goto(BASE + p.url, { waitUntil: "networkidle0" });
   await page.addStyleTag({ content: "#cc-main,.site-header,header,.read-progress,.wg-share-top,.wg-share,.toc-rail{display:none!important}" });
   // tick a few checklist items so a checklist looks in use, and give calculators
@@ -222,6 +223,10 @@ if (require.main === module) (async () => {
   await loadFonts();
   const browser = await puppeteer.launch({ executablePath: CHROME, headless: true });
   const page = await browser.newPage();
+  page.on("dialog", (d) => d.dismiss()); // a quiz that alerts "answer every question" must not stall the run
+  // screenshots never load analytics: a stalled GTM request blocks networkidle0, and renders are not visits
+  await page.setRequestInterception(true);
+  page.on("request", (r) => (/googletagmanager|google-analytics|doubleclick/.test(r.url()) ? r.abort() : r.continue()));
   await page.setViewport({ width: 760, height: 1200, deviceScaleFactor: 2 });
   const card = await browser.newPage();
   const render = async (html, w, h, file, quality) => {

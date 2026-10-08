@@ -72,5 +72,56 @@
         "summary": "How consistent he is, whether he plans a future with you and how he shows up in public do not match what you want. Waiting will not change that. You can choose yourself."
       }
     }
+  },
+  "red-flag-radar": {
+    "stage": "relationships",
+    "name": "Red Flag Radar",
+    "cta": "Check your radar",
+    "share": "I got \"{title}\" on the Red Flag Radar 🚩 He goes quiet for three days. Every ex was crazy. Green flag, let's talk or red flag? Make your calls and send me yours.",
+    "results": {
+      "sharp": {
+        "title": "My radar is sharp.",
+        "band": "Sharp radar",
+        "summary": "You read men the way Wholesome Girlies does on most of these. You see care when it is there, you ask about the grey areas, and you do not excuse the real red flags. Keep trusting what you see."
+      },
+      "soft": {
+        "title": "I give him the benefit of the doubt.",
+        "band": "Soft on him",
+        "summary": "You see the best in people, and that is a good thing. On a few of these, you waved through something that needs a conversation or a step back."
+      },
+      "strict": {
+        "title": "I cut first and ask questions later.",
+        "band": "Quick to cut",
+        "summary": "You protect yourself fast. On a few of these, you called red what Wholesome Girlies would talk through first. One conversation can tell you more than a quick exit."
+      },
+      "warming-up": {
+        "title": "My radar is still warming up.",
+        "band": "Still calibrating",
+        "summary": "Your calls went both ways, softer than Wholesome Girlies on some and stricter on others. The more closely you watch what a man does, the sharper your radar gets."
+      }
+    }
+  },
+  "is-he-husband-material": {
+    "stage": "relationships",
+    "name": "Is He Husband Material?",
+    "cta": "Check your man",
+    "share": "I got \"{title}\" on Is He Husband Material? 👀 Does his word match what he does? Can he say sorry? Check your man and send me your result.",
+    "results": {
+      "showing-it": {
+        "title": "He's showing husband material.",
+        "band": "Showing husband material",
+        "summary": "From what you have seen, he is consistent, respectful and serious about a future with you. Keep watching over time, because character shows most under pressure, and talk through the big things before you commit."
+      },
+      "promising": {
+        "title": "Promising, with questions to ask.",
+        "band": "Promising, with real questions",
+        "summary": "There is good here, and there are gaps you have not settled yet. Pick the two answers that bothered you most and raise them with him. How he responds is part of your answer."
+      },
+      "not-yet": {
+        "title": "Not husband material yet.",
+        "band": "Not husband material yet",
+        "summary": "Right now, what you see does not add up to the man you want to marry. People can grow, but you do not have to wait while he does. Decide what you need to see from him, and by when."
+      }
+    }
   }
 }

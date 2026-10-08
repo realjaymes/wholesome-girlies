@@ -7,6 +7,10 @@ The page never carries anyone's answers. It shows the cast scene, the result, an
 the tool. It also writes assets/js/wg-result.js, which the tool pages call with wgShowResult(type)
 to show the "Share your result" row and the "Save for your Status" button.
 
+It also writes a naming page for every name in the Baby Name Explorer, at
+/parenting/tools/baby-name-explorer/result/<name>.html, for the Naming Ceremony Card. That page carries only the name,
+its meaning and its origin: never a birth date, weight, place of birth or photo.
+
 Run after scripts/make-result-cards.js:  python3 scripts/make-result-pages.py
 Header and footer are copied from the tool page, so they stay in step with the site.
 """
@@ -18,7 +22,8 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://wholesomegirlies.xyz"
 RESULT_VERSION = "20261008a"
-ART = {"ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship"}
+ART = {"ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship",
+       "red-flag-radar": "radar", "is-he-husband-material": "husband"}
 ALT = {
     "ready-for-love-grounded": "Illustration of Tolu walking down a sunny Lagos street",
     "ready-for-love-close": "Illustration of Tolu writing in her journal while Kemi gives her a thumbs up",
@@ -30,7 +35,17 @@ ALT = {
     "situationship-going-somewhere": "Illustration of Femi taking a proud selfie with Tolu",
     "situationship-undefined": "Illustration of Tolu waiting on a reply while Kemi eats popcorn",
     "situationship-choose-you": "Illustration of Tolu walking away in sunglasses while Kemi cheers by the car",
+    "radar-sharp": "Illustration of Tolu with her arms folded beside a green, a sand and a red flag sorted into pots while Kemi applauds",
+    "radar-soft": "Illustration of Tolu handing Femi a bunch of green flags while a red flag pokes out of his pocket and Kemi laughs",
+    "radar-strict": "Illustration of Kemi blowing a whistle and raising a red flag at Femi, who is holding flowers, while Tolu laughs",
+    "radar-warming-up": "Illustration of Tolu squinting through binoculars while Kemi adjusts the focus for her",
+    "husband-showing-it": "Illustration of Femi carrying Aunty Bisi's handbag and cooler at a family party while Tolu smiles",
+    "husband-promising": "Illustration of Tolu asking Femi a question across a cafe table while he thinks it over",
+    "husband-not-yet": "Illustration of Tolu and Kemi walking off arm in arm while Femi plays on his phone on a bench",
+    "naming-ceremony": "Illustration of Tunde holding up the new baby at a naming ceremony while Funmi smiles and Aunty Bisi cheers",
 }
+NAME_TOOL = "baby-name-explorer"
+NAME_VERSION = "20261008a"
 data = json.load(open(os.path.join(ROOT, "scripts/results.json")))
 e = lambda s: html.escape(s, quote=True)
 
@@ -39,7 +54,7 @@ def share_text(t, r):
     return t["share"].replace("{title}", r["title"].rstrip("."))
 
 
-def page(tool, t, rid, r):
+def page(tool, t, rid, r, art=None, title=None, eyebrow=None, lead=None, desc=None, card=None, share=None):
     src = open(os.path.join(ROOT, t["stage"], "tools", tool + ".html")).read()
     head = src[: src.index("<title>")]
     styles = re.findall(r'<link rel="(?:preconnect|stylesheet|icon|apple-touch-icon)"[^>]*>', src)
@@ -48,18 +63,22 @@ def page(tool, t, rid, r):
     tail = "\n".join(l for l in re.findall(r"<script [^>]*src=[^>]*></script>", src[src.index("</footer>") :])
                      if "cookieconsent" in l or "wg-consent" in l)
     path = f"/{t['stage']}/tools/{tool}/result/{rid}"
-    title = f"My {t['name']} result: {r['title']}"
-    card = f"{SITE}/assets/img/results/{tool}/{rid}.jpg?v={RESULT_VERSION}"
-    art = f"{ART[tool]}-{rid}"
+    title = title or f"My {t['name']} result: {r['title']}"
+    card = card or f"{SITE}/assets/img/results/{tool}/{rid}.jpg?v={RESULT_VERSION}"
+    art = art or f"{ART[tool]}-{rid}"
+    desc = desc or f"What would yours say? Take the {t['name']} on Wholesome Girlies."
+    eyebrow = eyebrow or f"A shared result · {t['name']}"
+    lead = lead or f"Someone shared their result from the {t['name']}. It takes a couple of minutes, and what you answer stays on your phone."
+    share = share or share_text(t, r)
     stage = t["stage"].capitalize()
     return f"""{head}<title>{e(title)} | Wholesome Girlies</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="{e(r['title'])} What would yours say? Take the {e(t['name'])} on Wholesome Girlies.">
+<meta name="description" content="{e(r['title'])} {e(desc)}">
 <link rel="canonical" href="{SITE}{path}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Wholesome Girlies">
 <meta property="og:title" content="{e(title)}">
-<meta property="og:description" content="What would yours say? Take the {e(t['name'])} on Wholesome Girlies.">
+<meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{SITE}{path}">
 <meta property="og:image" content="{card}">
 <meta property="og:image:width" content="1200">
@@ -67,7 +86,7 @@ def page(tool, t, rid, r):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wgirlieshq">
 <meta name="twitter:title" content="{e(title)}">
-<meta name="twitter:description" content="What would yours say? Take the {e(t['name'])} on Wholesome Girlies.">
+<meta name="twitter:description" content="{e(desc)}">
 <meta name="twitter:image" content="{card}">
 {chr(10).join(styles)}
 <style>
@@ -83,7 +102,7 @@ def page(tool, t, rid, r):
 <section class="tool-hero">
   <div class="wrap narrow">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/{t['stage']}/">{stage}</a> / <a href="/{t['stage']}/tools/{tool}">{e(t['name'])}</a></div>
-    <p class="eyebrow">A shared result · {e(t['name'])}</p>
+    <p class="eyebrow">{e(eyebrow)}</p>
     <h1>{e(r['title'])}</h1>
     <p class="muted">{e(r['summary'])}</p>
   </div>
@@ -92,11 +111,11 @@ def page(tool, t, rid, r):
 <section>
   <div class="wrap narrow shared-result">
     <img src="/assets/img/cast/results/{art}.jpg" width="800" height="1200" alt="{e(ALT[art])}">
-    <p class="lead">Someone shared their result from the {e(t['name'])}. It takes a couple of minutes, and what you answer stays on your phone.</p>
+    <p class="lead">{e(lead)}</p>
     <a class="btn btn-primary" href="/{t['stage']}/tools/{tool}?ref=result">{e(t['cta'])} &rarr;</a>
     <p class="sub">Pass it on</p>
-    <div class="wg-share" data-share-id="{tool}:{rid}" data-share-surface="result-page" data-share-path="{path}" data-share-text="{e(share_text(t, r))}" data-share-align="center"></div>
-    <p class="muted" style="margin-top:28px;font-size:.9rem;">This is a reflection tool, not a verdict on anyone. It runs in your browser, and nothing anyone answers is saved or sent.</p>
+    <div class="wg-share" data-share-id="{tool}:{rid}" data-share-surface="result-page" data-share-path="{path}" data-share-text="{e(share)}" data-share-align="center"></div>
+    <p class="muted" style="margin-top:28px;font-size:.9rem;">{e(t.get("note", "This is a reflection tool. It runs in your browser, and nothing anyone answers is saved or sent."))}</p>
   </div>
 </section>
 </main>
@@ -159,6 +178,27 @@ for tool, t in data.items():
     for rid, r in t["results"].items():
         open(os.path.join(d, rid + ".html"), "w").write(page(tool, t, rid, r))
         print("result page", f"/{t['stage']}/tools/{tool}/result/{rid}")
+# Naming Ceremony Card pages, one per name in the Baby Name Explorer (same rules as make-result-cards.js)
+src = open(os.path.join(ROOT, "parenting/tools", NAME_TOOL + ".html")).read()
+names = re.findall(r'\{n:"([^"]+)",g:"(\w)",o:"([^"]+)",m:"([^"]+)"\}', src)
+nt = {"stage": "parenting", "name": "Baby Name Explorer", "cta": "Find a name",
+      "note": "Meanings differ by family. A name can carry a different meaning in another town or family, so ask the elders in yours."}
+d = os.path.join(ROOT, "parenting/tools", NAME_TOOL, "result")
+os.makedirs(d, exist_ok=True)
+for n, g, o, m in names:
+    slug = re.sub(r"[^a-z]+", "-", n.lower()).strip("-")
+    meaning = f"It comes {m}." if m.startswith("from ") else f"It means {m}."
+    origin = f"{'An' if o[0] in 'AEIOU' else 'A'} {o} name."
+    r = {"title": f"Meet {n}.", "summary": f"{meaning} {origin}"}
+    open(os.path.join(d, slug + ".html"), "w").write(page(
+        NAME_TOOL, nt, slug, r, art="naming-ceremony", title=f"Meet {n}",
+        eyebrow="A naming card · Baby Name Explorer",
+        lead="Someone shared this name from the Baby Name Explorer. Search Yoruba, Igbo, Hausa and other names by what they mean.",
+        desc=f"{meaning} {origin} Find a name and what it means on Wholesome Girlies.",
+        card=f"{SITE}/assets/img/results/{NAME_TOOL}/{slug}.jpg?v={NAME_VERSION}",
+        share=f"Meet {n}! {meaning} 💛 Look up what Yoruba, Igbo, Hausa and other names mean on Wholesome Girlies."))
+print("naming pages", len(names))
+
 open(os.path.join(ROOT, "assets/js/wg-result.js"), "w").write(
     JS.replace("__DATA__", json.dumps(out, ensure_ascii=False)).replace("__V__", RESULT_VERSION))
 print("wrote assets/js/wg-result.js")

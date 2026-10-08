@@ -2,6 +2,9 @@
 // Each result gets two images from its cast scene (assets/img/cast/results/<art>.jpg):
 //   assets/img/results/<tool>/<result>.jpg         1200x630 link preview for the result page
 //   assets/img/results/<tool>/<result>-status.jpg  1080x1920 card she saves for WhatsApp Status or Stories
+// It also renders the Naming Ceremony Card link preview for every name in the Baby Name Explorer:
+//   assets/img/results/baby-name-explorer/<name>.jpg  1200x630, "Meet <name>. It means <meaning>." with the naming scene
+// (the explorer draws that card's 1080x1920 Status version in the browser, so 136 tall images are not stored).
 // The words come from results.json and are set in the layout, never drawn by the AI.
 //
 //   npm install --prefix /tmp/wgog puppeteer-core@23
@@ -15,7 +18,8 @@ const og = require("./make-og.js");
 const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "assets/img/results");
 const RESULTS = JSON.parse(fs.readFileSync(path.join(__dirname, "results.json"), "utf8"));
-const ART = { "ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship" };
+const ART = { "ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship",
+  "red-flag-radar": "radar", "is-he-husband-material": "husband" };
 const art = (tool, id) => "data:image/jpeg;base64," + fs.readFileSync(path.join(ROOT, "assets/img/cast/results", `${ART[tool]}-${id}.jpg`)).toString("base64");
 
 function ogCard(t, r, img) {
@@ -26,6 +30,30 @@ function ogCard(t, r, img) {
   <p style="margin-top:30px;font-size:22px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C0763F">My result</p>
   <h1 class="serif" style="font-size:${size}px;line-height:1.06;margin-top:10px">${og.esc(r.title)}</h1>
   <div style="display:inline-block;margin-top:26px;background:#6E7A3F;color:#fff;font-weight:800;font-size:22px;padding:10px 20px;border-radius:999px;transform:rotate(-2deg)">${og.esc(t.cta)} →</div>
+</div>
+<div style="position:absolute;right:70px;top:36px;width:380px;height:560px;border-radius:26px;overflow:hidden;transform:rotate(3deg);
+  box-shadow:0 24px 60px rgba(51,50,42,.22),0 0 0 6px #fff">
+  <img src="${img}" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block">
+</div>`);
+}
+
+// The names, read from the Baby Name Explorer's NAMES list, so a new name gets its card on the next run.
+function readNames() {
+  const src = fs.readFileSync(path.join(ROOT, "parenting/tools/baby-name-explorer.html"), "utf8");
+  return [...src.matchAll(/\{n:"([^"]+)",g:"(\w)",o:"([^"]+)",m:"([^"]+)"\}/g)].map((m) => ({ n: m[1], o: m[3], m: m[4] }));
+}
+const nameSlug = (n) => n.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
+const meaningLine = (m) => (/^from /.test(m) ? `It comes ${m}.` : `It means ${m}.`);
+const originLine = (o) => `${/^[AEIOU]/.test(o) ? "An" : "A"} ${o} name`;
+
+function nameCard(nm, img) {
+  const meaning = meaningLine(nm.m);
+  return og.shell(`
+<div style="position:absolute;left:64px;top:62px;width:620px">
+  <span class="chip">${og.esc(originLine(nm.o))}</span>
+  <h1 class="serif" style="font-size:${nm.n.length > 9 ? 66 : 78}px;line-height:1.04;margin-top:30px">Meet ${og.esc(nm.n)}.</h1>
+  <p class="serif" style="font-size:${meaning.length > 40 ? 30 : 40}px;line-height:1.16;margin-top:14px;color:#55602F">${og.esc(meaning)}</p>
+  <div style="display:inline-block;margin-top:26px;background:#6E7A3F;color:#fff;font-weight:800;font-size:22px;padding:10px 20px;border-radius:999px;transform:rotate(-2deg)">Find a name →</div>
 </div>
 <div style="position:absolute;right:70px;top:36px;width:380px;height:560px;border-radius:26px;overflow:hidden;transform:rotate(3deg);
   box-shadow:0 24px 60px rgba(51,50,42,.22),0 0 0 6px #fff">
@@ -83,5 +111,14 @@ if (require.main === module) (async () => {
       console.log("result card", tool, id);
     }
   }
+  if (!only.length || only.includes("baby-name-explorer")) {
+    const dir = path.join(OUT, "baby-name-explorer");
+    fs.mkdirSync(dir, { recursive: true });
+    const img = "data:image/jpeg;base64," + fs.readFileSync(path.join(ROOT, "assets/img/cast/results/naming-ceremony.jpg")).toString("base64");
+    for (const nm of readNames()) await render(nameCard(nm, img), 1200, 630, path.join(dir, `${nameSlug(nm.n)}.jpg`), 80);
+    console.log("naming cards", readNames().length);
+  }
   await browser.close();
 })();
+
+module.exports = { readNames, nameSlug, meaningLine, originLine };

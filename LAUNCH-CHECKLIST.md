@@ -21,7 +21,7 @@ Every health tool, guide, and the sales page shows a reviewer byline reading "Re
 ## 4. Team / About (generic placeholders)
 `about/index.html` team cards say "Named team members go here".
 - [ ] Add the real fronting women (e.g. Cynthia Obinatu), the medical reviewer(s), and partners, with real names and photos.
-- [ ] **"Come build this with us" partner card (about page):** change the messaging and CTA from the current "See what we are building" → `/programs/` link to a **real way to reach us — an email or WhatsApp number** — so women who want to partner or work with us can actually make contact. (James's reminder, 2026-07-18.)
+- [x] **"Come build this with us" partner card (about page):** stays as it is, with "See what we are building" linking to `/programs/`. James decided to leave it on 2026-10-08. ✅
 
 ## 5. Commerce and pricing
 - [x] Real pricing live on all sales pages (individual early-bird ₦5,700 / $12, standard ₦13,700 / $27; bundle early-bird ₦16,700 / $34, standard ₦39,700 / $77). ✅

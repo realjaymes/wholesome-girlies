@@ -39,6 +39,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://wholesomegirlies.xyz/"},{"@type":"ListItem","position":2,"name":"Parenting","item":"https://wholesomegirlies.xyz/parenting/"},{"@type":"ListItem","position":3,"name":"Baby Name Explorer","item":"https://wholesomegirlies.xyz/parenting/tools/baby-name-explorer"}]}
 </script>
+<style>
+  .nc-btn { background: none; border: 0; padding: 4px 0 0; color: var(--terracotta-dark); font-weight: 800; font-size: .85rem; cursor: pointer; text-decoration: underline; }
+  #nameCard .sub { font-weight: 800; color: var(--terracotta-dark); }
+  .add-name { margin: 4px 0 18px; padding: 14px 16px; border: 1px dashed var(--line); border-radius: 14px; background: #fff; }
+  .add-name summary { cursor: pointer; font-weight: 800; color: var(--terracotta-dark); }
+  .add-name[open] summary { margin-bottom: 12px; }
+  .add-name .opt-l { font-weight: 400; color: var(--plum-soft); }
+  .own-tag { font-size: .8rem; font-weight: 800; color: var(--sage); }
+</style>
 <link rel="stylesheet" href="/assets/css/wg-rail.css?v=20261004i">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
@@ -69,7 +78,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap narrow">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/parenting/">Parenting</a> / Tools</div>
     <h1>Baby Name Explorer</h1>
-    <p class="muted">Search Yoruba, Igbo and Hausa baby names by meaning, or filter by girl, boy and origin. Arabic, Hebrew, English and other African names are in the list too.</p>
+    <p class="muted">Search Yoruba, Igbo and Hausa baby names by meaning, or filter by girl, boy and origin. Arabic, Hebrew, English and other African names are in the list too. When you have chosen the name, make a naming card with its meaning to share after the naming ceremony. If your name is not on the list, add it yourself.</p>
   </div>
 </section>
 
@@ -79,8 +88,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="field"><label for="q">Search by name or meaning</label><input type="text" id="q" placeholder="e.g. joy, God, grace, gift" oninput="render()"></div>
       <div class="field"><label for="g">Gender</label><select id="g" onchange="render()"><option value="">All</option><option value="f">Girl</option><option value="m">Boy</option><option value="u">Unisex</option></select></div>
       <div class="field"><label for="o">Origin</label><select id="o" onchange="render()"><option value="">All</option></select></div>
+      <details class="add-name" id="addName">
+        <summary>Can't find your name? Add it yourself.</summary>
+        <div class="field"><label for="anName">Name</label><input type="text" id="anName" maxlength="30" autocomplete="off" placeholder="e.g. Ebube"></div>
+        <div class="field"><label for="anMeaning">What it means <span class="opt-l">(optional)</span></label><input type="text" id="anMeaning" maxlength="80" autocomplete="off" placeholder="e.g. glory"></div>
+        <div class="field"><label for="anOrigin">Where it comes from <span class="opt-l">(optional)</span></label><select id="anOrigin"><option value="">Skip this</option></select></div>
+        <p id="anErr" role="alert" style="display:none;margin:0 0 10px;color:var(--terracotta-dark);font-weight:700;">Type the name first.</p>
+        <button type="button" class="btn btn-primary" id="anAdd">Add it and make a naming card</button>
+        <p class="muted" style="font-size:.85rem;margin:10px 0 0;">The name stays on this page, on your device. We never see it or save it.</p>
+      </details>
+      <div class="result" id="nameCard" aria-live="polite">
+        <p class="sub" style="margin-top:0;">Your naming card</p>
+        <p class="big" id="ncTitle"></p>
+        <p id="ncMeaning" style="margin:6px 0 0;"></p>
+        <p class="muted" style="font-size:.85rem;margin:10px 0 0;">The card and the link show only the name, its meaning and where it comes from. They never show a birth date, weight, place of birth or photo.</p>
+        <div id="ncShare" style="margin-top:14px;"></div>
+        <p style="margin:12px 0 0;"><button type="button" class="btn btn-ghost" id="ncSave">Save for your Status</button></p>
+      </div>
       <div id="list" style="margin-top:6px;"></div>
-      <p class="muted" id="none" style="display:none;">No names match. Try another word.</p>
+      <p class="muted" id="none" style="display:none;">No names match. Try another word, or <button type="button" class="nc-btn" id="noneAdd" style="padding:0;">add the name yourself</button>.</p>
     </div>
 
     <div class="disclaimer">
@@ -289,6 +315,7 @@ function render(){
   var q=(document.getElementById('q').value||'').toLowerCase().trim();
   var g=document.getElementById('g').value;
   var o=document.getElementById('o').value;
+  var mine=OWN.filter(function(x){ return !q || (x.n+' '+x.m+' '+x.o).toLowerCase().indexOf(q)>-1; });
   var out=NAMES.filter(function(x){
     var okg = !g || x.g===g;
     var oko = !o || x.o===o;
@@ -296,19 +323,147 @@ function render(){
     return okg && oko && okq;
   });
   var gl={f:'Girl',m:'Boy',u:'Unisex'};
-  document.getElementById('list').innerHTML = out.map(function(x){
-    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+x.n+'</span> <span class="muted" style="font-size:.85rem;">'+gl[x.g]+' · '+x.o+'</span></div><div class="muted" style="text-align:right;">'+x.m+'</div></div>';
+  document.getElementById('list').innerHTML = mine.map(function(x){
+    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+esc(x.n)+'</span> <span class="own-tag">Added by you'+(x.o?' · '+esc(x.o):'')+'</span><br><button type="button" class="nc-btn" data-n="'+esc(x.n)+'">Make a naming card</button></div><div class="muted" style="text-align:right;">'+esc(x.m)+'</div></div>';
+  }).join('') + out.map(function(x){
+    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+x.n+'</span> <span class="muted" style="font-size:.85rem;">'+gl[x.g]+' · '+x.o+'</span><br><button type="button" class="nc-btn" data-n="'+x.n+'">Make a naming card</button></div><div class="muted" style="text-align:right;">'+x.m+'</div></div>';
   }).join('');
-  document.getElementById('none').style.display = out.length? 'none':'block';
+  document.getElementById('none').style.display = (out.length||mine.length)? 'none':'block';
 }
+// Names she adds herself. They live in this page only: never stored, never sent, never in a link or an analytics event.
+var OWN=[];
+function esc(t){ return String(t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 (function(){ // populate the Origin dropdown from the data (Nigerian origins first, then A to Z)
   var pri=['Yoruba','Igbo','Hausa'];
   var origins=NAMES.map(function(x){return x.o;}).filter(function(v,i,a){return a.indexOf(v)===i;});
   origins.sort(function(a,b){var ia=pri.indexOf(a),ib=pri.indexOf(b);if(ia>-1||ib>-1)return (ia>-1?ia:99)-(ib>-1?ib:99);return a<b?-1:a>b?1:0;});
-  var sel=document.getElementById('o');
-  origins.forEach(function(o){var opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
+  ['o','anOrigin'].forEach(function(id){ var sel=document.getElementById(id);
+    origins.forEach(function(o){var opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);}); });
 })();
 render();
+
+// Naming Ceremony Card. The link goes to /parenting/tools/baby-name-explorer/result/<name>, whose preview card
+// (made by scripts/make-result-cards.js) shows the name and meaning. The Status card is drawn here, on her phone.
+var NC = null;
+function ncSlug(n){ return n.toLowerCase().replace(/[^a-z]+/g,'-').replace(/^-|-$/g,''); }
+function ncMeaning(m){ return /^from /.test(m) ? 'It comes '+m+'.' : 'It means '+m+'.'; }
+function ncOrigin(o){ return (/^[AEIOU]/.test(o) ? 'An ' : 'A ')+o+' name.'; }
+function ncPush(ev){ window.dataLayer = window.dataLayer || []; window.dataLayer.push({event: ev, share_item: 'baby-name-explorer:'+ncItem(), share_surface: 'result'}); }
+function ncItem(){ return NC.own ? 'own-name' : ncSlug(NC.n); }
+document.getElementById('list').addEventListener('click', function(e){
+  var b = e.target.closest('.nc-btn'); if(!b) return;
+  var n = b.getAttribute('data-n');
+  var item = OWN.concat(NAMES).filter(function(x){ return x.n === n; })[0]; if(item) ncShow(item);
+});
+// An added name shares a link to this page, never a link carrying her name.
+function ncShow(item){
+  NC = item;
+  document.getElementById('ncTitle').textContent = 'Meet '+NC.n+'.';
+  document.getElementById('ncMeaning').textContent = [NC.m ? ncMeaning(NC.m) : '', NC.o ? ncOrigin(NC.o) : ''].join(' ').trim();
+  var sh = document.createElement('div');
+  sh.className = 'wg-share';
+  sh.setAttribute('data-share-size', 'sm');
+  sh.setAttribute('data-share-id', 'baby-name-explorer:'+ncItem());
+  sh.setAttribute('data-share-surface', 'result');
+  sh.setAttribute('data-share-path', NC.own ? '/parenting/tools/baby-name-explorer' : '/parenting/tools/baby-name-explorer/result/'+ncSlug(NC.n));
+  sh.setAttribute('data-share-text', 'Meet '+NC.n+'! '+(NC.m ? ncMeaning(NC.m)+' ' : '')+'💛 Look up what Yoruba, Igbo, Hausa and other names mean on Wholesome Girlies.');
+  var holder = document.getElementById('ncShare');
+  holder.innerHTML = '';
+  holder.appendChild(sh);
+  if(window.wgShareInit) window.wgShareInit();
+  var box = document.getElementById('nameCard');
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function ncClean(t, max){ return String(t||'').replace(/[^\p{L}\p{M}' -]/gu,'').replace(/\s+/g,' ').trim().slice(0, max); }
+function ncAddOwn(){
+  var n = ncClean(document.getElementById('anName').value, 30);
+  var m = String(document.getElementById('anMeaning').value||'').replace(/\s+/g,' ').trim().replace(/^it means\s+/i,'').replace(/[.!\s]+$/,'').slice(0, 80);
+  var o = document.getElementById('anOrigin').value;
+  var err = document.getElementById('anErr');
+  if(!n){ err.style.display = 'block'; document.getElementById('anName').focus(); return; }
+  err.style.display = 'none';
+  n = n.charAt(0).toUpperCase() + n.slice(1);
+  OWN = OWN.filter(function(x){ return x.n.toLowerCase() !== n.toLowerCase(); });
+  var item = {n:n, m:m, o:o, own:true};
+  OWN.unshift(item);
+  render();
+  ncShow(item);
+}
+document.getElementById('anAdd').addEventListener('click', ncAddOwn);
+['anName','anMeaning'].forEach(function(id){ document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ncAddOwn(); } }); });
+document.getElementById('noneAdd').addEventListener('click', function(){
+  var d = document.getElementById('addName'); d.open = true;
+  var f = document.getElementById('anName'); f.value = ncClean(document.getElementById('q').value, 30); f.focus();
+});
+
+function ncWrap(x, text, maxW){
+  var words = text.split(' '), lines = [], line = '';
+  words.forEach(function(w){ var t = line ? line+' '+w : w; if(x.measureText(t).width > maxW && line){ lines.push(line); line = w; } else line = t; });
+  if(line) lines.push(line);
+  return lines;
+}
+function ncRound(x, X, Y, W, H, r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+W,Y,X+W,Y+H,r); x.arcTo(X+W,Y+H,X,Y+H,r); x.arcTo(X,Y+H,X,Y,r); x.arcTo(X,Y,X+W,Y,r); x.closePath(); }
+function ncLoad(src){ return new Promise(function(ok, no){ var i = new Image(); i.onload = function(){ ok(i); }; i.onerror = no; i.src = src; }); }
+var NC_LOGO = 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="64" height="64"><circle cx="28" cy="28" r="27" fill="#6E7A3F"/><path d="M18 38c0-11 8-18 20-18 0 11-8 18-20 18z" fill="#FBF8EF"/><path d="M20 37c5-6 11-10 17-12" stroke="#6E7A3F" stroke-width="1.9" fill="none" stroke-linecap="round"/></svg>');
+
+// 1080x1920, laid out like the result Status cards from scripts/make-result-cards.js
+function ncDraw(){
+  var W = 1080, H = 1920, c = document.createElement('canvas'); c.width = W; c.height = H;
+  var x = c.getContext('2d'), serif = '"DM Serif Display", serif', sans = '"Nunito Sans", sans-serif';
+  return Promise.all([document.fonts.load('400 100px "DM Serif Display"'), document.fonts.load('800 28px "Nunito Sans"'),
+    ncLoad('/assets/img/cast/results/naming-ceremony.jpg?v=20261008a'), ncLoad(NC_LOGO)]).then(function(r){
+    var art = r[2], logo = r[3];
+    x.fillStyle = '#FBF8EF'; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#EAE9D2'; x.beginPath(); x.arc(1000, 80, 380, 0, 7); x.fill();
+    x.globalAlpha = .6; x.fillStyle = '#DFDCC0'; x.beginPath(); x.arc(30, 1910, 210, 0, 7); x.fill(); x.globalAlpha = 1;
+    if(NC.o){
+      var chip = ncOrigin(NC.o).replace(/\.$/, '').toUpperCase();
+      x.font = '800 28px '+sans; if('letterSpacing' in x) x.letterSpacing = '2px';
+      var cw = x.measureText(chip).width + 52;
+      x.fillStyle = '#6E7A3F'; ncRound(x, 80, 130, cw, 58, 29); x.fill();
+      x.fillStyle = '#FBF8EF'; x.textBaseline = 'middle'; x.fillText(chip, 106, 160);
+      if('letterSpacing' in x) x.letterSpacing = '0px';
+    }
+    x.textBaseline = 'alphabetic'; x.fillStyle = '#33322A';
+    var size = NC.n.length > 10 ? 96 : 116, y = 230;
+    x.font = '400 '+size+'px '+serif;
+    ncWrap(x, 'Meet '+NC.n+'.', 920).forEach(function(l){ y += size * 1.02; x.fillText(l, 80, y); });
+    if(NC.m){
+      var m = ncMeaning(NC.m), ms = m.length > 44 ? 48 : 60;
+      x.font = '400 '+ms+'px '+serif; x.fillStyle = '#55602F'; y += 18;
+      ncWrap(x, m, 920).forEach(function(l){ y += ms * 1.18; x.fillText(l, 80, y); });
+    }
+    var top = y + 70, fh = Math.max(760, 1660 - top), fw = 860;
+    x.save(); x.translate(110 + fw/2, top + fh/2); x.rotate(-2 * Math.PI / 180);
+    x.shadowColor = 'rgba(51,50,42,.22)'; x.shadowBlur = 80; x.shadowOffsetY = 30;
+    x.fillStyle = '#fff'; ncRound(x, -fw/2 - 10, -fh/2 - 10, fw + 20, fh + 20, 48); x.fill();
+    x.shadowColor = 'transparent';
+    ncRound(x, -fw/2, -fh/2, fw, fh, 40); x.clip();
+    var s = Math.max(fw / art.width, fh / art.height), dw = art.width * s, dh = art.height * s;
+    x.drawImage(art, -fw/2 - (dw - fw)/2, -fh/2 - (dh - fh) * .35, dw, dh);
+    x.restore();
+    x.drawImage(logo, 80, 1766, 64, 64);
+    x.fillStyle = '#33322A'; x.font = '400 40px '+serif; x.fillText('Wholesome Girlies', 162, 1798);
+    x.fillStyle = '#66645A'; x.font = '400 26px '+sans; x.fillText('wholesomegirlies.xyz', 162, 1834);
+    x.font = '800 30px '+sans; var cta = 'Find a name →', pw = x.measureText(cta).width + 60;
+    x.save(); x.translate(1000 - pw/2, 1800); x.rotate(-2 * Math.PI / 180);
+    x.fillStyle = '#C0763F'; ncRound(x, -pw/2, -33, pw, 66, 33); x.fill();
+    x.fillStyle = '#fff'; x.textBaseline = 'middle'; x.fillText(cta, -pw/2 + 30, 1); x.restore();
+    return new Promise(function(ok){ c.toBlob(ok, 'image/jpeg', .9); });
+  });
+}
+document.getElementById('ncSave').addEventListener('click', function(){
+  if(!NC) return;
+  ncPush('result_save');
+  var file = 'wholesome-girlies-'+(ncSlug(NC.n) || 'naming-card')+'.jpg';
+  ncDraw().then(function(blob){
+    var f = new File([blob], file, {type: 'image/jpeg'});
+    if(navigator.canShare && /Android|iPhone|iPad/i.test(navigator.userAgent) && navigator.canShare({files: [f]})) return navigator.share({files: [f]});
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file;
+    document.body.appendChild(a); a.click(); a.remove();
+  }).catch(function(){});
+});
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>

@@ -67,6 +67,7 @@ The full plans live in the Obsidian vault under `Areas/Work/Wholesome Girlies/`:
 
 ## 7. Brand and copy
 
+- Write "Wholesome Girlies" in full in all copy, including text a script builds on the page, never "WG": readers do not know the short name yet. *(hard)*
 - Say "assistant", never "bot". The public price label is "early-bird", never "founding". Program names are locked: The Trying-to-Conceive Blueprint, The First Pregnancy Plan, The 6-Week Postpartum Reset, The First Baby Playbook, The Wife Material Blueprint, The Complete Motherhood Journey. *(hard)*
 - Never call the tools or content "free" in customer-facing copy. *(ratchet)*
 - No em or en dashes in copy, including `<title>` and meta descriptions; use commas and periods. *(ratchet)* Plain language, short sentences, medical terms explained where they appear, the collective "we", no hype, fear, or pressure. James's writing rules (`~/CLAUDE.md`, Writing Style Guidelines) apply to all copy.
@@ -83,5 +84,6 @@ The full plans live in the Obsidian vault under `Areas/Work/Wholesome Girlies/`:
 
 - Inline scripts must parse *(hard)*: the page check runs each one through Node, because one syntax error stops a whole tool working.
 - Assets load with `?v=YYYYMMDD<letter>`. When you change an asset, bump its version in every file that references it, including the `wg-share.js` reference inside `wg-article.js`. Every `/assets/` script loads with a version *(ratchet: `member-cta.js`, `geo-redirect.js`, and `petals.js` load without one today)*. Mixed versions fail. *(hard)*
+- **Every new tool, game or quiz gets a tool short** *(hard on James's machine)*. In the same session the tool is built, add its row to the vault's `Content/AI Video/01 - Video Roadmap.md` in the earliest unposted wave for its stage, assign it a style in `04 - Tool Short Styles.md`, and write its brief from `_Video Brief Template.md` under `Content/AI Video/Wave N/` with `destination: /<stage>/tools/<slug>` and the tool's real output for the inputs shown. The page check fails any tool page with no brief whose `destination` matches; it skips this check where the vault is absent (the GitHub runner).
 - Deploy is a push to `main`: GitHub Actions runs this check, then publishes to Pages. Check the current branch and unpushed commits first, because other sessions leave repos on their own branches. Cloudflare is DNS-only.
 - Secrets never go in the repo or the vault. Everything in this repo is publicly readable on the site.
