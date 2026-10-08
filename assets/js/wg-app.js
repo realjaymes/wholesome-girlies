@@ -3,10 +3,12 @@
  * 1. Registers /sw.js, which caches pages and files so the tools open without a connection.
  * 2. Offers "add to home screen" at the moments the plan names (06 - Virality Plan, section 8, Rollout):
  *    on a tool after she saves an entry, under a quiz or game result, and on the program thank-you hubs.
- *    Android Chrome gets the browser's own install prompt on our button; iPhone gets three steps, because
- *    Safari has no prompt; Instagram, TikTok and Facebook's built-in browsers get "open in Chrome or Safari",
- *    because nothing installs from inside them. The tool prompt shows at most once a visit, stays away for
- *    14 days after "Not now", and never shows on sales pages, ad bridges or the pages in QUIET.
+ *    Android Chrome gets the browser's own install prompt on our button. iPhone has no prompt, so Safari gets
+ *    the real screen recording of the steps (/assets/video/app/) and Chrome, Edge and Firefox get their own
+ *    two steps, never a detour to Safari. Instagram, TikTok and Facebook's built-in browsers get "open in your
+ *    browser", because nothing installs from inside them. A computer gets a QR code for her phone. The tool
+ *    prompt shows at most once a visit, stays away for 14 days after "Not now", and never shows on sales
+ *    pages, ad bridges or the pages in QUIET.
  * 3. Gives the /app home its saved-entries backup, restore and iPhone move (window.WGApp).
  *
  * Her entries never leave her phone: the backup is a file she saves, the move is a code she copies, and
@@ -19,7 +21,14 @@
   var standalone = (w.matchMedia && w.matchMedia('(display-mode: standalone)').matches) || nav.standalone === true;
   var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && nav.maxTouchPoints > 1);
   var android = /Android/.test(ua);
+  var iosBrowser = /CriOS/.test(ua) ? 'chrome' : /EdgiOS/.test(ua) ? 'edge' : /FxiOS/.test(ua) ? 'firefox' : 'safari';
   var inApp = /Instagram|FBAN|FBAV|FB_IAB|FBIOS|TikTok|musical_ly|Bytedance|Snapchat|\bLine\//i.test(ua);
+  // Preview another phone from a computer: ?preview=iphone, iphone-chrome, android, in-app or computer.
+  var preview = (/[?&]preview=(iphone-chrome|iphone|android|in-app|computer)\b/.exec(w.location.search) || [])[1];
+  if (preview) {
+    ios = /^iphone/.test(preview); android = preview === 'android' || preview === 'in-app';
+    iosBrowser = preview === 'iphone-chrome' ? 'chrome' : 'safari'; inApp = preview === 'in-app';
+  }
   var phone = ios || android;
   var QUIET = ['/pregnancy/guides/chemical-miscarriage', '/postpartum/guides/postpartum-warning-signs',
     '/postpartum/tools/mind-check-in', '/fertility/tools/the-wait-check-in'];
@@ -56,10 +65,16 @@
       '.wg-app-bar img{width:40px;height:40px;border-radius:10px;flex:none}' +
       '.wg-app-bar p{margin:0;font-size:.95rem;line-height:1.35}' +
       '.wg-app-bar .wg-app-btns{display:flex;gap:8px;flex:none;flex-direction:column}' +
-      '.wg-app-btn{border:0;border-radius:999px;background:var(--terracotta,#C0763F);color:#fff;font-weight:800;padding:9px 16px;cursor:pointer;font-size:.9rem}' +
+      '.wg-app-btn{border:0;border-radius:999px;background:var(--terracotta,#6E7A3F);color:#fff;font-weight:800;padding:9px 16px;cursor:pointer;font-size:.9rem}' +
       '.wg-app-btn.ghost{background:none;color:var(--plum-soft,#66645A);font-weight:700;padding:4px 8px}' +
-      '.wg-app-line{margin:14px 0 0;font-size:.95rem}' +
-      '.wg-app-line button{background:none;border:0;padding:0;color:var(--terracotta-dark,#9A5A2C);font-weight:800;text-decoration:underline;cursor:pointer;font-size:inherit}' +
+      '.wg-app-card{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:16px;padding:14px;margin:18px 0 0;box-shadow:0 6px 18px rgba(51,50,42,.08);text-align:left}' +
+      '.wg-app-card img{flex:none;width:44px;height:44px;border-radius:11px}' +
+      '.wg-app-card div{flex:999 1 200px;min-width:0}' +
+      '.wg-app-card b{display:block;font-size:1rem;line-height:1.3;color:var(--plum,#33322A)}' +
+      '.wg-app-card p{margin:2px 0 0;font-size:.88rem;line-height:1.4;color:var(--plum-soft,#66645A)}' +
+      '.wg-app-card .wg-app-btn{flex:1 0 auto;padding:11px 22px;font-size:.95rem}' + // beside the text when there is room, its own full line when there is not
+      '.wg-app-sheet .clip{display:block;width:190px;max-width:56%;height:auto;aspect-ratio:432/934;border-radius:24px;border:5px solid #23221F;margin:0 auto 16px;background:#23221F}' +
+      '.wg-app-sheet .qr{display:block;width:200px;height:200px;margin:0 auto 12px;background:#fff;padding:8px;border-radius:12px}' +
       '.wg-app-sheet{position:fixed;inset:0;z-index:950;background:rgba(51,50,42,.45);display:flex;align-items:flex-end;justify-content:center}' +
       '.wg-app-sheet .in{background:#FBF8EF;border-radius:22px 22px 0 0;padding:22px 20px 28px;width:100%;max-width:560px;max-height:88vh;overflow:auto}' +
       '.wg-app-sheet h3{margin:0 0 12px}' +
@@ -77,16 +92,21 @@
     el.innerHTML = '<div class="in" role="dialog" aria-modal="true" aria-labelledby="wg-app-sheet-t">' + html + '<p style="margin:16px 0 0"><button type="button" class="wg-app-btn ghost" data-close>Close</button></p></div>';
     el.addEventListener('click', function (e) { if (e.target === el || e.target.hasAttribute('data-close')) closeSheet(); });
     d.body.appendChild(el);
-    var b = el.querySelector('[data-copy-entries]');
-    if (b) b.addEventListener('click', function () { copyEntries(b); });
+    var v = el.querySelector('video');
+    if (v) { v.muted = true; var go = v.play(); if (go) go.catch(function () {}); }
     var l = el.querySelector('[data-copy-link]');
     if (l) l.addEventListener('click', function () { copyText(w.location.href, l, 'Link copied'); });
   }
   function closeSheet() { var el = d.getElementById('wg-app-sheet'); if (el) el.remove(); }
 
+  var CLIP = '/assets/video/app/install-iphone-safari.mp4?v=20261008a';
+  var POSTER = '/assets/img/app/install-iphone-safari.webp?v=20261008a';
+  var TITLE = '<h3 id="wg-app-sheet-t">Add Wholesome Girlies to your home screen</h3>';
+  var DONE = '<p class="note">Girlies then sits on your home screen and opens full screen, like an app.</p>';
   function install(surface) {
     push('app_install_click', surface);
-    if (deferred) {
+    // The browser's own install box only on Android: a computer gets the QR code for her phone instead.
+    if (deferred && android && !preview) {
       deferred.prompt();
       deferred.userChoice.then(function (c) { push(c && c.outcome === 'accepted' ? 'app_install_accepted' : 'app_install_declined', surface); deferred = null; });
       return;
@@ -97,16 +117,26 @@
         '<p><button type="button" class="wg-app-btn" data-copy-link>Copy the link</button></p>');
       return;
     }
-    if (ios) {
-      var has = savedKeys().length > 0;
-      sheet('<h3 id="wg-app-sheet-t">Add Wholesome Girlies to your home screen</h3>' +
-        (has ? '<p><b>First, copy your saved entries.</b> On iPhone the app keeps its own storage, so your entries move across with a code.</p><p><button type="button" class="wg-app-btn" data-copy-entries>Copy my saved entries</button></p>' : '') +
-        '<ol><li>Tap the Share button ' + SHARE_ICON + ' at the bottom of Safari.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>. Girlies is now on your home screen.</li></ol>' +
-        (has ? '<p class="note">Then open Girlies from your home screen, go to the app home and tap <b>Paste my saved entries</b>.</p>' : ''));
+    if (ios && iosBrowser === 'safari') {
+      sheet(TITLE + '<video class="clip" src="' + CLIP + '" poster="' + POSTER + '" width="432" height="934" autoplay muted loop playsinline aria-label="Screen recording of the steps on an iPhone"></video>' +
+        '<ol><li>Tap <b>&bull;&bull;&bull;</b> next to the address bar, then <b>Share</b>.</li><li>Tap <b>View More</b>, then <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>' +
+        '<p class="note">On an older iPhone, the Share button ' + SHARE_ICON + ' sits in the bar at the bottom of the screen.</p>' + DONE);
       return;
     }
-    sheet('<h3 id="wg-app-sheet-t">Add Wholesome Girlies to your home screen</h3>' +
-      '<ol><li>Open your browser menu (the three dots at the top).</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b>.</li><li>Tap <b>Install</b> or <b>Add</b>.</li></ol>');
+    if (ios) {
+      sheet(TITLE + (iosBrowser === 'chrome'
+        ? '<ol><li>Tap the Share button ' + SHARE_ICON + ' at the top right, next to the address bar.</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>'
+        : '<ol><li>Tap the menu button, then <b>Share</b>.</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>') + DONE);
+      return;
+    }
+    if (android) {
+      sheet(TITLE + '<ol><li>Tap the menu (the three dots) in your browser.</li><li>Tap <b>Install app</b> or <b>Add to Home screen</b>, then <b>Install</b>.</li></ol>' + DONE);
+      return;
+    }
+    sheet('<h3 id="wg-app-sheet-t">Get Girlies on your phone</h3>' +
+      '<img class="qr" src="/assets/img/qr/app.svg" width="200" height="200" alt="QR code for wholesomegirlies.xyz/app">' +
+      '<p>Point your phone camera at the code. It opens the app home on your phone, with the steps to add it.</p>' +
+      '<p class="note">Or type wholesomegirlies.xyz/app into your phone browser.</p>');
   }
 
   // ── Where the offer shows ───────────────────────────────────────────────
@@ -124,13 +154,14 @@
     d.body.appendChild(el);
     push('app_prompt_shown', surface);
   }
-  function line(target, text, surface) {
-    if (standalone || noPrompt || !target || target.querySelector('.wg-app-line')) return;
+  function card(target, text, surface) {
+    if (standalone || noPrompt || !target || target.querySelector('.wg-app-card')) return;
     style();
-    var p = d.createElement('p'); p.className = 'wg-app-line';
-    p.innerHTML = text + ' <button type="button">Add Wholesome Girlies to your home screen</button>';
-    p.querySelector('button').addEventListener('click', function () { install(surface); });
-    target.appendChild(p);
+    var el = d.createElement('div'); el.className = 'wg-app-card';
+    el.innerHTML = '<img src="/assets/img/icon-192.png" alt=""><div><b>' + (phone ? 'Get the Girlies app' : 'Get Girlies on your phone') + '</b><p>' + text + '</p></div>' +
+      '<button type="button" class="wg-app-btn">' + (phone ? 'Add it' : 'Show me') + '</button>';
+    el.querySelector('button').addEventListener('click', function () { install(surface); });
+    target.appendChild(el);
     push('app_prompt_shown', surface);
   }
 
@@ -154,13 +185,13 @@
       var show = w.wgShowResult;
       w.wgShowResult = function (type) {
         var r = show.apply(this, arguments);
-        if (type) line(d.getElementById('wg-result-share'), 'Keep the newest games one tap away on your home screen.', 'result');
+        if (type) card(d.getElementById('wg-result-share'), 'Keep the newest games one tap away on your home screen.', 'result');
         return r;
       };
     }
     // 3. On a program thank-you hub, under "copy this page's link".
     if (/^\/programs\/[^/]+\/thank-you$/.test(path)) {
-      line(d.querySelector('.sales-hero .wrap'), 'Your program home opens from there in one tap.', 'thank_you');
+      card(d.querySelector('.sales-hero .wrap'), 'Your program home opens from your home screen in one tap.', 'thank_you');
     }
   });
 
@@ -193,10 +224,10 @@
       d.body.appendChild(t); t.select(); try { d.execCommand('copy'); ok(); } catch (e) {} t.remove();
     }
   }
-  function copyEntries(btn) { copyText(toCode(pack()), btn, 'Your entries are copied. Now add the app.'); push('app_entries_copied'); }
+  function copyEntries(btn) { copyText(toCode(pack()), btn, 'Copied. Now open Girlies and paste them.'); push('app_entries_copied'); }
 
   w.WGApp = {
-    standalone: standalone, ios: ios, android: android, inApp: inApp,
+    standalone: standalone, ios: ios, android: android, inApp: inApp, phone: phone, iosBrowser: iosBrowser,
     install: install,
     savedKeys: savedKeys,
     remembering: function () { return !w.WGConsent || !w.WGConsent.state || !!w.WGConsent.state.remember; },

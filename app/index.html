@@ -49,6 +49,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 .app-phone .sb b{width:13%;height:34%;border:1px solid #23221F;border-radius:2px;position:relative}.app-phone .sb b:after{content:"";position:absolute;inset:1px 25% 1px 1px;background:#23221F;border-radius:1px}
 .app-phone .sb i{position:absolute;left:50%;top:1.3%;width:30%;height:3%;background:#23221F;border-radius:99px;transform:translateX(-50%)}
 .app-phone img{display:block;width:100%;height:auto}
+.app-clip{padding:0;cursor:pointer;aspect-ratio:432/934;display:block}
+main [hidden]{display:none!important} /* .card and .app-install set display, which would beat the hidden attribute */
+.app-clip video{display:block;width:100%;height:100%;object-fit:cover}
+.app-clip .play{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.app-clip .play:after{content:"";position:absolute;left:18px;top:14px;border-left:14px solid var(--terracotta,#6E7A3F);border-top:9px solid transparent;border-bottom:9px solid transparent}
+.app-clip .hint{position:absolute;left:0;right:0;bottom:8%;text-align:center;font:800 .78rem/1 var(--sans,system-ui);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.app-clip.is-playing .play,.app-clip.is-playing .hint{display:none}
+.app-qr{grid-area:phone;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px;line-height:0}
+.app-qr img{width:100%;height:auto}
+.app-install.no-btn{grid-template-areas:"text phone"}
+.app-install.no-btn .txt{align-self:center}
+.app-pick .eyebrow{margin:0 0 6px}
+.app-pick h3{margin:0 0 6px}
+.app-pick p{margin:0 0 14px}
+.app-stages{display:flex;flex-wrap:wrap;gap:8px}
+.app-stages a{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);font-weight:700;font-size:.92rem;color:var(--plum)}
+.app-backup{margin-top:36px;border-top:1px solid var(--line);padding-top:14px}
+.app-backup summary{cursor:pointer;font-weight:800;color:var(--terracotta-dark)}
+.app-backup p{margin:10px 0 0;font-size:.95rem}
+.app-install.no-btn .btn{display:none}
 @media (min-width:600px){.app-install{grid-template-columns:1fr 168px;grid-template-areas:"text phone" "btn phone";gap:14px 36px;padding:26px 34px;align-content:center}.app-install .txt{align-self:end}.app-install .btn{width:auto;justify-self:start;align-self:start}.app-phone{width:168px;border-width:7px;border-radius:32px}.app-phone .sb{font-size:10px}.app-install h2{font-size:1.4rem}}
 .app-list{display:grid;gap:10px;grid-template-columns:1fr;margin:12px 0 0}
 @media (min-width:600px){.app-list{grid-template-columns:1fr 1fr}}
@@ -90,15 +110,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
 <section class="tool-hero">
   <div class="wrap narrow">
-    <h1>Wholesome Girlies on your phone</h1>
-    <p class="muted">Your saved tools, your program and the newest games are all here. Every tool works without data after your first visit.</p>
+    <h1 id="appTitle">Wholesome Girlies on your phone</h1>
+    <p class="muted" id="appLead">Your saved tools, your program and the newest games are all here. Every tool works without data after your first visit.</p>
     <div class="card app-install" id="appInstall" style="margin-top:18px;" hidden>
       <div class="txt">
-        <h2>Add it to your home screen</h2>
-        <p class="muted">It opens full screen, like an app, with the name <b>Girlies</b> under the icon. There is nothing to download from a store.</p>
+        <h2 id="appInstallTitle">Add it to your home screen</h2>
+        <p class="muted" id="appInstallText">It opens full screen, like an app, with the name <b>Girlies</b> under the icon. There is nothing to download from a store.</p>
       </div>
       <button type="button" class="btn btn-primary" id="appInstallBtn">Add to home screen</button>
-      <div class="app-phone" aria-hidden="true"><div class="sb"><span>9:41</span><i></i><b></b></div><img src="/assets/img/app/app-iphone.webp?v=20261008b" width="432" height="883" alt=""></div>
+      <div class="app-phone" id="appShot" aria-hidden="true"><div class="sb"><span>9:41</span><i></i><b></b></div><img src="/assets/img/app/app-iphone.webp?v=20261008b" width="432" height="883" alt=""></div>
+      <button type="button" class="app-phone app-clip" id="appClip" hidden aria-label="Play a short recording of the steps on an iPhone"><video src="/assets/video/app/install-iphone-safari.mp4?v=20261008a" poster="/assets/img/app/install-iphone-safari.webp?v=20261008a" width="432" height="934" muted loop playsinline preload="none"></video><span class="play" aria-hidden="true"></span><span class="hint" aria-hidden="true">See how</span></button>
+      <div class="app-qr" id="appQr" hidden><img src="/assets/img/qr/app.svg" width="168" height="168" alt="QR code for wholesomegirlies.xyz/app"></div>
     </div>
   </div>
 </section>
@@ -108,6 +130,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="app-block" id="appProgram" hidden>
       <h2>Your program</h2>
       <div class="app-list" id="appProgramList"></div>
+    </div>
+
+    <div class="app-block" id="appPick" hidden>
+      <h2 id="appPickTitle">A program for where you are</h2>
+      <div class="card app-pick" id="appPickCard"></div>
     </div>
 
     <div class="app-block">
@@ -211,17 +238,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- tool-reel:end -->
     <p style="margin-top:18px;"><a class="btn btn-ghost" href="/tools/">See every tool and guide</a></p>
 
-    <h2 style="margin-top:34px;">Keep your entries safe</h2>
-    <p>Your entries live on this phone only. We never see them. Save a backup file now and then, so a new phone or a cleared browser does not lose them.</p>
-    <div class="app-btns"><button type="button" class="btn btn-primary" id="appBackup">Save a backup</button>
-      <label class="btn btn-ghost">Restore a backup<input type="file" id="appRestore" accept="application/json,.json" hidden></label></div>
+    <details class="app-backup">
+      <summary>Back up or restore your entries</summary>
+      <p class="muted">Your entries live on this phone only. We never see them. A backup file keeps them safe if you change phones or clear your browser.</p>
+      <div class="app-btns"><button type="button" class="btn btn-primary" id="appBackup">Save a backup</button>
+        <label class="btn btn-ghost">Restore a backup<input type="file" id="appRestore" accept="application/json,.json" hidden></label></div>
+    </details>
     <div class="card" id="appMove" style="margin-top:18px;">
-      <h3 style="margin-top:0;">Moving to the app on iPhone</h3>
-      <p class="muted">On iPhone, the home screen app keeps its own storage, apart from Safari. Copy your entries in Safari, then paste them here in the app.</p>
-      <p><button type="button" class="btn btn-ghost" id="appCopy">Copy my saved entries</button></p>
-      <label for="appCode" style="display:block;font-weight:800;margin:14px 0 6px;">Paste my saved entries</label>
-      <textarea id="appCode" rows="3" style="width:100%;" placeholder="Paste the code you copied in Safari"></textarea>
-      <p style="margin:10px 0 0;"><button type="button" class="btn btn-primary" id="appPaste">Paste my saved entries</button></p>
+      <div id="appMoveCopy">
+        <h3 style="margin-top:0;">Already added Girlies to your home screen?</h3>
+        <p class="muted">On iPhone the app keeps its own storage, apart from Safari. Copy your entries here, then open Girlies and paste them.</p>
+        <p style="margin:0;"><button type="button" class="btn btn-ghost" id="appCopy">Copy my saved entries</button></p>
+      </div>
+      <div id="appMovePaste">
+        <h3 style="margin-top:0;">Bring your entries from Safari</h3>
+        <p class="muted">Used the tools in Safari before? Open wholesomegirlies.xyz/app in Safari, tap <b>Copy my saved entries</b>, then paste the code here.</p>
+        <label for="appCode" style="display:block;font-weight:800;margin:14px 0 6px;">Paste my saved entries</label>
+        <textarea id="appCode" rows="3" style="width:100%;" placeholder="Paste the code you copied in Safari"></textarea>
+        <p style="margin:10px 0 0;"><button type="button" class="btn btn-primary" id="appPaste">Paste my saved entries</button></p>
+      </div>
     </div>
     <p class="muted" id="appMsg" role="status" style="margin-top:12px;"></p>
   </div>
@@ -308,15 +343,71 @@ function appRender(){
     try { var v = JSON.parse(localStorage.getItem(k) || 'null'); if (v && v.u && /^\/programs\/[a-z0-9-]+(-diaspora)?\/thank-you(\.html)?$/.test(v.u) && !seen[v.u]) { seen[v.u] = 1; progs.appendChild(appCard(v.u, v.l || 'Your program home', 'Your program', 'Open \u2192')); } } catch (e) {}
   });
   document.getElementById('appProgram').hidden = progs.children.length === 0;
+  appPick(progs.children.length === 0, keys);
+}
+// Not a buyer yet: recommend the program for the stage her saved tools point to, or let her pick a stage.
+// The names and lines are the approved program cards on each stage's tool pages.
+var APP_PROGRAMS = {
+  relationships: ['wife-material-blueprint', 'The Wife Material Blueprint', 'The full plan to heal, meet serious men, read character early and have the talk, with word-for-word scripts.', 'Dating and marriage'],
+  fertility: ['trying-to-conceive-blueprint', 'The Trying-to-Conceive Blueprint', 'A private community for women trying to conceive, with a professional to ask.', 'Trying to conceive'],
+  pregnancy: ['first-pregnancy-plan', 'The First Pregnancy Plan', 'A community for all pregnant women, week-by-week support, and a midwife or doctor to ask.', 'Pregnant'],
+  postpartum: ['postpartum-reset', 'The 6-Week Postpartum Reset', 'The guided program for your body, your marriage, and your mind after birth, plus a community of mums.', 'Just had a baby'],
+  parenting: ['first-baby-playbook', 'The First Baby Playbook', 'A community for parents in the baby and toddler years, guidance on sleep, feeding and milestones, and a professional to ask.', 'Baby or toddler']
+};
+function appPick(show, keys){
+  var box = document.getElementById('appPick'), card = document.getElementById('appPickCard');
+  box.hidden = !show; if (!show) return;
+  var count = {};
+  APP_TOOLS.forEach(function(t){
+    if (keys.some(function(k){ return k === t[0] || (t[0].slice(-1) === '_' && k.indexOf(t[0]) === 0); })) { var st = t[1].split('/')[1]; count[st] = (count[st] || 0) + 1; }
+  });
+  var stage = Object.keys(count).sort(function(a, b){ return count[b] - count[a]; })[0];
+  card.innerHTML = '';
+  if (stage) {
+    var p = APP_PROGRAMS[stage];
+    document.getElementById('appPickTitle').textContent = 'A program for where you are';
+    card.innerHTML = '<p class="eyebrow">Picked from the tools you use</p><h3></h3><p class="muted"></p><a class="btn btn-primary"></a>';
+    card.querySelector('h3').textContent = p[1];
+    card.querySelector('p.muted').textContent = p[2];
+    var a = card.querySelector('a'); a.href = '/programs/' + p[0]; a.textContent = 'See the program \u2192';
+  } else {
+    document.getElementById('appPickTitle').textContent = 'Find your program';
+    card.innerHTML = '<p class="muted">Where are you right now? Each stage has its own program.</p><div class="app-stages"></div>';
+    var list = card.querySelector('.app-stages');
+    Object.keys(APP_PROGRAMS).forEach(function(st){ var a = document.createElement('a'); a.href = '/programs/' + APP_PROGRAMS[st][0]; a.textContent = APP_PROGRAMS[st][3]; list.appendChild(a); });
+  }
 }
 function appSay(t){ document.getElementById('appMsg').textContent = t; }
 document.addEventListener('DOMContentLoaded', function(){
   if (!window.WGApp) return;
   appRender();
-  if (WGApp.standalone) WGApp.keep(); else document.getElementById('appInstall').hidden = false;
-  document.getElementById('appInstallBtn').addEventListener('click', function(){ WGApp.install('app_home'); });
-  document.getElementById('appMove').hidden = !WGApp.ios;
-  document.getElementById('appCopy').hidden = WGApp.standalone;
+  var $ = function(id){ return document.getElementById(id); }, has = WGApp.savedKeys().length > 0;
+  if (WGApp.standalone) {
+    WGApp.keep();
+    var first = false; try { first = !localStorage.getItem('wg_app_welcomed'); localStorage.setItem('wg_app_welcomed', '1'); } catch (e) {}
+    $('appTitle').textContent = first ? 'You are set' : 'Welcome back';
+    $('appLead').textContent = first ? 'Girlies is on your home screen now. Every tool here works without data.' : 'Your saved tools, your program and the newest games.';
+    // On iPhone the app starts with empty storage, so bringing her entries across comes first.
+    if (WGApp.ios && !has) { $('appMove').style.marginTop = '18px'; $('appLead').parentNode.appendChild($('appMove')); }
+  } else {
+    $('appInstall').hidden = false;
+    if (!WGApp.phone) {
+      $('appInstall').classList.add('no-btn'); $('appShot').hidden = true; $('appQr').hidden = false;
+      $('appInstallTitle').textContent = 'Get Girlies on your phone';
+      $('appInstallText').textContent = 'Point your phone camera at the code. It opens this page on your phone, with the steps to add it.';
+    } else if (WGApp.ios && WGApp.iosBrowser === 'safari') {
+      $('appShot').hidden = true; $('appClip').hidden = false;
+    }
+  }
+  $('appClip').addEventListener('click', function(){
+    var v = this.querySelector('video'), b = this;
+    if (v.paused) { v.play().then(function(){ b.classList.add('is-playing'); }).catch(function(){}); } else { v.pause(); b.classList.remove('is-playing'); }
+  });
+  $('appInstallBtn').addEventListener('click', function(){ WGApp.install('app_home'); });
+  // iPhone only: Safari offers the copy when she has entries; the installed app offers the paste.
+  $('appMove').hidden = !WGApp.ios || (!WGApp.standalone && !has);
+  $('appMoveCopy').hidden = WGApp.standalone;
+  $('appMovePaste').hidden = !WGApp.standalone;
   document.getElementById('appBackup').addEventListener('click', function(){ WGApp.downloadBackup(); appSay('Backup saved. Keep the file somewhere you can find it, like Files or Google Drive.'); });
   document.getElementById('appRestore').addEventListener('change', function(e){
     var f = e.target.files[0]; if (!f) return;
@@ -331,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261008a"></script>
+<script defer src="/assets/js/wg-app.js?v=20261008h"></script>
 <script defer src="/assets/js/wg-tool-reel.js?v=20261008a"></script>
 </body>
 </html>

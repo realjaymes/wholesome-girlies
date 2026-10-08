@@ -43,9 +43,9 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   // 5. result line and thank-you line (desktop)
   await page.goto(B + '/relationships/tools/red-flag-radar', { waitUntil: 'load' });
   await page.evaluate(() => wgShowResult('sharp'));
-  ok('result line under the share row', /home screen/i.test(await page.$eval('#wg-result-share', e => e.textContent)) && !!(await page.$('#wg-result-share .wg-app-line')));
+  ok('result card under the share row', /home screen/i.test(await page.$eval('#wg-result-share', e => e.textContent)) && !!(await page.$('#wg-result-share .wg-app-card')));
   await page.goto(B + '/programs/wife-material-blueprint/thank-you', { waitUntil: 'load' });
-  ok('thank-you line', !!(await page.$('.sales-hero .wg-app-line')));
+  ok('thank-you card', !!(await page.$('.sales-hero .wg-app-card')));
   await ctx.close();
   // 6. phone: bar after a tool save; none on quiet or sales pages
   const phoneCtx = await browser.createBrowserContext();
