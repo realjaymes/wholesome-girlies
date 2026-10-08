@@ -472,6 +472,46 @@ if os.path.isdir(VIDEO_DIR):
         if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in briefed:
             fail(p, f"no tool short brief: add one under Content/AI Video/Wave N/ with destination: /{p[:-5]} (see 01 - Video Roadmap)")
 
+# ---------- Tool reels: every filmed tool short sits on every page it belongs to ----------
+# assets/data/tool-shorts.json lists one entry per rendered tool short. scripts/build-tool-reels.py
+# writes the reel on each program sales page and thank-you page; the motion kit's publish-to-site
+# script writes the entry. Rules: CLAUDE.md section 9.
+import importlib.util
+_spec = importlib.util.spec_from_file_location("build_tool_reels", os.path.join(ROOT, "scripts/build-tool-reels.py"))
+reels = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(reels)
+MANIFEST = reels.load()
+for slug, tool in MANIFEST["tools"].items():
+    for key in ("video", "poster"):
+        if not os.path.exists(tool[key].lstrip("/")):
+            fail("assets/data/tool-shorts.json", f"{slug}: {key} file {tool[key]} is missing")
+    if not os.path.exists(reels.tool_file(tool["tool"])):
+        fail("assets/data/tool-shorts.json", f"{slug}: tool page {tool['tool']} does not exist")
+    elif reels.fingerprint(tool["tool"]) != tool["tool_fingerprint"]:
+        fail(tool["tool"].strip("/") + ".html", "tool changed since its short was filmed: re-capture and re-render, then run publish-to-site")
+    for kind, field in (("sales", "programs"), ("thank_you", "thank_you_programs")):
+        for prog in tool.get(field, []):
+            for path, _market, k in reels.pages_of(prog):
+                if k == kind and tool["video"] not in SRC.get(path, ""):
+                    fail(path, f"tool reel is missing {slug}: every filmed tool short appears on each page it belongs to (run scripts/build-tool-reels.py)")
+for prog in MANIFEST["programs"]:
+    for path, market, kind in reels.pages_of(prog):
+        _old, _new, err = reels.expected(path, MANIFEST, prog, market, kind)
+        if err:
+            fail(path, err)
+        elif _new != _old:
+            fail(path, "tool reel is stale against assets/data/tool-shorts.json: run python3 scripts/build-tool-reels.py")
+# A brief with no manifest entry means its short is still being rendered: advisory only.
+if os.path.isdir(VIDEO_DIR):
+    filmed = {t["brief"] for t in MANIFEST["tools"].values()}
+    for f in sorted(glob.glob(os.path.join(VIDEO_DIR, "Wave */*Tool Short*.md"))):
+        rel = f.split("AI Video/")[1]
+        if rel not in filmed:
+            warn(rel, "tool short brief has no entry in assets/data/tool-shorts.json yet (rendering pending); publish-to-site adds it")
+for p in PAGES:
+    if KIND[p] in ("PROG", "PROG-D") and "Who guides you" in SRC[p]:
+        fail(p, 'no "Who guides you" credentials section on sales pages: they stay lean (CLAUDE.md section 4)')
+
 # ---------- Ratchet rules (frozen backlog, no new violations) ----------
 
 
