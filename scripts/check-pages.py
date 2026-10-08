@@ -43,7 +43,7 @@ def read(p):
 # ---------- page inventory ----------
 
 MOCKUPS = {"branding-options.html", "logo-options.html"}
-PAGES = sorted(p for p in glob.glob("**/*.html", recursive=True) if not p.startswith((".", "node_modules")))
+PAGES = sorted(p for p in glob.glob("**/*.html", recursive=True) if not p.startswith((".", "node_modules", "_lab")))
 SRC = {p: read(p) for p in PAGES}
 
 
