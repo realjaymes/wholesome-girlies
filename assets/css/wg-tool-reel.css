@@ -1,6 +1,6 @@
 /* Tool reel: tap-to-play phone clips of the tools, on sales pages and thank-you pages.
    Markup comes from scripts/build-tool-reels.py; behaviour from wg-tool-reel.js. */
-.ts-show{margin-top:38px;padding-top:30px;border-top:1px dashed var(--sand)}
+.ts-show{text-align:left;margin-top:38px;padding-top:30px;border-top:1px dashed var(--sand)}
 .ts-head h2{font-size:clamp(1.4rem,3vw,1.9rem);margin-bottom:6px}
 .ts-sub{font-size:.98rem;margin-bottom:16px}
 .ts-cap{font-family:var(--serif);font-size:1.05rem;line-height:1.25;color:var(--plum);margin:0 0 10px;min-height:3.75em}

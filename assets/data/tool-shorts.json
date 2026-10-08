@@ -9,8 +9,8 @@
     "heading": "Tools to use with the Blueprint",
     "aria": "Tools to use with the Blueprint",
     "sub": {
-     "home": "These tools are on the site for every woman. Use them as you follow the plan.",
-     "diaspora": "These tools are on the site for all women. Use them as you follow the plan."
+     "home": "Every tool here is in the Girlies app with your Blueprint, ready on your phone even without data. Use them as you follow the plan.",
+     "diaspora": "Every tool here is in the Girlies app with your Blueprint, ready on your phone even offline. Use them as you follow the plan."
     },
     "order": [
      "period-tracker",
@@ -41,8 +41,8 @@
     "heading": "Tools to use with the Plan",
     "aria": "Tools to use with the Plan",
     "sub": {
-     "home": "These tools are on the site for every woman. Use them as you follow the plan.",
-     "diaspora": "These tools are on the site for all women. Use them as you follow the plan."
+     "home": "Every tool here is in the Girlies app with your Plan, ready on your phone even without data. Use them as you follow the plan.",
+     "diaspora": "Every tool here is in the Girlies app with your Plan, ready on your phone even offline. Use them as you follow the plan."
     },
     "order": [
      "due-date-calculator",
@@ -75,8 +75,8 @@
     "heading": "Tools to use with the Reset",
     "aria": "Tools to use with the Reset",
     "sub": {
-     "home": "These tools are on the site for every mum. Use them as you follow the plan.",
-     "diaspora": "These tools are on the site for all mums. Use them as you follow the plan."
+     "home": "Every tool here is in the Girlies app with your Reset, ready on your phone even without data. Use them as you follow the plan.",
+     "diaspora": "Every tool here is in the Girlies app with your Reset, ready on your phone even offline. Use them as you follow the plan."
     },
     "order": [
      "recovery-timeline-calculator",
@@ -108,8 +108,8 @@
     "heading": "Tools to use with the Playbook",
     "aria": "Tools to use with the Playbook",
     "sub": {
-     "home": "These tools are on the site for every mum. Use them as you follow the plan.",
-     "diaspora": "These tools are on the site for all mums. Use them as you follow the plan."
+     "home": "Every tool here is in the Girlies app with your Playbook, ready on your phone even without data. Use them as you follow the plan.",
+     "diaspora": "Every tool here is in the Girlies app with your Playbook, ready on your phone even offline. Use them as you follow the plan."
     },
     "order": [
      "baby-name-explorer",
@@ -144,8 +144,8 @@
     "heading": "Tools to use with the Blueprint",
     "aria": "Tools to use with the Blueprint",
     "sub": {
-     "home": "These tools are on the site for every woman. Use them as you follow the plan.",
-     "diaspora": "These tools are on the site for all women. Use them as you follow the plan."
+     "home": "Every tool here is in the Girlies app with your Blueprint, ready on your phone even without data. Use them as you follow the plan.",
+     "diaspora": "Every tool here is in the Girlies app with your Blueprint, ready on your phone even offline. Use them as you follow the plan."
     },
     "order": [
      "ready-for-love-quiz",
@@ -180,8 +180,8 @@
     "heading": "Tools to use with the Journey",
     "aria": "Tools to use with the Journey",
     "sub": {
-     "home": "These tools are on the site for every mum. Use them as you follow the plan.",
-     "diaspora": "These tools are on the site for all mums. Use them as you follow the plan."
+     "home": "Every tool here is in the Girlies app with your four programs, ready on your phone even without data. Use them as you follow the plan.",
+     "diaspora": "Every tool here is in the Girlies app with your four programs, ready on your phone even offline. Use them as you follow the plan."
     },
     "order": [
      "due-date-calculator",

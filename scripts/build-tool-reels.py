@@ -31,7 +31,7 @@ from html.parser import HTMLParser
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST = os.path.join(ROOT, "assets/data/tool-shorts.json")
 START, END = "<!-- tool-reel:start -->", "<!-- tool-reel:end -->"
-ASSET_VERSION = "20261008a"
+ASSET_VERSION = "20261008b"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-tool-reel.js?v={ASSET_VERSION}"></script>'
 PRIVATE_LABEL = "Private. Stays on your phone."
