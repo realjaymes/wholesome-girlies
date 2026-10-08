@@ -11,20 +11,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KW443M88');</script>
 <!-- End Google Tag Manager -->
-<title>Night Feed Rota — share the nights | Wholesome Girlies</title>
-<meta name="description" content="A simple night rota for new mums: agree who does which feed, so the nights are not silently all on you. Saves on your device. Built on research and real data. Educational, not medical advice.">
-<meta name="wg:share" content="New baby at home? Agree who does which night feed, so the nights aren&#x27;t silently all on mum. A simple rota to fill in together.">
+<title>Night Feed Rota: Who Does Which Feed | Wholesome Girlies</title>
+<meta name="description" content="Put a name beside each part of the night so the feeds are shared. Fill it in with your husband, mother or mother-in-law. Educational, not medical advice.">
+<meta name="wg:share" content="New baby at home and the 2am feed is always you? Put a name beside each part of the night. Fill the rota in together.">
 <link rel="canonical" href="https://wholesomegirlies.xyz/postpartum/tools/night-feed-rota">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Wholesome Girlies">
-<meta property="og:title" content="Night Feed Rota — share the nights | Wholesome Girlies">
-<meta property="og:description" content="Agree who does which feed, so the nights are not silently all on you. Saves on your device. Educational, not medical advice.">
+<meta property="og:title" content="Night Feed Rota: Who Does Which Feed | Wholesome Girlies">
+<meta property="og:description" content="Put a name beside each part of the night so the feeds are shared. Saves on your device. Educational, not medical advice.">
 <meta property="og:url" content="https://wholesomegirlies.xyz/postpartum/tools/night-feed-rota">
 <meta property="og:image" content="https://wholesomegirlies.xyz/assets/img/og/night-feed-rota.jpg?v=20261007b">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wgirlieshq">
-<meta name="twitter:title" content="Night Feed Rota — share the nights | Wholesome Girlies">
-<meta name="twitter:description" content="Agree who does which feed, so the nights are not silently all on you. Saves on your device.">
+<meta name="twitter:title" content="Night Feed Rota: Who Does Which Feed | Wholesome Girlies">
+<meta name="twitter:description" content="Put a name beside each part of the night so the feeds are shared. Saves on your device.">
 <meta name="twitter:image" content="https://wholesomegirlies.xyz/assets/img/og/night-feed-rota.jpg?v=20261007b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,7 +79,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap narrow">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/postpartum/">Postpartum</a> / Tools</div>
     <h1>Night Feed Rota</h1>
-    <p class="muted">Broken sleep is one of the hardest parts of the early weeks. Agree who does which part of the night, so it is not silently all on you. Fill it in, and show it to your partner or helper. It saves on this device.</p>
+    <p class="muted">Who does the 2am feed in your house? Put a name beside each part of the night: your husband, your mother, or your mother-in-law who has come for omugwo. Show the rota to whoever is staying with you. It saves on this device.</p>
   </div>
 </section>
 
@@ -103,7 +103,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="doctor-box">
       <h4>When to see a doctor</h4>
-      <p class="muted" style="margin:0;">Rest matters, but do not push through warning signs. Heavy bleeding, a fever, severe pain, or feeling low or not yourself for more than two weeks all need a doctor. In Nigeria you can call MANI on <a href="tel:08091116264">0809 111 6264</a>.</p>
+      <p class="muted" style="margin:0;">Rest matters. Do not push through warning signs. Heavy bleeding, a fever, severe pain, or feeling low or not yourself for more than two weeks all need a doctor. In Nigeria you can call MANI on <a href="tel:08091116264">0809 111 6264</a>.</p>
     </div>
 
     <div class="byline"><span class="av" style="background:none;overflow:hidden;"><img src="/assets/img/team/cynthia-obinatu-sm.jpg" alt="Cynthia Obinatu" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></span> <span>Written by <a href="/about/cynthia-obinatu">Cynthia Obinatu</a>, community and editorial lead. Educational, not medical advice.</span></div>
@@ -159,7 +159,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 var KEY = "wg_night_rota_v1";
 var DEFAULT = [
   {part:"Early night (10pm to 2am)", who:"", what:"Feeds, changes, settles"},
-  {part:"Late night (2am to 6am)", who:"", what:"Feeds, changes, settles"},
+  {part:"Late night (2am to 6am)", who:"", what:"Feeds, changes, settles. Phone torch ready if NEPA takes light"},
   {part:"Morning", who:"", what:"Takes the baby so you sleep in"}
 ];
 function load(){ try { var d = JSON.parse(localStorage.getItem(KEY)); return (d && d.length) ? d : DEFAULT.slice(); } catch(e){ return DEFAULT.slice(); } }
@@ -173,7 +173,7 @@ function render(){
     var tr = document.createElement('tr');
     tr.innerHTML =
       '<td><input class="part-in" value="'+esc(r.part)+'" data-i="'+i+'" data-k="part" placeholder="Night part"></td>' +
-      '<td><input value="'+esc(r.who)+'" data-i="'+i+'" data-k="who" placeholder="Name"></td>' +
+      '<td><input value="'+esc(r.who)+'" data-i="'+i+'" data-k="who" placeholder="Name, e.g. Emeka or Mummy"></td>' +
       '<td><input value="'+esc(r.what)+'" data-i="'+i+'" data-k="what" placeholder="What they do"></td>' +
       '<td><button class="del" title="Remove" data-del="'+i+'">×</button></td>';
     tb.appendChild(tr);
