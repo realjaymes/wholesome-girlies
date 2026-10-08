@@ -72,11 +72,13 @@ def kind(p):
         return "ABOUT"
     if p == "index.html":
         return "HOME"
+    if p in ("app/index.html", "offline.html"):
+        return "APP"
     return "HUB"
 
 
 KIND = {p: kind(p) for p in PAGES}
-NOINDEX_KINDS = {"GO", "TY", "PROG-D", "404", "MOCKUP", "RESULT"}
+NOINDEX_KINDS = {"GO", "TY", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
 
@@ -510,6 +512,15 @@ for prog in MANIFEST["programs"]:
             fail(path, err)
         elif _new != _old:
             fail(path, "tool reel is stale against assets/data/tool-shorts.json: run python3 scripts/build-tool-reels.py")
+# The app home shows every filmed tool, one row per stage.
+if not MANIFEST.get("app"):
+    fail("assets/data/tool-shorts.json", 'missing the "app" section: the app home shows every filmed tool')
+else:
+    _old, _new, err = reels.expected(MANIFEST["app"]["page"], MANIFEST, None, "home", "app")
+    if err:
+        fail(MANIFEST["app"]["page"], err)
+    elif _new != _old:
+        fail(MANIFEST["app"]["page"], "tool reel is stale against assets/data/tool-shorts.json: run python3 scripts/build-tool-reels.py")
 # A brief with no manifest entry means its short is still being rendered: advisory only.
 if os.path.isdir(VIDEO_DIR):
     filmed = {t["brief"] for t in MANIFEST["tools"].values()}
@@ -520,6 +531,37 @@ if os.path.isdir(VIDEO_DIR):
 for p in PAGES:
     if KIND[p] in ("PROG", "PROG-D") and "Who guides you" in SRC[p]:
         fail(p, 'no "Who guides you" credentials section on sales pages: they stay lean (CLAUDE.md section 4)')
+
+# ---------- The app: the website and the installed app are the same pages ----------
+# manifest.webmanifest and sw.js make the site installable. scripts/add-app-tags.py puts the app tags on every page;
+# the service worker loads pages from the network first, so a pushed page reaches the app the next time she opens it online.
+for f in ("manifest.webmanifest", "sw.js", "app/index.html", "offline.html"):
+    if not os.path.exists(f):
+        fail(f, "the app needs this file")
+APP_TAGS = ['<link rel="manifest" href="/manifest.webmanifest">', '<meta name="theme-color" content="#6E7A3F">',
+            '<meta name="apple-mobile-web-app-title" content="Girlies">', 'src="/assets/js/wg-app.js?v=']
+for p in PAGES:
+    if KIND[p] == "MOCKUP":
+        continue
+    if any(t not in SRC[p] for t in APP_TAGS):
+        fail(p, "missing the app tags: run python3 scripts/add-app-tags.py")
+    m = re.search(r"<h4>Explore</h4>\s*<ul>(.*?)</ul>", SRC[p], flags=re.S)
+    if m and 'href="/app/"' not in m.group(1):
+        fail(p, 'footer Explore list is missing "Get the app": run python3 scripts/add-app-tags.py')
+if os.path.exists("app/index.html"):
+    app_src = SRC["app/index.html"]
+    listed = dict(re.findall(r'\["(wg_[a-z0-9_]+)", "(/[a-z-]+/tools/[a-z0-9-]+)"', app_src))
+    for p in PAGES:
+        if KIND[p] != "TOOL":
+            continue
+        keys = {k for k in re.findall(r"""["'`](wg_[a-z0-9_]+)""", SRC[p]) if not re.search(r"_home$|^wg_lead$|^wg_app_|^wg_consent", k)}
+        if keys and url_of(p).replace(SITE, "") not in listed.values():
+            fail(p, "this tool saves entries but is missing from APP_TOOLS in app/index.html, so the app home never shows it")
+    for k, path in listed.items():
+        page = path.lstrip("/") + ".html"
+        if page not in SRC or k not in SRC[page]:
+            fail("app/index.html", f"APP_TOOLS entry {k} does not match a key saved by {path}")
+
 
 # ---------- Ratchet rules (frozen backlog, no new violations) ----------
 

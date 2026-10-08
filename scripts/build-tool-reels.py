@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Writes the tool reels (tap-to-play phone clips of the tools) onto the sales and thank-you pages.
+"""Writes the tool reels (tap-to-play phone clips of the tools) onto the sales and thank-you pages, and onto the
+app home (/app/), where every filmed tool shows in one row per stage.
 
 Source of truth: assets/data/tool-shorts.json, one entry per tool short. The reel HTML sits between
 <!-- tool-reel:start --> and <!-- tool-reel:end --> markers on each page, and this script is the only
@@ -161,7 +162,7 @@ def pick(d, market):
 
 def card(t, prog, market, kind):
     title = t["title"]
-    if kind == "sales":
+    if kind in ("sales", "app"):
         cap, name = pick(t["sales_line"], market), title
     else:
         cap = pick(t["thank_you_line"], market)
@@ -176,7 +177,7 @@ def card(t, prog, market, kind):
            f'<p class="ts-name">{esc(name)}</p>']
     if t.get("private"):
         out.append(f'<span class="ts-priv">{PRIVATE_LABEL}</span>')
-    if kind == "thank_you":
+    if kind in ("thank_you", "app"):
         out.append(f'<a class="ts-open" href="{t["tool"]}"><span>Open the tool &rarr;</span></a>')
     out.append("</li>")
     return "".join(out[:1]) + "\n" + "".join(out[1:2]) + "\n" + "".join(out[2:])
@@ -199,6 +200,25 @@ def block(m, slug, market, kind):
     return f"{START}\n    {inner}\n    {END}"
 
 
+def app_ids(m, stage):
+    """Tool ids of one stage for the app home: in the order its programs' sales reels use, then any others."""
+    ids = [i for i, t in m["tools"].items() if t["tool"].split("/")[1] == stage]
+    order = [i for slug, prog in m["programs"].items() for i in prog["sales"]["order"]]
+    return [i for i in dict.fromkeys(order) if i in ids] + [i for i in ids if i not in order]
+
+
+def app_block(m):
+    rows = []
+    for stage, name in m["app"]["stages"]:
+        cards = "".join(card(m["tools"][i], {}, "home", "app") for i in app_ids(m, stage))
+        if cards:
+            rows.append(f'<h3 style="margin:26px 0 8px;">{esc(name)}</h3>\n    '
+                        f'<div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button>'
+                        f'<ul class="ts-row" tabindex="0" aria-label="{esc(name)} tools">{cards}</ul>'
+                        f'<button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>')
+    return f"{START}\n    " + "\n    ".join(rows) + f"\n    {END}"
+
+
 # ---------- page writing ----------
 
 MARK = re.compile(re.escape(START) + r".*?" + re.escape(END), re.S)
@@ -219,7 +239,7 @@ def expected(path, m, slug, market, kind):
         src = f.read()
     if len(MARK.findall(src)) != 1:
         return src, None, f"{path}: needs exactly one {START} ... {END} block"
-    new = MARK.sub(lambda _: block(m, slug, market, kind), src)
+    new = MARK.sub(lambda _: app_block(m) if kind == "app" else block(m, slug, market, kind), src)
     return src, with_assets(new), None
 
 
@@ -230,18 +250,20 @@ def main(argv):
     check = "--check" in argv
     m = load()
     bad = []
-    for slug in m["programs"]:
-        for path, market, kind in pages_of(slug):
-            old, new, err = expected(path, m, slug, market, kind)
-            if err:
-                bad.append(err)
-            elif new != old:
-                if check:
-                    bad.append(f"{path}: tool reel is stale; run python3 scripts/build-tool-reels.py")
-                else:
-                    with open(os.path.join(ROOT, path), "w", encoding="utf-8") as f:
-                        f.write(new)
-                    print("wrote", path)
+    targets = [(slug, page) for slug in m["programs"] for page in pages_of(slug)]
+    if m.get("app"):
+        targets.append((None, (m["app"]["page"], "home", "app")))
+    for slug, (path, market, kind) in targets:
+        old, new, err = expected(path, m, slug, market, kind)
+        if err:
+            bad.append(err)
+        elif new != old:
+            if check:
+                bad.append(f"{path}: tool reel is stale; run python3 scripts/build-tool-reels.py")
+            else:
+                with open(os.path.join(ROOT, path), "w", encoding="utf-8") as f:
+                    f.write(new)
+                print("wrote", path)
     for b in bad:
         print("  -", b)
     return 1 if bad else 0
