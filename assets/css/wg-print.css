@@ -35,7 +35,7 @@ main .wrap { max-width: none !important; padding: 0 !important; margin: 0 !impor
 .checklist.wg-print-cols { columns: 2; column-gap: 10mm; } /* short items: two columns, one page */
 .checklist.wg-print-cols li { padding: 3pt 0; }
 
-/* Night feed rota: inputs print as plain text */
+/* Night feeding schedule: inputs print as plain text */
 .rota th:last-child, .rota td:last-child { display: none !important; }
 .rota input { border: 0 !important; padding: 0 !important; background: none !important; font-size: 11pt !important; }
 .rota input::placeholder { color: transparent; }

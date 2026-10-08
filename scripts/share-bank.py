@@ -123,9 +123,9 @@ D = [
 ("Mind check-in", "tool", "/postpartum/tools/mind-check-in",
  ("Everyone asks how the baby is. Fewer people ask how mum is.", "For new mums, this check-in is a quiet, private space to notice how you're doing, with real help when you need it. There's no test and no score.", "felt moment (gentle)", "sensitive page: soft prompt stays"),
  ("After a birth, a lot of feelings arrive at once. It helps to check in.", "If you've had a baby, or love someone who has, this private check-in helps you notice how you're feeling and points to real help.", "felt moment (gentle)", "")),
-("Night feed rota", "tool", "/postpartum/tools/night-feed-rota",
- ("If nobody agrees who does the 3am feed, it's mum.", "If there's a new baby at home, this rota helps you agree who does which part of the night, so it isn't silently all on one person. Fill it in together.", "gentle provocation", ""),
- ("Broken sleep is one of the hardest parts of the early weeks.", "For new parents and helpers, this night feed rota splits the nights between you, your partner and your helper. Print it and put it on the wall.", "felt moment", "")),
+("Night feeding schedule", "tool", "/postpartum/tools/night-feed-rota",
+ ("If nobody agrees who does the 3am feed, it's mum.", "If there's a new baby at home, this schedule helps you agree who does which part of the night, so it isn't silently all on one person. Fill it in together.", "gentle provocation", ""),
+ ("Broken sleep is one of the hardest parts of the early weeks.", "For new parents and helpers, this night feeding schedule splits the nights between you, your partner and your helper. Print it and put it on the wall.", "felt moment", "")),
 ("Partner support planner", "tool", "/postpartum/tools/partner-support-planner",
  ("\"Just tell me what you need\" is hard to answer at 3am.", "For new mums, this planner lets you tick what would help most right now and turns it into a clear note to send your partner or family.", "felt moment", ""),
  ("He wants to help. He doesn't know how. You're too tired to explain.", "If you've just had a baby, this planner turns what you need into a short note your partner or family can act on today.", "scenario", "")),
@@ -205,7 +205,7 @@ for stage, pages in D:
                 if re.search(b, t, re.I) and not (b == r"\bfix\b(?! for you)" and "will fix" in t and v[3] == A):
                     probs.append(f"{name} {tag}: banned /{b}/")
             if re.search(r"\b300\+", t) and name not in COUNT_OK: probs.append(f"{name} {tag}: count")
-            if v[1] and not re.search(r"\bthis ([\w-]+ )?(guide|checklist|worksheet|calculator|quiz|tracker|planner|checker|check-in|question list|list|rota|builder|name finder|birth plan builder|hospital bag checklist|night feed rota|milestone tracker|week-by-week tracker|program)\b", v[1]) and not re.search(r"^For .*?, The ", v[1]):
+            if v[1] and not re.search(r"\bthis ([\w-]+ )?(guide|checklist|worksheet|calculator|quiz|tracker|planner|checker|check-in|question list|list|rota|builder|name finder|birth plan builder|hospital bag checklist|night feeding schedule|milestone tracker|week-by-week tracker|program)\b", v[1]) and not re.search(r"^For .*?, The ", v[1]):
                 probs.append(f"{name} {tag}: line 2 names no resource type")
 print("pages:", n); print("\n".join(probs) or "lint clean")
 
