@@ -231,10 +231,10 @@
    "thank_you_line": {
     "home": "Enter the first day of your last period to see your next three periods."
    },
-   "brief": "Wave 3/05 - Tool Short - Period Tracker.md",
+   "brief": "The Trying-to-Conceive Blueprint/01 - Tool Short - Period Tracker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "bd945c25436a3da1",
-   "source_render": "Wave 3/05 - Period Tracker 9x16.mp4"
+   "source_render": "The Trying-to-Conceive Blueprint/01 - Period Tracker 9x16.mp4"
   },
   "ovulation-calculator": {
    "tool": "/fertility/tools/ovulation-calculator",
@@ -255,10 +255,10 @@
    "thank_you_line": {
     "home": "Enter your last period date and cycle length to see your fertile window."
    },
-   "brief": "Wave 3/04 - Tool Short - Ovulation Calculator.md",
+   "brief": "The Trying-to-Conceive Blueprint/02 - Tool Short - Ovulation Calculator.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "84155e5ca4e3e9d0",
-   "source_render": "Wave 3/04 - Ovulation Calculator 9x16.mp4"
+   "source_render": "The Trying-to-Conceive Blueprint/02 - Ovulation Calculator 9x16.mp4"
   },
   "ttc-checklist": {
    "tool": "/fertility/tools/ttc-checklist",
@@ -278,10 +278,10 @@
    "thank_you_line": {
     "home": "Tick one step you can take this week."
    },
-   "brief": "Wave 3/07 - Tool Short - TTC Checklist.md",
+   "brief": "The Trying-to-Conceive Blueprint/03 - Tool Short - TTC Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "13c26c8766ce072b",
-   "source_render": "Wave 3/07 - TTC Checklist 9x16.mp4"
+   "source_render": "The Trying-to-Conceive Blueprint/03 - TTC Checklist 9x16.mp4"
   },
   "his-fertility-checklist": {
    "tool": "/fertility/tools/his-fertility-checklist",
@@ -301,10 +301,10 @@
    "thank_you_line": {
     "home": "Send him the list so he can tick each step on his phone."
    },
-   "brief": "Wave 3/08 - Tool Short - His Fertility Checklist.md",
+   "brief": "The Trying-to-Conceive Blueprint/04 - Tool Short - His Fertility Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "dcc982e6f8b8ba63",
-   "source_render": "Wave 3/08 - His Fertility Checklist 9x16.mp4"
+   "source_render": "The Trying-to-Conceive Blueprint/04 - His Fertility Checklist 9x16.mp4"
   },
   "fertility-appointment-questions": {
    "tool": "/fertility/tools/fertility-appointment-questions",
@@ -324,10 +324,10 @@
    "thank_you_line": {
     "home": "Tick your questions, add your own, then print the list."
    },
-   "brief": "Wave 3/09 - Tool Short - Fertility Appointment Questions.md",
+   "brief": "The Trying-to-Conceive Blueprint/05 - Tool Short - Fertility Appointment Questions.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "173194df46f876a2",
-   "source_render": "Wave 3/09 - Fertility Appointment Questions 9x16.mp4"
+   "source_render": "The Trying-to-Conceive Blueprint/05 - Fertility Appointment Questions 9x16.mp4"
   },
   "the-wait-check-in": {
    "tool": "/fertility/tools/the-wait-check-in",
@@ -347,10 +347,10 @@
    "thank_you_line": {
     "home": "Open it and write one line about this week. It stays on your phone."
    },
-   "brief": "Wave 3/06 - Tool Short - The Wait Check-in.md",
+   "brief": "The Trying-to-Conceive Blueprint/06 - Tool Short - The Wait Check-in.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "6a77f8232e152779",
-   "source_render": "Wave 3/06 - The Wait Check-in 9x16.mp4"
+   "source_render": "The Trying-to-Conceive Blueprint/06 - The Wait Check-in 9x16.mp4"
   },
   "due-date-calculator": {
    "tool": "/pregnancy/tools/due-date-calculator",
@@ -372,10 +372,10 @@
    "thank_you_line": {
     "home": "Enter the first day of your last period to see your due date."
    },
-   "brief": "Wave 2/13 - Tool Short - Due Date Calculator.md",
+   "brief": "The First Pregnancy Plan/01 - Tool Short - Due Date Calculator.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "7e117fae795ec369",
-   "source_render": "Wave 2/13 - Due Date Calculator 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/01 - Due Date Calculator 9x16.mp4"
   },
   "week-by-week-tracker": {
    "tool": "/pregnancy/tools/week-by-week-tracker",
@@ -396,10 +396,10 @@
    "thank_you_line": {
     "home": "Enter the first day of your last period to see your week and what to remember."
    },
-   "brief": "Wave 2/14 - Tool Short - Week-by-week Tracker.md",
+   "brief": "The First Pregnancy Plan/02 - Tool Short - Week-by-week Tracker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "686e454b2875949e",
-   "source_render": "Wave 2/14 - Week-by-week Tracker 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/02 - Week-by-week Tracker 9x16.mp4"
   },
   "antenatal-appointment-questions": {
    "tool": "/pregnancy/tools/antenatal-appointment-questions",
@@ -422,10 +422,10 @@
     "home": "Tick your questions for the next antenatal appointment, add your own, then print them.",
     "diaspora": "Tick your questions for the next appointment, add your own, then print them."
    },
-   "brief": "Wave 2/19 - Tool Short - Antenatal Appointment Questions.md",
+   "brief": "The First Pregnancy Plan/03 - Tool Short - Antenatal Appointment Questions.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "904cc656c7a423a2",
-   "source_render": "Wave 2/19 - Antenatal Appointment Questions 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/03 - Antenatal Appointment Questions 9x16.mp4"
   },
   "safe-foods-checklist": {
    "tool": "/pregnancy/tools/safe-foods-checklist",
@@ -446,10 +446,10 @@
    "thank_you_line": {
     "home": "Tick what you eat, then read what to limit or avoid."
    },
-   "brief": "Wave 2/15 - Tool Short - Safe Foods Checklist.md",
+   "brief": "The First Pregnancy Plan/04 - Tool Short - Safe Foods Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "235534e3a67e2c60",
-   "source_render": "Wave 2/15 - Safe Foods Checklist 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/04 - Safe Foods Checklist 9x16.mp4"
   },
   "birth-plan-builder": {
    "tool": "/pregnancy/tools/birth-plan-builder",
@@ -471,10 +471,10 @@
    "thank_you_line": {
     "home": "Choose who you want with you and your pain relief options, then print the plan."
    },
-   "brief": "Wave 2/18 - Tool Short - Birth Plan Builder.md",
+   "brief": "The First Pregnancy Plan/05 - Tool Short - Birth Plan Builder.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "39ee597b9e483c7b",
-   "source_render": "Wave 2/18 - Birth Plan Builder 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/05 - Birth Plan Builder 9x16.mp4"
   },
   "hospital-bag-checklist": {
    "tool": "/pregnancy/tools/hospital-bag-checklist",
@@ -496,10 +496,10 @@
    "thank_you_line": {
     "home": "Tick each item as you pack it. The baby has a separate list."
    },
-   "brief": "Wave 2/16 - Tool Short - Hospital Bag Checklist.md",
+   "brief": "The First Pregnancy Plan/06 - Tool Short - Hospital Bag Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "bcb84e84d0fcab36",
-   "source_render": "Wave 2/16 - Hospital Bag Checklist 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/06 - Hospital Bag Checklist 9x16.mp4"
   },
   "baby-essentials-checklist": {
    "tool": "/pregnancy/tools/baby-essentials-checklist",
@@ -520,10 +520,10 @@
    "thank_you_line": {
     "home": "Start with a safe place for your baby to sleep, then tick what you have."
    },
-   "brief": "Wave 2/17 - Tool Short - Baby Essentials Checklist.md",
+   "brief": "The First Pregnancy Plan/07 - Tool Short - Baby Essentials Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "952d5f1e530bc529",
-   "source_render": "Wave 2/17 - Baby Essentials Checklist 9x16.mp4"
+   "source_render": "The First Pregnancy Plan/07 - Baby Essentials Checklist 9x16.mp4"
   },
   "recovery-timeline-calculator": {
    "tool": "/postpartum/tools/recovery-timeline-calculator",
@@ -546,10 +546,10 @@
    "thank_you_line": {
     "home": "Enter your delivery date, choose how you delivered, then tap Show my timeline."
    },
-   "brief": "Wave 1/01 - Tool Short - Recovery Timeline Calculator.md",
+   "brief": "The 6-Week Postpartum Reset/01 - Tool Short - Recovery Timeline Calculator.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "3574ed92c4277e38",
-   "source_render": "Wave 1/01 - Recovery Timeline Calculator 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/01 - Recovery Timeline Calculator 9x16.mp4"
   },
   "recovery-timeline-calculator-c-section": {
    "tool": "/postpartum/tools/recovery-timeline-calculator",
@@ -564,10 +564,10 @@
    "sales_line": {
     "home": "Choose C-section to see your recovery week by week."
    },
-   "brief": "Wave 1/09 - Tool Short - Recovery Timeline Calculator (C-section).md",
+   "brief": "The 6-Week Postpartum Reset/02 - Tool Short - Recovery Timeline Calculator (C-section).md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "3574ed92c4277e38",
-   "source_render": "Wave 1/09 - Recovery Timeline Calculator (C-section) 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/02 - Recovery Timeline Calculator (C-section) 9x16.mp4"
   },
   "recovery-checklist": {
    "tool": "/postpartum/tools/recovery-checklist",
@@ -588,10 +588,10 @@
    "thank_you_line": {
     "home": "Tick the first thing you did today. Your ticks stay on your phone."
    },
-   "brief": "Wave 1/02 - Tool Short - Recovery Checklist.md",
+   "brief": "The 6-Week Postpartum Reset/03 - Tool Short - Recovery Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "c4a546010d14a5ae",
-   "source_render": "Wave 1/02 - Recovery Checklist 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/03 - Recovery Checklist 9x16.mp4"
   },
   "night-feed-rota": {
    "tool": "/postpartum/tools/night-feed-rota",
@@ -613,10 +613,10 @@
    "thank_you_line": {
     "home": "Type a name beside each part of the night, then print or save it."
    },
-   "brief": "Wave 1/03 - Tool Short - Night Feeding Schedule.md",
+   "brief": "The 6-Week Postpartum Reset/04 - Tool Short - Night Feeding Schedule.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "5b8a44208dfacbbe",
-   "source_render": "Wave 1/03 - Night Feeding Schedule 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/04 - Night Feeding Schedule 9x16.mp4"
   },
   "partner-support-planner": {
    "tool": "/postpartum/tools/partner-support-planner",
@@ -637,10 +637,10 @@
    "thank_you_line": {
     "home": "Tick what you need, add your own line, then copy the note for him."
    },
-   "brief": "Wave 1/04 - Tool Short - Partner Support Planner.md",
+   "brief": "The 6-Week Postpartum Reset/05 - Tool Short - Partner Support Planner.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "91f9430490edaae1",
-   "source_render": "Wave 1/04 - Partner Support Planner 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/05 - Partner Support Planner 9x16.mp4"
   },
   "mind-check-in": {
    "tool": "/postpartum/tools/mind-check-in",
@@ -663,10 +663,10 @@
    "thank_you_line": {
     "home": "Read each question for this week, then write one line if you want. It stays on your phone."
    },
-   "brief": "Wave 2/21 - Tool Short - Mind Check-in.md",
+   "brief": "The 6-Week Postpartum Reset/06 - Tool Short - Mind Check-in.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "6b986f72f8bb82d5",
-   "source_render": "Wave 2/21 - Mind Check-in 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/06 - Mind Check-in 9x16.mp4"
   },
   "check-up-questions": {
    "tool": "/postpartum/tools/check-up-questions",
@@ -687,10 +687,10 @@
    "thank_you_line": {
     "home": "Tick your questions, add your own, then print the list."
    },
-   "brief": "Wave 2/20 - Tool Short - Postpartum Check-up Questions.md",
+   "brief": "The 6-Week Postpartum Reset/07 - Tool Short - Postpartum Check-up Questions.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "04e0936cc81880cd",
-   "source_render": "Wave 2/20 - Postpartum Check-up Questions 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/07 - Postpartum Check-up Questions 9x16.mp4"
   },
   "baby-name-explorer": {
    "tool": "/parenting/tools/baby-name-explorer",
@@ -710,10 +710,10 @@
    "thank_you_line": {
     "home": "Choose an origin, read what each name means, then make a naming card."
    },
-   "brief": "Wave 3/13 - Tool Short - Baby Name Explorer.md",
+   "brief": "The First Baby Playbook/01 - Tool Short - Baby Name Explorer.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "c547866415d6266a",
-   "source_render": "Wave 3/13 - Baby Name Explorer 9x16.mp4"
+   "source_render": "The First Baby Playbook/01 - Baby Name Explorer 9x16.mp4"
   },
   "feeding-sleep-tracker": {
    "tool": "/parenting/tools/feeding-sleep-tracker",
@@ -736,10 +736,10 @@
    "thank_you_line": {
     "home": "Tap Feed, Sleep or Diaper each time it happens. The tracker saves the time."
    },
-   "brief": "Wave 3/15 - Tool Short - Feeding and Sleep Tracker.md",
+   "brief": "The First Baby Playbook/02 - Tool Short - Feeding and Sleep Tracker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "d75bea2485687816",
-   "source_render": "Wave 3/15 - Feeding and Sleep Tracker 9x16.mp4"
+   "source_render": "The First Baby Playbook/02 - Feeding and Sleep Tracker 9x16.mp4"
   },
   "baby-routine-planner": {
    "tool": "/parenting/tools/baby-routine-planner",
@@ -759,10 +759,10 @@
    "thank_you_line": {
     "home": "Choose your baby's age, see a sample day, then change it to suit your home."
    },
-   "brief": "Wave 3/14 - Tool Short - Baby Routine Planner.md",
+   "brief": "The First Baby Playbook/03 - Tool Short - Baby Routine Planner.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "db89ba2a64f4192b",
-   "source_render": "Wave 3/14 - Baby Routine Planner 9x16.mp4"
+   "source_render": "The First Baby Playbook/03 - Baby Routine Planner 9x16.mp4"
   },
   "vaccination-tracker": {
    "tool": "/parenting/tools/vaccination-tracker",
@@ -783,10 +783,10 @@
    "thank_you_line": {
     "home": "Enter your baby's date of birth to see the date of each visit."
    },
-   "brief": "Wave 3/18 - Tool Short - Vaccination Tracker.md",
+   "brief": "The First Baby Playbook/04 - Tool Short - Vaccination Tracker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "58a62c1ed2a9d4d2",
-   "source_render": "Wave 3/18 - Vaccination Tracker 9x16.mp4"
+   "source_render": "The First Baby Playbook/04 - Vaccination Tracker 9x16.mp4"
   },
   "first-foods-planner": {
    "tool": "/parenting/tools/first-foods-planner",
@@ -806,10 +806,10 @@
    "thank_you_line": {
     "home": "Tick each food after your baby tries it. Give one new food at a time."
    },
-   "brief": "Wave 3/16 - Tool Short - First Foods Planner.md",
+   "brief": "The First Baby Playbook/05 - Tool Short - First Foods Planner.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "f0cc1ddaee11bd49",
-   "source_render": "Wave 3/16 - First Foods Planner 9x16.mp4"
+   "source_render": "The First Baby Playbook/05 - First Foods Planner 9x16.mp4"
   },
   "milestone-tracker": {
    "tool": "/parenting/tools/milestone-tracker",
@@ -832,10 +832,10 @@
    "thank_you_line": {
     "home": "Choose your baby's age, then read what many babies do around that time."
    },
-   "brief": "Wave 3/17 - Tool Short - Milestone Tracker.md",
+   "brief": "The First Baby Playbook/06 - Tool Short - Milestone Tracker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "d87c85c71a768775",
-   "source_render": "Wave 3/17 - Milestone Tracker 9x16.mp4"
+   "source_render": "The First Baby Playbook/06 - Milestone Tracker 9x16.mp4"
   },
   "babyproofing-safety-checklist": {
    "tool": "/parenting/tools/babyproofing-safety-checklist",
@@ -856,10 +856,10 @@
    "thank_you_line": {
     "home": "Start with where your baby sleeps, then tick each safety check as you finish."
    },
-   "brief": "Wave 3/19 - Tool Short - Babyproofing Safety Checklist.md",
+   "brief": "The First Baby Playbook/07 - Tool Short - Babyproofing Safety Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "265fd6819686bf91",
-   "source_render": "Wave 3/19 - Babyproofing Safety Checklist 9x16.mp4"
+   "source_render": "The First Baby Playbook/07 - Babyproofing Safety Checklist 9x16.mp4"
   },
   "paediatric-visit-questions": {
    "tool": "/parenting/tools/paediatric-visit-questions",
@@ -881,10 +881,10 @@
     "home": "Tick your questions, add your own, then print the list for the clinic.",
     "diaspora": "Tick your questions, add your own, then print the list for your baby's doctor."
    },
-   "brief": "Wave 3/20 - Tool Short - Paediatric Visit Questions.md",
+   "brief": "The First Baby Playbook/08 - Tool Short - Paediatric Visit Questions.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "238c5b9ac7206ed5",
-   "source_render": "Wave 3/20 - Paediatric Visit Questions 9x16.mp4"
+   "source_render": "The First Baby Playbook/08 - Paediatric Visit Questions 9x16.mp4"
   },
   "ready-for-love-quiz": {
    "tool": "/relationships/tools/ready-for-love-quiz",
@@ -904,10 +904,10 @@
    "thank_you_line": {
     "home": "Answer each question based on how you feel today, then see your result."
    },
-   "brief": "Wave 2/04 - Tool Short - Ready for Love Quiz.md",
+   "brief": "The Wife Material Blueprint/01 - Tool Short - Ready for Love Quiz.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "9f1669b6a28bdb52",
-   "source_render": "Wave 2/04 - Ready for Love Quiz 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/01 - Ready for Love Quiz 9x16.mp4"
   },
   "standards-non-negotiables-worksheet": {
    "tool": "/relationships/tools/standards-non-negotiables-worksheet",
@@ -928,10 +928,10 @@
    "thank_you_line": {
     "home": "Tick the standards that matter to you, then add one line in your own words."
    },
-   "brief": "Wave 2/08 - Tool Short - Standards and Non-Negotiables Worksheet.md",
+   "brief": "The Wife Material Blueprint/02 - Tool Short - Standards and Non-Negotiables Worksheet.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "42e0cc1196f1355e",
-   "source_render": "Wave 2/08 - Standards and Non-Negotiables Worksheet 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/02 - Standards and Non-Negotiables Worksheet 9x16.mp4"
   },
   "meet-marriage-minded-men-checklist": {
    "tool": "/relationships/tools/meet-marriage-minded-men-checklist",
@@ -952,10 +952,10 @@
    "thank_you_line": {
     "home": "Tick the ways you will try this month to meet serious men."
    },
-   "brief": "Wave 2/07 - Tool Short - Meet Marriage-Minded Men Checklist.md",
+   "brief": "The Wife Material Blueprint/03 - Tool Short - Meet Marriage-Minded Men Checklist.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "faccdceef4ed2bce",
-   "source_render": "Wave 2/07 - Meet Marriage-Minded Men Checklist 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/03 - Meet Marriage-Minded Men Checklist 9x16.mp4"
   },
   "green-red-flags-checker": {
    "tool": "/relationships/tools/green-red-flags-checker",
@@ -976,10 +976,10 @@
    "thank_you_line": {
     "home": "Tick what he has done, then read what your result says."
    },
-   "brief": "Wave 2/05 - Tool Short - Green and Red Flags Checker.md",
+   "brief": "The Wife Material Blueprint/04 - Tool Short - Green and Red Flags Checker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "df3d19491fe7da7c",
-   "source_render": "Wave 2/05 - Green and Red Flags Checker 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/04 - Green and Red Flags Checker 9x16.mp4"
   },
   "situationship-checker": {
    "tool": "/relationships/tools/situationship-checker",
@@ -999,10 +999,10 @@
    "thank_you_line": {
     "home": "Answer based on the last few weeks, then read where the relationship is going."
    },
-   "brief": "Wave 2/06 - Tool Short - Situationship Checker.md",
+   "brief": "The Wife Material Blueprint/05 - Tool Short - Situationship Checker.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "3f9fbf4ec6fbc992",
-   "source_render": "Wave 2/06 - Situationship Checker 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/05 - Situationship Checker 9x16.mp4"
   },
   "red-flag-radar": {
    "tool": "/relationships/tools/red-flag-radar",
@@ -1023,10 +1023,10 @@
    "thank_you_line": {
     "home": "Call each situation green flag, let's talk or red flag, then see your radar."
    },
-   "brief": "Wave 2/22 - Tool Short - Red Flag Radar.md",
+   "brief": "The Wife Material Blueprint/06 - Tool Short - Red Flag Radar.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "f794e9379d1d76ac",
-   "source_render": "Wave 2/22 - Red Flag Radar 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/06 - Red Flag Radar 9x16.mp4"
   },
   "is-he-husband-material": {
    "tool": "/relationships/tools/is-he-husband-material",
@@ -1046,10 +1046,10 @@
    "thank_you_line": {
     "home": "Pick one man. Answer from what he does more than once. Tap See my result."
    },
-   "brief": "Wave 2/23 - Tool Short - Is He Husband Material.md",
+   "brief": "The Wife Material Blueprint/07 - Tool Short - Is He Husband Material.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "54601abfb028f3a5",
-   "source_render": "Wave 2/23 - Is He Husband Material 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/07 - Is He Husband Material 9x16.mp4"
   },
   "the-talk-planner": {
    "tool": "/relationships/tools/the-talk-planner",
@@ -1069,10 +1069,10 @@
    "thank_you_line": {
     "home": "Read the questions once, then write your first sentence in your own words."
    },
-   "brief": "Wave 2/09 - Tool Short - The Talk Planner.md",
+   "brief": "The Wife Material Blueprint/08 - Tool Short - The Talk Planner.md",
    "captured_at": "2026-10-08",
    "tool_fingerprint": "1331f03853aacf06",
-   "source_render": "Wave 2/09 - The Talk Planner 9x16.mp4"
+   "source_render": "The Wife Material Blueprint/08 - The Talk Planner 9x16.mp4"
   }
  }
 }

@@ -459,18 +459,27 @@ for p in RESOURCES:
     if img and tw and tw.group(1) != img.group(1):
         fail(p, "twitter:image must match og:image")
 
-# Every tool, game and quiz has a tool short brief in the vault video waves, written the day the
-# tool is built. Runs only where the vault exists (James's machine); the GitHub runner skips it.
+# Every tool, game and quiz has a tool short brief in the vault video program folders, written the
+# day the tool is built. Runs only where the vault exists (James's machine); the GitHub runner skips it.
+# Briefs sit one level down in a folder per program (or Brand); the hub notes above them and
+# Personas/ are not briefs.
 VIDEO_DIR = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Content/AI Video")
+
+
+def video_briefs(pattern="*.md"):
+    return sorted(f for f in glob.glob(os.path.join(VIDEO_DIR, "*", pattern))
+                  if os.path.basename(os.path.dirname(f)) != "Personas")
+
+
 if os.path.isdir(VIDEO_DIR):
     briefed = set()
-    for f in glob.glob(os.path.join(VIDEO_DIR, "Wave */*.md")):
+    for f in video_briefs():
         m = re.search(r"^destination:\s*\"?([^\"\s]+)", read(f), re.M)
         if m:
             briefed.add(m.group(1).rstrip("/"))
     for p in PAGES:
         if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in briefed:
-            fail(p, f"no tool short brief: add one under Content/AI Video/Wave N/ with destination: /{p[:-5]} (see 01 - Video Roadmap)")
+            fail(p, f"no tool short brief: add one under Content/AI Video/<Program>/ with destination: /{p[:-5]} (see 01 - Video Roadmap)")
 
 # ---------- Tool reels: every filmed tool short sits on every page it belongs to ----------
 # assets/data/tool-shorts.json lists one entry per rendered tool short. scripts/build-tool-reels.py
@@ -504,7 +513,7 @@ for prog in MANIFEST["programs"]:
 # A brief with no manifest entry means its short is still being rendered: advisory only.
 if os.path.isdir(VIDEO_DIR):
     filmed = {t["brief"] for t in MANIFEST["tools"].values()}
-    for f in sorted(glob.glob(os.path.join(VIDEO_DIR, "Wave */*Tool Short*.md"))):
+    for f in video_briefs("*Tool Short*.md"):
         rel = f.split("AI Video/")[1]
         if rel not in filmed:
             warn(rel, "tool short brief has no entry in assets/data/tool-shorts.json yet (rendering pending); publish-to-site adds it")
