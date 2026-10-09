@@ -17,7 +17,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GUIDE_VERSION = "20261009e"
+GUIDE_VERSION = "20261009g"
 STAGES = ("relationships", "fertility", "pregnancy", "postpartum", "parenting")
 PROGRAMS = {"wife-material": "relationships", "trying-to-conceive": "fertility", "first-pregnancy": "pregnancy",
             "postpartum-reset": "postpartum", "first-baby": "parenting", "complete-motherhood": "parenting"}

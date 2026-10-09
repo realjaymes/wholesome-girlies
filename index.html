@@ -28,7 +28,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261009a">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261009c">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009g">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
@@ -66,6 +67,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </header>
 
 <main>
+<section class="home-mine" id="homeMine" hidden>
+  <div class="wrap narrow"></div>
+</section>
+
 
 <section class="hero hero-centered">
   <div class="wrap narrow center">
@@ -77,104 +82,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="/#stages" class="btn btn-ghost btn-lg">Find your stage</a>
     </div>
     <div class="reviewed-strip"><span class="badge">✓ Research-backed</span> Health content built on research and real data.</div>
-    <div class="guide-lineup"><img src="/assets/img/cast/guides/tolu.webp?v=20261009e" width="392" height="620" alt="Illustration of Tolu" decoding="async"><img src="/assets/img/cast/guides/amaka.webp?v=20261009e" width="255" height="569" alt="Illustration of Amaka" decoding="async"><img src="/assets/img/cast/guides/zainab.webp?v=20261009e" width="289" height="563" alt="Illustration of Zainab" decoding="async"><img src="/assets/img/cast/guides/funmi.webp?v=20261009e" width="293" height="569" alt="Illustration of Funmi" decoding="async"></div>
-  </div>
-</section>
-
-<section id="tools">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Tools</p>
-      <h2>Find the tool you need</h2>
-      <p class="muted">Search the tools, checklists and guides, or start with the nine below. Each one works in your browser and saves on your own device.</p>
-      <div class="toolsearch">
-        <input type="text" id="toolSearch" placeholder="Search: recovery, hospital bag, ovulation…" onkeydown="if(event.key==='Enter'){location.href='/tools/?q='+encodeURIComponent(this.value)}">
-        <a class="btn btn-primary" href="/tools/">Browse all</a>
-      </div>
-    </div>
-    <div class="grid grid-3" id="toolGrid">
-      <a class="card tool-item" href="/relationships/tools/ready-for-love-quiz">
-        <span class="tag">Relationships</span>
-        <h3>Ready-for-Love Quiz</h3>
-        <p>See how ready you are for the relationship you actually want.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/relationships/tools/green-red-flags-checker">
-        <span class="tag">Relationships</span>
-        <h3>Green &amp; Red Flags Checker</h3>
-        <p>Read a man's real intentions early, the green flags and the red.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/fertility/tools/ovulation-calculator">
-        <span class="tag">Fertility</span>
-        <h3>Ovulation Calculator</h3>
-        <p>Find your fertile window and most likely days to conceive.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/fertility/tools/period-tracker">
-        <span class="tag">Fertility</span>
-        <h3>Period Tracker</h3>
-        <p>Track your cycle and see when your next period is due.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/pregnancy/tools/due-date-calculator">
-        <span class="tag">Pregnancy</span>
-        <h3>Due Date Calculator</h3>
-        <p>Estimate your due date and how many weeks along you are.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/pregnancy/tools/hospital-bag-checklist">
-        <span class="tag">Pregnancy</span>
-        <h3>Hospital Bag Checklist</h3>
-        <p>Everything to pack for you and your baby, ticked off.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/postpartum/tools/recovery-timeline-calculator">
-        <span class="tag">Postpartum</span>
-        <h3>Recovery Timeline Calculator</h3>
-        <p>See what to expect week by week as your body heals.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/postpartum/tools/partner-support-planner">
-        <span class="tag">Postpartum</span>
-        <h3>Partner Support Planner</h3>
-        <p>Tick what you need help with and get a note to send your partner.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-      <a class="card tool-item" href="/parenting/tools/milestone-tracker">
-        <span class="tag">Parenting</span>
-        <h3>Baby Milestone Tracker</h3>
-        <p>See the milestones many babies reach at each age.</p>
-        <span class="arrow">Open tool →</span>
-      </a>
-    </div>
-    <div class="center" style="margin-top:26px;"><a class="btn btn-ghost" href="/tools/">Browse all tools →</a></div>
-  </div>
-</section>
-
-<section id="program" style="background: linear-gradient(180deg, var(--blush), var(--cream));">
-  <div class="wrap">
-    <div class="grid grid-2" style="align-items:center;">
-      <div>
-        <p class="eyebrow">When you want more than tools</p>
-        <h2>Real support, for your stage</h2>
-        <p class="muted">The tools help you understand and plan. Each program adds a guided plan for your stage and a private community of women at the same stage. You pay once and it is yours to keep. A one-to-one with a professional is there if you want it. There is a program for every stage.</p>
-        <div class="hero-actions">
-          <a href="/programs/" class="btn btn-primary btn-lg">See our programs</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="tag">Inside a program</span>
-        <h3>What you get</h3>
-        <ul class="check" style="margin:8px 0 18px;">
-          <li>A clear, guided plan for your stage</li>
-          <li>A private community with instant answers, tools, and guidance</li>
-          <li>Optional 1:1 time with a professional</li>
-          <li>A resource library you download and keep</li>
-        </ul>
-        <a href="/programs/" class="btn btn-primary" style="width:100%;">See what's available →</a>
-      </div>
-    </div>
+    <div class="guide-lineup"><img src="/assets/img/cast/guides/tolu.webp?v=20261009g" width="392" height="620" alt="Illustration of Tolu" decoding="async"><img src="/assets/img/cast/guides/amaka.webp?v=20261009g" width="255" height="569" alt="Illustration of Amaka" decoding="async"><img src="/assets/img/cast/guides/zainab.webp?v=20261009g" width="289" height="563" alt="Illustration of Zainab" decoding="async"><img src="/assets/img/cast/guides/funmi.webp?v=20261009g" width="293" height="569" alt="Illustration of Funmi" decoding="async"></div>
   </div>
 </section>
 
@@ -218,6 +126,119 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
   </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Tools</p>
+      <h2>Find the tool you need</h2>
+      <p class="muted">Search the tools, checklists and guides, or start with the most used tools and the newest games below. Each one saves on your own phone.</p>
+      <div class="toolsearch">
+        <input type="text" id="toolSearch" placeholder="Search: recovery, hospital bag, ovulation…" onkeydown="if(event.key==='Enter'){location.href='/tools/?q='+encodeURIComponent(this.value)}">
+        <a class="btn btn-primary" href="/tools/">Browse all</a>
+      </div>
+    </div>
+    <div class="grid grid-3" id="toolGrid">
+      <a class="card tool-item" href="/pregnancy/tools/hospital-bag-checklist">
+        <span class="tag">Pregnancy</span>
+        <h3>Hospital Bag Checklist</h3>
+        <p>Everything to pack for you, the baby and your helper, ticked off.</p>
+        <span class="arrow">Open tool →</span>
+      </a>
+      <a class="card tool-item" href="/postpartum/tools/mind-check-in">
+        <span class="tag">Postpartum</span>
+        <h3>Postpartum Mind Check-in</h3>
+        <p>A private check-in on sleep, mood and whether you are coping after birth.</p>
+        <span class="arrow">Open tool →</span>
+      </a>
+      <a class="card tool-item" href="/parenting/tools/baby-name-explorer">
+        <span class="tag">Parenting</span>
+        <h3>Baby Name Explorer</h3>
+        <p>Search Yoruba, Igbo and Hausa baby names by meaning.</p>
+        <span class="arrow">Open tool →</span>
+      </a>
+      <a class="card tool-item" href="/fertility/tools/ovulation-calculator">
+        <span class="tag">Fertility</span>
+        <h3>Ovulation Calculator</h3>
+        <p>Find your fertile window and most likely days to conceive.</p>
+        <span class="arrow">Open tool →</span>
+      </a>
+      <a class="card tool-item" href="/relationships/tools/red-flag-radar">
+        <span class="tag">New game</span>
+        <h3>Red Flag Radar</h3>
+        <p>Call each dating situation green flag, let's talk or red flag, and see what your radar says.</p>
+        <span class="arrow">Play →</span>
+      </a>
+      <a class="card tool-item" href="/relationships/tools/is-he-husband-material">
+        <span class="tag">New quiz</span>
+        <h3>Is He Husband Material?</h3>
+        <p>Answer from what you have seen him do, then see what he is already showing you.</p>
+        <span class="arrow">Start →</span>
+      </a>
+    </div>
+    <div class="center" style="margin-top:26px;"><a class="btn btn-ghost" href="/tools/">Browse all tools →</a></div>
+  </div>
+</section>
+
+<section id="guides">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Guides</p>
+      <h2>Questions women ask</h2>
+      <p class="muted">Plain answers to the questions that come up in every group chat, built on published research.</p>
+    </div>
+    <div class="grid grid-3">
+      <a class="card" href="/relationships/guides/situationship">
+        <span class="tag">Relationships</span>
+        <h3>Situationship</h3>
+        <p>What it means, how to know you are in one, and how to get out.</p>
+        <span class="arrow">Read guide →</span>
+      </a>
+      <a class="card" href="/postpartum/guides/omugwo">
+        <span class="tag">Postpartum</span>
+        <h3>Omugwo</h3>
+        <p>What omugwo is, what happens, how long it lasts, and how to plan it at home or abroad.</p>
+        <span class="arrow">Read guide →</span>
+      </a>
+      <a class="card" href="/pregnancy/guides/nigerian-foods-in-pregnancy">
+        <span class="tag">Pregnancy</span>
+        <h3>Tiger nut, bitter kola, cloves</h3>
+        <p>Is tiger nut safe in pregnancy? What the research says about the foods aunties have opinions on.</p>
+        <span class="arrow">Read guide →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="program" style="background: linear-gradient(180deg, var(--blush), var(--cream));">
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:center;">
+      <div>
+        <p class="eyebrow">When you want more than tools</p>
+        <h2>Real support, for your stage</h2>
+        <p class="muted">The tools help you understand and plan. Each program adds a guided plan for your stage and a private community of women at the same stage. You pay once and it is yours to keep. A one-to-one with a professional is there if you want it. There is a program for every stage.</p>
+        <div class="hero-actions">
+          <a href="/programs/" class="btn btn-primary btn-lg">See our programs</a>
+        </div>
+      </div>
+      <div class="card">
+        <span class="tag">Inside a program</span>
+        <h3>What you get</h3>
+        <ul class="check" style="margin:8px 0 18px;">
+          <li>A clear, guided plan for your stage</li>
+          <li>A private community with instant answers, tools, and guidance</li>
+          <li>Optional 1:1 time with a professional</li>
+          <li>A resource library you download and keep</li>
+        </ul>
+        <a href="/programs/" class="btn btn-primary" style="width:100%;">See what's available →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="get-app" class="home-app" hidden>
+  <div class="wrap narrow" id="homeApp"></div>
 </section>
 
 <section>
@@ -311,6 +332,7 @@ function filterTools(){
 </script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261009h"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009g"></script>
+<script defer src="/assets/js/wg-app.js?v=20261009i"></script>
 </body>
 </html>

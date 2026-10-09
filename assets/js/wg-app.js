@@ -207,6 +207,9 @@
     if (/^\/programs\/[^/]+\/thank-you$/.test(path)) {
       card(d.querySelector('.sales-hero .wrap'), 'Your program home opens from your home screen in one tap.', 'thank_you');
     }
+    // 4. On the homepage, after the programs block. The section stays hidden when no card is offered.
+    var homeApp = d.getElementById('homeApp');
+    if (homeApp) { card(homeApp, 'Every tool one tap from your home screen, and they work without data.', 'home'); homeApp.parentNode.hidden = !homeApp.firstChild; }
     if (standalone) { tabBar(); appFooter(); }
   });
 

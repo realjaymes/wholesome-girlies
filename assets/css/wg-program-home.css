@@ -106,3 +106,12 @@ body.wg-in-app .ph-site{display:none}
 .ph-safety p,.ph-help p{font-size:.9rem;margin:0}
 .ph-help{padding:12px 4px 0}
 .ph-pass{padding:34px 0 40px;text-align:center}
+
+/* The homepage strip: her program home, under the header, when this browser holds one */
+.home-mine{padding:18px 0 4px}
+.home-app{padding:8px 0 36px}
+.home-mine .wrap{display:grid;gap:14px}
+.home-mine-card{padding:16px 18px}
+.home-mine-card h3{font-size:1.25rem;margin:4px 0 6px}
+.home-mine-card .ph-count{margin:0 0 12px}
+@media (min-width:700px){.home-mine-card{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:18px}.home-mine-card .btn{grid-column:2;grid-row:1/4}}
