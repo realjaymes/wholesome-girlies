@@ -25,5 +25,3 @@
 .vph.is-playing .vplay:focus-visible span{opacity:1}
 .vplay:focus-visible{outline:3px solid var(--terracotta);outline-offset:-3px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ts-row{scroll-behavior:auto}.vph.is-playing .vplay span,.vph.is-playing .vhint{transition:none}}
-.ts-open{display:inline-block;margin-top:6px;color:var(--terracotta-dark);font-size:.85rem;font-weight:800;line-height:1.3}
-.ts-open:hover{text-decoration:underline}

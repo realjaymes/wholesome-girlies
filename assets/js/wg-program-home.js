@@ -1,8 +1,9 @@
 /* The program home (programs/<slug>/thank-you): written by scripts/build-program-homes.py.
    1. "My programs" in the header, shown when this phone holds two or more program homes.
    2. "Saved" next to each tool she has saved entries in.
-   3. The reading card: "Up next", the progress bar and "Continue reading", from the reader page and her saved place.
-   The app home (/app/) loads this file too, for WGReading and the Saved marks. */
+   3. The reading card: "Up next", the progress ring and "Continue reading", from the reader page and her saved place.
+   4. The tool icons: each .ph-ico names its drawing in data-ico.
+   The app home (/app/) loads this file too, for WGReading, WGIcons and the Saved marks. */
 (function (w, d) {
   function get(k) { try { return w.localStorage.getItem(k); } catch (e) { return null; } }
 
@@ -46,6 +47,32 @@
     if (has(a.getAttribute('data-key'))) a.querySelector('.ph-saved').hidden = false;
   });
 
+  // 4. Tool icons, drawn as lines in the ink colour. WGIcons.draw(root) fills every empty .ph-ico under root.
+  var ICO = {
+    check: '<path d="M4 12.5l5 5L20 6.5"/>', chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+    cal: '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>', pen: '<path d="M5 19l1-4L16 5l3 3L9 18z"/><path d="M14 7l3 3"/>',
+    list: '<path d="M9 7h11M9 12h11M9 17h11"/><path d="M4 7l1 1 2-2M4 12l1 1 2-2M4 17l1 1 2-2"/>',
+    target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".5"/>', chart: '<path d="M4 19h16"/><path d="M6 15l4-4 3 3 5-6"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', leaf: '<path d="M5 19c0-8 5-14 14-14 0 9-6 14-14 14z"/><path d="M5 19l8-8"/>',
+    calc: '<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
+    bubble: '<circle cx="12" cy="11" r="7"/><path d="M12 8.5a1.8 1.8 0 1 1 1.6 2.6c-.9.3-1.6.9-1.6 1.9M12 15.5h.01"/>',
+    book: '<path d="M4 5.5C6.5 4.5 9.5 4.5 12 6v13c-2.5-1.5-5.5-1.5-8-.5z"/><path d="M20 5.5c-2.5-1-5.5-1-8 .5v13c2.5-1.5 5.5-1.5 8-.5z"/>'
+  };
+  w.WGIcons = {
+    draw: function (root) {
+      [].forEach.call((root || d).querySelectorAll('.ph-ico:empty'), function (s) {
+        s.innerHTML = '<svg viewBox="0 0 24 24">' + (ICO[s.getAttribute('data-ico')] || ICO.leaf) + '</svg>';
+      });
+    }
+  };
+  w.WGIcons.draw();
+
+  // The ring around "11/30 lessons" on the reading card.
+  w.WGRing = function (ring, r) {
+    ring.style.setProperty('--pct', r.pct);
+    ring.firstChild.innerHTML = r.n ? r.n + '/' + r.total + '<small>lessons</small>' : '0<small>started</small>';
+  };
+
   // 3. Reading progress. WGReading.load(reader, key) reads the reader page and her saved place, and gives
   // what to show: label, title, count, percent, the button text and where it goes. The app home uses it too.
   w.WGReading = {
@@ -74,7 +101,7 @@
   if (!reader || !w.fetch) return;
   w.WGReading.load(reader, card.getAttribute('data-read-key')).then(function (r) {
     if (!r) return;
-    d.getElementById('phBar').style.width = r.pct + '%';
+    w.WGRing(d.getElementById('phRing'), r);
     d.getElementById('phCount').textContent = r.count;
     if (r.label) d.getElementById('phLabel').textContent = r.label;
     d.getElementById('phTitle').textContent = r.title;

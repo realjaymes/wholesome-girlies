@@ -392,6 +392,17 @@ for p in PAGES:
     if "/assets/video/tool-shorts/" in s:
         fail(p, "no tool videos on a program home: buyers get the tool list (CLAUDE.md section 4)")
 
+# The sticker look: each page's stage on <html data-stage>, and the stage's guide in tool and stage headers,
+# written by scripts/build-stage-look.py. Rules: CLAUDE.md section 7.
+_spec = importlib.util.spec_from_file_location("build_stage_look", os.path.join(ROOT, "scripts/build-stage-look.py"))
+look = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(look)
+for p in PAGES:
+    if SRC[p] != look.build(p, SRC[p]):
+        fail(p, "stage look is stale (data-stage or the header guide): run python3 scripts/build-stage-look.py")
+    if 'class="hero-guide"' in SRC[p] and look.QUIET.search(p):
+        fail(p, "no cast on loss pages, the mental-health check-ins or the warning signs guide")
+
 # The program homes are written by scripts/build-program-homes.py from assets/data/program-homes.json.
 _spec = importlib.util.spec_from_file_location("build_program_homes", os.path.join(ROOT, "scripts/build-program-homes.py"))
 homes = importlib.util.module_from_spec(_spec)
@@ -517,7 +528,7 @@ if os.path.isdir(VIDEO_DIR):
 
 # ---------- Tool reels: every filmed tool short sits on every page it belongs to ----------
 # assets/data/tool-shorts.json lists one entry per rendered tool short. scripts/build-tool-reels.py
-# writes the reel on each program sales page and the app home; the motion kit's publish-to-site
+# writes the reel on each program sales page; the motion kit's publish-to-site
 # script writes the entry. Rules: CLAUDE.md section 9.
 _spec = importlib.util.spec_from_file_location("build_tool_reels", os.path.join(ROOT, "scripts/build-tool-reels.py"))
 reels = importlib.util.module_from_spec(_spec)
@@ -542,15 +553,9 @@ for prog in MANIFEST["programs"]:
             fail(path, err)
         elif _new != _old:
             fail(path, "tool reel is stale against assets/data/tool-shorts.json: run python3 scripts/build-tool-reels.py")
-# The app home shows every filmed tool, one row per stage.
-if not MANIFEST.get("app"):
-    fail("assets/data/tool-shorts.json", 'missing the "app" section: the app home shows every filmed tool')
-else:
-    _old, _new, err = reels.expected(MANIFEST["app"]["page"], MANIFEST, None, "home", "app")
-    if err:
-        fail(MANIFEST["app"]["page"], err)
-    elif _new != _old:
-        fail(MANIFEST["app"]["page"], "tool reel is stale against assets/data/tool-shorts.json: run python3 scripts/build-tool-reels.py")
+# The app home lists tools, never reels.
+if "tool-reel" in SRC.get("app/index.html", "") or "wg-tool-reel" in SRC.get("app/index.html", ""):
+    fail("app/index.html", "the app home shows no tool videos: tools are listed, as on the program homes")
 # A brief with no manifest entry means its short is still being rendered: advisory only.
 if os.path.isdir(VIDEO_DIR):
     filmed = {t["brief"] for t in MANIFEST["tools"].values()}

@@ -18,15 +18,18 @@
 .rd-next-label, .rd-next-title, .rd-total-bar, .rd-cta-short { display: none; }
 .rd-progress-text { margin: 0 0 10px; font-size: .92rem; }
 .rd-continue { display: block; text-align: center; border-radius: 14px; }
-.rd-total-bar { height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; margin: 0 0 8px; }
-.rd-total-bar span { display: block; height: 100%; width: 0; background: var(--terracotta); }
+.rd-total-bar { height: 12px; border-radius: 8px; background: var(--white); border: 1.5px solid var(--ink); overflow: hidden; margin: 0 0 8px; }
+.rd-total-bar span { display: block; height: 100%; width: 0; background: var(--s); }
 
-.rd-toc-part { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 16px 8px; margin: 0 0 14px; }
-.rd-toc-part.rd-part-done { border-color: var(--terracotta); }
+/* the parts take the cast colours in turn, as stickers with an ink outline */
+.rd-toc-part { background: var(--rust-t); border: 2px solid var(--ink); box-shadow: var(--sticker); border-radius: var(--radius); padding: 16px 16px 8px; margin: 0 0 18px; }
+.rd-toc-part:nth-child(4n+2) { background: var(--mustard-t); }
+.rd-toc-part:nth-child(4n+3) { background: var(--olive-t); }
+.rd-toc-part:nth-child(4n+4) { background: var(--denim-t); }
 .rd-toc-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; margin: 0 0 6px; font-family: var(--serif); font-size: 1.15rem; }
 .rd-count { font-family: var(--sans); font-size: .82rem; font-weight: 700; color: var(--muted, #6b6a5c); white-space: nowrap; align-self: center; }
-.rd-part-bar { height: 6px; border-radius: 6px; background: var(--line); margin: 4px 0 8px; overflow: hidden; }
-.rd-part-bar span { display: block; height: 100%; background: var(--terracotta); }
+.rd-part-bar { height: 12px; border-radius: 6px; background: var(--white); border: 1.5px solid var(--ink); margin: 4px 0 8px; overflow: hidden; }
+.rd-part-bar span { display: block; height: 100%; background: var(--s); }
 .rd-toc ol { list-style: none; margin: 0; padding: 0; }
 .rd-toc li a { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; color: var(--plum); text-decoration: none; font-size: .93rem; line-height: 1.35; }
 .rd-toc li a:hover span:last-child { text-decoration: underline; }
@@ -49,7 +52,7 @@ body:not(.rd-reading) .rd-plan { display: none; }
 .rd-intro p { font-size: .98rem; }
 .rd-intro p:last-child { margin-bottom: 0; }
 /* A part's intro: a white card with an olive strip across the top */
-.rd-intro { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--terracotta); border-radius: 16px; padding: 16px 20px 18px; }
+.rd-intro { background: var(--white); border: 2px solid var(--ink); box-shadow: var(--sticker); border-radius: 16px; padding: 16px 20px 18px; }
 
 .rd-part-head { border-bottom: 2px solid var(--terracotta); padding-bottom: 12px; }
 .rd-part-head h2 { font-size: clamp(1.7rem, 5.6vw, 2.3rem); color: var(--terracotta); line-height: 1.15; }
@@ -59,13 +62,13 @@ body:not(.rd-reading) .rd-plan { display: none; }
 .rd-body p, .rd-body li { font-size: 1.04rem; line-height: 1.7; }
 .rd-body ul { padding-left: 1.2em; }
 .rd-body li { margin-bottom: 8px; }
-.rd-tool { background: var(--blush); border-left: 4px solid var(--terracotta); border-radius: 12px; padding: 14px 16px; margin: 18px 0; }
+.rd-tool { background: var(--blush); border: 2px solid var(--ink); border-left-width: 6px; box-shadow: var(--sticker-md); border-radius: 12px; padding: 14px 16px; margin: 18px 0; }
 .rd-tool p { margin: 0 0 12px; }
 .rd-qa { border-bottom: 1px solid var(--line); padding: 12px 0; }
 .rd-qa summary { font-weight: 800; cursor: pointer; line-height: 1.45; }
 .rd-qa p { margin: 10px 0 0; }
 .rd-end { margin: 18px 0 8px; }
-.rd-done { font-family: var(--sans); font-weight: 800; font-size: .95rem; border: 2px solid var(--terracotta); color: var(--terracotta); background: var(--white); border-radius: 999px; padding: 10px 20px; cursor: pointer; }
+.rd-done { font-family: var(--sans); font-weight: 800; font-size: .95rem; border: 2px solid var(--ink); box-shadow: var(--sticker-sm); color: var(--terracotta); background: var(--white); border-radius: 999px; padding: 10px 20px; cursor: pointer; }
 .rd-done.rd-is-done { background: var(--terracotta); color: #fff; }
 .rd-pager { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 26px 0 0; padding-top: 18px; border-top: 1px solid var(--line); }
 .rd-pager a { text-decoration: none; font-weight: 700; font-size: .92rem; max-width: 60%; }

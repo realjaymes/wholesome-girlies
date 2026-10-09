@@ -63,10 +63,12 @@
     if (d.getElementById('wg-app-css')) return;
     var s = d.createElement('style'); s.id = 'wg-app-css';
     s.textContent =
-      '.wg-app-nav{position:fixed;left:0;right:0;bottom:0;z-index:950;display:flex;background:#fff;border-top:1px solid var(--line,#E3E0CF);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}' +
+      '.wg-app-nav{position:fixed;left:0;right:0;bottom:0;z-index:950;display:flex;background:#fff;border-top:2px solid var(--ink,#33322A);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}' +
       '.wg-app-nav a,.wg-app-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;background:none;border:0;cursor:pointer;text-decoration:none;font:700 .72rem/1.2 var(--sans,system-ui,sans-serif);color:var(--plum-soft,#66645A)}' +
       '.wg-app-nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}' +
-      '.wg-app-nav .on{color:var(--terracotta,#6E7A3F)}' +
+      '.wg-app-nav .on{color:var(--ink,#33322A)}' +
+      // the open tab sits in a mustard sticker, like the cast line work
+      '.wg-app-nav .on svg{background:var(--mustard,#D49A2A);border:2px solid var(--ink,#33322A);border-radius:10px;padding:3px;width:30px;height:30px;box-sizing:border-box;margin:-4px 0}' +
       'body.wg-in-app{padding-bottom:calc(66px + env(safe-area-inset-bottom))}' +
       '.wg-app-foot{max-width:640px;margin:0 auto;padding:0 20px;font-size:.8rem;line-height:1.7;color:#B9C3B2;text-align:center}' +
       '.wg-app-foot a{color:var(--blush,#EAE9D2);white-space:nowrap}' +

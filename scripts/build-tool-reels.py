@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Writes the tool reels (tap-to-play phone clips of the tools) onto the program sales pages, and onto the
-app home (/app/), where every filmed tool shows in one row per stage. Buyers see no reels: the program homes
-(thank-you pages) list the tools instead, written by scripts/build-program-homes.py.
+"""Writes the tool reels (tap-to-play phone clips of the tools) onto the program sales pages. Buyers and the
+app home see no reels: the program homes (thank-you pages) and /app/ list the tools instead, written by
+scripts/build-program-homes.py.
 
 Source of truth: assets/data/tool-shorts.json, one entry per tool short. The reel HTML sits between
 <!-- tool-reel:start --> and <!-- tool-reel:end --> markers on each page, and this script is the only
@@ -32,7 +32,7 @@ from html.parser import HTMLParser
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST = os.path.join(ROOT, "assets/data/tool-shorts.json")
 START, END = "<!-- tool-reel:start -->", "<!-- tool-reel:end -->"
-ASSET_VERSION = "20261008b"
+ASSET_VERSION = "20261009a"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-tool-reel.js?v={ASSET_VERSION}"></script>'
 PRIVATE_LABEL = "Private. Stays on your phone."
@@ -171,8 +171,6 @@ def card(t, market, kind):
            f'<p class="ts-name">{esc(name)}</p>']
     if t.get("private"):
         out.append(f'<span class="ts-priv">{PRIVATE_LABEL}</span>')
-    if kind == "app":
-        out.append(f'<a class="ts-open" href="{t["tool"]}"><span>Open the tool &rarr;</span></a>')
     out.append("</li>")
     return "".join(out[:1]) + "\n" + "".join(out[1:2]) + "\n" + "".join(out[2:])
 
@@ -187,25 +185,6 @@ def block(m, slug, market, kind):
     inner = (f'<div class="ts-show" id="tsShow">\n      <div class="ts-head"><h2>{esc(cfg["heading"])}</h2>\n'
              f'<p class="muted ts-sub">{esc(pick(cfg["sub"], market))}</p></div>\n      {row}\n    </div>')
     return f"{START}\n    {inner}\n    {END}"
-
-
-def app_ids(m, stage):
-    """Tool ids of one stage for the app home: in the order its programs' sales reels use, then any others."""
-    ids = [i for i, t in m["tools"].items() if t["tool"].split("/")[1] == stage]
-    order = [i for slug, prog in m["programs"].items() for i in prog["sales"]["order"]]
-    return [i for i in dict.fromkeys(order) if i in ids] + [i for i in ids if i not in order]
-
-
-def app_block(m):
-    rows = []
-    for stage, name in m["app"]["stages"]:
-        cards = "".join(card(m["tools"][i], "home", "app") for i in app_ids(m, stage))
-        if cards:
-            rows.append(f'<h3 style="margin:26px 0 8px;">{esc(name)}</h3>\n    '
-                        f'<div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button>'
-                        f'<ul class="ts-row" tabindex="0" aria-label="{esc(name)} tools">{cards}</ul>'
-                        f'<button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>')
-    return f"{START}\n    " + "\n    ".join(rows) + f"\n    {END}"
 
 
 # ---------- page writing ----------
@@ -228,7 +207,7 @@ def expected(path, m, slug, market, kind):
         src = f.read()
     if len(MARK.findall(src)) != 1:
         return src, None, f"{path}: needs exactly one {START} ... {END} block"
-    new = MARK.sub(lambda _: app_block(m) if kind == "app" else block(m, slug, market, kind), src)
+    new = MARK.sub(lambda _: block(m, slug, market, kind), src)
     return src, with_assets(new), None
 
 
@@ -240,8 +219,6 @@ def main(argv):
     m = load()
     bad = []
     targets = [(slug, page) for slug in m["programs"] for page in pages_of(slug)]
-    if m.get("app"):
-        targets.append((None, (m["app"]["page"], "home", "app")))
     for slug, (path, market, kind) in targets:
         old, new, err = expected(path, m, slug, market, kind)
         if err:

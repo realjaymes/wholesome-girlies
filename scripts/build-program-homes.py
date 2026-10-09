@@ -12,7 +12,8 @@ name and line, each program's stages and reader) between // program-homes:start 
 in app/index.html, so her program and tools show there without a network request.
 
 Layout (vault: Wholesome Girlies/07 - User Journeys, Navigation & Wireframes, "The redesigned program home"):
-slim header with Tools and My programs; who it is for; reading (the reader where one is built, else the
+slim header with Tools and My programs; who it is for, in a panel with the stage's guide (a waist-up cast
+figure from assets/img/cast/guides/ and one line in a speech bubble); reading (the reader where one is built, else the
 toolkit PDF; the bundle lists its four toolkits); Get the app (browser only); community (motherhood only);
 your tools as a list with Saved marks and no videos; help and safety; the next program; pass it on.
 
@@ -28,11 +29,45 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "assets/data/program-homes.json")
 START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
-ASSET_VERSION = "20261009b"
+ASSET_VERSION = "20261009e"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+
+
+# Each tool row starts with an icon. wg-program-home.js draws the icon named in data-ico; games and quizzes
+# get the rust chip. The first pattern that matches the tool's name wins.
+ICONS = [(r"radar|game", "target", "game"), (r"quiz|ready for love", "bubble", "quiz"), (r"checker|husband", "check", ""),
+         (r"planner|schedule|rota|routine|builder", "cal", ""), (r"worksheet|non-negotiables", "pen", ""),
+         (r"checklist|bag|essentials|meet", "list", ""), (r"tracker|timeline|week", "chart", ""),
+         (r"calculator|due date|ovulation", "calc", ""), (r"questions", "chat", ""), (r"check-in", "leaf", ""), (r"name", "heart", "")]
+
+
+def icon(name):
+    for pat, ico, kind in ICONS:
+        if re.search(pat, html.unescape(name), re.I):
+            return ico, kind
+    return "leaf", ""
+
+
+def ico_tag(name):
+    ico, kind = icon(name)
+    k = f' data-kind="{kind}"' if kind else ""
+    return f'<span class="ph-ico" data-ico="{ico}"{k} aria-hidden="true"></span>'
+
+
+def guide(m, h):
+    """The stage's guide: name, image file, width, height. The bundle names its own."""
+    return m["guides"][h.get("guide") or h["stages"][0]]
+
+
+def guide_line(h):
+    if h.get("reader"):
+        return "Read one short lesson at a time. Your place is saved."
+    if h.get("toolkits"):
+        return "Your four toolkits are below. Open the one for where you are now."
+    return f"Start with your {word(h)}. Your tools are below. Entries stay on this phone."
 
 
 def load():
@@ -71,15 +106,15 @@ def reading(h):
         return (f'<div class="ph-read" id="phRead" data-reader="{h["reader"]}" data-read-key="{key}">\n'
                 f'          <p class="ph-label" id="phLabel">Read your {w}</p>\n'
                 f'          <p class="ph-title" id="phTitle">{n} short lessons in {parts} parts. Your place is saved on this phone.</p>\n'
-                f'          <div class="ph-bar"><span id="phBar"></span></div>\n'
-                f'          <p class="muted ph-count" id="phCount">Not started yet</p>\n'
+                f'          <div class="ph-prog"><div class="ph-ring" id="phRing" aria-hidden="true"><span>0<small>started</small></span></div>'
+                f'<p class="muted ph-count" id="phCount">Not started yet</p></div>\n'
                 f'          <a class="btn btn-primary btn-lg" id="phGo" href="{h["reader"]}">Start reading &rarr;</a>\n'
                 f'        </div>\n'
                 f'        <p class="ph-links"><a href="{h["reader"]}">See your plan</a>'
                 f'{pdf_link(h["pdf"], "Download the PDF", "")}</p>').replace('<a class="" ', "<a ")
     if h.get("toolkits"):
         rows = "".join(
-            f'<a class="ph-tool" href="{attr(k["href"])}" target="_blank" rel="noopener"><span class="ph-tool-t"><b>{k["title"]}</b>'
+            f'<a class="ph-tool" href="{attr(k["href"])}" target="_blank" rel="noopener"><span class="ph-ico" data-ico="book" aria-hidden="true"></span><span class="ph-tool-t"><b>{k["title"]}</b>'
             f'<span>{k["text"]}</span></span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a>' for k in h["toolkits"])
         return (f'<div class="ph-read">\n'
                 f'          <p class="ph-label">Your {w}</p>\n'
@@ -99,7 +134,7 @@ def tool_rows(m, stage):
     for path in m["stages"][stage]:
         t = m["tools"][path]
         key = f' data-key="{t["key"]}"' if t.get("key") else ""
-        out.append(f'<a class="ph-tool" href="{path}"{key}><span class="ph-tool-t"><b>{t["name"]}</b><span>{t["line"]}</span></span>'
+        out.append(f'<a class="ph-tool" href="{path}"{key}>{ico_tag(t["name"])}<span class="ph-tool-t"><b>{t["name"]}</b><span>{t["line"]}</span></span>'
                    f'<span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a>')
     return "".join(out)
 
@@ -119,7 +154,7 @@ def card(c, level="h3"):
 
 
 def block(m, h):
-    sh = h["share"]
+    sh, g = h["share"], guide(m, h)
     extra = f'\n      <p style="margin-top:10px;">{sh["extra"]}</p>' if sh.get("extra") else ""
     community = f'\n    <section class="ph-sec">{card(h["community"])}</section>' if h.get("community") else ""
     nxt = f'\n    <section class="ph-sec">{card(h["cross_sell"])}</section>' if h.get("cross_sell") else ""
@@ -130,9 +165,14 @@ def block(m, h):
 </header>
 <main class="ph">
   <section class="ph-top-wrap"><div class="wrap narrow ph-top">
-    <div class="ph-cast" data-cast-slot="program-home"></div>
-    <p class="ph-eyebrow">{h["eyebrow"]}</p>
-    <h1>{h["h1"]}</h1>
+    <div class="ph-hero">
+      <div class="ph-hero-txt">
+        <p class="ph-eyebrow">{h["eyebrow"]}</p>
+        <h1>{h["h1"]}</h1>
+        <p class="ph-say"><b>{g[0]}</b>{guide_line(h)}</p>
+      </div>
+      <img class="ph-hero-img" src="/assets/img/cast/guides/{g[1]}.webp?v={ASSET_VERSION}" width="{g[2]}" height="{g[3]}" alt="Illustration of {g[0]}">
+    </div>
     <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
   </div></section>
   <div class="wrap narrow">
@@ -173,8 +213,11 @@ def app_data(m):
     data = {
         "stageNames": m["stage_names"],
         "stages": m["stages"],
-        "tools": {p: [html.unescape(t["name"]), html.unescape(t["line"])] for p, t in m["tools"].items()},
-        "homes": {slug: {"stages": h["stages"], **({"reader": h["reader"]} if h.get("reader") else {})} for slug, h in m["homes"].items()},
+        "tools": {p: [html.unescape(t["name"]), html.unescape(t["line"]), *icon(t["name"])] for p, t in m["tools"].items()},
+        "guides": m["guides"],
+        "guideV": ASSET_VERSION,
+        "homes": {slug: {"stages": h["stages"], **({"guide": h["guide"]} if h.get("guide") else {}),
+                         **({"reader": h["reader"]} if h.get("reader") else {})} for slug, h in m["homes"].items()},
     }
     return f"{APP_START}\nvar APP_DATA = {json.dumps(data, ensure_ascii=False, separators=(',', ':'))};\n{APP_END}"
 

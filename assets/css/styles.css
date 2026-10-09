@@ -15,6 +15,20 @@
   --line: #E4E1CE;           /* warm hairline */
   --white: #FFFFFF;
 
+  /* Sticker look: the cast scene colours at full strength, each with a tint, and the cast's ink line work.
+     Each stage takes one: relationships rust, fertility olive, pregnancy mustard, postpartum peach, parenting denim. */
+  --rust: #C0763F;    --rust-t: #F4DCCB;
+  --olive: #6E7A3F;   --olive-t: #E3E6CC;
+  --mustard: #D49A2A; --mustard-t: #F6E4BC;
+  --denim: #6F93BF;   --denim-t: #DCE6F2;
+  --peach: #E39A7B;   --peach-t: #F8E1D6;
+  --ink: #33322A;
+  --sticker: 5px 5px 0 var(--ink);
+  --sticker-md: 4px 4px 0 var(--ink);
+  --sticker-sm: 3px 3px 0 var(--ink);
+  /* the page's stage colour (html[data-stage], stamped by scripts/build-stage-look.py), its tint, and the text on it */
+  --s: var(--olive); --st: var(--olive-t); --s-on: #fff;
+
   --maxw: 1120px;
   --radius: 18px;
   --radius-sm: 12px;
@@ -302,3 +316,51 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
    Was 56px + 56px + the image's own inline 22px; now a flat 56px each side. */
 section:has(> .wrap.narrow > img:only-child) { padding: 0; }
 section:has(> .wrap.narrow > img:only-child) > .wrap.narrow > img { margin: 0 auto !important; }
+
+/* ---------- Sticker look: solid colour, ink outlines and offset shadows, like the cast's line work ----------
+   The :root prefix keeps these rules level with page-level rules of the same shape. Mustard and peach are light,
+   so text and icons on them are ink. */
+html[data-stage="relationships"] { --s: var(--rust); --st: var(--rust-t); }
+html[data-stage="pregnancy"] { --s: var(--mustard); --st: var(--mustard-t); --s-on: var(--ink); }
+html[data-stage="postpartum"] { --s: var(--peach); --st: var(--peach-t); --s-on: var(--ink); }
+html[data-stage="parenting"] { --s: var(--denim); --st: var(--denim-t); }
+/* a card that links into a stage carries that stage's colour */
+:root .card[href^="/relationships"], :root .stage-card[href*="wife-material"] { --c: var(--rust); --t: var(--rust-t); --c-on: #fff; }
+:root .card[href^="/fertility"], :root .stage-card[href*="trying-to-conceive"] { --c: var(--olive); --t: var(--olive-t); --c-on: #fff; }
+:root .card[href^="/pregnancy"], :root .stage-card[href*="first-pregnancy"] { --c: var(--mustard); --t: var(--mustard-t); --c-on: var(--ink); }
+:root .card[href^="/postpartum"], :root .stage-card[href*="postpartum-reset"] { --c: var(--peach); --t: var(--peach-t); --c-on: var(--ink); }
+:root .card[href^="/parenting"], :root .stage-card[href*="first-baby"] { --c: var(--denim); --t: var(--denim-t); --c-on: #fff; }
+:root .card, :root .tool-app, :root .result, :root .program-cta, :root .faq-item { border: 2px solid var(--ink); box-shadow: var(--sticker); }
+:root .card[href] { background: var(--t, var(--white)); }
+:root .card[href]:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+:root .btn { border: 2px solid var(--ink); box-shadow: var(--sticker-sm); }
+:root .btn-primary { background: var(--s); color: var(--s-on); }
+:root .tag { border: 1.5px solid var(--ink); background: var(--c, var(--s)); color: var(--c-on, var(--s-on)); }
+:root .tool-hero, :root .hero { background: var(--st); }
+:root .stage-band { background: var(--denim-t); }
+:root .stage-card .emoji { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto; border-radius: 50%; background: var(--c); border: 2px solid var(--ink); font-size: 1.7rem; }
+:root .opt { border: 2px solid var(--ink); border-radius: 14px; }
+:root .progress-bar { height: 12px; background: var(--white); border: 1.5px solid var(--ink); }
+:root .progress-bar > * { background: var(--s); }
+:root input[type=checkbox], :root input[type=radio] { accent-color: var(--s); }
+/* the "what you get" lists on sales pages: icon stickers in the cast colours, in turn */
+:root .stack.iconed .ico { background: var(--olive); color: #fff; border: 2px solid var(--ink); box-shadow: var(--sticker-sm); }
+:root .stack.iconed li:nth-child(5n+2) .ico { background: var(--mustard); color: var(--ink); }
+:root .stack.iconed li:nth-child(5n+3) .ico { background: var(--rust); color: #fff; }
+:root .stack.iconed li:nth-child(5n+4) .ico { background: var(--denim); color: #fff; }
+:root .stack.iconed li:nth-child(5n+5) .ico { background: var(--peach); color: var(--ink); }
+/* games: each answer carries its meaning in colour (green flag, let's talk, red flag) */
+:root .rq-opts label { border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+:root .rq-opts label:nth-child(1) { background: var(--olive-t); color: #3F4721; }
+:root .rq-opts label:nth-child(2) { background: var(--mustard-t); color: #6B4D10; }
+:root .rq-opts label:nth-child(3) { background: var(--rust-t); color: #7A3F17; }
+:root .rq-opts label:nth-child(1):has(input:checked) { background: var(--olive); color: #fff; }
+:root .rq-opts label:nth-child(2):has(input:checked) { background: var(--mustard); color: var(--ink); }
+:root .rq-opts label:nth-child(3):has(input:checked) { background: var(--rust); color: #fff; }
+/* the stage's guide in tool and stage headers (scripts/build-stage-look.py), and the four guides on the homepage */
+.tool-hero.guided { position: relative; overflow: hidden; min-height: 250px; }
+.tool-hero.guided .wrap > p:not(.eyebrow):not(.breadcrumb), .tool-hero.guided .lead { margin-right: 108px; }
+.tool-hero .hero-guide { position: absolute; right: -6px; bottom: 0; height: 190px; width: auto; pointer-events: none; }
+.guide-lineup { display: flex; justify-content: center; align-items: flex-end; margin: 26px -10px -40px; height: 190px; overflow: hidden; }
+.guide-lineup img { height: 180px; width: auto; margin: 0 -14px; }
+.guide-lineup img:nth-child(2), .guide-lineup img:nth-child(3) { height: 170px; }

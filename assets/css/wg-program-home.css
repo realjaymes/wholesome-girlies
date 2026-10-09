@@ -27,18 +27,37 @@
 .ph-eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terracotta);font-weight:700;margin:0 0 6px}
 .ph-top h1{font-size:clamp(1.6rem,6vw,2.2rem);margin:0}
 .ph-keep{font-size:.88rem;margin:10px 0 0}
-/* The cast layer goes here once it is designed (07, the cast step). Empty until then. */
-.ph-cast:empty{display:none}
+/* The guide panel: the page heading beside the stage's guide (a waist-up cast figure) and her line.
+   Sticker look (styles.css): ink outlines and offset shadows. The panel is mustard tint, the reading card olive tint,
+   every other card white, so no two cards match. */
+.ph-top{padding-top:16px}
+.ph-hero{position:relative;background:var(--mustard-t);border:2px solid var(--ink);box-shadow:var(--sticker);border-radius:28px;padding:24px 22px 22px;min-height:250px;overflow:hidden}
+.ph-hero-txt{position:relative;z-index:2;width:60%}
+.ph-hero h1{font-size:clamp(1.5rem,5.6vw,2rem);line-height:1.15;margin:0}
+.ph-hero .ph-eyebrow{margin-bottom:8px}
+.ph-say{position:relative;margin:14px 0 0;background:#fff;border:2px solid var(--ink);border-radius:16px 16px 6px 16px;padding:10px 13px;font-size:.88rem;line-height:1.4;box-shadow:var(--sticker-sm);transform:rotate(-1.2deg)}
+.ph-say b{display:block;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--terracotta);margin-bottom:2px}
+/* the guide is sized from the panel's height, so her head always clears the top edge */
+.ph-hero-img{position:absolute;right:-8px;bottom:-4px;height:calc(100% - 14px);max-height:300px;width:auto;pointer-events:none}
+@media (min-width:640px){.ph-hero{min-height:290px}.ph-hero-img{right:12px}.ph-hero-txt{width:62%}}
+/* the app home: the greeting panel inside the installed app, and program cards without a reader stay white */
+.tool-hero.has-guide{background:none;padding-bottom:6px}
+.app-progs .ph-read:not(.ph-main){background:#fff}
+@media (max-width:360px){.ph-hero-txt{width:64%}.ph-hero-img{right:-24px}}
 
 /* Reading, or the toolkit when the program has no reader yet */
 .ph-sec{padding:22px 0 0}
 .ph-sec h2{font-size:1.35rem;margin:0 0 10px}
-.ph-read{background:var(--white,#fff);border:1px solid var(--line);border-top:4px solid var(--terracotta);border-radius:16px;padding:18px 20px}
-.ph-read .ph-label{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--terracotta);margin:0}
-.ph-read .ph-title{font-family:var(--serif);font-size:1.3rem;line-height:1.25;margin:6px 0 12px}
-.ph-bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin:0 0 6px}
-.ph-bar span{display:block;height:100%;width:0;background:var(--terracotta)}
-.ph-count{font-size:.84rem;margin:0 0 14px}
+.ph-read{background:var(--olive-t);border:2px solid var(--ink);border-radius:24px;padding:22px 20px 20px;box-shadow:var(--sticker)}
+.ph-read .ph-label{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--terracotta);margin:0}
+.ph-read .ph-title,.ph-read h3{font-family:var(--serif);font-size:clamp(1.3rem,5vw,1.6rem);line-height:1.2;margin:8px 0 14px}
+/* the ring sits beside the count, under the title, so it never covers the words at any width */
+.ph-prog{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.ph-prog .ph-count{margin:0}
+.ph-ring{flex:none;width:58px;height:58px;border-radius:50%;background:conic-gradient(var(--rust) calc(var(--pct,0)*1%),rgba(255,255,255,.9) 0);display:grid;place-items:center}
+.ph-ring span{width:46px;height:46px;border-radius:50%;background:var(--blush);border:2px solid var(--ink);display:grid;place-items:center;align-content:center;font:400 1rem/1 var(--serif);color:var(--plum);text-align:center}
+.ph-ring small{display:block;font:700 .52rem/1.2 var(--sans);color:var(--plum-soft);margin-top:1px}
+.ph-count{font-size:.86rem;margin:0 0 14px}
 .ph-intro{font-size:.92rem;margin:6px 0 14px}
 .ph-read .btn{width:100%;text-align:center}
 .ph-links{display:flex;gap:18px;justify-content:center;margin:12px 0 0;font-size:.9rem;font-weight:700}
@@ -50,14 +69,22 @@
 body.wg-in-app .ph-site{display:none}
 
 /* Lists: tools, and the bundle's four toolkits */
-.ph-tools{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.ph-tool{display:flex;align-items:center;gap:12px;padding:13px 16px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.ph-tools{background:#fff;border:2px solid var(--ink);box-shadow:var(--sticker);border-radius:20px;overflow:hidden}
+.ph-tool{display:flex;align-items:center;gap:14px;padding:13px 16px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+/* each kind of tool its own colour: games, quizzes and toolkits rust, lists and charts denim,
+   dates and writing mustard, talk and feelings peach, everything else olive */
+.ph-ico{--c:var(--olive);--c-on:#fff;flex:none;width:44px;height:44px;border-radius:14px;background:var(--c);color:var(--c-on);border:2px solid var(--ink);display:grid;place-items:center}
+.ph-ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ph-ico[data-ico="list"],.ph-ico[data-ico="chart"]{--c:var(--denim)}
+.ph-ico[data-ico="cal"],.ph-ico[data-ico="pen"]{--c:var(--mustard);--c-on:var(--ink)}
+.ph-ico[data-ico="chat"],.ph-ico[data-ico="heart"]{--c:var(--peach);--c-on:var(--ink)}
+.ph-ico[data-kind],.ph-ico[data-ico="book"]{--c:var(--rust);--c-on:#fff}
 .ph-tool:first-child{border-top:0}
 .ph-tool:hover{background:rgba(110,122,63,.06);text-decoration:none}
 .ph-tool-t{flex:1;min-width:0}
 .ph-tool-t b{display:block;font-size:.98rem}
 .ph-tool-t span{display:block;font-size:.84rem;color:var(--muted,#6b6b60);line-height:1.35;margin-top:2px}
-.ph-saved{font-size:.72rem;font-weight:700;color:var(--terracotta);background:var(--blush,#eef0e2);border-radius:999px;padding:3px 8px}
+.ph-saved{font-size:.72rem;font-weight:700;color:var(--ink);background:var(--mustard);border:1.5px solid var(--ink);border-radius:999px;padding:3px 8px;transform:rotate(-3deg)}
 .ph-chev{font-size:1.4rem;color:var(--terracotta)}
 .ph-kits{margin-top:12px}
 .ph-group{margin-top:10px}

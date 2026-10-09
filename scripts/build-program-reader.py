@@ -17,7 +17,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OFFERS = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Offers")
 SITE = "https://wholesomegirlies.xyz"
-READER_VERSION = "20261009g"
+READER_VERSION = "20261009h"
 PROGRAMS = {
     "wife-material-blueprint": {
         "folder": "The Wife Material Blueprint", "stage": "relationships", "book": "Blueprint",
