@@ -208,7 +208,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="app-block" id="appGames" hidden>
-    <h2>Newest games</h2>
+    <h2>Games to play and send to a friend</h2>
     <div class="grid grid-2 app-games" style="margin-top:12px;">
       <a class="card" href="/relationships/tools/red-flag-radar"><span class="tag">Game</span><h3>Red Flag Radar</h3><p>Call ten dating situations green flag, let's talk or red flag, then see what your radar says.</p><span class="arrow">Play &rarr;</span></a>
       <a class="card" href="/relationships/tools/is-he-husband-material"><span class="tag">Quiz</span><h3>Is He Husband Material?</h3><p>Answer from what he has done, then see what he is already showing you.</p><span class="arrow">Start &rarr;</span></a>
@@ -368,7 +368,11 @@ function appRender(){
   if (stage) { $('appMoreAll').href = '/' + stage + '/'; $('appMoreAll').innerHTML = 'See every ' + APP_DATA.stageNames[stage].replace(/ tools$/, '').toLowerCase() + ' tool and guide &rarr;'; }
   appPick(stage);
   $('appStages').hidden = buyer || saved.length > 0;
-  $('appGames').hidden = !buyer;
+  // Everyone gets the two newest games, so a visitor has something to play and send before anything to buy.
+  // A buyer sees them after her program and tools; a visitor sees them above the stage cards when she has
+  // nothing saved, and after her own tools when she has.
+  var gb = $('appGames'), anchor = buyer ? $('appClose') : saved.length ? $('appMore') : $('appStages');
+  gb.hidden = false; anchor.parentNode.insertBefore(gb, anchor);
   appGuide(mine, stage);
   if (window.WGIcons) WGIcons.draw(document.querySelector('main'));
 }
