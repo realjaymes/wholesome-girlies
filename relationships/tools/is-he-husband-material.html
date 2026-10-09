@@ -100,7 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section style="padding-top:0;">
   <div class="wrap narrow">
-    <div class="tool-app">
+    <div class="tool-app" data-steps="#questions .q, .tool-app > .q.safe">
       <p class="muted" style="margin-top:0;">Think of one man you are dating or talking to. Answer from what he has done more than once. Promises do not count yet.</p>
       <div id="questions">
         <div class="q"><span class="qtext">1. Do his words and actions match?</span><label class="opt"><input type="radio" name="q0" value="2"><span>Yes, every time</span></label><label class="opt"><input type="radio" name="q0" value="1"><span>Sometimes</span></label><label class="opt"><input type="radio" name="q0" value="0"><span>Not yet, or no</span></label></div>
@@ -273,6 +273,7 @@ function scoreHim(){
   res.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 </script>
+<script src="/assets/js/wg-steps.js?v=20261009a" defer></script>
 <script src="/assets/js/wg-result.js?v=20261009a" defer></script>
 <script src="/assets/js/member-cta.js?v=20261008a" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>

@@ -21,7 +21,7 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://wholesomegirlies.xyz"
-RESULT_VERSION = "20261008a"
+RESULT_VERSION = "20261009a"
 ART = {"ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship",
        "red-flag-radar": "radar", "is-he-husband-material": "husband"}
 ALT = {

@@ -97,7 +97,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section style="padding-top:0;">
   <div class="wrap narrow">
-    <div class="tool-app">
+    <div class="tool-app" data-steps="#quiz .q">
       <form id="quiz"></form>
       <div style="display:flex;gap:10px;flex-wrap:wrap;"><button class="btn btn-primary" onclick="scoreQuiz()">Show my read</button><button type="button" class="btn btn-ghost" onclick="resetQuiz()">Start over</button></div>
 
@@ -298,6 +298,7 @@ function scoreQuiz(){
   res.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 </script>
+<script src="/assets/js/wg-steps.js?v=20261009a" defer></script>
 <script src="/assets/js/wg-result.js?v=20261009a" defer></script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
