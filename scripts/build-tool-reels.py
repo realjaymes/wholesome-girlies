@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Writes the tool reels (tap-to-play phone clips of the tools) onto the sales and thank-you pages, and onto the
-app home (/app/), where every filmed tool shows in one row per stage.
+"""Writes the tool reels (tap-to-play phone clips of the tools) onto the program sales pages, and onto the
+app home (/app/), where every filmed tool shows in one row per stage. Buyers see no reels: the program homes
+(thank-you pages) list the tools instead, written by scripts/build-program-homes.py.
 
 Source of truth: assets/data/tool-shorts.json, one entry per tool short. The reel HTML sits between
 <!-- tool-reel:start --> and <!-- tool-reel:end --> markers on each page, and this script is the only
@@ -17,8 +18,8 @@ text only, with every wg-share row, script, style and noscript left out; (2) the
 <script> code (the tool's logic and data), whitespace-collapsed, with JSON-LD left out. Analytics,
 consent, share rows, schema, the head and the written guide never count.
 
-Markers for a new program page are placed once by hand (sales: after the price card; thank-you:
-where the tool grid was); after that the script owns the block between them.
+Markers for a new program sales page are placed once by hand, after the price card; after that the script
+owns the block between them.
 """
 import hashlib
 import html
@@ -130,19 +131,16 @@ def save(m):
 
 
 def pages_of(slug):
-    """(path, market, kind) for the four pages of a program."""
+    """(path, market, kind) for the two sales pages of a program."""
     return [
         (f"programs/{slug}.html", "home", "sales"),
         (f"programs/{slug}-diaspora.html", "diaspora", "sales"),
-        (f"programs/{slug}/thank-you.html", "home", "thank_you"),
-        (f"programs/{slug}-diaspora/thank-you.html", "diaspora", "thank_you"),
     ]
 
 
 def members(m, slug, kind):
     """Tool ids in the reel of a program page: the program's order list first, then any others."""
-    key = "programs" if kind == "sales" else "thank_you_programs"
-    ids = [i for i, t in m["tools"].items() if slug in t.get(key, [])]
+    ids = [i for i, t in m["tools"].items() if slug in t.get("programs", [])]
     order = m["programs"][slug][kind]["order"]
     return [i for i in order if i in ids] + [i for i in ids if i not in order]
 
@@ -160,13 +158,9 @@ def pick(d, market):
     return d.get(market) or d["home"]
 
 
-def card(t, prog, market, kind):
-    title = t["title"]
-    if kind in ("sales", "app"):
-        cap, name = pick(t["sales_line"], market), title
-    else:
-        cap = pick(t["thank_you_line"], market)
-        name = title if prog.get("bundle") else t.get("thank_you_title", title)
+def card(t, market, kind):
+    title = name = t["title"]
+    cap = pick(t["sales_line"], market)
     vid, poster = t["video"], t["poster"]
     alt = f"{title} in use"
     out = [f'<li class="ts-card{" is-private" if t.get("private") else ""}"><p class="ts-cap">{esc(cap)}</p>',
@@ -177,7 +171,7 @@ def card(t, prog, market, kind):
            f'<p class="ts-name">{esc(name)}</p>']
     if t.get("private"):
         out.append(f'<span class="ts-priv">{PRIVATE_LABEL}</span>')
-    if kind in ("thank_you", "app"):
+    if kind == "app":
         out.append(f'<a class="ts-open" href="{t["tool"]}"><span>Open the tool &rarr;</span></a>')
     out.append("</li>")
     return "".join(out[:1]) + "\n" + "".join(out[1:2]) + "\n" + "".join(out[2:])
@@ -186,17 +180,12 @@ def card(t, prog, market, kind):
 def block(m, slug, market, kind):
     prog = m["programs"][slug]
     cfg = prog[kind]
-    cards = "".join(card(m["tools"][i], prog, market, kind) for i in members(m, slug, kind))
+    cards = "".join(card(m["tools"][i], market, kind) for i in members(m, slug, kind))
     row = (f'<div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button>'
            f'<ul class="ts-row" tabindex="0" aria-label="{esc(cfg["aria"])}">{cards}</ul>'
            f'<button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>')
-    if kind == "sales":
-        inner = (f'<div class="ts-show" id="tsShow">\n      <div class="ts-head"><h2>{esc(cfg["heading"])}</h2>\n'
-                 f'<p class="muted ts-sub">{esc(pick(cfg["sub"], market))}</p></div>\n      {row}\n    </div>')
-    elif cfg.get("heading"):
-        inner = f'<h3 style="margin:30px 0 8px;">{esc(cfg["heading"])}</h3>\n    {row}'
-    else:
-        inner = row
+    inner = (f'<div class="ts-show" id="tsShow">\n      <div class="ts-head"><h2>{esc(cfg["heading"])}</h2>\n'
+             f'<p class="muted ts-sub">{esc(pick(cfg["sub"], market))}</p></div>\n      {row}\n    </div>')
     return f"{START}\n    {inner}\n    {END}"
 
 
@@ -210,7 +199,7 @@ def app_ids(m, stage):
 def app_block(m):
     rows = []
     for stage, name in m["app"]["stages"]:
-        cards = "".join(card(m["tools"][i], {}, "home", "app") for i in app_ids(m, stage))
+        cards = "".join(card(m["tools"][i], "home", "app") for i in app_ids(m, stage))
         if cards:
             rows.append(f'<h3 style="margin:26px 0 8px;">{esc(name)}</h3>\n    '
                         f'<div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button>'

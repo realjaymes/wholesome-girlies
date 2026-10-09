@@ -18,18 +18,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css?v=20260930a">
-<link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v=20261008b">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<style>
-  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
-  .tools-grid .card{display:flex;flex-direction:column;}
-  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
-</style>
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -40,116 +35,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <!-- Minimal brand header, matching the cold-traffic sales page (no site nav). -->
-<header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
-  <div class="wrap center">
-    <span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span>
-  </div>
+<!-- program-home:start -->
+<header class="ph-head">
+  <div class="wrap"><a class="brand" href="/"><span class="dot"></span> Wholesome Girlies</a>
+  <nav><a href="/tools/">Tools</a><div class="nav-dropdown" id="phProgsDd" hidden><button class="nav-dropdown-trigger" id="phProgsBtn" type="button" aria-expanded="false" aria-haspopup="true">My programs <svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="nav-dropdown-menu" role="menu" id="phProgs"></div></div></nav></div>
 </header>
-
-<main>
-
-<!-- ============================================================= -->
-<!-- CONCEPTION HOME — the buyer's persistent hub. Reached on purchase (Selar redirect) and returned to via
-<!-- the email + PDF link. Evergreen. noindex + not in sitemap. Tools stay FREE/shared; the buyer gets
-<!-- everything gathered in one place. (SEO leak accepted for launch per James 2026-08-03.) -->
-<!-- ============================================================= -->
-
-<!-- Hero -->
-<section class="sales-hero" style="padding-bottom:28px">
-  <div class="wrap narrow center">
-    <p class="eyebrow">Your Conception home 💚</p>
+<main class="ph">
+  <section class="ph-top-wrap"><div class="wrap narrow ph-top">
+    <div class="ph-cast" data-cast-slot="program-home"></div>
+    <p class="ph-eyebrow">Your Conception home</p>
     <h1>Welcome in. Your Blueprint, community and tools are all on this page.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Private help is here too, when you want it.</p>
-    <!-- WIRING: replace href with the real toolkit PDF link (Google Doc export?format=pdf, or a stable Drive file link). Never gate. -->
-    <p class="muted" style="font-size:.9rem; margin-top:16px; max-width:54ch; margin-left:auto; margin-right:auto;">Bookmark this page or copy the link so you can come back any time. A copy is in your email too.</p>
-    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page’s link</button>
-  </div>
-</section>
-
-<!-- Community (protected conception space) -->
-<section style="padding-top:10px; padding-bottom:6px">
+    <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
+  </div></section>
   <div class="wrap narrow">
-    <div class="card center" style="border:2px solid var(--terracotta);">
-      <h2 style="margin-bottom:8px;">Your toolkit is ready</h2>
-      <p class="muted">Open it any time. A copy is in your email too.</p>
-      <!-- WIRING: replace href with the program's Google Drive PDF (Anyone with the link, Viewer). Opens in a new tab. -->
-      <a href="https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your Blueprint &rarr;</a>
-    </div>
+    <section class="ph-sec" style="padding-top:12px">
+        <div class="ph-read">
+          <p class="ph-label">Your Blueprint</p>
+          <p class="ph-title">Open it any time. A copy is also in your email.</p>
+          <a class="btn btn-primary btn-lg" href="https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link" target="_blank" rel="noopener">Open your Blueprint &rarr;</a>
+        </div>
+    </section>
   </div>
-</section>
-<section class="stage-band" style="padding-top:10px">
+  <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
   <div class="wrap narrow">
-    <div class="card center" id="invite">
-      <p class="eyebrow">Women at your stage are in the group</p>
-      <h2 style="margin-bottom:8px;">Join the community 💚</h2>
-      <p class="muted">This is a private, protected group for women who are trying too. It is kept separate from bump-and-baby content on purpose. There is no judgment and no comparison, wherever you are in the world. A private assistant inside answers your cycle questions at any hour and always points you to a doctor for anything clinical. We have emailed your invite too.</p>
-      <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
-    </div>
+    <section class="ph-sec"><div class="ph-card"><p class="eyebrow">Women at your stage are in the group</p><h3>Join the community</h3><p class="muted">This is a private, protected group for women who are trying too. It is kept separate from bump-and-baby content on purpose. There is no judgment and no comparison, wherever you are in the world. A private assistant inside answers your cycle questions at any hour and always points you to a doctor for anything clinical. We have emailed your invite too.</p><a class="btn btn-primary" href="https://t.me/+uTUj9vAxjWswMTI0">Join the community on Telegram</a></div></section>
+    <section class="ph-sec">
+      <h2>Your tools</h2>
+      <div class="ph-tools"><a class="ph-tool" href="/fertility/tools/ovulation-calculator"><span class="ph-tool-t"><b>Ovulation &amp; Fertile Window Calculator</b><span>Estimate your fertile days and most likely day of ovulation.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/fertility/tools/period-tracker"><span class="ph-tool-t"><b>Period Tracker</b><span>Predict your next three periods and see your pattern.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/fertility/tools/ttc-checklist" data-key="wg_ttc_checklist_v1"><span class="ph-tool-t"><b>Trying-to-Conceive Checklist</b><span>Tick the healthy steps to take before and while you try to conceive.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/fertility/tools/his-fertility-checklist" data-key="wg_his_fertility_checklist_v1"><span class="ph-tool-t"><b>His Fertility Checklist</b><span>Simple steps that support his sperm health, and what to ask about a semen analysis.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/fertility/tools/fertility-appointment-questions" data-key="wg_fertility_questions_v1"><span class="ph-tool-t"><b>Fertility Appointment Questions</b><span>Questions to take to your fertility or GP appointment, so nothing is forgotten.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/fertility/tools/the-wait-check-in" data-key="wg_wait_checkin_v1"><span class="ph-tool-t"><b>The Wait Check-in</b><span>A private check-in on how you are coping while you wait, with the Nigerian helpline number.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a></div>
+    </section>
+    <section class="ph-sec">
+      <div class="ph-safety"><h3>When to get help</h3><p class="muted">See a doctor after about a year of trying under 35, about six months at 35 or over, or sooner if your periods are irregular or you have a known condition. If the waiting is weighing heavily on your mind, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>. In the UK you can call Samaritans on <a href="tel:116123">116 123</a>. In the US or Canada you can call or text <a href="tel:988">988</a>.</p></div>
+      <div class="ph-help"><h3>Want private help?</h3><p class="muted">You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical.</p></div>
+    </section>
+    <section class="ph-sec"><div class="ph-card"><p class="eyebrow">The whole journey, for less</p><h3>Want pregnancy and the baby years covered too?</h3><p class="muted">The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout for your member discount on the bundle.</p><a class="btn btn-primary" href="/programs/complete-motherhood-journey-diaspora">See the Complete Motherhood Journey &rarr;</a></div></section>
+    <section class="ph-pass">
+      <p class="eyebrow">Pass it on</p>
+      <h2>Know a friend who is trying too?</h2>
+      <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If a friend is trying too, send her the plan that covers her cycle, her preparation and the questions to ask her doctor.</p>
+      <div class="wg-share" data-share-id="trying-to-conceive-blueprint" data-share-surface="thank_you" data-share-path="/programs/trying-to-conceive-blueprint" data-share-align="center"
+           data-share-text="A step-by-step plan for trying for a first baby: understand the cycle, prepare the body, and know what to ask the doctor."></div>
+      <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
+    </section>
   </div>
-</section>
-
-<!-- Your tools -->
-<section>
-  <div class="wrap narrow">
-    <h2>Your tools</h2>
-    <p class="muted">Use these tools whenever you need them. They live on the site.</p>
-    <!-- tool-reel:start -->
-    <div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button><ul class="ts-row" tabindex="0" aria-label="Your tools"><li class="ts-card is-private"><p class="ts-cap">Enter your last period date and cycle length to see your fertile window.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/ovulation-calculator.mp4?v=857cfff4"><img class="vposter" src="/assets/img/tool-shorts/ovulation-calculator.webp?v=7e61f353" width="432" height="768" alt="Ovulation and Fertile Window Calculator in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Ovulation and Fertile Window Calculator"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Ovulation Calculator</p><span class="ts-priv">Private. Stays on your phone.</span><a class="ts-open" href="/fertility/tools/ovulation-calculator"><span>Open the tool &rarr;</span></a></li><li class="ts-card is-private"><p class="ts-cap">Enter the first day of your last period to see your next three periods.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/period-tracker.mp4?v=f35f4cda"><img class="vposter" src="/assets/img/tool-shorts/period-tracker.webp?v=63f7fcee" width="432" height="768" alt="Period Tracker and Next Period Calculator in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Period Tracker and Next Period Calculator"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Period Tracker</p><span class="ts-priv">Private. Stays on your phone.</span><a class="ts-open" href="/fertility/tools/period-tracker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick one step you can take this week.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/ttc-checklist.mp4?v=2a830987"><img class="vposter" src="/assets/img/tool-shorts/ttc-checklist.webp?v=769121aa" width="432" height="768" alt="Trying-to-Conceive Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Trying-to-Conceive Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Trying-to-Conceive Checklist</p><a class="ts-open" href="/fertility/tools/ttc-checklist"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Send him the list so he can tick each step on his phone.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/his-fertility-checklist.mp4?v=ec87a6a4"><img class="vposter" src="/assets/img/tool-shorts/his-fertility-checklist.webp?v=8558cb36" width="432" height="768" alt="His Fertility Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of His Fertility Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">His Fertility Checklist</p><a class="ts-open" href="/fertility/tools/his-fertility-checklist"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick your questions, add your own, then print the list.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/fertility-appointment-questions.mp4?v=06a0a9eb"><img class="vposter" src="/assets/img/tool-shorts/fertility-appointment-questions.webp?v=f9fbb429" width="432" height="768" alt="Fertility Appointment Questions in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Fertility Appointment Questions"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Fertility Appointment Questions</p><a class="ts-open" href="/fertility/tools/fertility-appointment-questions"><span>Open the tool &rarr;</span></a></li><li class="ts-card is-private"><p class="ts-cap">Open it and write one line about this week. It stays on your phone.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/the-wait-check-in.mp4?v=c4f6471f"><img class="vposter" src="/assets/img/tool-shorts/the-wait-check-in.webp?v=22510f36" width="432" height="768" alt="The Wait Check-in in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of The Wait Check-in"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">The Wait Check-in</p><span class="ts-priv">Private. Stays on your phone.</span><a class="ts-open" href="/fertility/tools/the-wait-check-in"><span>Open the tool &rarr;</span></a></li></ul><button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>
-    <!-- tool-reel:end -->
-  </div>
-</section>
-
-<!-- Help + safety -->
-<section class="stage-band">
-  <div class="wrap narrow">
-    <div class="grid grid-2">
-      <div class="card">
-        <h3>Want private help?</h3>
-        <p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical.</p>
-      </div>
-      <div class="card" style="border-left:4px solid var(--terracotta);">
-        <h3>When to get help</h3>
-        <p class="muted">See a doctor after about a year of trying under 35, about six months at 35 or over, or sooner if your periods are irregular or you have a known condition. If the waiting is weighing heavily on your mind, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>. In the UK you can call Samaritans on <a href="tel:116123">116 123</a>. In the US or Canada you can call or text <a href="tel:988">988</a>.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Continue the journey (bundle upsell for a TTC buyer; MOTHER coupon) -->
-<section>
-  <div class="wrap narrow center">
-    <p class="eyebrow">The whole journey, for less</p>
-    <h2>Want pregnancy and the baby years covered too?</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout for your member discount on the bundle.</p>
-    <a href="/programs/complete-motherhood-journey-diaspora" class="btn btn-primary">See the Complete Motherhood Journey &rarr;</a>
-  </div>
-</section>
-
-<!-- Pass it on (shares the public program page, never this hub) -->
-<section>
-  <div class="wrap narrow center">
-    <p class="eyebrow">Pass it on</p>
-    <h2>Know a friend who is trying too?</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If a friend is trying too, send her the plan that covers her cycle, her preparation and the questions to ask her doctor.</p>
-    <div class="wg-share" data-share-id="trying-to-conceive-blueprint" data-share-surface="thank_you" data-share-path="/programs/trying-to-conceive-blueprint" data-share-align="center"
-         data-share-text="A step-by-step plan for trying for a first baby: understand the cycle, prepare the body, and know what to ask the doctor."></div>
-    <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
-  </div>
-</section>
-
 </main>
+<!-- program-home:end -->
 
 <!-- Minimal footer, legal only, no site nav (matches the funnel pages). -->
 <footer class="site-footer" style="padding:28px 0;">
@@ -161,19 +90,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 try { localStorage.setItem('wg_fertility_home', JSON.stringify({u: location.pathname, l: 'Conception home'})); } catch(e){}
-function copyHubLink(btn){
-  var url = 'https://wholesomegirlies.xyz' + location.pathname;
-  function done(){ var o = btn.textContent; btn.textContent = 'Link copied ✓'; setTimeout(function(){ btn.textContent = o; }, 1800); }
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); });
-  } else { window.prompt('Copy this link:', url); }
-}
 </script>
 <script src="/assets/petals.js"></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 <script src="/assets/js/wg-share.js?v=20261007a" defer></script>
 <script defer src="/assets/js/wg-app.js?v=20261009g"></script>
-<script defer src="/assets/js/wg-tool-reel.js?v=20261008b"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009b"></script>
 </body>
 </html>

@@ -1,0 +1,81 @@
+/* The program home (programs/<slug>/thank-you): written by scripts/build-program-homes.py. */
+
+/* Slim header. "My programs" is the MIA dropdown pattern in Wholesome Girlies colours:
+   hover opens it, it closes 300ms after the pointer leaves, a tap toggles it, a tap outside or Escape closes it. */
+.ph-head{background:var(--cream);border-bottom:1px solid var(--line);padding:12px 0}
+.ph-head .wrap{padding-left:16px;padding-right:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ph-head .brand{text-decoration:none;font-size:.95rem;white-space:nowrap;min-width:0}
+.ph-head nav{display:flex;align-items:center;gap:2px;position:relative;flex:none}
+.ph-head nav > a,.nav-dropdown-trigger{display:inline-flex;align-items:center;gap:5px;font:inherit;font-size:.86rem;font-weight:700;color:var(--plum);background:none;border:0;border-radius:10px;padding:7px 9px;text-decoration:none;cursor:pointer;white-space:nowrap;line-height:1.2;width:auto;height:auto;min-width:0}
+.ph-head nav > a:hover,.nav-dropdown-trigger:hover,.nav-dropdown.is-open .nav-dropdown-trigger{background:rgba(110,122,63,.12);text-decoration:none}
+.ph-head a,.nav-dropdown-trigger{-webkit-tap-highlight-color:transparent}
+.nav-dropdown{position:relative}
+.nav-dropdown-arrow{display:block;flex:none;width:10px!important;height:6px!important;transition:transform 200ms ease}
+.nav-dropdown-arrow path{fill:none}
+.nav-dropdown-trigger:focus{outline:none}
+.nav-dropdown-trigger:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px}
+.nav-dropdown.is-open .nav-dropdown-arrow{transform:rotate(180deg)}
+.nav-dropdown-menu{display:none;flex-direction:column;gap:2px;position:absolute;top:calc(100% + 4px);right:0;z-index:60;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:6px;box-shadow:0 4px 16px rgba(51,50,42,.10);min-width:210px}
+.nav-dropdown.is-open .nav-dropdown-menu{display:flex}
+.nav-dropdown-menu a{display:block;padding:9px 10px;font-size:.9rem;font-weight:700;color:var(--plum);border-radius:8px;white-space:nowrap;text-decoration:none}
+.nav-dropdown-menu a:hover{background:rgba(110,122,63,.12);color:var(--terracotta-dark);text-decoration:none}
+.nav-dropdown-menu a[aria-current]{color:var(--terracotta)}
+
+/* Who it is for */
+.ph-top-wrap{padding:0!important}
+.ph-top{padding-top:22px;padding-bottom:4px}
+.ph-eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terracotta);font-weight:700;margin:0 0 6px}
+.ph-top h1{font-size:clamp(1.6rem,6vw,2.2rem);margin:0}
+.ph-keep{font-size:.88rem;margin:10px 0 0}
+/* The cast layer goes here once it is designed (07, the cast step). Empty until then. */
+.ph-cast:empty{display:none}
+
+/* Reading, or the toolkit when the program has no reader yet */
+.ph-sec{padding:22px 0 0}
+.ph-sec h2{font-size:1.35rem;margin:0 0 10px}
+.ph-read{background:var(--white,#fff);border:1px solid var(--line);border-top:4px solid var(--terracotta);border-radius:16px;padding:18px 20px}
+.ph-read .ph-label{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--terracotta);margin:0}
+.ph-read .ph-title{font-family:var(--serif);font-size:1.3rem;line-height:1.25;margin:6px 0 12px}
+.ph-bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin:0 0 6px}
+.ph-bar span{display:block;height:100%;width:0;background:var(--terracotta)}
+.ph-count{font-size:.84rem;margin:0 0 14px}
+.ph-intro{font-size:.92rem;margin:6px 0 14px}
+.ph-read .btn{width:100%;text-align:center}
+.ph-links{display:flex;gap:18px;justify-content:center;margin:12px 0 0;font-size:.9rem;font-weight:700}
+.ph-links a{color:var(--terracotta)}
+
+/* Get the app (browser only; wg-app.js fills it) */
+.ph-appslot{padding:0!important;background:none!important;min-height:0}
+.ph-appslot .wg-app-card{margin-top:14px}
+body.wg-in-app .ph-site{display:none}
+
+/* Lists: tools, and the bundle's four toolkits */
+.ph-tools{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.ph-tool{display:flex;align-items:center;gap:12px;padding:13px 16px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.ph-tool:first-child{border-top:0}
+.ph-tool:hover{background:rgba(110,122,63,.06);text-decoration:none}
+.ph-tool-t{flex:1;min-width:0}
+.ph-tool-t b{display:block;font-size:.98rem}
+.ph-tool-t span{display:block;font-size:.84rem;color:var(--muted,#6b6b60);line-height:1.35;margin-top:2px}
+.ph-saved{font-size:.72rem;font-weight:700;color:var(--terracotta);background:var(--blush,#eef0e2);border-radius:999px;padding:3px 8px}
+.ph-chev{font-size:1.4rem;color:var(--terracotta)}
+.ph-kits{margin-top:12px}
+.ph-group{margin-top:10px}
+.ph-group summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;list-style:none;font-weight:800;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.ph-group summary::-webkit-details-marker{display:none}
+.ph-group summary::after{content:"\203A";font-size:1.4rem;line-height:1;color:var(--terracotta);transition:transform 200ms ease}
+.ph-group[open] summary::after{transform:rotate(90deg)}
+.ph-group summary small{font-weight:700;color:var(--muted,#6b6b60);margin-left:auto}
+.ph-group .ph-tools{margin-top:8px}
+
+/* Community, help, safety, the next program */
+.ph-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.ph-card .eyebrow{font-size:.74rem;letter-spacing:.1em;margin-bottom:4px}
+.ph-card h3{font-size:1.1rem;margin:0 0 6px}
+.ph-card p{font-size:.92rem;margin:0}
+.ph-card .btn{margin-top:12px}
+.ph-safety{background:#fff;border:1px solid var(--line);border-left:4px solid var(--sage);border-radius:14px;padding:14px 16px}
+.ph-safety h3,.ph-help h3{font-size:1rem;margin:0 0 4px}
+.ph-safety p,.ph-help p{font-size:.9rem;margin:0}
+.ph-help{padding:12px 4px 0}
+.ph-pass{padding:34px 0 40px;text-align:center}

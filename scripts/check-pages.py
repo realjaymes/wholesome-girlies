@@ -13,6 +13,7 @@ Two kinds of check:
 """
 import glob
 import html
+import importlib.util
 import json
 import os
 import re
@@ -388,6 +389,35 @@ for p in PAGES:
             fail(p, "share link points at a private thank-you hub; point it at the public program page")
     if "wg_" not in s:
         fail(p, "thank-you hub must write its wg_<stage>_home member flag")
+    if "/assets/video/tool-shorts/" in s:
+        fail(p, "no tool videos on a program home: buyers get the tool list (CLAUDE.md section 4)")
+
+# The program homes are written by scripts/build-program-homes.py from assets/data/program-homes.json.
+_spec = importlib.util.spec_from_file_location("build_program_homes", os.path.join(ROOT, "scripts/build-program-homes.py"))
+homes = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(homes)
+HOMES = homes.load()
+for slug in HOMES["homes"]:
+    path, _old, _new, err = homes.expected(HOMES, slug)
+    if err:
+        fail(path, err)
+    elif _new != _old:
+        fail(path, "program home is stale against assets/data/program-homes.json: run python3 scripts/build-program-homes.py")
+_path, _old, _new, err = homes.expected_app(HOMES)
+if err:
+    fail(_path, err)
+elif _new != _old:
+    fail(_path, "app home tool data (APP_DATA) is stale: run python3 scripts/build-program-homes.py")
+for p in PAGES:
+    if KIND[p] == "TY" and p[len("programs/"):-len("/thank-you.html")] not in HOMES["homes"]:
+        fail(p, "program home is missing from assets/data/program-homes.json")
+for stage, paths in HOMES["stages"].items():
+    for tp in paths:
+        if tp not in HOMES["tools"]:
+            fail("assets/data/program-homes.json", f"{tp} is listed under {stage} but has no entry in tools")
+for p in PAGES:
+    if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in HOMES["tools"]:
+        fail(p, "tool is missing from assets/data/program-homes.json, so no program home lists it (add it to tools and its stage)")
 
 # ---------- 5. Compliance and 6. Brand ----------
 
@@ -487,9 +517,8 @@ if os.path.isdir(VIDEO_DIR):
 
 # ---------- Tool reels: every filmed tool short sits on every page it belongs to ----------
 # assets/data/tool-shorts.json lists one entry per rendered tool short. scripts/build-tool-reels.py
-# writes the reel on each program sales page and thank-you page; the motion kit's publish-to-site
+# writes the reel on each program sales page and the app home; the motion kit's publish-to-site
 # script writes the entry. Rules: CLAUDE.md section 9.
-import importlib.util
 _spec = importlib.util.spec_from_file_location("build_tool_reels", os.path.join(ROOT, "scripts/build-tool-reels.py"))
 reels = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(reels)
@@ -502,11 +531,10 @@ for slug, tool in MANIFEST["tools"].items():
         fail("assets/data/tool-shorts.json", f"{slug}: tool page {tool['tool']} does not exist")
     elif reels.fingerprint(tool["tool"]) != tool["tool_fingerprint"]:
         fail(tool["tool"].strip("/") + ".html", "tool changed since its short was filmed: re-capture and re-render, then run publish-to-site")
-    for kind, field in (("sales", "programs"), ("thank_you", "thank_you_programs")):
-        for prog in tool.get(field, []):
-            for path, _market, k in reels.pages_of(prog):
-                if k == kind and tool["video"] not in SRC.get(path, ""):
-                    fail(path, f"tool reel is missing {slug}: every filmed tool short appears on each page it belongs to (run scripts/build-tool-reels.py)")
+    for prog in tool.get("programs", []):
+        for path, _market, _k in reels.pages_of(prog):
+            if tool["video"] not in SRC.get(path, ""):
+                fail(path, f"tool reel is missing {slug}: every filmed tool short appears on each page it belongs to (run scripts/build-tool-reels.py)")
 for prog in MANIFEST["programs"]:
     for path, market, kind in reels.pages_of(prog):
         _old, _new, err = reels.expected(path, MANIFEST, prog, market, kind)

@@ -18,18 +18,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css?v=20260930a">
-<link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v=20261008b">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<style>
-  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
-  .tools-grid .card{display:flex;flex-direction:column;}
-  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
-</style>
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -39,93 +34,50 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
-  <div class="wrap center"><span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span></div>
+<!-- program-home:start -->
+<header class="ph-head">
+  <div class="wrap"><a class="brand" href="/"><span class="dot"></span> Wholesome Girlies</a>
+  <nav><a href="/tools/">Tools</a><div class="nav-dropdown" id="phProgsDd" hidden><button class="nav-dropdown-trigger" id="phProgsBtn" type="button" aria-expanded="false" aria-haspopup="true">My programs <svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="nav-dropdown-menu" role="menu" id="phProgs"></div></div></nav></div>
 </header>
-
-<main>
-<section class="sales-hero" style="padding-bottom:22px">
-  <div class="wrap narrow center">
-    <p class="eyebrow">Your Pregnancy home &#128154;</p>
+<main class="ph">
+  <section class="ph-top-wrap"><div class="wrap narrow ph-top">
+    <div class="ph-cast" data-cast-slot="program-home"></div>
+    <p class="ph-eyebrow">Your Pregnancy home</p>
     <h1>Your Plan, your community and your tools are all here.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Open your toolkit, join the community, use the tools, and book private help when you want it.</p>
-    <p class="muted" style="font-size:.9rem; margin-top:14px; max-width:54ch; margin-left:auto; margin-right:auto;">Bookmark this page or copy the link so you can come back any time. A copy is in your email too.</p>
-    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page&#8217;s link</button>
-  </div>
-</section>
-<section style="padding-top:10px; padding-bottom:6px">
+    <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
+  </div></section>
   <div class="wrap narrow">
-    <div class="card center" style="border:2px solid var(--terracotta);">
-      <h2 style="margin-bottom:8px;">Your toolkit is ready</h2>
-      <p class="muted">Open it any time. A copy is in your email too.</p>
-      <!-- WIRING: replace href with the program's Google Drive PDF (Anyone with the link, Viewer). Opens in a new tab. -->
-      <a href="https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your Plan &rarr;</a>
-    </div>
+    <section class="ph-sec" style="padding-top:12px">
+        <div class="ph-read">
+          <p class="ph-label">Your Plan</p>
+          <p class="ph-title">Open it any time. A copy is also in your email.</p>
+          <a class="btn btn-primary btn-lg" href="https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link" target="_blank" rel="noopener">Open your Plan &rarr;</a>
+        </div>
+    </section>
   </div>
-</section>
-<section class="stage-band" style="padding-top:10px">
+  <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
   <div class="wrap narrow">
-    <div class="card center" id="invite">
-      <p class="eyebrow">Women at your stage are in the group</p>
-      <h2 style="margin-bottom:8px;">Join the community &#128154;</h2>
-      <p class="muted">A moderated group of mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We&#8217;ve emailed your invite too, so you always have it.</p>
-      <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
-    </div>
+    <section class="ph-sec"><div class="ph-card"><p class="eyebrow">Women at your stage are in the group</p><h3>Join the community</h3><p class="muted">A moderated group of mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We&#8217;ve emailed your invite too, so you always have it.</p><a class="btn btn-primary" href="https://t.me/+uTUj9vAxjWswMTI0">Join the community on Telegram</a></div></section>
+    <section class="ph-sec">
+      <h2>Your tools</h2>
+      <div class="ph-tools"><a class="ph-tool" href="/pregnancy/tools/due-date-calculator"><span class="ph-tool-t"><b>Due Date Calculator</b><span>Estimate your due date and how many weeks along you are.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/pregnancy/tools/week-by-week-tracker"><span class="ph-tool-t"><b>Week-by-Week Tracker</b><span>See your week, your trimester, and what is happening now.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/pregnancy/tools/hospital-bag-checklist" data-key="wg_hospitalbag_v1"><span class="ph-tool-t"><b>Hospital Bag Checklist</b><span>Everything to pack for you, baby, and your helper.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/pregnancy/tools/birth-plan-builder"><span class="ph-tool-t"><b>Birth Plan Builder</b><span>Turn your preferences into a clear one-page plan.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/pregnancy/tools/safe-foods-checklist" data-key="wg_safe_foods_checklist_v1"><span class="ph-tool-t"><b>Safe Foods Checklist</b><span>What is safe to eat in pregnancy, and what to avoid.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/pregnancy/tools/antenatal-appointment-questions" data-key="wg_antenatal_questions_v1"><span class="ph-tool-t"><b>Antenatal Questions</b><span>Questions to take to your antenatal booking and check-ups.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/pregnancy/tools/baby-essentials-checklist" data-key="wg_newborn_essentials_v1"><span class="ph-tool-t"><b>Newborn Essentials Checklist</b><span>What a newborn needs, so you do not buy what you will not use.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a></div>
+    </section>
+    <section class="ph-sec">
+      <div class="ph-safety"><h3>When to get help now</h3><p class="muted"><strong>Any bleeding, or a reduction or change in your baby's movements, means you contact your doctor or maternity unit straight away, every time.</strong> Also go in for severe pain, a high fever, a bad headache with blurred sight, or a fall or blow to your bump. If your mind feels heavy, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>.</p></div>
+      <div class="ph-help"><h3>Want private help?</h3><p class="muted">You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
+    </section>
+    <section class="ph-sec"><div class="ph-card"><p class="eyebrow">The whole journey, for less</p><h3>Want the other stages ready before you reach them?</h3><p class="muted">The Complete Motherhood Journey adds the stages before and after pregnancy, ready for whenever you reach them. As a member, use the code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout for your member discount on the bundle.</p><a class="btn btn-primary" href="/programs/complete-motherhood-journey">See the Complete Motherhood Journey &rarr;</a></div></section>
+    <section class="ph-pass">
+      <p class="eyebrow">Pass it on</p>
+      <h2>Know someone expecting her first?</h2>
+      <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If a friend has just found out, send her the week-by-week plan. She deserves to know what is normal too.</p>
+      <div class="wg-share" data-share-id="first-pregnancy-plan" data-share-surface="thank_you" data-share-path="/programs/first-pregnancy-plan" data-share-align="center"
+           data-share-text="Expecting a first baby? This week-by-week plan explains what&#x27;s normal, what&#x27;s safe to eat, and when to call the doctor."></div>
+      <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
+    </section>
   </div>
-</section>
-<section>
-  <div class="wrap narrow">
-    <h2>Your tools</h2>
-    <p class="muted">Use these tools whenever you need them. They live on the site.</p>
-    <!-- tool-reel:start -->
-    <div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button><ul class="ts-row" tabindex="0" aria-label="Your tools"><li class="ts-card"><p class="ts-cap">Enter the first day of your last period to see your week and what to remember.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/week-by-week-tracker.mp4?v=f49d4e13"><img class="vposter" src="/assets/img/tool-shorts/week-by-week-tracker.webp?v=f7c12f83" width="432" height="768" alt="Pregnancy Week-by-Week Tracker in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Pregnancy Week-by-Week Tracker"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Week-by-Week Tracker</p><a class="ts-open" href="/pregnancy/tools/week-by-week-tracker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Enter the first day of your last period to see your due date.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/due-date-calculator.mp4?v=72d3d444"><img class="vposter" src="/assets/img/tool-shorts/due-date-calculator.webp?v=45c07dbe" width="432" height="768" alt="Due Date Calculator in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Due Date Calculator"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Due Date Calculator</p><a class="ts-open" href="/pregnancy/tools/due-date-calculator"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick what you eat, then read what to limit or avoid.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/safe-foods-checklist.mp4?v=45b93609"><img class="vposter" src="/assets/img/tool-shorts/safe-foods-checklist.webp?v=62ec313d" width="432" height="768" alt="Pregnancy Safe Foods Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Pregnancy Safe Foods Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Safe Foods Checklist</p><a class="ts-open" href="/pregnancy/tools/safe-foods-checklist"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick your questions for the next antenatal appointment, add your own, then print them.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/antenatal-appointment-questions.mp4?v=a6ce9155"><img class="vposter" src="/assets/img/tool-shorts/antenatal-appointment-questions.webp?v=f7bcdc39" width="432" height="768" alt="Antenatal Appointment Questions in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Antenatal Appointment Questions"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Antenatal Questions</p><a class="ts-open" href="/pregnancy/tools/antenatal-appointment-questions"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick each item as you pack it. The baby has a separate list.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/hospital-bag-checklist.mp4?v=d30083af"><img class="vposter" src="/assets/img/tool-shorts/hospital-bag-checklist.webp?v=68142ad0" width="432" height="768" alt="Hospital Bag Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Hospital Bag Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Hospital Bag Checklist</p><a class="ts-open" href="/pregnancy/tools/hospital-bag-checklist"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Choose who you want with you and your pain relief options, then print the plan.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/birth-plan-builder.mp4?v=8682d32e"><img class="vposter" src="/assets/img/tool-shorts/birth-plan-builder.webp?v=982f4e74" width="432" height="768" alt="Birth Plan Builder in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Birth Plan Builder"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Birth Plan Builder</p><a class="ts-open" href="/pregnancy/tools/birth-plan-builder"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Start with a safe place for your baby to sleep, then tick what you have.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/baby-essentials-checklist.mp4?v=ddbbb8ff"><img class="vposter" src="/assets/img/tool-shorts/baby-essentials-checklist.webp?v=6c3bd949" width="432" height="768" alt="Newborn Essentials Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Newborn Essentials Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Newborn Essentials</p><a class="ts-open" href="/pregnancy/tools/baby-essentials-checklist"><span>Open the tool &rarr;</span></a></li></ul><button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>
-    <!-- tool-reel:end -->
-  </div>
-</section>
-<section class="stage-band">
-  <div class="wrap narrow">
-    <div class="grid grid-2">
-      <div class="card"><h3>Want private help?</h3><p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
-      <div class="card" style="border-left:4px solid var(--terracotta);"><h3>When to get help now</h3><p class="muted"><strong>Any bleeding, or a reduction or change in your baby's movements, means you contact your doctor or maternity unit straight away, every time.</strong> Also go in for severe pain, a high fever, a bad headache with blurred sight, or a fall or blow to your bump. If your mind feels heavy, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>.</p></div>
-    </div>
-  </div>
-</section>
-<section>
-  <div class="wrap narrow center">
-    <p class="eyebrow">The whole journey, for less</p>
-    <h2>Want the other stages ready before you reach them?</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">The Complete Motherhood Journey adds the stages before and after pregnancy, ready for whenever you reach them. As a member, use the code <strong style="color:var(--terracotta-dark);">MOTHER</strong> at checkout for your member discount on the bundle.</p>
-    <a href="/programs/complete-motherhood-journey" class="btn btn-primary">See the Complete Motherhood Journey &rarr;</a>
-  </div>
-</section>
-
-<!-- Pass it on (shares the public program page, never this hub) -->
-<section>
-  <div class="wrap narrow center">
-    <p class="eyebrow">Pass it on</p>
-    <h2>Know someone expecting her first?</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If a friend has just found out, send her the week-by-week plan. She deserves to know what is normal too.</p>
-    <div class="wg-share" data-share-id="first-pregnancy-plan" data-share-surface="thank_you" data-share-path="/programs/first-pregnancy-plan" data-share-align="center"
-         data-share-text="Expecting a first baby? This week-by-week plan explains what&#x27;s normal, what&#x27;s safe to eat, and when to call the doctor."></div>
-    <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
-  </div>
-</section>
-
 </main>
+<!-- program-home:end -->
 
 <footer class="site-footer" style="padding:28px 0;">
   <div class="wrap narrow center">
@@ -136,18 +88,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 try { localStorage.setItem('wg_pregnancy_home', JSON.stringify({u: location.pathname, l: 'Pregnancy home'})); } catch(e){}
-function copyHubLink(btn){
-  var url = 'https://wholesomegirlies.xyz' + location.pathname;
-  function done(){ var o = btn.textContent; btn.textContent = 'Link copied \u2713'; setTimeout(function(){ btn.textContent = o; }, 1800); }
-  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); }); }
-  else { window.prompt('Copy this link:', url); }
-}
 </script>
 <script src="/assets/petals.js"></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 <script src="/assets/js/wg-share.js?v=20261007a" defer></script>
 <script defer src="/assets/js/wg-app.js?v=20261009g"></script>
-<script defer src="/assets/js/wg-tool-reel.js?v=20261008b"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009b"></script>
 </body>
 </html>

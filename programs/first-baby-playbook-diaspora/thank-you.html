@@ -18,18 +18,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css?v=20260930a">
-<link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v=20261008b">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<style>
-  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
-  .tools-grid .card{display:flex;flex-direction:column;}
-  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
-</style>
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -39,86 +34,50 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
-  <div class="wrap center"><span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span></div>
+<!-- program-home:start -->
+<header class="ph-head">
+  <div class="wrap"><a class="brand" href="/"><span class="dot"></span> Wholesome Girlies</a>
+  <nav><a href="/tools/">Tools</a><div class="nav-dropdown" id="phProgsDd" hidden><button class="nav-dropdown-trigger" id="phProgsBtn" type="button" aria-expanded="false" aria-haspopup="true">My programs <svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="nav-dropdown-menu" role="menu" id="phProgs"></div></div></nav></div>
 </header>
-
-<main>
-<section class="sales-hero" style="padding-bottom:22px">
-  <div class="wrap narrow center">
-    <p class="eyebrow">Your First Baby home &#128154;</p>
+<main class="ph">
+  <section class="ph-top-wrap"><div class="wrap narrow ph-top">
+    <div class="ph-cast" data-cast-slot="program-home"></div>
+    <p class="ph-eyebrow">Your First Baby home</p>
     <h1>Welcome in. Your Playbook, community and tools are all on this page.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Private help is here too, when you want it.</p>
-    <p class="muted" style="font-size:.9rem; margin-top:14px; max-width:54ch; margin-left:auto; margin-right:auto;">Bookmark this page or copy the link so you can come back any time. A copy is in your email too.</p>
-    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page&#8217;s link</button>
-  </div>
-</section>
-<section style="padding-top:10px; padding-bottom:6px">
+    <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
+  </div></section>
   <div class="wrap narrow">
-    <div class="card center" style="border:2px solid var(--terracotta);">
-      <h2 style="margin-bottom:8px;">Your toolkit is ready</h2>
-      <p class="muted">Open it any time. A copy is in your email too.</p>
-      <!-- WIRING: replace href with the program's Google Drive PDF (Anyone with the link, Viewer). Opens in a new tab. -->
-      <a href="https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your Playbook &rarr;</a>
-    </div>
+    <section class="ph-sec" style="padding-top:12px">
+        <div class="ph-read">
+          <p class="ph-label">Your Playbook</p>
+          <p class="ph-title">Open it any time. A copy is also in your email.</p>
+          <a class="btn btn-primary btn-lg" href="https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link" target="_blank" rel="noopener">Open your Playbook &rarr;</a>
+        </div>
+    </section>
   </div>
-</section>
-<section class="stage-band" style="padding-top:10px">
+  <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
   <div class="wrap narrow">
-    <div class="card center" id="invite">
-      <p class="eyebrow">Women at your stage are in the group</p>
-      <h2 style="margin-bottom:8px;">Join the community &#128154;</h2>
-      <p class="muted">A moderated group of moms at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We have emailed your invite too, so you always have it.</p>
-      <a href="https://t.me/+uTUj9vAxjWswMTI0" class="btn btn-primary btn-lg" style="margin-top:8px;">Join the community on Telegram</a>
-    </div>
+    <section class="ph-sec"><div class="ph-card"><p class="eyebrow">Women at your stage are in the group</p><h3>Join the community</h3><p class="muted">A moderated group of moms at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We have emailed your invite too, so you always have it.</p><a class="btn btn-primary" href="https://t.me/+uTUj9vAxjWswMTI0">Join the community on Telegram</a></div></section>
+    <section class="ph-sec">
+      <h2>Your tools</h2>
+      <div class="ph-tools"><a class="ph-tool" href="/parenting/tools/milestone-tracker"><span class="ph-tool-t"><b>Baby Milestone Tracker</b><span>See the milestones many babies reach at each age.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/feeding-sleep-tracker" data-key="wg_feedsleep_"><span class="ph-tool-t"><b>Feeding &amp; Sleep Tracker</b><span>Log your baby's feeds, sleeps and diapers with one tap.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/vaccination-tracker" data-key="wg_vax_v2"><span class="ph-tool-t"><b>Vaccination Tracker</b><span>Add your baby's date of birth to see when each vaccine visit is due.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/baby-routine-planner"><span class="ph-tool-t"><b>Baby Routine Planner</b><span>A sample day of feeds, naps and play for your baby's age.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/baby-name-explorer"><span class="ph-tool-t"><b>Baby Name Explorer</b><span>Search Yoruba, Igbo and Hausa baby names by meaning.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/babyproofing-safety-checklist" data-key="wg_babyproofing_v1"><span class="ph-tool-t"><b>Baby Safety Checklist</b><span>Room-by-room babyproofing and safe sleep.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/paediatric-visit-questions" data-key="wg_paediatric_questions_v1"><span class="ph-tool-t"><b>Paediatric Visit Questions</b><span>Questions to take to your baby's clinic visit.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/parenting/tools/first-foods-planner" data-key="wg_first_foods_v1"><span class="ph-tool-t"><b>First Foods Planner</b><span>First foods to try at around six months, with ugu, pap and moi moi on the list.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a></div>
+    </section>
+    <section class="ph-sec">
+      <div class="ph-safety"><h3>When to get help</h3><p class="muted">Trust your instincts. Get medical help now for trouble breathing, a seizure, a high fever in a young baby, a rash that does not fade when pressed, a very floppy or hard-to-wake baby, or choking. This never replaces an infant first-aid course or your doctor. If your own mind feels heavy, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>.</p></div>
+      <div class="ph-help"><h3>Want private help?</h3><p class="muted">You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
+    </section>
+    <section class="ph-pass">
+      <p class="eyebrow">Pass it on</p>
+      <h2>Know a mom who needs this?</h2>
+      <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If this has helped you, send it to a friend who is in the thick of it. If you want an earlier stage, the whole journey is here for you.</p>
+      <div class="wg-share" data-share-id="first-baby-playbook" data-share-surface="thank_you" data-share-path="/programs/first-baby-playbook" data-share-align="center"
+           data-share-text="Sleep, feeding, milestones and what&#x27;s normal, month by month. A playbook for a first baby&#x27;s early years."></div>
+      <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
+      <p style="margin-top:10px;"><a href="/programs/">See all the programs &rarr;</a></p>
+    </section>
   </div>
-</section>
-<section>
-  <div class="wrap narrow">
-    <h2>Your tools</h2>
-    <p class="muted">Use these tools whenever you need them. They live on the site.</p>
-    <!-- tool-reel:start -->
-    <div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button><ul class="ts-row" tabindex="0" aria-label="Your tools"><li class="ts-card"><p class="ts-cap">Choose your baby&#x27;s age, see a sample day, then change it to suit your home.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/baby-routine-planner.mp4?v=594b2645"><img class="vposter" src="/assets/img/tool-shorts/baby-routine-planner.webp?v=e13f2006" width="432" height="768" alt="Baby Routine Planner in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Baby Routine Planner"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Baby Routine Planner</p><a class="ts-open" href="/parenting/tools/baby-routine-planner"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tap Feed, Sleep or Diaper each time it happens. The tracker saves the time.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/feeding-sleep-tracker.mp4?v=87907ee5"><img class="vposter" src="/assets/img/tool-shorts/feeding-sleep-tracker.webp?v=afeb7b78" width="432" height="768" alt="Baby Feeding and Sleep Tracker in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Baby Feeding and Sleep Tracker"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Feeding &amp; Sleep Tracker</p><a class="ts-open" href="/parenting/tools/feeding-sleep-tracker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Choose your baby&#x27;s age, then read what many babies do around that time.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/milestone-tracker.mp4?v=b1043f8d"><img class="vposter" src="/assets/img/tool-shorts/milestone-tracker.webp?v=44575924" width="432" height="768" alt="Baby Milestone Tracker in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Baby Milestone Tracker"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Milestone Tracker</p><a class="ts-open" href="/parenting/tools/milestone-tracker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Enter your baby&#x27;s date of birth to see the date of each visit.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/vaccination-tracker.mp4?v=840c67e9"><img class="vposter" src="/assets/img/tool-shorts/vaccination-tracker.webp?v=ac9c1c79" width="432" height="768" alt="Baby Vaccination Tracker in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Baby Vaccination Tracker"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Vaccination Tracker</p><a class="ts-open" href="/parenting/tools/vaccination-tracker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick each food after your baby tries it. Give one new food at a time.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/first-foods-planner.mp4?v=9e968a95"><img class="vposter" src="/assets/img/tool-shorts/first-foods-planner.webp?v=ff781347" width="432" height="768" alt="First Foods Planner in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of First Foods Planner"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">First Foods Planner</p><a class="ts-open" href="/parenting/tools/first-foods-planner"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Start with where your baby sleeps, then tick each safety check as you finish.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/babyproofing-safety-checklist.mp4?v=146a24c8"><img class="vposter" src="/assets/img/tool-shorts/babyproofing-safety-checklist.webp?v=eb3e5a8c" width="432" height="768" alt="Baby Safety and Babyproofing Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Baby Safety and Babyproofing Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Safety Checklist</p><a class="ts-open" href="/parenting/tools/babyproofing-safety-checklist"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick your questions, add your own, then print the list for your baby&#x27;s doctor.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/paediatric-visit-questions.mp4?v=8f789ed6"><img class="vposter" src="/assets/img/tool-shorts/paediatric-visit-questions.webp?v=8e4d4966" width="432" height="768" alt="Paediatric Visit Questions in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Paediatric Visit Questions"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Paediatric Visit Questions</p><a class="ts-open" href="/parenting/tools/paediatric-visit-questions"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Choose an origin, read what each name means, then make a naming card.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/baby-name-explorer.mp4?v=4b3ab106"><img class="vposter" src="/assets/img/tool-shorts/baby-name-explorer.webp?v=e9be20b2" width="432" height="768" alt="Baby Name Explorer in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Baby Name Explorer"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Baby Name Explorer</p><a class="ts-open" href="/parenting/tools/baby-name-explorer"><span>Open the tool &rarr;</span></a></li></ul><button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>
-    <!-- tool-reel:end -->
-  </div>
-</section>
-<section class="stage-band">
-  <div class="wrap narrow">
-    <div class="grid grid-2">
-      <div class="card"><h3>Want private help?</h3><p class="muted">When you want more than the guides and the community, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
-      <div class="card" style="border-left:4px solid var(--terracotta);"><h3>When to get help</h3><p class="muted">Trust your instincts. Get medical help now for trouble breathing, a seizure, a high fever in a young baby, a rash that does not fade when pressed, a very floppy or hard-to-wake baby, or choking. This never replaces an infant first-aid course or your doctor. If your own mind feels heavy, you can call MANI in Nigeria on <a href="tel:08091116264">0809 111 6264</a>.</p></div>
-    </div>
-  </div>
-</section>
-<section>
-  <div class="wrap narrow center">
-    <p class="eyebrow">Pass it on</p>
-    <h2>Know a mom who needs this?</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If this has helped you, send it to a friend who is in the thick of it. If you want an earlier stage, the whole journey is here for you.</p>
-    <div class="wg-share" data-share-id="first-baby-playbook" data-share-surface="thank_you" data-share-path="/programs/first-baby-playbook" data-share-align="center"
-         data-share-text="Sleep, feeding, milestones and what&#x27;s normal, month by month. A playbook for a first baby&#x27;s early years."></div>
-    <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
-    <p style="margin-top:10px;"><a href="/programs/">See all the programs &rarr;</a></p>
-  </div>
-</section>
-
 </main>
+<!-- program-home:end -->
 
 <footer class="site-footer" style="padding:28px 0;">
   <div class="wrap narrow center">
@@ -129,18 +88,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 try { localStorage.setItem('wg_parenting_home', JSON.stringify({u: location.pathname, l: 'First Baby home'})); } catch(e){}
-function copyHubLink(btn){
-  var url = 'https://wholesomegirlies.xyz' + location.pathname;
-  function done(){ var o = btn.textContent; btn.textContent = 'Link copied \u2713'; setTimeout(function(){ btn.textContent = o; }, 1800); }
-  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); }); }
-  else { window.prompt('Copy this link:', url); }
-}
 </script>
 <script src="/assets/petals.js"></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 <script src="/assets/js/wg-share.js?v=20261007a" defer></script>
 <script defer src="/assets/js/wg-app.js?v=20261009g"></script>
-<script defer src="/assets/js/wg-tool-reel.js?v=20261008b"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009b"></script>
 </body>
 </html>

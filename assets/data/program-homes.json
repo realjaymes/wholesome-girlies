@@ -1,0 +1,685 @@
+{
+ "_about": "Source of truth for the 12 program homes (programs/<slug>/thank-you.html). scripts/build-program-homes.py writes each page's header and main from this file. Text fields are HTML.",
+ "stage_names": {
+  "relationships": "Relationship tools",
+  "fertility": "Fertility tools",
+  "pregnancy": "Pregnancy tools",
+  "postpartum": "Postpartum tools",
+  "parenting": "Baby and parenting tools"
+ },
+ "stages": {
+  "relationships": [
+   "/relationships/tools/situationship-checker",
+   "/relationships/tools/green-red-flags-checker",
+   "/relationships/tools/is-he-husband-material",
+   "/relationships/tools/the-talk-planner",
+   "/relationships/tools/standards-non-negotiables-worksheet",
+   "/relationships/tools/meet-marriage-minded-men-checklist",
+   "/relationships/tools/ready-for-love-quiz",
+   "/relationships/tools/red-flag-radar"
+  ],
+  "fertility": [
+   "/fertility/tools/ovulation-calculator",
+   "/fertility/tools/period-tracker",
+   "/fertility/tools/ttc-checklist",
+   "/fertility/tools/his-fertility-checklist",
+   "/fertility/tools/fertility-appointment-questions",
+   "/fertility/tools/the-wait-check-in"
+  ],
+  "pregnancy": [
+   "/pregnancy/tools/due-date-calculator",
+   "/pregnancy/tools/week-by-week-tracker",
+   "/pregnancy/tools/hospital-bag-checklist",
+   "/pregnancy/tools/birth-plan-builder",
+   "/pregnancy/tools/safe-foods-checklist",
+   "/pregnancy/tools/antenatal-appointment-questions",
+   "/pregnancy/tools/baby-essentials-checklist"
+  ],
+  "postpartum": [
+   "/postpartum/tools/recovery-timeline-calculator",
+   "/postpartum/tools/recovery-checklist",
+   "/postpartum/tools/partner-support-planner",
+   "/postpartum/tools/night-feed-rota",
+   "/postpartum/tools/check-up-questions",
+   "/postpartum/tools/mind-check-in"
+  ],
+  "parenting": [
+   "/parenting/tools/milestone-tracker",
+   "/parenting/tools/feeding-sleep-tracker",
+   "/parenting/tools/vaccination-tracker",
+   "/parenting/tools/baby-routine-planner",
+   "/parenting/tools/baby-name-explorer",
+   "/parenting/tools/babyproofing-safety-checklist",
+   "/parenting/tools/paediatric-visit-questions",
+   "/parenting/tools/first-foods-planner"
+  ]
+ },
+ "tools": {
+  "/relationships/tools/ready-for-love-quiz": {
+   "name": "Are You Ready for Love? Quiz",
+   "line": "Eight questions on what you want, your standards, how healed you are, and whether pressure is driving who you date."
+  },
+  "/relationships/tools/green-red-flags-checker": {
+   "name": "Green Flags &amp; Red Flags Checker",
+   "line": "Tick what you have seen him do and see your green flags and red flags counted."
+  },
+  "/relationships/tools/situationship-checker": {
+   "name": "Situationship Checker",
+   "line": "Is it a relationship or a situationship? Six questions, and the words to ask him where it is going."
+  },
+  "/relationships/tools/red-flag-radar": {
+   "name": "Red Flag Radar",
+   "line": "Call each dating situation green flag, let's talk or red flag, and see what your radar says."
+  },
+  "/relationships/tools/is-he-husband-material": {
+   "name": "Is He Husband Material?",
+   "line": "Answer from what you have seen him do and see what he is showing you, plus what to raise with him."
+  },
+  "/relationships/tools/standards-non-negotiables-worksheet": {
+   "name": "Non-Negotiables Worksheet",
+   "line": "Write the standards you will not drop before your next talking stage.",
+   "key": "wg_non_negotiables_v1"
+  },
+  "/relationships/tools/the-talk-planner": {
+   "name": "The Talk Planner",
+   "line": "Plan what to say and ask when you want to know where you stand.",
+   "key": "wg_talk_planner_v1"
+  },
+  "/relationships/tools/meet-marriage-minded-men-checklist": {
+   "name": "Meet Marriage-Minded Men",
+   "line": "Safe ways to meet serious men beyond weddings and your DMs.",
+   "key": "wg_meet_men_v1"
+  },
+  "/fertility/tools/ovulation-calculator": {
+   "name": "Ovulation &amp; Fertile Window Calculator",
+   "line": "Estimate your fertile days and most likely day of ovulation."
+  },
+  "/fertility/tools/period-tracker": {
+   "name": "Period Tracker",
+   "line": "Predict your next three periods and see your pattern."
+  },
+  "/fertility/tools/ttc-checklist": {
+   "name": "Trying-to-Conceive Checklist",
+   "line": "Tick the healthy steps to take before and while you try to conceive.",
+   "key": "wg_ttc_checklist_v1"
+  },
+  "/fertility/tools/his-fertility-checklist": {
+   "name": "His Fertility Checklist",
+   "line": "Simple steps that support his sperm health, and what to ask about a semen analysis.",
+   "key": "wg_his_fertility_checklist_v1"
+  },
+  "/fertility/tools/fertility-appointment-questions": {
+   "name": "Fertility Appointment Questions",
+   "line": "Questions to take to your fertility or GP appointment, so nothing is forgotten.",
+   "key": "wg_fertility_questions_v1"
+  },
+  "/fertility/tools/the-wait-check-in": {
+   "name": "The Wait Check-in",
+   "line": "A private check-in on how you are coping while you wait, with the Nigerian helpline number.",
+   "key": "wg_wait_checkin_v1"
+  },
+  "/pregnancy/tools/due-date-calculator": {
+   "name": "Due Date Calculator",
+   "line": "Estimate your due date and how many weeks along you are."
+  },
+  "/pregnancy/tools/week-by-week-tracker": {
+   "name": "Week-by-Week Tracker",
+   "line": "See your week, your trimester, and what is happening now."
+  },
+  "/pregnancy/tools/hospital-bag-checklist": {
+   "name": "Hospital Bag Checklist",
+   "line": "Everything to pack for you, baby, and your helper.",
+   "key": "wg_hospitalbag_v1"
+  },
+  "/pregnancy/tools/birth-plan-builder": {
+   "name": "Birth Plan Builder",
+   "line": "Turn your preferences into a clear one-page plan."
+  },
+  "/pregnancy/tools/safe-foods-checklist": {
+   "name": "Safe Foods Checklist",
+   "line": "What is safe to eat in pregnancy, and what to avoid.",
+   "key": "wg_safe_foods_checklist_v1"
+  },
+  "/pregnancy/tools/antenatal-appointment-questions": {
+   "name": "Antenatal Questions",
+   "line": "Questions to take to your antenatal booking and check-ups.",
+   "key": "wg_antenatal_questions_v1"
+  },
+  "/pregnancy/tools/baby-essentials-checklist": {
+   "name": "Newborn Essentials Checklist",
+   "line": "What a newborn needs, so you do not buy what you will not use.",
+   "key": "wg_newborn_essentials_v1"
+  },
+  "/postpartum/tools/recovery-timeline-calculator": {
+   "name": "Recovery Timeline Calculator",
+   "line": "Enter your delivery date and delivery type to see what many women experience each week as they heal."
+  },
+  "/postpartum/tools/recovery-checklist": {
+   "name": "Postpartum Recovery Checklist",
+   "line": "Tick your way through the first six weeks: healing, feeding and looking after yourself.",
+   "key": "wg_postpartum_checklist_v1"
+  },
+  "/postpartum/tools/partner-support-planner": {
+   "name": "Partner Support Planner",
+   "line": "Tick what you need help with right now and get a clear note to send your partner or family.",
+   "key": "wg_partner_support_planner_v1"
+  },
+  "/postpartum/tools/night-feed-rota": {
+   "name": "Night Feeding Schedule",
+   "line": "Agree who does which feed through the night, so it is not all on you.",
+   "key": "wg_night_rota_v1"
+  },
+  "/postpartum/tools/check-up-questions": {
+   "name": "Six-Week Check-up Questions",
+   "line": "Questions to take to your six-week check-up, so nothing is forgotten.",
+   "key": "wg_checkup_questions_v1"
+  },
+  "/postpartum/tools/mind-check-in": {
+   "name": "Postpartum Mind Check-in",
+   "line": "A private check-in on sleep, mood and whether you are coping after birth.",
+   "key": "wg_mind_checkin_v1"
+  },
+  "/parenting/tools/milestone-tracker": {
+   "name": "Baby Milestone Tracker",
+   "line": "See the milestones many babies reach at each age."
+  },
+  "/parenting/tools/feeding-sleep-tracker": {
+   "name": "Feeding &amp; Sleep Tracker",
+   "line": "Log your baby's feeds, sleeps and diapers with one tap.",
+   "key": "wg_feedsleep_"
+  },
+  "/parenting/tools/vaccination-tracker": {
+   "name": "Vaccination Tracker",
+   "line": "Add your baby's date of birth to see when each vaccine visit is due.",
+   "key": "wg_vax_v2"
+  },
+  "/parenting/tools/baby-routine-planner": {
+   "name": "Baby Routine Planner",
+   "line": "A sample day of feeds, naps and play for your baby's age."
+  },
+  "/parenting/tools/baby-name-explorer": {
+   "name": "Baby Name Explorer",
+   "line": "Search Yoruba, Igbo and Hausa baby names by meaning."
+  },
+  "/parenting/tools/babyproofing-safety-checklist": {
+   "name": "Baby Safety Checklist",
+   "line": "Room-by-room babyproofing and safe sleep.",
+   "key": "wg_babyproofing_v1"
+  },
+  "/parenting/tools/paediatric-visit-questions": {
+   "name": "Paediatric Visit Questions",
+   "line": "Questions to take to your baby's clinic visit.",
+   "key": "wg_paediatric_questions_v1"
+  },
+  "/parenting/tools/first-foods-planner": {
+   "name": "First Foods Planner",
+   "line": "First foods to try at around six months, with ugu, pap and moi moi on the list.",
+   "key": "wg_first_foods_v1"
+  }
+ },
+ "homes": {
+  "wife-material-blueprint": {
+   "slug": "wife-material-blueprint",
+   "program": "wife-material-blueprint",
+   "market": "home",
+   "stages": [
+    "relationships"
+   ],
+   "eyebrow": "Your Wife Material home",
+   "h1": "Your Blueprint and your tools are all here.",
+   "pdf": "https://drive.google.com/file/d/11sTATQrDH_ipiMWhsxpchKf5TqT9Nojt/view?usp=drive_link",
+   "pdf_button": "Open your Blueprint &rarr;",
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "Your safety first",
+    "text": "This is about choosing well, never about tolerating harm. If a partner frightens you, controls you, isolates you, or hurts you, please reach out to someone you trust and a domestic-violence helpline. In Nigeria you can call the Domestic and Sexual Violence Response Team on <a href=\"tel:08000333333\">0800 033 3333</a>. Your safety comes first."
+   },
+   "share": {
+    "h2": "Know a friend who needs this?",
+    "text": "If this has helped you, send it quietly to a friend who is tired of the games. She deserves clarity too.",
+    "share_text": "Dating with marriage in mind? This plan shows how to read a man early and have the talk about where it is going. No games.",
+    "path": "/programs/wife-material-blueprint",
+    "id": "wife-material-blueprint"
+   },
+   "reader": "/programs/wife-material-blueprint/read"
+  },
+  "wife-material-blueprint-diaspora": {
+   "slug": "wife-material-blueprint-diaspora",
+   "program": "wife-material-blueprint",
+   "market": "diaspora",
+   "stages": [
+    "relationships"
+   ],
+   "eyebrow": "Your Wife Material home",
+   "h1": "Welcome in. Your Blueprint and tools are all on this page.",
+   "pdf": "https://drive.google.com/file/d/11sTATQrDH_ipiMWhsxpchKf5TqT9Nojt/view?usp=drive_link",
+   "pdf_button": "Open your Blueprint &rarr;",
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "Your safety first",
+    "text": "This is about choosing well, never about tolerating harm. If a partner frightens you, controls you, isolates you, or hurts you, please reach out to someone you trust and a domestic-violence helpline. In Nigeria you can call the Domestic and Sexual Violence Response Team on <a href=\"tel:08000333333\">0800 033 3333</a>. Your safety comes first."
+   },
+   "share": {
+    "h2": "Know a friend who needs this?",
+    "text": "If this has helped you, send it quietly to a friend who is tired of the games.",
+    "share_text": "Dating with marriage in mind? This plan shows how to read a man early and move a good one forward. No games.",
+    "path": "/programs/wife-material-blueprint",
+    "id": "wife-material-blueprint"
+   }
+  },
+  "trying-to-conceive-blueprint": {
+   "slug": "trying-to-conceive-blueprint",
+   "program": "trying-to-conceive-blueprint",
+   "market": "home",
+   "stages": [
+    "fertility"
+   ],
+   "eyebrow": "Your Conception home",
+   "h1": "Your Blueprint, your community and your tools are all here.",
+   "pdf": "https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link",
+   "pdf_button": "Open your Blueprint &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A private, protected group for women who are trying too, kept separate from bump-and-baby content. No judgement and no comparison, wherever you are in the world. The private assistant inside answers your cycle questions at any hour and sends you to a doctor for anything clinical. We&#8217;ve emailed your invite too.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical.",
+   "safety": {
+    "h3": "When to get help",
+    "text": "See a doctor after about a year of trying under 35, about six months at 35 or over, or sooner if your periods are irregular or you have a known condition. If the waiting is weighing heavily on your mind, you can call MANI in Nigeria on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "cross_sell": {
+    "eyebrow": "The whole journey, for less",
+    "h2": "Want pregnancy and the baby years ready before you need them?",
+    "text": "The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
+    "href": "/programs/complete-motherhood-journey",
+    "button": "See the Complete Motherhood Journey &rarr;"
+   },
+   "share": {
+    "h2": "Know a friend who is trying too?",
+    "text": "If a friend is on this road, send her the plan that covers her cycle, her preparation and the questions to ask her doctor. She deserves answers too.",
+    "share_text": "A plan for women trying for a first baby. It explains the cycle, how to prepare, and what to ask the doctor.",
+    "path": "/programs/trying-to-conceive-blueprint",
+    "id": "trying-to-conceive-blueprint"
+   }
+  },
+  "trying-to-conceive-blueprint-diaspora": {
+   "slug": "trying-to-conceive-blueprint-diaspora",
+   "program": "trying-to-conceive-blueprint",
+   "market": "diaspora",
+   "stages": [
+    "fertility"
+   ],
+   "eyebrow": "Your Conception home",
+   "h1": "Welcome in. Your Blueprint, community and tools are all on this page.",
+   "pdf": "https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link",
+   "pdf_button": "Open your Blueprint &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "This is a private, protected group for women who are trying too. It is kept separate from bump-and-baby content on purpose. There is no judgment and no comparison, wherever you are in the world. A private assistant inside answers your cycle questions at any hour and always points you to a doctor for anything clinical. We have emailed your invite too.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical.",
+   "safety": {
+    "h3": "When to get help",
+    "text": "See a doctor after about a year of trying under 35, about six months at 35 or over, or sooner if your periods are irregular or you have a known condition. If the waiting is weighing heavily on your mind, you can call MANI in Nigeria on <a href=\"tel:08091116264\">0809 111 6264</a>. In the UK you can call Samaritans on <a href=\"tel:116123\">116 123</a>. In the US or Canada you can call or text <a href=\"tel:988\">988</a>."
+   },
+   "cross_sell": {
+    "eyebrow": "The whole journey, for less",
+    "h2": "Want pregnancy and the baby years covered too?",
+    "text": "The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
+    "href": "/programs/complete-motherhood-journey-diaspora",
+    "button": "See the Complete Motherhood Journey &rarr;"
+   },
+   "share": {
+    "h2": "Know a friend who is trying too?",
+    "text": "If a friend is trying too, send her the plan that covers her cycle, her preparation and the questions to ask her doctor.",
+    "share_text": "A step-by-step plan for trying for a first baby: understand the cycle, prepare the body, and know what to ask the doctor.",
+    "path": "/programs/trying-to-conceive-blueprint",
+    "id": "trying-to-conceive-blueprint"
+   }
+  },
+  "first-pregnancy-plan": {
+   "slug": "first-pregnancy-plan",
+   "program": "first-pregnancy-plan",
+   "market": "home",
+   "stages": [
+    "pregnancy"
+   ],
+   "eyebrow": "Your Pregnancy home",
+   "h1": "Your Plan, your community and your tools are all here.",
+   "pdf": "https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link",
+   "pdf_button": "Open your Plan &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We&#8217;ve emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "When to get help now",
+    "text": "<strong>Any bleeding, or a reduction or change in your baby's movements, means you contact your doctor or maternity unit straight away, every time.</strong> Also go in for severe pain, a high fever, a bad headache with blurred sight, or a fall or blow to your bump. If your mind feels heavy, you can call MANI in Nigeria on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "cross_sell": {
+    "eyebrow": "The whole journey, for less",
+    "h2": "Want the other stages ready before you reach them?",
+    "text": "The Complete Motherhood Journey adds the stages before and after pregnancy, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
+    "href": "/programs/complete-motherhood-journey",
+    "button": "See the Complete Motherhood Journey &rarr;"
+   },
+   "share": {
+    "h2": "Know someone expecting her first?",
+    "text": "If a friend has just found out, send her the week-by-week plan. She deserves to know what is normal too.",
+    "share_text": "Expecting a first baby? This week-by-week plan explains what&#x27;s normal, what&#x27;s safe to eat, and when to call the doctor.",
+    "path": "/programs/first-pregnancy-plan",
+    "id": "first-pregnancy-plan"
+   }
+  },
+  "first-pregnancy-plan-diaspora": {
+   "slug": "first-pregnancy-plan-diaspora",
+   "program": "first-pregnancy-plan",
+   "market": "diaspora",
+   "stages": [
+    "pregnancy"
+   ],
+   "eyebrow": "Your Pregnancy home",
+   "h1": "Welcome in. Your Plan, community and tools are all on this page.",
+   "pdf": "https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link",
+   "pdf_button": "Open your Plan &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of moms at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We have emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "When to get help now",
+    "text": "<strong>Any bleeding, or a reduction or change in your baby's movements, means you contact your doctor or hospital straight away, every time.</strong> Also go in for severe pain, a high fever, a bad headache with blurred sight, or a fall or blow to your bump. If your mind feels heavy, you can call MANI in Nigeria on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "cross_sell": {
+    "eyebrow": "The whole journey, for less",
+    "h2": "Want the other three stages too?",
+    "text": "The Complete Motherhood Journey brings all four stages together, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
+    "href": "/programs/complete-motherhood-journey-diaspora",
+    "button": "See the Complete Motherhood Journey &rarr;"
+   },
+   "share": {
+    "h2": "Know someone expecting her first?",
+    "text": "If a friend has just found out, send her the week-by-week plan. She deserves to know what is normal too.",
+    "share_text": "Expecting a first baby? This week-by-week plan explains what&#x27;s normal, what&#x27;s safe to eat, and when to call the doctor.",
+    "path": "/programs/first-pregnancy-plan",
+    "id": "first-pregnancy-plan"
+   }
+  },
+  "postpartum-reset": {
+   "slug": "postpartum-reset",
+   "program": "postpartum-reset",
+   "market": "home",
+   "stages": [
+    "postpartum"
+   ],
+   "eyebrow": "Your Postpartum home",
+   "h1": "Your Reset, your community and your tools are all here.",
+   "pdf": "https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link",
+   "pdf_button": "Open your Reset &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group with mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We&#8217;ve emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "Your safety net",
+    "text": "The When to See a Doctor red-flag guide is inside your toolkit. If you ever notice a warning sign, contact your doctor or clinic straight away. In Nigeria you can call MANI on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "cross_sell": {
+    "eyebrow": "When you&#8217;re ready",
+    "h2": "What comes after the first six weeks?",
+    "text": "The First Baby Playbook picks up where the Reset ends. It covers sleep, feeding and solids, milestones and what is normal, with the same moderated community.",
+    "href": "/programs/first-baby-playbook",
+    "button": "See The First Baby Playbook &rarr;"
+   },
+   "share": {
+    "h2": "Know a new mum who needs this?",
+    "text": "If a friend has just had a baby, send her the plan that covers her body, her marriage and her mind.",
+    "share_text": "A 6-week plan for the weeks after birth. It covers body, marriage and mind, with no pressure to look like before and no shame.",
+    "path": "/programs/postpartum-reset",
+    "id": "postpartum-reset"
+   }
+  },
+  "postpartum-reset-diaspora": {
+   "slug": "postpartum-reset-diaspora",
+   "program": "postpartum-reset",
+   "market": "diaspora",
+   "stages": [
+    "postpartum"
+   ],
+   "eyebrow": "Your Postpartum home",
+   "h1": "Welcome in. Your Reset, community and tools are all on this page.",
+   "pdf": "https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link",
+   "pdf_button": "Open your Reset &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of moms at your stage, wherever you are in the world. Because we are spread across time zones, someone is usually awake when you need to talk at 3am. We have emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "Your safety net",
+    "text": "The When to See a Doctor red-flag guide is inside your toolkit. If you ever notice a warning sign, contact your doctor or clinic straight away. In Nigeria you can call MANI on <a href=\"tel:08091116264\">0809 111 6264</a>. In the UK you can call Samaritans on <a href=\"tel:116123\">116 123</a>. In the US or Canada you can call or text <a href=\"tel:988\">988</a>."
+   },
+   "cross_sell": {
+    "eyebrow": "What's next, when you're ready",
+    "h2": "What comes after the first six weeks?",
+    "text": "The First Baby Playbook picks up where The 6-Week Postpartum Reset leaves off. It covers sleep, feeding, milestones and the toddler years, with the same plain guidance built on research and real data.",
+    "href": "/programs/first-baby-playbook-diaspora",
+    "button": "See The First Baby Playbook &rarr;"
+   },
+   "share": {
+    "h2": "Know a new mom who needs this?",
+    "text": "The weeks after birth are hard on everyone. Send a friend the plan that covers her body, her marriage and her mind.",
+    "share_text": "For the weeks after birth: one plan for body, marriage and mind, with no bounce-back pressure and no shame.",
+    "path": "/programs/postpartum-reset",
+    "id": "postpartum-reset"
+   }
+  },
+  "first-baby-playbook": {
+   "slug": "first-baby-playbook",
+   "program": "first-baby-playbook",
+   "market": "home",
+   "stages": [
+    "parenting"
+   ],
+   "eyebrow": "Your First Baby home",
+   "h1": "Your Playbook, your community and your tools are all here.",
+   "pdf": "https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link",
+   "pdf_button": "Open your Playbook &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of mums at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We&#8217;ve emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "When to get help",
+    "text": "Trust your instincts. Get medical help now for trouble breathing, a fit, a high fever in a young baby, a rash that does not fade when pressed, a very floppy or hard-to-wake baby, or choking. This never replaces an infant first-aid course or your doctor. If your own mind feels heavy, you can call MANI in Nigeria on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "share": {
+    "h2": "Know a mum who needs this?",
+    "text": "If this has helped you, send it to a friend who is in the thick of it. If you want the earlier stages, the whole journey is here for you.",
+    "share_text": "A month-by-month playbook for a first baby&#x27;s early years. It covers sleep, feeding, milestones and what is normal.",
+    "path": "/programs/first-baby-playbook",
+    "id": "first-baby-playbook",
+    "extra": "<a href=\"/programs/\">See all the programs &rarr;</a>"
+   }
+  },
+  "first-baby-playbook-diaspora": {
+   "slug": "first-baby-playbook-diaspora",
+   "program": "first-baby-playbook",
+   "market": "diaspora",
+   "stages": [
+    "parenting"
+   ],
+   "eyebrow": "Your First Baby home",
+   "h1": "Welcome in. Your Playbook, community and tools are all on this page.",
+   "pdf": "https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link",
+   "pdf_button": "Open your Playbook &rarr;",
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of moms at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We have emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.",
+   "safety": {
+    "h3": "When to get help",
+    "text": "Trust your instincts. Get medical help now for trouble breathing, a seizure, a high fever in a young baby, a rash that does not fade when pressed, a very floppy or hard-to-wake baby, or choking. This never replaces an infant first-aid course or your doctor. If your own mind feels heavy, you can call MANI in Nigeria on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "share": {
+    "h2": "Know a mom who needs this?",
+    "text": "If this has helped you, send it to a friend who is in the thick of it. If you want an earlier stage, the whole journey is here for you.",
+    "share_text": "Sleep, feeding, milestones and what&#x27;s normal, month by month. A playbook for a first baby&#x27;s early years.",
+    "path": "/programs/first-baby-playbook",
+    "id": "first-baby-playbook",
+    "extra": "<a href=\"/programs/\">See all the programs &rarr;</a>"
+   }
+  },
+  "complete-motherhood-journey": {
+   "slug": "complete-motherhood-journey",
+   "program": "complete-motherhood-journey",
+   "market": "home",
+   "stages": [
+    "fertility",
+    "pregnancy",
+    "postpartum",
+    "parenting"
+   ],
+   "eyebrow": "Your Motherhood Journey home",
+   "h1": "Your four toolkits, your community and your tools are all here.",
+   "pdf": "https://drive.google.com/file/d/12Nd9B-Dv-2UkTLl3p9jRVRZY-YM2I8OP/view?usp=drive_link",
+   "pdf_button": "Open your Complete Motherhood Journey &rarr;",
+   "pdf_intro": "Start with the complete guide, then open each stage as you reach it. A copy of everything is in your email too.",
+   "toolkits": [
+    {
+     "title": "The Trying-to-Conceive Blueprint",
+     "text": "For the trying stage. It covers your body, your cycle and when to get help.",
+     "href": "https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link",
+     "button": "Open the Blueprint &rarr;"
+    },
+    {
+     "title": "The First Pregnancy Plan",
+     "text": "It covers what is normal each week, what to eat, and getting ready for birth.",
+     "href": "https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link",
+     "button": "Open the Plan &rarr;"
+    },
+    {
+     "title": "The 6-Week Postpartum Reset",
+     "text": "It covers healing, feeding, rest and your mind in the first weeks after birth.",
+     "href": "https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link",
+     "button": "Open the Reset &rarr;"
+    },
+    {
+     "title": "The First Baby Playbook",
+     "text": "It covers sleep, feeding and solids, milestones and what is normal.",
+     "href": "https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link",
+     "button": "Open the Playbook &rarr;"
+    }
+   ],
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of mums at every stage, wherever you are in the world. Someone is usually awake when you need to talk, even at 3am. The private assistant inside answers your questions at any hour and sends you to a doctor for anything clinical. We&#8217;ve emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical or urgent.",
+   "safety": {
+    "h3": "Your safety net",
+    "text": "Each toolkit has its own warning-signs guide. If you ever notice a red flag, at any stage, contact your doctor or clinic straight away. In Nigeria you can reach MANI on <a href=\"tel:08091116264\">0809 111 6264</a>."
+   },
+   "share": {
+    "h2": "Know someone on this road too?",
+    "text": "If a friend is trying, expecting, or in the thick of the newborn weeks, send her our way. She will find women at her stage and a plan for what comes next.",
+    "share_text": "Trying, expecting or in the newborn weeks? One plan covers every stage of motherhood, ready before you need it.",
+    "path": "/programs/complete-motherhood-journey",
+    "id": "complete-motherhood-journey"
+   }
+  },
+  "complete-motherhood-journey-diaspora": {
+   "slug": "complete-motherhood-journey-diaspora",
+   "program": "complete-motherhood-journey",
+   "market": "diaspora",
+   "stages": [
+    "fertility",
+    "pregnancy",
+    "postpartum",
+    "parenting"
+   ],
+   "eyebrow": "Your Motherhood Journey home",
+   "h1": "Welcome in. Your four toolkits, community and tools are all on this page.",
+   "pdf": "https://drive.google.com/file/d/12Nd9B-Dv-2UkTLl3p9jRVRZY-YM2I8OP/view?usp=drive_link",
+   "pdf_button": "Open your Complete Motherhood Journey &rarr;",
+   "pdf_intro": "Start with the complete guide, then open each stage as you reach it. A copy of everything is in your email too.",
+   "toolkits": [
+    {
+     "title": "The Trying-to-Conceive Blueprint",
+     "text": "For the trying stage. It covers your body, your cycle and when to get help.",
+     "href": "https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link",
+     "button": "Open the Blueprint &rarr;"
+    },
+    {
+     "title": "The First Pregnancy Plan",
+     "text": "For pregnancy. It covers what is normal week by week, what to eat and how to get ready for birth.",
+     "href": "https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link",
+     "button": "Open the Plan &rarr;"
+    },
+    {
+     "title": "The 6-Week Postpartum Reset",
+     "text": "For the first weeks after birth. It covers healing, feeding, rest and your mind.",
+     "href": "https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link",
+     "button": "Open the Reset &rarr;"
+    },
+    {
+     "title": "The First Baby Playbook",
+     "text": "For the baby years. It covers sleep, feeding and solids, milestones, and what is normal.",
+     "href": "https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link",
+     "button": "Open the Playbook &rarr;"
+    }
+   ],
+   "community": {
+    "eyebrow": "Women at your stage are in the group",
+    "h2": "Join the community",
+    "text": "A moderated group of moms at every stage, wherever you are in the world. Someone is usually awake when you need to talk, even at 3am. There is a private assistant inside for your questions any hour, that always points you to a doctor for anything clinical. We&#8217;ve emailed your invite too, so you always have it.",
+    "href": "https://t.me/+uTUj9vAxjWswMTI0",
+    "button": "Join the community on Telegram"
+   },
+   "help": "You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything clinical or urgent.",
+   "safety": {
+    "h3": "Your safety net",
+    "text": "Each toolkit has its own warning-signs guide. If you ever notice a red flag, at any stage, contact your doctor or clinic straight away. In Nigeria you can reach MANI on <a href=\"tel:08091116264\">0809 111 6264</a>. In the UK you can call Samaritans on <a href=\"tel:116123\">116 123</a>. In the US or Canada you can call or text <a href=\"tel:988\">988</a>."
+   },
+   "share": {
+    "h2": "Know someone on this road too?",
+    "text": "If a friend is trying, expecting or in the newborn weeks, send her our way.",
+    "share_text": "Trying, expecting or in the newborn weeks? One plan covers every stage of motherhood, ready before you need it.",
+    "path": "/programs/complete-motherhood-journey",
+    "id": "complete-motherhood-journey"
+   }
+  }
+ }
+}

@@ -31,6 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css?v=20260930a">
 <link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v=20261008b">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
@@ -80,6 +81,14 @@ main [hidden]{display:none!important} /* .card and .app-install set display, whi
 .app-games .card{padding:18px 20px}
 .app-games .card .tag{margin-bottom:8px}
 .app-btns{display:flex;gap:10px;margin:14px 0 0}
+.app-progs{display:grid;gap:12px;margin-top:12px}
+.app-progs .ph-read h3{font-family:var(--serif);font-size:1.25rem;line-height:1.25;margin:6px 0 12px}
+.app-progs .ph-home{display:block;text-align:center;margin-top:10px;font-size:.9rem;font-weight:700;color:var(--terracotta)}
+.app-block > .ph-tools{margin-top:12px}
+.app-all{margin:10px 0 0;font-size:.92rem;font-weight:700}
+.app-all a{color:var(--terracotta)}
+.app-close{margin-top:34px;font-size:.92rem;line-height:1.7}
+.app-close a{font-weight:700;color:var(--terracotta)}
 .app-btns .btn{flex:1 1 0;justify-content:center;text-align:center;padding-left:12px;padding-right:12px;white-space:nowrap;cursor:pointer}
 @media (min-width:600px){.app-btns .btn{flex:0 0 auto;padding-left:24px;padding-right:24px}}
 </style>
@@ -125,14 +134,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section style="padding-top:0;">
   <div class="wrap narrow">
+    <div class="ph-cast" data-cast-slot="app-greeting"></div>
     <div class="app-block" id="appProgram" hidden>
       <h2>Your program</h2>
-      <div class="app-list" id="appProgramList"></div>
-    </div>
-
-    <div class="app-block" id="appPick" hidden>
-      <h2>A program for where you are</h2>
-      <div class="card app-pick" id="appPickCard"></div>
+      <div class="app-progs" id="appProgramList"></div>
     </div>
 
     <div class="app-block" id="appStages" hidden>
@@ -173,21 +178,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <div class="app-block">
-    <h2>Your saved tools</h2>
-    <div class="app-list" id="appSaved"></div>
-    <p class="muted" id="appSavedNone" hidden>Tools you save entries in show up here, like the hospital bag checklist or the vaccination tracker.</p>
-    <p class="muted" id="appRemember" hidden style="font-size:.9rem;">Your entries are kept for this visit only. To keep them on this phone, turn on <b>Remember on this device</b> in <a href="#" data-cc="show-preferencesModal">Privacy choices</a>.</p>
+    <div class="app-block" id="appMine" hidden>
+      <h2 id="appMineTitle">Pick up where you left off</h2>
+      <div class="ph-tools" id="appSaved"></div>
+      <p class="app-all" id="appMineAll" hidden><a href="#"></a></p>
+      <p class="muted" id="appRemember" hidden style="font-size:.9rem;">Your entries are kept for this visit only. To keep them on this phone, turn on <b>Remember on this device</b> in <a href="#" data-cc="show-preferencesModal">Privacy choices</a>.</p>
     </div>
 
-    <h2 style="margin-top:34px;">Newest games</h2>
+    <div class="app-block" id="appMore" hidden>
+      <h2 id="appMoreTitle">More for your stage</h2>
+      <div class="ph-tools" id="appMoreList"></div>
+      <p class="app-all"><a id="appMoreAll" href="/tools/"></a></p>
+    </div>
+
+    <div class="app-block" id="appPick" hidden>
+      <h2>A program for your stage</h2>
+      <div class="card app-pick" id="appPickCard"></div>
+    </div>
+
+    <div class="app-block" id="appGames" hidden>
+    <h2>Newest games</h2>
     <div class="grid grid-2 app-games" style="margin-top:12px;">
       <a class="card" href="/relationships/tools/red-flag-radar"><span class="tag">Game</span><h3>Red Flag Radar</h3><p>Call ten dating situations green flag, let's talk or red flag, then see what your radar says.</p><span class="arrow">Play &rarr;</span></a>
       <a class="card" href="/relationships/tools/is-he-husband-material"><span class="tag">Quiz</span><h3>Is He Husband Material?</h3><p>Answer from what he has done, then see what he is already showing you.</p><span class="arrow">Start &rarr;</span></a>
     </div>
+    </div>
 
-    <h2 style="margin-top:34px;">Every tool, by stage</h2>
-    <p class="muted">Tap a clip to see the tool in use, then open it.</p>
+    <p class="app-close" id="appClose">Browse by stage: <a href="/relationships/">Relationships</a> &middot; <a href="/fertility/">Fertility</a> &middot; <a href="/pregnancy/">Pregnancy</a> &middot; <a href="/postpartum/">Postpartum</a> &middot; <a href="/parenting/">Parenting</a>. <a href="/tools/">See every tool and guide</a>.</p>
+
+    <details class="app-backup" id="appHow">
+      <summary>See how the tools work</summary>
+      <p class="muted">Tap a clip to see a tool in use, then open it.</p>
     <!-- tool-reel:start -->
     <h3 style="margin:26px 0 8px;">Relationships</h3>
     <div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button><ul class="ts-row" tabindex="0" aria-label="Relationships tools"><li class="ts-card"><p class="ts-cap">Answer a few questions to see where you stand in love.</p>
@@ -272,7 +293,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="vph" data-vid="/assets/video/tool-shorts/paediatric-visit-questions.mp4?v=8f789ed6"><img class="vposter" src="/assets/img/tool-shorts/paediatric-visit-questions.webp?v=8e4d4966" width="432" height="768" alt="Paediatric Visit Questions in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Paediatric Visit Questions"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
 <p class="ts-name">Paediatric Visit Questions</p><a class="ts-open" href="/parenting/tools/paediatric-visit-questions"><span>Open the tool &rarr;</span></a></li></ul><button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>
     <!-- tool-reel:end -->
-    <p style="margin-top:18px;"><a class="btn btn-ghost" href="/tools/">See every tool and guide</a></p>
+    </details>
 
     <details class="app-backup">
       <summary>Back up or restore your entries</summary>
@@ -344,32 +365,83 @@ var APP_TOOLS = [
   ["wg_paediatric_questions_v1", "/parenting/tools/paediatric-visit-questions", "Paediatric Visit Questions"],
   ["wg_babyproofing_v1", "/parenting/tools/babyproofing-safety-checklist", "Baby Safety and Babyproofing Checklist"]
 ];
+// program-homes:start
+var APP_DATA = {"stageNames":{"relationships":"Relationship tools","fertility":"Fertility tools","pregnancy":"Pregnancy tools","postpartum":"Postpartum tools","parenting":"Baby and parenting tools"},"stages":{"relationships":["/relationships/tools/situationship-checker","/relationships/tools/green-red-flags-checker","/relationships/tools/is-he-husband-material","/relationships/tools/the-talk-planner","/relationships/tools/standards-non-negotiables-worksheet","/relationships/tools/meet-marriage-minded-men-checklist","/relationships/tools/ready-for-love-quiz","/relationships/tools/red-flag-radar"],"fertility":["/fertility/tools/ovulation-calculator","/fertility/tools/period-tracker","/fertility/tools/ttc-checklist","/fertility/tools/his-fertility-checklist","/fertility/tools/fertility-appointment-questions","/fertility/tools/the-wait-check-in"],"pregnancy":["/pregnancy/tools/due-date-calculator","/pregnancy/tools/week-by-week-tracker","/pregnancy/tools/hospital-bag-checklist","/pregnancy/tools/birth-plan-builder","/pregnancy/tools/safe-foods-checklist","/pregnancy/tools/antenatal-appointment-questions","/pregnancy/tools/baby-essentials-checklist"],"postpartum":["/postpartum/tools/recovery-timeline-calculator","/postpartum/tools/recovery-checklist","/postpartum/tools/partner-support-planner","/postpartum/tools/night-feed-rota","/postpartum/tools/check-up-questions","/postpartum/tools/mind-check-in"],"parenting":["/parenting/tools/milestone-tracker","/parenting/tools/feeding-sleep-tracker","/parenting/tools/vaccination-tracker","/parenting/tools/baby-routine-planner","/parenting/tools/baby-name-explorer","/parenting/tools/babyproofing-safety-checklist","/parenting/tools/paediatric-visit-questions","/parenting/tools/first-foods-planner"]},"tools":{"/relationships/tools/ready-for-love-quiz":["Are You Ready for Love? Quiz","Eight questions on what you want, your standards, how healed you are, and whether pressure is driving who you date."],"/relationships/tools/green-red-flags-checker":["Green Flags & Red Flags Checker","Tick what you have seen him do and see your green flags and red flags counted."],"/relationships/tools/situationship-checker":["Situationship Checker","Is it a relationship or a situationship? Six questions, and the words to ask him where it is going."],"/relationships/tools/red-flag-radar":["Red Flag Radar","Call each dating situation green flag, let's talk or red flag, and see what your radar says."],"/relationships/tools/is-he-husband-material":["Is He Husband Material?","Answer from what you have seen him do and see what he is showing you, plus what to raise with him."],"/relationships/tools/standards-non-negotiables-worksheet":["Non-Negotiables Worksheet","Write the standards you will not drop before your next talking stage."],"/relationships/tools/the-talk-planner":["The Talk Planner","Plan what to say and ask when you want to know where you stand."],"/relationships/tools/meet-marriage-minded-men-checklist":["Meet Marriage-Minded Men","Safe ways to meet serious men beyond weddings and your DMs."],"/fertility/tools/ovulation-calculator":["Ovulation & Fertile Window Calculator","Estimate your fertile days and most likely day of ovulation."],"/fertility/tools/period-tracker":["Period Tracker","Predict your next three periods and see your pattern."],"/fertility/tools/ttc-checklist":["Trying-to-Conceive Checklist","Tick the healthy steps to take before and while you try to conceive."],"/fertility/tools/his-fertility-checklist":["His Fertility Checklist","Simple steps that support his sperm health, and what to ask about a semen analysis."],"/fertility/tools/fertility-appointment-questions":["Fertility Appointment Questions","Questions to take to your fertility or GP appointment, so nothing is forgotten."],"/fertility/tools/the-wait-check-in":["The Wait Check-in","A private check-in on how you are coping while you wait, with the Nigerian helpline number."],"/pregnancy/tools/due-date-calculator":["Due Date Calculator","Estimate your due date and how many weeks along you are."],"/pregnancy/tools/week-by-week-tracker":["Week-by-Week Tracker","See your week, your trimester, and what is happening now."],"/pregnancy/tools/hospital-bag-checklist":["Hospital Bag Checklist","Everything to pack for you, baby, and your helper."],"/pregnancy/tools/birth-plan-builder":["Birth Plan Builder","Turn your preferences into a clear one-page plan."],"/pregnancy/tools/safe-foods-checklist":["Safe Foods Checklist","What is safe to eat in pregnancy, and what to avoid."],"/pregnancy/tools/antenatal-appointment-questions":["Antenatal Questions","Questions to take to your antenatal booking and check-ups."],"/pregnancy/tools/baby-essentials-checklist":["Newborn Essentials Checklist","What a newborn needs, so you do not buy what you will not use."],"/postpartum/tools/recovery-timeline-calculator":["Recovery Timeline Calculator","Enter your delivery date and delivery type to see what many women experience each week as they heal."],"/postpartum/tools/recovery-checklist":["Postpartum Recovery Checklist","Tick your way through the first six weeks: healing, feeding and looking after yourself."],"/postpartum/tools/partner-support-planner":["Partner Support Planner","Tick what you need help with right now and get a clear note to send your partner or family."],"/postpartum/tools/night-feed-rota":["Night Feeding Schedule","Agree who does which feed through the night, so it is not all on you."],"/postpartum/tools/check-up-questions":["Six-Week Check-up Questions","Questions to take to your six-week check-up, so nothing is forgotten."],"/postpartum/tools/mind-check-in":["Postpartum Mind Check-in","A private check-in on sleep, mood and whether you are coping after birth."],"/parenting/tools/milestone-tracker":["Baby Milestone Tracker","See the milestones many babies reach at each age."],"/parenting/tools/feeding-sleep-tracker":["Feeding & Sleep Tracker","Log your baby's feeds, sleeps and diapers with one tap."],"/parenting/tools/vaccination-tracker":["Vaccination Tracker","Add your baby's date of birth to see when each vaccine visit is due."],"/parenting/tools/baby-routine-planner":["Baby Routine Planner","A sample day of feeds, naps and play for your baby's age."],"/parenting/tools/baby-name-explorer":["Baby Name Explorer","Search Yoruba, Igbo and Hausa baby names by meaning."],"/parenting/tools/babyproofing-safety-checklist":["Baby Safety Checklist","Room-by-room babyproofing and safe sleep."],"/parenting/tools/paediatric-visit-questions":["Paediatric Visit Questions","Questions to take to your baby's clinic visit."],"/parenting/tools/first-foods-planner":["First Foods Planner","First foods to try at around six months, with ugu, pap and moi moi on the list."]},"homes":{"wife-material-blueprint":{"stages":["relationships"],"reader":"/programs/wife-material-blueprint/read"},"wife-material-blueprint-diaspora":{"stages":["relationships"]},"trying-to-conceive-blueprint":{"stages":["fertility"]},"trying-to-conceive-blueprint-diaspora":{"stages":["fertility"]},"first-pregnancy-plan":{"stages":["pregnancy"]},"first-pregnancy-plan-diaspora":{"stages":["pregnancy"]},"postpartum-reset":{"stages":["postpartum"]},"postpartum-reset-diaspora":{"stages":["postpartum"]},"first-baby-playbook":{"stages":["parenting"]},"first-baby-playbook-diaspora":{"stages":["parenting"]},"complete-motherhood-journey":{"stages":["fertility","pregnancy","postpartum","parenting"]},"complete-motherhood-journey-diaspora":{"stages":["fertility","pregnancy","postpartum","parenting"]}}};
+// program-homes:end
 var APP_HOMES = ["wg_relationships_home", "wg_fertility_home", "wg_pregnancy_home", "wg_pp_home", "wg_parenting_home"];
-function appCard(href, title, tag, arrow){
-  var a = document.createElement('a'); a.className = 'app-row'; a.href = href;
-  var d = document.createElement('div');
-  if (tag) { var t = document.createElement('small'); t.textContent = tag; d.appendChild(t); }
-  var h = document.createElement('h3'); h.textContent = title; d.appendChild(h); a.appendChild(d);
-  var s = document.createElement('span'); s.className = 'arrow'; s.textContent = arrow; a.appendChild(s);
+function appHas(keys, key){ return keys.some(function(k){ return k === key || (key.slice(-1) === '_' && k.indexOf(key) === 0); }); }
+function appTool(path, saved){
+  var t = APP_DATA.tools[path], a = document.createElement('a'); a.className = 'ph-tool'; a.href = path;
+  a.innerHTML = '<span class="ph-tool-t"><b></b><span></span></span><span class="ph-saved"' + (saved ? '' : ' hidden') + '>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span>';
+  a.querySelector('b').textContent = t[0]; a.querySelector('.ph-tool-t span').textContent = t[1];
   return a;
 }
-function appRender(){
-  var keys = WGApp.savedKeys(), list = document.getElementById('appSaved'); list.innerHTML = '';
-  APP_TOOLS.forEach(function(t){
-    if (keys.some(function(k){ return k === t[0] || (t[0].slice(-1) === '_' && k.indexOf(t[0]) === 0); })) list.appendChild(appCard(t[1], t[2], 'Saved', 'Continue \u2192'));
-  });
-  document.getElementById('appSavedNone').hidden = list.children.length > 0;
-  document.getElementById('appRemember').hidden = WGApp.remembering();
-  var progs = document.getElementById('appProgramList'); progs.innerHTML = ''; var seen = {};
-  APP_HOMES.forEach(function(k){
-    try { var v = JSON.parse(localStorage.getItem(k) || 'null'); if (v && v.u && /^\/programs\/[a-z0-9-]+(-diaspora)?\/thank-you(\.html)?$/.test(v.u) && !seen[v.u]) { seen[v.u] = 1; progs.appendChild(appCard(v.u, v.l || 'Your program home', 'Your program', 'Open \u2192')); } } catch (e) {}
-  });
-  document.getElementById('appProgram').hidden = progs.children.length === 0;
-  document.querySelector('#appProgram h2').textContent = progs.children.length > 1 ? 'Your programs' : 'Your program';
-  appPick(progs.children.length === 0, keys);
+// Her program: a reading card where the program has a reader, else a card that opens her program home.
+function appProgramCard(v, slug){
+  var home = APP_DATA.homes[slug] || {}, box = document.createElement('div'); box.className = 'ph-read';
+  box.innerHTML = '<p class="ph-label"></p><h3></h3><a class="btn btn-primary btn-lg"></a>';
+  var label = box.querySelector('.ph-label'), h = box.querySelector('h3'), go = box.querySelector('a');
+  label.textContent = 'Your program'; h.textContent = v.l || 'Your program home'; go.href = v.u; go.innerHTML = 'Open your program home &rarr;';
+  if (home.reader && window.WGReading) {
+    var bar = document.createElement('div'); bar.className = 'ph-bar'; bar.innerHTML = '<span></span>';
+    var count = document.createElement('p'); count.className = 'muted ph-count';
+    var back = document.createElement('a'); back.className = 'ph-home'; back.href = v.u; back.textContent = 'Go to your ' + (v.l || 'program home');
+    WGReading.load(home.reader, 'wg_read_' + home.reader.split('/')[2]).then(function(r){
+      if (!r) return;
+      label.textContent = r.label || 'Read your program'; h.textContent = r.title; count.textContent = r.count;
+      bar.firstChild.style.width = r.pct + '%'; go.href = r.href; go.innerHTML = r.btn + ' &rarr;';
+      box.insertBefore(bar, go); box.insertBefore(count, go); box.appendChild(back);
+    }).catch(function(){});
+  }
+  return box;
 }
-// Not a buyer yet: recommend the program for the stage her saved tools point to, or show every stage's program
-// (the homepage's "Wherever you are, start here" cards, linking to the programs).
+function appRender(){
+  var keys = WGApp.savedKeys(), $ = function(id){ return document.getElementById(id); };
+  var saved = APP_TOOLS.filter(function(t){ return appHas(keys, t[0]) && APP_DATA.tools[t[1]]; }).map(function(t){ return t[1]; });
+  // her programs
+  var progs = $('appProgramList'), seen = {}, mine = [];
+  progs.innerHTML = '';
+  APP_HOMES.forEach(function(k){
+    try {
+      var v = JSON.parse(localStorage.getItem(k) || 'null'), m = v && v.u && v.u.match(/^\/programs\/([a-z0-9-]+)\/thank-you(\.html)?$/);
+      if (m && !seen[v.u]) { seen[v.u] = 1; mine.push(m[1]); progs.appendChild(appProgramCard(v, m[1])); }
+    } catch (e) {}
+  });
+  var buyer = mine.length > 0;
+  $('appProgram').hidden = !buyer;
+  document.querySelector('#appProgram h2').textContent = mine.length > 1 ? 'Your programs' : 'Your program';
+  // tools: a buyer sees the tools she has saved first, then her program's; anyone else sees what she has saved
+  var list = $('appSaved'), stages = [];
+  mine.forEach(function(slug){ ((APP_DATA.homes[slug] || {}).stages || []).forEach(function(st){ if (stages.indexOf(st) < 0) stages.push(st); }); });
+  var rows = saved.slice();
+  // two or more stages: take one tool from each in turn, so every program shows near the top
+  if (buyer) for (var i = 0; stages.some(function(st){ return i < APP_DATA.stages[st].length; }); i++) {
+    stages.forEach(function(st){ var p = APP_DATA.stages[st][i]; if (p && rows.indexOf(p) < 0) rows.push(p); });
+  }
+  var cap = buyer ? Math.max(8, saved.length) : rows.length;
+  list.innerHTML = '';
+  rows.slice(0, cap).forEach(function(p){ list.appendChild(appTool(p, saved.indexOf(p) >= 0)); });
+  $('appMine').hidden = rows.length === 0;
+  $('appMineTitle').textContent = buyer ? 'Your tools' : 'Pick up where you left off';
+  var all = $('appMineAll'); all.hidden = !(mine.length === 1 && rows.length > cap);
+  if (!all.hidden) { all.firstChild.href = progs.firstChild.querySelector('a').getAttribute('href'); all.firstChild.innerHTML = 'See all your tools on your program home &rarr;'; }
+  $('appRemember').hidden = WGApp.remembering();
+  // not a buyer, with saved tools: more from the stage she uses most, then that stage's program
+  var count = {};
+  saved.forEach(function(p){ var st = p.split('/')[1]; count[st] = (count[st] || 0) + 1; });
+  var stage = !buyer && Object.keys(count).sort(function(a, b){ return count[b] - count[a]; })[0];
+  var more = stage ? APP_DATA.stages[stage].filter(function(p){ return saved.indexOf(p) < 0; }) : [];
+  var ml = $('appMoreList'); ml.innerHTML = '';
+  more.slice(0, 5).forEach(function(p){ ml.appendChild(appTool(p, false)); });
+  $('appMore').hidden = more.length === 0;
+  if (stage) { $('appMoreAll').href = '/' + stage + '/'; $('appMoreAll').innerHTML = 'See every ' + APP_DATA.stageNames[stage].replace(/ tools$/, '').toLowerCase() + ' tool and guide &rarr;'; }
+  appPick(stage);
+  $('appStages').hidden = buyer || saved.length > 0;
+  $('appGames').hidden = !buyer;
+  $('appHow').hidden = buyer; // buyers see no tool videos
+}
+// Not a buyer yet: recommend the program for the stage her saved tools point to. With nothing saved she sees
+// every stage's program instead (the homepage's "Wherever you are, start here" cards).
 // The names and lines are the approved program cards on each stage's tool pages.
 var APP_PROGRAMS = {
   relationships: ['wife-material-blueprint', 'The Wife Material Blueprint', 'The full plan to heal, meet serious men, read character early and have the talk, with word-for-word scripts.'],
@@ -378,20 +450,15 @@ var APP_PROGRAMS = {
   postpartum: ['postpartum-reset', 'The 6-Week Postpartum Reset', 'The guided program for your body, your marriage, and your mind after birth, plus a community of mums.'],
   parenting: ['first-baby-playbook', 'The First Baby Playbook', 'A community for parents in the baby and toddler years, guidance on sleep, feeding and milestones, and a professional to ask.']
 };
-function appPick(show, keys){
-  var box = document.getElementById('appPick'), card = document.getElementById('appPickCard'), all = document.getElementById('appStages');
-  var count = {};
-  APP_TOOLS.forEach(function(t){
-    if (keys.some(function(k){ return k === t[0] || (t[0].slice(-1) === '_' && k.indexOf(t[0]) === 0); })) { var st = t[1].split('/')[1]; count[st] = (count[st] || 0) + 1; }
-  });
-  var stage = show && Object.keys(count).sort(function(a, b){ return count[b] - count[a]; })[0];
-  box.hidden = !stage; all.hidden = !show || !!stage;
+function appPick(stage){
+  var box = document.getElementById('appPick'), card = document.getElementById('appPickCard');
+  box.hidden = !stage;
   if (!stage) return;
   var p = APP_PROGRAMS[stage];
   card.innerHTML = '<p class="eyebrow">Picked from the tools you use</p><h3></h3><p class="muted"></p><a class="btn btn-primary"></a>';
   card.querySelector('h3').textContent = p[1];
   card.querySelector('p.muted').textContent = p[2];
-  var a = card.querySelector('a'); a.href = '/programs/' + p[0]; a.textContent = 'See the program \u2192';
+  var a = card.querySelector('a'); a.href = '/programs/' + p[0]; a.textContent = 'See the program →';
 }
 function appSay(t){ document.getElementById('appMsg').textContent = t; }
 document.addEventListener('DOMContentLoaded', function(){
@@ -428,6 +495,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 <script defer src="/assets/js/wg-app.js?v=20261009g"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009b"></script>
 <script defer src="/assets/js/wg-tool-reel.js?v=20261008b"></script>
 </body>
 </html>

@@ -18,18 +18,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css?v=20260930a">
-<link rel="stylesheet" href="/assets/css/wg-tool-reel.css?v=20261008b">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<style>
-  /* Page-local: even tool-card heights with the CTA pinned to the bottom. */
-  .tools-grid .card{display:flex;flex-direction:column;}
-  .tools-grid .card .btn{margin-top:auto;align-self:flex-start;}
-</style>
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -39,75 +34,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<header style="padding:18px 0; border-bottom:1px solid var(--line); background:var(--cream);">
-  <div class="wrap center"><span class="brand" style="justify-content:center;"><span class="dot"></span> Wholesome Girlies</span></div>
+<!-- program-home:start -->
+<header class="ph-head">
+  <div class="wrap"><a class="brand" href="/"><span class="dot"></span> Wholesome Girlies</a>
+  <nav><a href="/tools/">Tools</a><div class="nav-dropdown" id="phProgsDd" hidden><button class="nav-dropdown-trigger" id="phProgsBtn" type="button" aria-expanded="false" aria-haspopup="true">My programs <svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="nav-dropdown-menu" role="menu" id="phProgs"></div></div></nav></div>
 </header>
-
-<main>
-<section class="sales-hero" style="padding-bottom:22px">
-  <div class="wrap narrow center">
-    <p class="eyebrow">Your Wife Material home &#128154;</p>
+<main class="ph">
+  <section class="ph-top-wrap"><div class="wrap narrow ph-top">
+    <div class="ph-cast" data-cast-slot="program-home"></div>
+    <p class="ph-eyebrow">Your Wife Material home</p>
     <h1>Your Blueprint and your tools are all here.</h1>
-    <p class="lead muted" style="margin-left:auto;margin-right:auto;">Open your toolkit, use the tools, and book private help when you want it.</p>
-    <p class="muted" style="font-size:.9rem; margin-top:14px; max-width:54ch; margin-left:auto; margin-right:auto;">Bookmark this page or copy the link so you can come back any time. A copy is in your email too.</p>
-    <button class="btn btn-ghost" style="padding:8px 18px; margin-top:6px;" onclick="copyHubLink(this)">Copy this page&#8217;s link</button>
-  </div>
-</section>
-<section style="padding-top:10px; padding-bottom:6px">
+    <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
+  </div></section>
   <div class="wrap narrow">
-    <div class="card center" style="border:2px solid var(--terracotta);">
-      <h2 style="margin-bottom:8px;">Your toolkit is ready</h2>
-      <p class="muted">Open it any time. A copy is in your email too.</p>
-      <!-- WIRING: replace href with the program's Google Drive PDF (Anyone with the link, Viewer). Opens in a new tab. -->
-      <a href="https://drive.google.com/file/d/11sTATQrDH_ipiMWhsxpchKf5TqT9Nojt/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="margin-top:8px;">Open your Blueprint &rarr;</a>
-    </div>
+    <section class="ph-sec" style="padding-top:12px">
+        <div class="ph-read" id="phRead" data-reader="/programs/wife-material-blueprint/read" data-read-key="wg_read_wife-material-blueprint">
+          <p class="ph-label" id="phLabel">Read your Blueprint</p>
+          <p class="ph-title" id="phTitle">30 short lessons in 10 parts. Your place is saved on this phone.</p>
+          <div class="ph-bar"><span id="phBar"></span></div>
+          <p class="muted ph-count" id="phCount">Not started yet</p>
+          <a class="btn btn-primary btn-lg" id="phGo" href="/programs/wife-material-blueprint/read">Start reading &rarr;</a>
+        </div>
+        <p class="ph-links"><a href="/programs/wife-material-blueprint/read">See your plan</a><a href="https://drive.google.com/file/d/11sTATQrDH_ipiMWhsxpchKf5TqT9Nojt/view?usp=drive_link" target="_blank" rel="noopener">Download the PDF</a></p>
+    </section>
   </div>
-</section>
-<section>
+  <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
   <div class="wrap narrow">
-    <h2>Your tools</h2>
-    <p class="muted">Use these tools whenever you need them. They live on the site.</p>
-    <!-- tool-reel:start -->
-    <div class="ts-rowwrap"><button type="button" class="ts-arrow prev" aria-label="Previous tools" hidden>&#8249;</button><ul class="ts-row" tabindex="0" aria-label="Your tools"><li class="ts-card"><p class="ts-cap">Answer each question based on how you feel today, then see your result.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/ready-for-love-quiz.mp4?v=ed3f6fc1"><img class="vposter" src="/assets/img/tool-shorts/ready-for-love-quiz.webp?v=6ade7a5e" width="432" height="768" alt="Ready for Love Quiz in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Ready for Love Quiz"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Ready for Love Quiz</p><a class="ts-open" href="/relationships/tools/ready-for-love-quiz"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick the standards that matter to you, then add one line in your own words.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/standards-non-negotiables-worksheet.mp4?v=9e17f72d"><img class="vposter" src="/assets/img/tool-shorts/standards-non-negotiables-worksheet.webp?v=d0ad8aa6" width="432" height="768" alt="Standards and Non-Negotiables Worksheet in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Standards and Non-Negotiables Worksheet"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Non-Negotiables Worksheet</p><a class="ts-open" href="/relationships/tools/standards-non-negotiables-worksheet"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick the ways you will try this month to meet serious men.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/meet-marriage-minded-men-checklist.mp4?v=eb179416"><img class="vposter" src="/assets/img/tool-shorts/meet-marriage-minded-men-checklist.webp?v=98017fb5" width="432" height="768" alt="Meet Marriage-Minded Men Checklist in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Meet Marriage-Minded Men Checklist"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Meet Marriage-Minded Men</p><a class="ts-open" href="/relationships/tools/meet-marriage-minded-men-checklist"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Tick what he has done, then read what your result says.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/green-red-flags-checker.mp4?v=f6b56a21"><img class="vposter" src="/assets/img/tool-shorts/green-red-flags-checker.webp?v=7ede57bd" width="432" height="768" alt="Green and Red Flags Checker in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Green and Red Flags Checker"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Green &amp; Red Flags</p><a class="ts-open" href="/relationships/tools/green-red-flags-checker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Answer based on the last few weeks, then read where the relationship is going.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/situationship-checker.mp4?v=2574bc4c"><img class="vposter" src="/assets/img/tool-shorts/situationship-checker.webp?v=3d069bf8" width="432" height="768" alt="Situationship Checker in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Situationship Checker"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Situationship Checker</p><a class="ts-open" href="/relationships/tools/situationship-checker"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Call each situation green flag, let&#x27;s talk or red flag, then see your radar.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/red-flag-radar.mp4?v=55f93e85"><img class="vposter" src="/assets/img/tool-shorts/red-flag-radar.webp?v=6b6234fd" width="432" height="768" alt="Red Flag Radar in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Red Flag Radar"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Red Flag Radar</p><a class="ts-open" href="/relationships/tools/red-flag-radar"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Pick one man. Answer from what he does more than once. Tap See my result.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/is-he-husband-material.mp4?v=f901d9ef"><img class="vposter" src="/assets/img/tool-shorts/is-he-husband-material.webp?v=caa97970" width="432" height="768" alt="Is He Husband Material? in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of Is He Husband Material?"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">Is He Husband Material?</p><a class="ts-open" href="/relationships/tools/is-he-husband-material"><span>Open the tool &rarr;</span></a></li><li class="ts-card"><p class="ts-cap">Read the questions once, then write your first sentence in your own words.</p>
-<div class="vph" data-vid="/assets/video/tool-shorts/the-talk-planner.mp4?v=758e0570"><img class="vposter" src="/assets/img/tool-shorts/the-talk-planner.webp?v=967fc42f" width="432" height="768" alt="The Talk Planner in use" loading="lazy" decoding="async"><button type="button" class="vplay" aria-label="Play a short clip of The Talk Planner"><span aria-hidden="true"></span></button><span class="vhint" aria-hidden="true">Tap to play</span></div>
-<p class="ts-name">The Talk Planner</p><a class="ts-open" href="/relationships/tools/the-talk-planner"><span>Open the tool &rarr;</span></a></li></ul><button type="button" class="ts-arrow next" aria-label="Next tools">&#8250;</button></div>
-    <!-- tool-reel:end -->
+    <section class="ph-sec">
+      <h2>Your tools</h2>
+      <div class="ph-tools"><a class="ph-tool" href="/relationships/tools/situationship-checker"><span class="ph-tool-t"><b>Situationship Checker</b><span>Is it a relationship or a situationship? Six questions, and the words to ask him where it is going.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/green-red-flags-checker"><span class="ph-tool-t"><b>Green Flags &amp; Red Flags Checker</b><span>Tick what you have seen him do and see your green flags and red flags counted.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/is-he-husband-material"><span class="ph-tool-t"><b>Is He Husband Material?</b><span>Answer from what you have seen him do and see what he is showing you, plus what to raise with him.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/the-talk-planner" data-key="wg_talk_planner_v1"><span class="ph-tool-t"><b>The Talk Planner</b><span>Plan what to say and ask when you want to know where you stand.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/standards-non-negotiables-worksheet" data-key="wg_non_negotiables_v1"><span class="ph-tool-t"><b>Non-Negotiables Worksheet</b><span>Write the standards you will not drop before your next talking stage.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/meet-marriage-minded-men-checklist" data-key="wg_meet_men_v1"><span class="ph-tool-t"><b>Meet Marriage-Minded Men</b><span>Safe ways to meet serious men beyond weddings and your DMs.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/ready-for-love-quiz"><span class="ph-tool-t"><b>Are You Ready for Love? Quiz</b><span>Eight questions on what you want, your standards, how healed you are, and whether pressure is driving who you date.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a><a class="ph-tool" href="/relationships/tools/red-flag-radar"><span class="ph-tool-t"><b>Red Flag Radar</b><span>Call each dating situation green flag, let's talk or red flag, and see what your radar says.</span></span><span class="ph-saved" hidden>Saved</span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a></div>
+    </section>
+    <section class="ph-sec">
+      <div class="ph-safety"><h3>Your safety first</h3><p class="muted">This is about choosing well, never about tolerating harm. If a partner frightens you, controls you, isolates you, or hurts you, please reach out to someone you trust and a domestic-violence helpline. In Nigeria you can call the Domestic and Sexual Violence Response Team on <a href="tel:08000333333">0800 033 3333</a>. Your safety comes first.</p></div>
+      <div class="ph-help"><h3>Want private help?</h3><p class="muted">You can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
+    </section>
+    <section class="ph-pass">
+      <p class="eyebrow">Pass it on</p>
+      <h2>Know a friend who needs this?</h2>
+      <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If this has helped you, send it quietly to a friend who is tired of the games. She deserves clarity too.</p>
+      <div class="wg-share" data-share-id="wife-material-blueprint" data-share-surface="thank_you" data-share-path="/programs/wife-material-blueprint" data-share-align="center"
+           data-share-text="Dating with marriage in mind? This plan shows how to read a man early and have the talk about where it is going. No games."></div>
+      <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
+    </section>
   </div>
-</section>
-<section class="stage-band">
-  <div class="wrap narrow">
-    <div class="grid grid-2">
-      <div class="card"><h3>Want private help?</h3><p class="muted">When you want more than the guides and the tools, you can book a 1:1 with a licensed practitioner. Your own doctor is always your first call for anything urgent.</p></div>
-      <div class="card" style="border-left:4px solid var(--terracotta);"><h3>Your safety first</h3><p class="muted">This is about choosing well, never about tolerating harm. If a partner frightens you, controls you, isolates you, or hurts you, please reach out to someone you trust and a domestic-violence helpline. In Nigeria you can call the Domestic and Sexual Violence Response Team on <a href="tel:08000333333">0800 033 3333</a>. Your safety comes first.</p></div>
-    </div>
-  </div>
-</section>
-<section>
-  <div class="wrap narrow center">
-    <p class="eyebrow">Pass it on</p>
-    <h2>Know a friend who needs this?</h2>
-    <p class="muted" style="max-width:54ch;margin-left:auto;margin-right:auto;">If this has helped you, send it quietly to a friend who is tired of the games. She deserves clarity too.</p>
-    <div class="wg-share" data-share-id="wife-material-blueprint" data-share-surface="thank_you" data-share-path="/programs/wife-material-blueprint" data-share-align="center"
-         data-share-text="Dating with marriage in mind? This plan shows how to read a man early and have the talk about where it is going. No games."></div>
-    <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
-  </div>
-</section>
-
 </main>
+<!-- program-home:end -->
 
 <footer class="site-footer" style="padding:28px 0;">
   <div class="wrap narrow center">
@@ -118,18 +89,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 try { localStorage.setItem('wg_relationships_home', JSON.stringify({u: location.pathname, l: 'Wife Material home'})); } catch(e){}
-function copyHubLink(btn){
-  var url = 'https://wholesomegirlies.xyz' + location.pathname;
-  function done(){ var o = btn.textContent; btn.textContent = 'Link copied \u2713'; setTimeout(function(){ btn.textContent = o; }, 1800); }
-  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done, function(){ window.prompt('Copy this link:', url); }); }
-  else { window.prompt('Copy this link:', url); }
-}
 </script>
 <script src="/assets/petals.js"></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 <script src="/assets/js/wg-share.js?v=20261007a" defer></script>
 <script defer src="/assets/js/wg-app.js?v=20261009g"></script>
-<script defer src="/assets/js/wg-tool-reel.js?v=20261008b"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009b"></script>
 </body>
 </html>
