@@ -147,7 +147,7 @@ JS = """// Share a quiz or checker result. Written by scripts/make-result-pages.
     if (!r) return;
     var id = tool() + ":" + type, img = "/assets/img/results/" + tool() + "/" + type + "-status.jpg?v=" + V;
     box.innerHTML = '<p class="sub">Share your result</p><div class="wg-share" data-share-size="sm"></div>' +
-      '<p style="margin:12px 0 0;"><a class="btn btn-ghost" href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>' +
+      '<p style="margin:12px 0 0;"><a class="btn btn-ghost" style="background:#fff;" href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>' +
       '<p class="muted" style="font-size:.85rem;margin:8px 0 0;">The link and the picture show your result only, never your answers.</p>';
     var s = box.querySelector(".wg-share");
     s.setAttribute("data-share-id", id);
