@@ -1,0 +1,102 @@
+/* Program reader: the on-site version of the toolkit PDF. Built by scripts/build-program-reader.py.
+   The page opens on her plan (hero + part cards); body.rd-reading shows one lesson (wg-reader.js). */
+.rd-page { background: var(--cream); }
+.rd-header { position: sticky; top: 0; z-index: 40; background: var(--cream); border-bottom: 1px solid var(--line); }
+.rd-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 54px; }
+.rd-home, .rd-plan { font-weight: 700; font-size: .92rem; color: var(--terracotta); text-decoration: none; background: none; border: 0; padding: 6px 0; cursor: pointer; font-family: var(--sans); }
+.rd-header .brand { font-size: 1rem; }
+.rd-bar { height: 4px; background: var(--line); }
+.rd-bar span { display: block; height: 100%; width: 0; background: var(--terracotta); transition: width .3s; }
+
+/* The plan: hero, then the part cards */
+.rd-plan-page { padding-top: 26px; padding-bottom: 48px; }
+.rd-hero { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 0 18px; align-items: center; margin-bottom: 22px; }
+.rd-cover { width: 100%; height: auto; border-radius: 6px; box-shadow: var(--shadow); }
+.rd-hero h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); margin: 4px 0 6px; }
+.rd-hero .muted { margin: 0; font-size: .95rem; }
+.rd-hero-go { grid-column: 1 / -1; margin-top: 16px; }
+.rd-next-label, .rd-next-title, .rd-total-bar, .rd-cta-short { display: none; }
+.rd-progress-text { margin: 0 0 10px; font-size: .92rem; }
+.rd-continue { display: block; text-align: center; border-radius: 14px; }
+.rd-total-bar { height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; margin: 0 0 8px; }
+.rd-total-bar span { display: block; height: 100%; width: 0; background: var(--terracotta); }
+
+.rd-toc-part { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 16px 8px; margin: 0 0 14px; }
+.rd-toc-part.rd-part-done { border-color: var(--terracotta); }
+.rd-toc-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; margin: 0 0 6px; font-family: var(--serif); font-size: 1.15rem; }
+.rd-count { font-family: var(--sans); font-size: .82rem; font-weight: 700; color: var(--muted, #6b6a5c); white-space: nowrap; align-self: center; }
+.rd-part-bar { height: 6px; border-radius: 6px; background: var(--line); margin: 4px 0 8px; overflow: hidden; }
+.rd-part-bar span { display: block; height: 100%; background: var(--terracotta); }
+.rd-toc ol { list-style: none; margin: 0; padding: 0; }
+.rd-toc li a { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; color: var(--plum); text-decoration: none; font-size: .93rem; line-height: 1.35; }
+.rd-toc li a:hover span:last-child { text-decoration: underline; }
+.rd-tick { flex: none; width: 18px; height: 18px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--sand); background: var(--white); position: relative; }
+.rd-is-done .rd-tick { background: var(--terracotta); border-color: var(--terracotta); }
+.rd-is-done .rd-tick::after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+/* One lesson */
+.rd-read { display: none; padding-bottom: 48px; }
+.rd-reading .rd-plan-page { display: none; }
+.rd-reading .rd-read { display: block; }
+body:not(.rd-reading) .rd-plan { display: none; }
+.rd-body { max-width: 680px; margin: 0 auto; }
+.rd-part-head { margin: 26px 0 18px; }
+.rd-part-head h2 { margin: 0; }
+.rd-part-meta { margin: 0; font-size: .85rem; font-weight: 700; color: var(--muted, #6b6a5c); }
+.rd-part-meta:empty { display: none; }
+.rd-part-head .rd-part-bar { display: none; }
+.rd-intro { margin: 0 0 26px; }
+.rd-intro p { font-size: .98rem; }
+.rd-intro p:last-child { margin-bottom: 0; }
+/* A part's intro: a white card with an olive strip across the top */
+.rd-intro { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--terracotta); border-radius: 16px; padding: 16px 20px 18px; }
+
+.rd-part-head { border-bottom: 2px solid var(--terracotta); padding-bottom: 12px; }
+.rd-part-head h2 { font-size: clamp(1.7rem, 5.6vw, 2.3rem); color: var(--terracotta); line-height: 1.15; }
+.rd-part-meta { margin-top: 6px; }
+.rd-lesson h3 { font-size: clamp(1.35rem, 4.6vw, 1.7rem); line-height: 1.2; margin: 6px 0 14px; }
+.rd-lesson h4 { font-size: 1.05rem; margin: 22px 0 8px; font-family: var(--sans); font-weight: 800; }
+.rd-body p, .rd-body li { font-size: 1.04rem; line-height: 1.7; }
+.rd-body ul { padding-left: 1.2em; }
+.rd-body li { margin-bottom: 8px; }
+.rd-tool { background: var(--blush); border-left: 4px solid var(--terracotta); border-radius: 12px; padding: 14px 16px; margin: 18px 0; }
+.rd-tool p { margin: 0 0 12px; }
+.rd-qa { border-bottom: 1px solid var(--line); padding: 12px 0; }
+.rd-qa summary { font-weight: 800; cursor: pointer; line-height: 1.45; }
+.rd-qa p { margin: 10px 0 0; }
+.rd-end { margin: 18px 0 8px; }
+.rd-done { font-family: var(--sans); font-weight: 800; font-size: .95rem; border: 2px solid var(--terracotta); color: var(--terracotta); background: var(--white); border-radius: 999px; padding: 10px 20px; cursor: pointer; }
+.rd-done.rd-is-done { background: var(--terracotta); color: #fff; }
+.rd-pager { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 26px 0 0; padding-top: 18px; border-top: 1px solid var(--line); }
+.rd-pager a { text-decoration: none; font-weight: 700; font-size: .92rem; max-width: 60%; }
+.rd-pager .rd-prev { color: var(--plum); }
+.rd-pager .rd-next { margin-left: auto; }
+.rd-pager [hidden] { display: none; }
+@media (max-width: 600px) { .rd-reading .rd-header .brand { display: none; } }
+
+/* Wide screens: two columns of part cards and a wide up-next strip */
+@media (min-width: 900px) {
+  .rd-toc { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .rd-toc-part { margin: 0; padding: 20px 22px 12px; }
+  .rd-next-label { display: block; margin: 0 0 4px; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--terracotta); }
+  .rd-next-title { display: block; margin: 0 0 14px; font-family: var(--serif); font-size: 1.3rem; line-height: 1.25; }
+  .rd-total-bar { display: block; }
+  .rd-cta-long { display: none; }
+  .rd-cta-short { display: inline; }
+
+  /* The title on the left, then one wide up-next strip above the parts */
+  .rd-hero { grid-template-columns: 120px minmax(0, 1fr); gap: 0 28px; }
+  .rd-hero-text { max-width: 640px; }
+  .rd-hero-go { display: grid; grid-template-columns: minmax(0, 1fr) 240px auto; gap: 0 32px; align-items: center; margin-top: 26px; background: var(--blush); border-radius: var(--radius); padding: 22px 28px; }
+  .rd-next-title { margin: 0; }
+  .rd-hero-go > .rd-next-label { grid-column: 1; grid-row: 1; }
+  .rd-hero-go > .rd-next-title { grid-column: 1; grid-row: 2; }
+  .rd-hero-go > .rd-total-bar { grid-column: 2; grid-row: 1; align-self: end; }
+  .rd-hero-go > .rd-progress-text { grid-column: 2; grid-row: 2; margin: 0; align-self: start; }
+  .rd-hero-go > .rd-continue { grid-column: 3; grid-row: 1 / 3; }
+}
+
+@media print {
+  .rd-header, .rd-plan-page, .rd-end, .rd-pager, .site-footer { display: none !important; }
+  .rd-read, .rd-part, .rd-lesson { display: block !important; }
+}

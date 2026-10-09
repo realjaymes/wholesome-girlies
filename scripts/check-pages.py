@@ -56,6 +56,8 @@ def kind(p):
         return "GO"
     if re.match(r"programs/[^/]+/thank-you\.html$", p):
         return "TY"
+    if re.match(r"programs/[^/]+/read\.html$", p):
+        return "READER"
     if re.match(r"programs/[^/]+-diaspora\.html$", p):
         return "PROG-D"
     if re.match(r"programs/[^/]+\.html$", p) and p != "programs/index.html":
@@ -78,7 +80,7 @@ def kind(p):
 
 
 KIND = {p: kind(p) for p in PAGES}
-NOINDEX_KINDS = {"GO", "TY", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
+NOINDEX_KINDS = {"GO", "TY", "READER", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
 
@@ -579,7 +581,7 @@ def ratchet_counts():
             continue
         text = visible(s)
         if k != "LEGAL":
-            add("free: never call the tools or content free", p, len(re.findall(r"(?<!-)\bfree\b(?! of)", text, flags=re.I)))
+            add("free: never call the tools or content free", p, len(re.findall(r"(?<!-)(?<!set you )\bfree\b(?! of| yourself)", text, flags=re.I)))
         add("dashes: no em or en dashes in copy", p, len(re.findall(r"[—–]", text)))
         d = re.search(r'<meta name="description" content="([^"]*)"', s)
         add("description: meta description 155 characters or fewer", p, int(bool(d and len(html.unescape(d.group(1))) > 155)))

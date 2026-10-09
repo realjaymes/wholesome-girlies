@@ -365,6 +365,7 @@ function appRender(){
     try { var v = JSON.parse(localStorage.getItem(k) || 'null'); if (v && v.u && /^\/programs\/[a-z0-9-]+(-diaspora)?\/thank-you(\.html)?$/.test(v.u) && !seen[v.u]) { seen[v.u] = 1; progs.appendChild(appCard(v.u, v.l || 'Your program home', 'Your program', 'Open \u2192')); } } catch (e) {}
   });
   document.getElementById('appProgram').hidden = progs.children.length === 0;
+  document.querySelector('#appProgram h2').textContent = progs.children.length > 1 ? 'Your programs' : 'Your program';
   appPick(progs.children.length === 0, keys);
 }
 // Not a buyer yet: recommend the program for the stage her saved tools point to, or show every stage's program
@@ -426,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261008i"></script>
+<script defer src="/assets/js/wg-app.js?v=20261009g"></script>
 <script defer src="/assets/js/wg-tool-reel.js?v=20261008b"></script>
 </body>
 </html>

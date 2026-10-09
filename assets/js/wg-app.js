@@ -63,6 +63,14 @@
     if (d.getElementById('wg-app-css')) return;
     var s = d.createElement('style'); s.id = 'wg-app-css';
     s.textContent =
+      '.wg-app-nav{position:fixed;left:0;right:0;bottom:0;z-index:950;display:flex;background:#fff;border-top:1px solid var(--line,#E3E0CF);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}' +
+      '.wg-app-nav a,.wg-app-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;background:none;border:0;cursor:pointer;text-decoration:none;font:700 .72rem/1.2 var(--sans,system-ui,sans-serif);color:var(--plum-soft,#66645A)}' +
+      '.wg-app-nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}' +
+      '.wg-app-nav .on{color:var(--terracotta,#6E7A3F)}' +
+      'body.wg-in-app{padding-bottom:calc(66px + env(safe-area-inset-bottom))}' +
+      '.wg-app-foot{max-width:640px;margin:0 auto;padding:0 20px;font-size:.8rem;line-height:1.7;color:#B9C3B2;text-align:center}' +
+      '.wg-app-foot a{color:var(--blush,#EAE9D2);white-space:nowrap}' +
+      'footer.wg-app-foot-on{padding:16px 0 18px !important}' +
       '.wg-app-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:900;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:18px;box-shadow:0 10px 30px rgba(51,50,42,.18);padding:14px 16px;display:flex;gap:12px;align-items:center;max-width:560px;margin:0 auto}' +
       '.wg-app-bar img{width:40px;height:40px;border-radius:10px;flex:none}' +
       '.wg-app-bar p{margin:0;font-size:.95rem;line-height:1.35}' +
@@ -82,7 +90,9 @@
       '.wg-app-sheet h3{margin:0 0 12px}' +
       '.wg-app-sheet ol{margin:0 0 14px;padding-left:22px}.wg-app-sheet li{margin:8px 0}' +
       '.wg-app-sheet svg{width:18px;height:18px;vertical-align:-3px}' +
-      '.wg-app-sheet .note{font-size:.88rem;color:var(--plum-soft,#66645A);margin:10px 0 0}';
+      '.wg-app-sheet .note{font-size:.88rem;color:var(--plum-soft,#66645A);margin:10px 0 0}' +
+      '.wg-app-progs a{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:14px;padding:14px 16px;margin:0 0 10px;font-weight:800;color:var(--plum,#33322A);text-decoration:none}' +
+      '.wg-app-progs a::after{content:"\\2192";color:var(--terracotta,#6E7A3F)}';
     d.head.appendChild(s);
   }
 
@@ -195,7 +205,78 @@
     if (/^\/programs\/[^/]+\/thank-you$/.test(path)) {
       card(d.querySelector('.sales-hero .wrap'), 'Your program home opens from your home screen in one tap.', 'thank_you');
     }
+    if (standalone) { tabBar(); appFooter(); }
   });
+
+  // ── Inside the installed app: a tab bar on every page, and no "Get the app" links ──
+  // The installed app has no browser back button or address bar, so without this a page with no menu
+  // (the program homes) is a dead end.
+  // Every program home she has, once each (the bundle writes four stage keys that point at one home).
+  function myPrograms() {
+    var out = [], seen = {};
+    ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
+      try {
+        var v = JSON.parse(w.localStorage.getItem(k) || 'null');
+        if (v && v.u && /^\/programs\/[a-z0-9-]+\/thank-you(\.html)?$/.test(v.u)) {
+          var u = v.u.replace(/\.html$/, '');
+          if (!seen[u]) { seen[u] = 1; out.push({ u: u, l: v.l || 'Your program home' }); }
+        }
+      } catch (e) {}
+    });
+    return out;
+  }
+  function programSheet(progs) {
+    style();
+    var el = d.createElement('div'); el.className = 'wg-app-sheet';
+    el.innerHTML = '<div class="in" role="dialog" aria-label="Your programs"><h3>Your programs</h3><div class="wg-app-progs"></div>' +
+      '<button type="button" class="wg-app-btn ghost">Close</button></div>';
+    var list = el.querySelector('.wg-app-progs');
+    progs.forEach(function (p) { var a = d.createElement('a'); a.href = p.u; a.textContent = p.l; list.appendChild(a); });
+    el.addEventListener('click', function (e) { if (e.target === el || e.target.closest('.ghost')) el.remove(); });
+    d.body.appendChild(el);
+  }
+  var ICON = {
+    back: '<path d="M15 5l-7 7 7 7"/>',
+    home: '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>',
+    tools: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+    program: '<path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M9 9h6M9 13h6"/>'
+  };
+  function tabBar() {
+    if (d.getElementById('wg-app-nav')) return;
+    style();
+    [].forEach.call(d.querySelectorAll('a[href="/app/"]'), function (a) {
+      if (/get the app/i.test(a.textContent)) (a.closest('li') || a).style.display = 'none';
+    });
+    var here = path.replace(/\/$/, '') || '/', progs = myPrograms();
+    var items = [['/app/', 'Home', 'home'], ['/tools/', 'Tools', 'tools']];
+    // One program opens straight away; two or more open a list of her program homes.
+    if (progs.length === 1) items.push([progs[0].u, 'My program', 'program']);
+    else if (progs.length > 1) items.push(['#programs', 'My programs', 'program']);
+    if (here !== '/app') items.unshift(['', 'Back', 'back']);
+    var nav = d.createElement('nav'); nav.id = 'wg-app-nav'; nav.className = 'wg-app-nav'; nav.setAttribute('aria-label', 'App');
+    items.forEach(function (it) {
+      var el = d.createElement(it[0] ? 'a' : 'button');
+      if (it[0] === '#programs') { el.href = '#'; el.addEventListener('click', function (e) { e.preventDefault(); programSheet(progs); }); if (progs.some(function (p) { return p.u === here; })) el.className = 'on'; }
+      else if (it[0]) { el.href = it[0]; if (here === it[0].replace(/\/$/, '').replace(/#.*$/, '')) el.className = 'on'; }
+      else { el.type = 'button'; el.addEventListener('click', function () { if (w.history.length > 1) w.history.back(); else w.location.href = '/app/'; }); }
+      el.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON[it[2]] + '</svg><span>' + it[1] + '</span>';
+      nav.appendChild(el);
+    });
+    d.body.appendChild(nav); d.body.classList.add('wg-in-app');
+  }
+
+  // Inside the app the footer shrinks to what must stay reachable: the not-medical-advice line, the legal pages and
+  // "Privacy choices" (consent must be changeable at any time).
+  function appFooter() {
+    var f = d.querySelector('footer.site-footer');
+    if (!f) return;
+    [].forEach.call(f.children, function (c) { c.style.display = 'none'; });
+    var line = d.createElement('div'); line.className = 'wg-app-foot';
+    line.innerHTML = 'Educational, not medical advice. <a href="/legal/disclaimer">Disclaimer</a> &middot; <a href="/legal/privacy">Privacy</a> &middot; ' +
+      '<a href="/legal/consumer-health-data">Health data</a> &middot; <a href="#" data-wg-choices>Privacy choices</a>';
+    line.querySelector('[data-wg-choices]').addEventListener('click', function (e) { e.preventDefault(); try { w.CookieConsent.showPreferences(); } catch (err) {} });
+    f.appendChild(line); f.classList.add('wg-app-foot-on');
+  }
 
   // ── Saved entries: backup and restore ──────────────────
   function savedKeys() {
