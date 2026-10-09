@@ -229,6 +229,7 @@
    "slug": "wife-material-blueprint",
    "program": "wife-material-blueprint",
    "market": "home",
+   "code": "WIFE-GMDF",
    "stages": [
     "relationships"
    ],
@@ -254,6 +255,7 @@
    "slug": "wife-material-blueprint-diaspora",
    "program": "wife-material-blueprint",
    "market": "diaspora",
+   "code": "WIFE-56CJ",
    "stages": [
     "relationships"
    ],
@@ -278,6 +280,7 @@
    "slug": "trying-to-conceive-blueprint",
    "program": "trying-to-conceive-blueprint",
    "market": "home",
+   "code": "TTC-92UY",
    "stages": [
     "fertility"
    ],
@@ -316,6 +319,7 @@
    "slug": "trying-to-conceive-blueprint-diaspora",
    "program": "trying-to-conceive-blueprint",
    "market": "diaspora",
+   "code": "TTC-QCDK",
    "stages": [
     "fertility"
    ],
@@ -354,6 +358,7 @@
    "slug": "first-pregnancy-plan",
    "program": "first-pregnancy-plan",
    "market": "home",
+   "code": "PREG-9Q9R",
    "stages": [
     "pregnancy"
    ],
@@ -392,6 +397,7 @@
    "slug": "first-pregnancy-plan-diaspora",
    "program": "first-pregnancy-plan",
    "market": "diaspora",
+   "code": "PREG-XW22",
    "stages": [
     "pregnancy"
    ],
@@ -430,6 +436,7 @@
    "slug": "postpartum-reset",
    "program": "postpartum-reset",
    "market": "home",
+   "code": "RESET-RH6T",
    "stages": [
     "postpartum"
    ],
@@ -468,6 +475,7 @@
    "slug": "postpartum-reset-diaspora",
    "program": "postpartum-reset",
    "market": "diaspora",
+   "code": "RESET-C44V",
    "stages": [
     "postpartum"
    ],
@@ -506,6 +514,7 @@
    "slug": "first-baby-playbook",
    "program": "first-baby-playbook",
    "market": "home",
+   "code": "BABY-X764",
    "stages": [
     "parenting"
    ],
@@ -538,6 +547,7 @@
    "slug": "first-baby-playbook-diaspora",
    "program": "first-baby-playbook",
    "market": "diaspora",
+   "code": "BABY-25N4",
    "stages": [
     "parenting"
    ],
@@ -570,6 +580,7 @@
    "slug": "complete-motherhood-journey",
    "program": "complete-motherhood-journey",
    "market": "home",
+   "code": "JOURNEY-DDSM",
    "stages": [
     "fertility",
     "pregnancy",
@@ -632,6 +643,7 @@
    "slug": "complete-motherhood-journey-diaspora",
    "program": "complete-motherhood-journey",
    "market": "diaspora",
+   "code": "JOURNEY-RSBX",
    "stages": [
     "fertility",
     "pregnancy",

@@ -17,9 +17,15 @@ figure from assets/img/cast/guides/ and one line in a speech bubble); reading (t
 toolkit PDF; the bundle lists its four toolkits); Get the app (browser only); community (motherhood only);
 your tools as a list with Saved marks and no videos; help and safety; the next program; pass it on.
 
+Program code (vault journey F): each home has a "code" (PREFIX-XXXX, no look-alike characters). The home shows
+it, and APP_DATA carries only the SHA-256 of each normalised code, so /app/ can add a program she typed.
+Per-program manifests (journey C): manifests/<slug>.webmanifest is manifest.webmanifest with start_url
+/app/?home=<slug> (same id, so it is the same app), and each home's <link rel="manifest"> points at its own.
+
   python3 scripts/build-program-homes.py           write every page (idempotent)
   python3 scripts/build-program-homes.py --check   write nothing; exit 1 if any page differs
 """
+import hashlib
 import html
 import json
 import os
@@ -34,6 +40,31 @@ CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSE
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+
+
+# What each program home saves on her phone (the flags its thank-you page writes), its locked name and its label.
+STAGE_FLAG = {"relationships": "wg_relationships_home", "fertility": "wg_fertility_home", "pregnancy": "wg_pregnancy_home",
+              "postpartum": "wg_pp_home", "parenting": "wg_parenting_home"}
+PROGRAMS = {
+    "wife-material-blueprint": ("The Wife Material Blueprint", "Wife Material home", ["relationships"]),
+    "trying-to-conceive-blueprint": ("The Trying-to-Conceive Blueprint", "Conception home", ["fertility"]),
+    "first-pregnancy-plan": ("The First Pregnancy Plan", "Pregnancy home", ["pregnancy"]),
+    "postpartum-reset": ("The 6-Week Postpartum Reset", "Postpartum home", ["postpartum"]),
+    "first-baby-playbook": ("The First Baby Playbook", "First Baby home", ["parenting"]),
+    "complete-motherhood-journey": ("The Complete Motherhood Journey", "Motherhood Journey home",
+                                    ["fertility", "pregnancy", "postpartum", "parenting"]),
+}
+CODE_RE = re.compile(r"^(WIFE|TTC|PREG|RESET|BABY|JOURNEY)-[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{4}$")  # no 0, O, 1, I or L
+MANIFEST = os.path.join(ROOT, "manifest.webmanifest")
+
+
+def code_hash(code):
+    """SHA-256 of the code as /app/ normalises what she types: capitals, letters and digits only."""
+    return hashlib.sha256(re.sub(r"[^A-Z0-9]", "", code.upper()).encode()).hexdigest()
+
+
+def flag_keys(h):
+    return [STAGE_FLAG[s] for s in PROGRAMS[h["program"]][2]]
 
 
 # Each tool row starts with an icon. wg-program-home.js draws the icon named in data-ico; games and quizzes
@@ -158,6 +189,10 @@ def block(m, h):
     extra = f'\n      <p style="margin-top:10px;">{sh["extra"]}</p>' if sh.get("extra") else ""
     community = f'\n    <section class="ph-sec">{card(h["community"])}</section>' if h.get("community") else ""
     nxt = f'\n    <section class="ph-sec">{card(h["cross_sell"])}</section>' if h.get("cross_sell") else ""
+    code = (f'\n    <section class="ph-sec ph-code" style="text-align:center;padding-top:0">'
+            f'<p class="muted" style="margin:0">Your program code: <b>{h["code"]}</b></p>'
+            f'<p class="muted" style="margin:6px auto 0;max-width:54ch;font-size:.9rem">Use it to add this program to the Girlies app on another phone, '
+            f'or if you added the app before you bought.</p></section>')
     return f"""{START}
 <header class="ph-head">
   <div class="wrap"><a class="brand" href="/"><span class="dot"></span> Wholesome Girlies</a>
@@ -197,7 +232,7 @@ def block(m, h):
       <div class="wg-share" data-share-id="{sh["id"]}" data-share-surface="thank_you" data-share-path="{sh["path"]}" data-share-align="center"
            data-share-text="{sh["share_text"]}"></div>
       <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>{extra}
-    </section>
+    </section>{code}
   </div>
 </main>
 {END}"""
@@ -217,7 +252,10 @@ def app_data(m):
         "guides": m["guides"],
         "guideV": ASSET_VERSION,
         "homes": {slug: {"stages": h["stages"], **({"guide": h["guide"]} if h.get("guide") else {}),
-                         **({"reader": h["reader"]} if h.get("reader") else {})} for slug, h in m["homes"].items()},
+                         **({"reader": h["reader"]} if h.get("reader") else {}),
+                         "name": PROGRAMS[h["program"]][0], "label": PROGRAMS[h["program"]][1], "flags": flag_keys(h)}
+                  for slug, h in m["homes"].items()},
+        "codes": {code_hash(h["code"]): slug for slug, h in m["homes"].items()},
     }
     return f"{APP_START}\nvar APP_DATA = {json.dumps(data, ensure_ascii=False, separators=(',', ':'))};\n{APP_END}"
 
@@ -232,8 +270,9 @@ def expected_app(m):
     return APP_PAGE, src, new, None
 
 
-def with_assets(src):
-    """The page loads the program home CSS and JS exactly once, at the current version."""
+def with_assets(src, slug):
+    """The page loads the program home CSS and JS exactly once, at the current version, and its own manifest."""
+    src = src.replace('<link rel="manifest" href="/manifest.webmanifest">', f'<link rel="manifest" href="/manifests/{slug}.webmanifest">')
     src = re.sub(r'\s*<link rel="stylesheet" href="/assets/css/wg-program-home\.css[^"]*">', "", src)
     src = re.sub(r'\s*<script defer src="/assets/js/wg-program-home\.js[^"]*"></script>', "", src)
     src, n = re.subn(r'(<link rel="stylesheet" href="/assets/css/styles\.css[^"]*">)', lambda x: x.group(1) + "\n" + CSS_TAG, src, count=1)
@@ -248,20 +287,33 @@ def expected(m, slug):
         src = f.read()
     if len(MARK.findall(src)) != 1:
         return path, src, None, f"{path}: needs exactly one {START} ... {END} block"
-    return path, src, with_assets(MARK.sub(lambda _: block(m, m["homes"][slug]), src)), None
+    return path, src, with_assets(MARK.sub(lambda _: block(m, m["homes"][slug]), src), slug), None
+
+
+def expected_manifest(slug):
+    """manifests/<slug>.webmanifest: the main manifest with start_url /app/?home=<slug>. The id keeps it the same app."""
+    with open(MANIFEST, encoding="utf-8") as f:
+        man = json.load(f)
+    man["start_url"] = f"/app/?home={slug}"
+    path = f"manifests/{slug}.webmanifest"
+    full = os.path.join(ROOT, path)
+    old = open(full, encoding="utf-8").read() if os.path.exists(full) else None
+    return path, old, json.dumps(man, indent=2, ensure_ascii=False) + "\n", None
 
 
 def main(argv):
     check = "--check" in argv
     m = load()
     bad = []
-    for path, old, new, err in [expected(m, slug) for slug in m["homes"]] + [expected_app(m)]:
+    for path, old, new, err in ([expected(m, slug) for slug in m["homes"]] + [expected_app(m)]
+                                + [expected_manifest(slug) for slug in m["homes"]]):
         if err:
             bad.append(err)
         elif new != old:
             if check:
-                bad.append(f"{path}: program home is stale; run python3 scripts/build-program-homes.py")
+                bad.append(f"{path}: is stale or missing; run python3 scripts/build-program-homes.py")
             else:
+                os.makedirs(os.path.dirname(os.path.join(ROOT, path)), exist_ok=True)
                 with open(os.path.join(ROOT, path), "w", encoding="utf-8") as f:
                     f.write(new)
                 print("wrote", path)

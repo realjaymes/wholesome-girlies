@@ -419,6 +419,26 @@ if err:
     fail(_path, err)
 elif _new != _old:
     fail(_path, "app home tool data (APP_DATA) is stale: run python3 scripts/build-program-homes.py")
+# Program codes (journey F) and per-program manifests (journey C).
+_seen_codes = {}
+for slug, h in HOMES["homes"].items():
+    code = h.get("code")
+    if not code:
+        fail("assets/data/program-homes.json", f"{slug} has no program code")
+        continue
+    if re.search(r"[01OIL]", code.split("-", 1)[-1]) or not homes.CODE_RE.match(code):
+        fail("assets/data/program-homes.json", f"{slug} code {code} must be PREFIX-XXXX with no 0, O, 1, I or L")
+    if code in _seen_codes:
+        fail("assets/data/program-homes.json", f"{slug} and {_seen_codes[code]} share the code {code}")
+    _seen_codes[code] = slug
+    mpath, mold, mnew, _e = homes.expected_manifest(slug)
+    if mold != mnew:
+        fail(mpath, "per-program manifest is missing or stale: run python3 scripts/build-program-homes.py")
+if os.path.exists("app/index.html"):
+    _app = read("app/index.html")
+    for code in _seen_codes:
+        if code in _app or code.replace("-", "") in _app:
+            fail("app/index.html", "a plaintext program code is in the app home; APP_DATA holds only hashes")
 for p in PAGES:
     if KIND[p] == "TY" and p[len("programs/"):-len("/thank-you.html")] not in HOMES["homes"]:
         fail(p, "program home is missing from assets/data/program-homes.json")
@@ -578,7 +598,10 @@ APP_TAGS = ['<link rel="manifest" href="/manifest.webmanifest">', '<meta name="t
 for p in PAGES:
     if KIND[p] == "MOCKUP":
         continue
-    if any(t not in SRC[p] for t in APP_TAGS):
+    _tags = APP_TAGS
+    if KIND[p] == "TY" or p.endswith("/read.html"):  # a program home and its reader point at the program's own manifest (journey C)
+        _tags = [f'<link rel="manifest" href="/manifests/{p.split("/")[1]}.webmanifest">' if t == APP_TAGS[0] else t for t in APP_TAGS]
+    if any(t not in SRC[p] for t in _tags):
         fail(p, "missing the app tags: run python3 scripts/add-app-tags.py")
     m = re.search(r"<h4>Explore</h4>\s*<ul>(.*?)</ul>", SRC[p], flags=re.S)
     if m and 'href="/app/"' not in m.group(1):

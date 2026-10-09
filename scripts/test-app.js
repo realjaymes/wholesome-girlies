@@ -1,9 +1,10 @@
 // Tests the installable app on the local site: service worker, offline tools, the app home, backup codes,
-// the add-to-home-screen offers and where they stay quiet. Needs the site on :8001 (python3 serve.py 8001).
+// the add-to-home-screen offers and where they stay quiet. Needs the site on :8001 (python3 serve.py 8001), or set WG_PORT.
 //   NODE_PATH=/tmp/wgog/node_modules node scripts/test-app.js
 // Offline behaviour with a real dropped connection is in scripts/test-app-offline.js.
 const puppeteer = require('puppeteer-core');
-const B = 'http://localhost:8001';
+const B = 'http://localhost:' + (process.env.WG_PORT || 8001);
+const HOMES = require('../assets/data/program-homes.json').homes;
 const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
 const out = [];
 const ok = (name, pass, extra='') => out.push(`${pass ? 'PASS' : 'FAIL'}  ${name}${extra ? '  (' + extra + ')' : ''}`);
@@ -41,6 +42,35 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   // 4. backup round trip
   const rt = await page.evaluate(async () => { const file = new File([JSON.stringify({ app: "wholesome-girlies", v: 1, entries: { wg_hospitalbag_v1: localStorage.getItem('wg_hospitalbag_v1') } })], 'backup.json'); localStorage.removeItem('wg_hospitalbag_v1'); const n = await WGApp.restoreBackup(file); return { n, back: localStorage.getItem('wg_hospitalbag_v1') }; });
   ok('backup file restores entries', rt.back === JSON.stringify({ a: 1 }), JSON.stringify(rt));
+  // 4b. program code (journey F): a valid code adds the program, a wrong one does not
+  const codeCtx = await browser.createBrowserContext();
+  const cp = await codeCtx.newPage(); cp.on('pageerror', e => errs.push(e.message));
+  await cp.goto(B + '/app/?preview=installed', { waitUntil: 'load' });
+  const flags = () => cp.evaluate(() => ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].filter(k => localStorage.getItem(k)));
+  const addCode = async (c) => { await cp.$eval('#appAdd', d => d.open = true); await cp.$eval('#appCode', e => e.value = ''); await cp.type('#appCode', c); await cp.click('#appCodeForm button'); await wait(500); };
+  await addCode('WRONG-ABCD');
+  ok('wrong program code adds nothing', (await flags()).length === 0 && /did not match/.test(await cp.$eval('#appMsg', e => e.textContent)));
+  const wife = HOMES['wife-material-blueprint'].code;
+  await addCode(' ' + wife.toLowerCase().replace('-', ' ') + ' ');
+  const f1 = await cp.evaluate(() => JSON.parse(localStorage.getItem('wg_relationships_home')));
+  ok('valid code (any case, spaces) adds the program', f1 && f1.u === '/programs/wife-material-blueprint/thank-you' && !(await cp.$eval('#appProgram', e => e.hidden)), JSON.stringify(f1));
+  ok('My program tab appears after adding', !!(await cp.$('#wg-app-nav a[href="/programs/wife-material-blueprint/thank-you"]')));
+  ok('app_program_added carries the program name only', await cp.evaluate(() => dataLayer.some(e => e.event === 'app_program_added' && e.app_program === 'The Wife Material Blueprint' && Object.keys(e).filter(k => !k.startsWith('gtm.')).sort().join() ==='app_program,event')));
+  await addCode(HOMES['complete-motherhood-journey'].code);
+  ok('bundle code adds all four motherhood flags', (await flags()).length === 5, (await flags()).join(','));
+  // install from a program home (journey C): /app/?home=<slug> adds the program once, then drops the parameter
+  const hp = await (await browser.createBrowserContext()).newPage(); hp.on('pageerror', e => errs.push(e.message));
+  await hp.goto(B + '/app/?home=first-pregnancy-plan&preview=installed', { waitUntil: 'load' });
+  const hv = await hp.evaluate(() => ({ f: JSON.parse(localStorage.getItem('wg_pregnancy_home') || 'null'), q: location.search }));
+  ok('?home= adds the program and is removed from the address', hv.f && hv.f.u === '/programs/first-pregnancy-plan/thank-you' && hv.q === '?preview=installed', JSON.stringify(hv));
+  await hp.goto(B + '/app/?home=nope', { waitUntil: 'load' });
+  ok('?home= with an unknown slug adds nothing', (await hp.evaluate(() => localStorage.getItem('wg_pp_home'))) === null);
+  // the program home inside Instagram or TikTok asks her to open her real browser
+  const ip = await (await browser.createBrowserContext()).newPage(); ip.on('pageerror', e => errs.push(e.message));
+  await ip.goto(B + '/programs/wife-material-blueprint/thank-you?preview=in-app', { waitUntil: 'load' });
+  ok('program home in an in-app browser shows the open-in-browser card first', /Open in browser/.test(await ip.$eval('main.ph > #wg-app-inapp', e => e.textContent).catch(() => '')));
+  await ip.goto(B + '/programs/wife-material-blueprint/thank-you', { waitUntil: 'load' });
+  ok('no in-app card in a normal browser', !(await ip.$('#wg-app-inapp')));
   // 5. result line and thank-you line (desktop)
   await page.goto(B + '/relationships/tools/red-flag-radar', { waitUntil: 'load' });
   await page.evaluate(() => wgShowResult('sharp'));

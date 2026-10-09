@@ -93,6 +93,8 @@
       '.wg-app-sheet ol{margin:0 0 14px;padding-left:22px}.wg-app-sheet li{margin:8px 0}' +
       '.wg-app-sheet svg{width:18px;height:18px;vertical-align:-3px}' +
       '.wg-app-sheet .note{font-size:.88rem;color:var(--plum-soft,#66645A);margin:10px 0 0}' +
+      '.wg-app-inapp{max-width:640px;margin:0 auto;padding:14px 20px;background:#fff;border-bottom:2px solid var(--ink,#33322A)}' +
+      '.wg-app-inapp b.t{display:block;font-size:1rem;line-height:1.3}.wg-app-inapp p{margin:6px 0 10px;font-size:.9rem;line-height:1.45;color:var(--plum-soft,#66645A)}' +
       '.wg-app-progs a{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:14px;padding:14px 16px;margin:0 0 10px;font-weight:800;color:var(--plum,#33322A);text-decoration:none}' +
       '.wg-app-progs a::after{content:"\\2192";color:var(--terracotta,#6E7A3F)}';
     d.head.appendChild(s);
@@ -113,6 +115,7 @@
   }
   function closeSheet() { var el = d.getElementById('wg-app-sheet'); if (el) el.remove(); }
 
+  var IN_APP_STEPS = 'Tap the menu at the top of the screen and choose <b>Open in browser</b>. Or copy the link and paste it into Chrome or Safari.';
   var CLIP = '/assets/video/app/install-iphone-safari.mp4?v=20261008a';
   var POSTER = '/assets/img/app/install-iphone-safari.webp?v=20261008a';
   var TITLE = '<h3 id="wg-app-sheet-t">Add Wholesome Girlies to your home screen</h3>';
@@ -127,7 +130,7 @@
     }
     if (inApp) {
       sheet('<h3 id="wg-app-sheet-t">Open this page in your browser first</h3>' +
-        '<p>Phones can only add Wholesome Girlies to the home screen from Chrome or Safari. Tap the menu at the top of this screen and choose <b>Open in browser</b>, or copy the link and paste it there.</p>' +
+        '<p>Phones can only add Wholesome Girlies to the home screen from Chrome or Safari. ' + IN_APP_STEPS + '</p>' +
         '<p><button type="button" class="wg-app-btn" data-copy-link>Copy the link</button></p>');
       return;
     }
@@ -210,8 +213,23 @@
     // 4. On the homepage, after the programs block. The section stays hidden when no card is offered.
     var homeApp = d.getElementById('homeApp');
     if (homeApp) { card(homeApp, 'Every tool one tap from your home screen, and they work without data.', 'home'); homeApp.parentNode.hidden = !homeApp.firstChild; }
+    // 5. Inside Instagram, TikTok or Facebook, a program home sits in that app's own storage, so her program and reading
+    //    progress would stay behind. A top card asks her to open the page in her real browser.
+    if (inApp && !standalone && /^\/programs\/[^/]+\/thank-you$/.test(path)) inAppCard();
     if (standalone) { tabBar(); appFooter(); }
   });
+  function inAppCard() {
+    var main = d.querySelector('main.ph');
+    if (!main || d.getElementById('wg-app-inapp')) return;
+    style();
+    var el = d.createElement('div'); el.id = 'wg-app-inapp'; el.className = 'wg-app-inapp'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Open in your browser');
+    el.innerHTML = '<b class="t">Open this page in Chrome or Safari</b><p>You opened this page inside another app, like Instagram or TikTok. Your program and the page you stopped on will stay stuck inside that app. ' + IN_APP_STEPS + '</p>' +
+      '<button type="button" class="wg-app-btn" data-copy-link>Copy the link</button>';
+    var b = el.querySelector('button');
+    b.addEventListener('click', function () { copyText(w.location.href, b, 'Link copied'); });
+    main.insertBefore(el, main.firstChild);
+    push('app_prompt_shown', 'in_app_home');
+  }
 
   // ── Inside the installed app: a tab bar on every page, and no "Get the app" links ──
   // The installed app has no browser back button or address bar, so without this a page with no menu
@@ -325,6 +343,12 @@
     },
     restoreBackup: function (file) {
       return file.text().then(function (t) { var n = unpack(JSON.parse(t)); push('app_backup_restored'); return n; });
+    },
+    // Rebuilds the installed app's tab bar after a program is added, so My program appears.
+    refreshTabs: function () {
+      var n = d.getElementById('wg-app-nav');
+      if (n) n.remove();
+      if (standalone) tabBar();
     },
     keep: function () { if (nav.storage && nav.storage.persist) nav.storage.persist().catch(function () {}); }
   };
