@@ -32,6 +32,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history, so the IndexNow step can diff this push against the last one.
+          fetch-depth: 0
       - name: Check page rules
         # Stops the deploy if a page is missing a standing component (see CLAUDE.md, "Page rules")
         run: python3 scripts/check-pages.py
@@ -45,3 +48,11 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Notify IndexNow
+        # Tells Bing and the other IndexNow engines which sitemap pages this push
+        # changed, so they recrawl within hours. ChatGPT search leans on Bing's
+        # index. A manual "Run workflow" has no previous commit, so it submits the
+        # whole sitemap. A failed ping must never fail a deploy that already went
+        # live, hence continue-on-error.
+        continue-on-error: true
+        run: python3 scripts/indexnow.py --base-url https://wholesomegirlies.xyz/ --before "${{ github.event.before }}" --after "${{ github.sha }}"
