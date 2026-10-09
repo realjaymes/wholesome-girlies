@@ -17,8 +17,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261009c">
-<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009g">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261009f">
+<link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261009k">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
@@ -45,23 +45,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="ph-hero-txt">
         <p class="ph-eyebrow">Your First Baby home</p>
         <h1>Welcome in. Your Playbook, community and tools are all on this page.</h1>
-        <p class="ph-say"><b>Funmi</b>Start with your Playbook. Your tools are below. Entries stay on this phone.</p>
+        <p class="ph-say"><b>Funmi</b>Read one short lesson at a time. Your place is saved.</p>
       </div>
-      <img class="ph-hero-img" src="/assets/img/cast/guides/funmi.webp?v=20261009g" width="293" height="569" alt="Illustration of Funmi">
+      <img class="ph-hero-img" src="/assets/img/cast/guides/funmi.webp?v=20261009k" width="293" height="569" alt="Illustration of Funmi">
     </div>
     <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
   </div></section>
   <div class="wrap narrow">
     <section class="ph-sec" style="padding-top:12px">
-        <div class="ph-read">
-          <p class="ph-label">Your Playbook</p>
-          <p class="ph-title">Open it any time. A copy is also in your email.</p>
-          <a class="btn btn-primary btn-lg" href="https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link" target="_blank" rel="noopener">Open your Playbook &rarr;</a>
+        <div class="ph-read" id="phRead" data-reader="/programs/first-baby-playbook-diaspora/read" data-read-key="wg_read_first-baby-playbook-diaspora">
+          <p class="ph-label" id="phLabel">Read your Playbook</p>
+          <p class="ph-title" id="phTitle">27 short lessons in 9 parts. Your place is saved on this phone.</p>
+          <div class="ph-prog"><div class="ph-ring" id="phRing" aria-hidden="true"><span>0<small>started</small></span></div><p class="muted ph-count" id="phCount">Not started yet</p></div>
+          <a class="btn btn-primary btn-lg" id="phGo" href="/programs/first-baby-playbook-diaspora/read">Start reading &rarr;</a>
         </div>
+        <p class="ph-links"><a href="/programs/first-baby-playbook-diaspora/read">See your plan</a><a href="https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link" target="_blank" rel="noopener">Download the PDF</a></p>
     </section>
   </div>
   <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
   <div class="wrap narrow">
+    <section class="ph-sec ph-code" style="text-align:center;padding-top:14px"><p class="muted" style="margin:0">Your program code: <b>BABY-25N4</b></p><p class="muted" style="margin:6px auto 0;max-width:54ch;font-size:.9rem">Use it to add this program to the Girlies app on another phone, or if you added the app before you bought.</p></section>
     <section class="ph-sec"><div class="ph-card"><p class="eyebrow">Women at your stage are in the group</p><h3>Join the community</h3><p class="muted">A moderated group of moms at your stage, wherever you are in the world. Someone is usually awake when you need to talk at 3am. We have emailed your invite too, so you always have it.</p><a class="btn btn-primary" href="https://t.me/+uTUj9vAxjWswMTI0">Join the community on Telegram</a></div></section>
     <section class="ph-sec">
       <h2>Your tools</h2>
@@ -80,7 +83,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>
       <p style="margin-top:10px;"><a href="/programs/">See all the programs &rarr;</a></p>
     </section>
-    <section class="ph-sec ph-code" style="text-align:center;padding-top:0"><p class="muted" style="margin:0">Your program code: <b>BABY-25N4</b></p><p class="muted" style="margin:6px auto 0;max-width:54ch;font-size:.9rem">Use it to add this program to the Girlies app on another phone, or if you added the app before you bought.</p></section>
   </div>
 </main>
 <!-- program-home:end -->
@@ -93,13 +95,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script>
-try { localStorage.setItem('wg_parenting_home', JSON.stringify({u: location.pathname, l: 'First Baby home'})); } catch(e){}
+// The Complete Motherhood Journey covers this stage too, so once she owns it this page leaves the stage to the bundle home.
+try { var c = JSON.parse(localStorage.getItem('wg_parenting_home') || 'null'); if (!(c && /^\/programs\/complete-motherhood-journey/.test(c.u))) localStorage.setItem('wg_parenting_home', JSON.stringify({u: location.pathname, l: 'First Baby home'})); } catch(e){}
 </script>
 <script src="/assets/petals.js"></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20260915b"></script>
 <script src="/assets/js/wg-share.js?v=20261007a" defer></script>
-<script defer src="/assets/js/wg-app.js?v=20261009k"></script>
-<script defer src="/assets/js/wg-program-home.js?v=20261009g"></script>
+<script defer src="/assets/js/wg-app.js?v=20261009o"></script>
+<script defer src="/assets/js/wg-program-home.js?v=20261009k"></script>
 </body>
 </html>

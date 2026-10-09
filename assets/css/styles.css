@@ -86,14 +86,34 @@ img { max-width: 100%; display: block; }
 .nav-links { display: flex; gap: 26px; align-items: center; list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: var(--plum); font-weight: 700; font-size: .96rem; }
 .nav-links a:hover { color: var(--terracotta-dark); text-decoration: none; }
+/* The five stages sit in one "Stages" menu: it opens on hover or focus on desktop and on a tap; on a phone the open menu lists them. */
+.nav-stages { position: relative; }
+.nav-stages-btn { display: inline-flex; align-items: center; gap: 7px; background: none; border: 0; padding: 6px 0; font: inherit; font-weight: 700; font-size: .96rem; color: var(--plum); cursor: pointer; }
+.nav-stages-btn::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+.nav-stages-menu { display: none; position: absolute; top: calc(100% + 10px); left: -14px; z-index: 60; min-width: 210px; list-style: none; margin: 0; padding: 8px; background: #fff; border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--sticker); }
+.nav-stages-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
+.nav-stages-menu a { display: block; padding: 9px 12px; border-radius: 10px; }
+.nav-stages-menu a:hover { background: var(--olive-t); color: var(--plum); }
+.nav-stages:hover .nav-stages-menu, .nav-stages:focus-within .nav-stages-menu, .nav-stages.open .nav-stages-menu { display: block; }
+.nav-stages:hover .nav-stages-btn::after, .nav-stages.open .nav-stages-btn::after { transform: translateY(1px) rotate(-135deg); }
+@media (max-width: 860px) {
+  .nav-stages { width: 100%; }
+  .nav-stages-btn { pointer-events: none; padding: 0; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--plum-soft); }
+  .nav-stages-btn::after { display: none; }
+  .nav-stages-menu, .nav-stages:hover .nav-stages-menu { display: block; position: static; min-width: 0; padding: 4px 0 0; border: 0; box-shadow: none; background: none; }
+}
 .nav-cta { background: var(--plum); color: var(--white) !important; padding: 9px 18px; border-radius: 999px; }
 .nav-cta:hover { background: #23302A; }
 .nav-toggle { display: none; background: none; border: 0; font-size: 1.5rem; cursor: pointer; color: var(--plum); }
 @media (max-width: 860px) {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
-  .nav-links.open { display: flex; position: absolute; top: 70px; left: 0; right: 0; flex-direction: column; background: var(--cream); padding: 18px 24px; gap: 16px; border-bottom: 1px solid var(--line); }
+  .nav-links.open { display: flex; position: absolute; top: 70px; left: 0; right: 0; flex-direction: column; background: var(--cream); padding: 18px 24px; gap: 16px; border-bottom: 1px solid var(--line); align-items: stretch; text-align: left; max-height: calc(100vh - 70px); overflow-y: auto; }
+  .nav-links.open > li > a:not(.nav-cta) { display: block; }
+  .nav-links.open .nav-cta { display: inline-block; }
+  .nav-stages-menu a { padding: 8px 0; }
 }
+body:has(.nav-links.open) .wg-pill { display: none; }
 
 /* Hero */
 .hero { padding: 72px 0 56px; background: radial-gradient(1000px 500px at 80% -10%, var(--blush), transparent), var(--cream); }
@@ -143,6 +163,11 @@ a.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); text-deco
 .card h3 { margin-bottom: 6px; }
 .card p { color: var(--plum-soft); font-size: .96rem; margin: 0; }
 .card .arrow { color: var(--terracotta-dark); font-weight: 800; margin-top: 14px; display: inline-block; }
+/* In a grid of cards, the arrow link sits at the bottom of every card, so one row of cards ends on one line. */
+.grid > .card:has(> .arrow:last-child) { display: flex; flex-direction: column; }
+.grid > .card:has(> .arrow:last-child) > .tag, .grid > .card:has(> .arrow:last-child) > .arrow { align-self: flex-start; }
+.grid > .stage-card:has(> .arrow:last-child) > .tag, .grid > .stage-card:has(> .arrow:last-child) > .arrow { align-self: center; }
+.grid > .card:has(> .arrow:last-child) > .arrow { margin-top: auto; padding-top: 14px; }
 
 /* Stage band */
 .stage-band { background: var(--cream-2); }

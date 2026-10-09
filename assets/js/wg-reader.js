@@ -5,10 +5,27 @@
   var main = d.querySelector('.rd');
   if (!main) return;
   var KEY = 'wg_read_' + main.getAttribute('data-program');
+  // A single program's reader links back to its own home, unless her Complete Motherhood Journey holds this stage:
+  // then the back link goes to the bundle home, where all four toolkits live.
+  var flag = main.getAttribute('data-flag'), homeLink = d.querySelector('.rd-home');
+  if (flag && homeLink) {
+    try {
+      var held = JSON.parse(w.localStorage.getItem(flag) || 'null');
+      if (held && /^\/programs\/complete-motherhood-journey/.test(held.u)) { homeLink.href = held.u; homeLink.innerHTML = '&larr; Motherhood Journey home'; }
+    } catch (e) {}
+  }
   var body = d.body;
   var st = { done: {}, last: '' };
   try { var saved = JSON.parse(w.localStorage.getItem(KEY)); if (saved && saved.done) st = saved; } catch (e) {}
-  function save() { try { w.localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+  // Besides what she finished, it keeps when she last read, the lesson up next and the total, so other pages
+  // (the site header, the resume pill) can show her place without loading the reader.
+  function save() {
+    try {
+      var nx = upNext(), n = ids.filter(function (id) { return st.done[id]; }).length;
+      st.at = Date.now(); st.total = ids.length; st.n = n; st.next = n < ids.length ? title(nx) : ''; st.nextId = n < ids.length ? nx : '';
+      w.localStorage.setItem(KEY, JSON.stringify(st));
+    } catch (e) {}
+  }
 
   var lessons = [].slice.call(d.querySelectorAll('.rd-lesson'));
   var parts = [].slice.call(d.querySelectorAll('.rd-part'));

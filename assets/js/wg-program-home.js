@@ -3,9 +3,8 @@
    2. "Saved" next to each tool she has saved entries in.
    3. The reading card: "Up next", the progress ring and "Continue reading", from the reader page and her saved place.
    4. The tool icons: each .ph-ico names its drawing in data-ico.
-   5. The homepage strip: when this browser holds a program home, a card under the header takes her back to it,
-      with "Up next" where the program has a reader.
-   The app home (/app/) loads this file too, for WGReading, WGIcons and the Saved marks, and the homepage for 5. */
+   The app home (/app/) loads this file too, for WGReading, WGIcons and the Saved marks. The site remembers a buyer
+   elsewhere (the header menu, the programs blocks and the resume pill) through wg-app.js. */
 (function (w, d) {
   function get(k) { try { return w.localStorage.getItem(k); } catch (e) { return null; } }
 
@@ -95,33 +94,11 @@
         if (n === ls.length) { out.label = 'You have read it all'; out.title = 'Come back to any lesson when you need it.'; out.btn = 'Read it again'; out.href = reader; }
         else if (n || st.last) { out.label = 'Up next \u00b7 ' + next.p; out.title = next.t; out.btn = 'Continue reading'; out.href = reader + '#' + next.id; }
         else { out.title = ls.length + ' short lessons. Your place is saved on this phone.'; out.btn = 'Start reading'; out.href = reader; }
+        out.part = next.p; out.lesson = next.t; out.started = !!(n || st.last) && n < ls.length;
         return out;
       });
     }
   };
-  // 5. The homepage strip. The flags are the ones member-cta.js reads; a program without a reader has no
-  // read page, so WGReading finds no lessons and the card opens her program home instead.
-  var mine = d.getElementById('homeMine');
-  if (mine && w.fetch) {
-    var seen = {};
-    ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
-      var v; try { v = JSON.parse(get(k)); } catch (e) { v = null; }
-      if (!v || !v.u || seen[v.u] || !/^\/programs\/[a-z0-9-]+\/thank-you$/.test(v.u)) return;
-      seen[v.u] = 1;
-      var box = d.createElement('div'); box.className = 'ph-read home-mine-card';
-      box.innerHTML = '<p class="ph-label">Your program</p><h3></h3><p class="muted ph-count" hidden></p><a class="btn btn-primary"></a>';
-      var h = box.querySelector('h3'), sub = box.querySelector('.ph-count'), go = box.querySelector('a');
-      h.textContent = 'Your ' + (v.l || 'program home'); go.href = v.u; go.innerHTML = 'Open your program home &rarr;';
-      mine.firstElementChild.appendChild(box); mine.hidden = false;
-      var reader = v.u.replace(/thank-you$/, 'read');
-      w.WGReading.load(reader, 'wg_read_' + reader.split('/')[2]).then(function (r) {
-        if (!r) return;
-        if (r.label) { sub.textContent = r.label + ': ' + r.title; sub.hidden = false; }
-        go.href = r.href; go.innerHTML = r.btn + ' &rarr;';
-      }).catch(function () {});
-    });
-  }
-
   var card = d.getElementById('phRead'), reader = card && card.getAttribute('data-reader');
   if (!reader || !w.fetch) return;
   w.WGReading.load(reader, card.getAttribute('data-read-key')).then(function (r) {

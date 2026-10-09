@@ -168,6 +168,7 @@
       el.remove(); push('app_prompt_dismissed', surface);
       try { w.localStorage.setItem(DISMISS, String(Date.now())); } catch (e) {}
     });
+    var pl = d.querySelector('.wg-pill'); if (pl) pl.remove();
     d.body.appendChild(el);
     push('app_prompt_shown', surface);
   }
@@ -328,6 +329,142 @@
       d.body.appendChild(t); t.select(); try { d.execCommand('copy'); ok(); } catch (e) {} t.remove();
     }
   }
+
+  // ── Remembering a buyer on the site ──────────────────────────────────────
+  // When this browser holds a program home, the site shows her programs in three places: "My programs" in the site
+  // header on every page that has the menu, her programs in the homepage programs block and on /programs/, and a small
+  // resume pill at the bottom of the screen. Her place comes from what the reader saved (wg_read_<program>).
+  var PROGRAMS = {
+    'wife-material-blueprint': ['The Wife Material Blueprint', 'Blueprint', 'relationships'],
+    'trying-to-conceive-blueprint': ['The Trying-to-Conceive Blueprint', 'Blueprint', 'fertility'],
+    'first-pregnancy-plan': ['The First Pregnancy Plan', 'Plan', 'pregnancy'],
+    'postpartum-reset': ['The 6-Week Postpartum Reset', 'Reset', 'postpartum'],
+    'first-baby-playbook': ['The First Baby Playbook', 'Playbook', 'parenting'],
+    'complete-motherhood-journey': ['The Complete Motherhood Journey', 'Motherhood Journey', '']
+  };
+  var MOTHERHOOD = ['trying-to-conceive-blueprint', 'first-pregnancy-plan', 'postpartum-reset', 'first-baby-playbook'];
+  function readState(slug) {
+    try { var v = JSON.parse(w.localStorage.getItem('wg_read_' + slug) || 'null'); return v && v.done ? v : null; } catch (e) { return null; }
+  }
+  function owned() {
+    return myPrograms().map(function (p) {
+      var slug = p.u.split('/')[2], base = slug.replace(/-diaspora$/, ''), meta = PROGRAMS[base];
+      if (!meta) return null;
+      var st = readState(slug) || {}, reader = '/programs/' + slug + '/read';
+      var n = st.n || 0, total = st.total || 0, started = !!(n || st.last), finished = total && n >= total;
+      return { home: p.u, slug: slug, base: base, name: meta[0], word: meta[1], stage: meta[2], at: st.at || 0, finished: finished, started: started,
+        next: started && !finished ? st.next || '' : '', href: started && !finished && st.nextId ? reader + '#' + st.nextId : reader,
+        btn: finished ? 'Read it again' : started ? 'Continue reading' : 'Start reading' };
+    }).filter(Boolean);
+  }
+  var escHtml = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  function mineStyle() {
+    if (d.getElementById('wg-mine-css')) return;
+    var css = d.createElement('style'); css.id = 'wg-mine-css';
+    css.textContent =
+      '.wg-mine{position:relative}' +
+      '.wg-mine-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;font:inherit;font-weight:700;font-size:.96rem;color:var(--plum,#33322A);cursor:pointer;padding:6px 0}' +
+      '.wg-mine-btn:after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}' +
+      '.wg-mine.open .wg-mine-btn:after{transform:translateY(1px) rotate(-135deg)}' +
+      '.wg-mine-menu{display:none;position:absolute;top:calc(100% + 10px);right:-12px;z-index:60;width:300px;background:#fff;border:2px solid var(--ink,#33322A);border-radius:16px;box-shadow:var(--sticker,5px 5px 0 #33322A);padding:8px}' +
+      '.wg-mine.open .wg-mine-menu{display:block}' +
+      '.wg-mine-item{display:block;padding:10px 12px;border-radius:10px;color:var(--plum,#33322A)!important}.wg-mine-item:hover{background:var(--olive-t,#E3E6CC);text-decoration:none}' +
+      '.wg-mine-item b{display:block;font-size:.95rem;line-height:1.3}.wg-mine-item span{display:block;font-size:.84rem;font-weight:600;color:var(--plum-soft,#6b6a60);margin-top:2px}' +
+      '.wg-mine-item em{display:block;font-style:normal;font-size:.86rem;font-weight:800;color:var(--terracotta,#a0522d);margin-top:4px}' +
+      '.wg-mine-home{display:block;padding:0 12px 10px;font-size:.82rem;font-weight:700;color:var(--plum-soft,#6b6a60)!important}' +
+      '.wg-mine-menu .wg-mine-home:not(:last-child){border-bottom:1px solid var(--line,#e5e2d8);margin-bottom:6px}' +
+      '@media (max-width:860px){.wg-mine{width:100%}.wg-mine-btn{pointer-events:none;padding:0;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--plum-soft,#6b6a60)}.wg-mine-btn:after{display:none}' +
+      '.wg-mine-menu{display:block;position:static;width:auto;border:1.5px solid var(--ink,#33322A);box-shadow:none;margin-top:6px}}' +
+      '.wg-pill{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:55;display:flex;align-items:center;max-width:calc(100% - 32px);background:#fff;border:2px solid var(--ink,#33322A);border-radius:999px;box-shadow:var(--sticker,4px 4px 0 #33322A);animation:wgPill .35s ease}' +
+      '.wg-pill{transition:transform .25s ease,opacity .25s ease}.wg-pill.away{transform:translate(-50%,140%);opacity:0;pointer-events:none}' +
+      '@keyframes wgPill{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}@media (prefers-reduced-motion:reduce){.wg-pill{animation:none}}' +
+      '.wg-pill a{display:flex;align-items:center;gap:10px;padding:8px 6px 8px 8px;font-weight:800;font-size:.95rem;color:var(--plum,#33322A);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wg-pill a:hover{text-decoration:none}' +
+      '.wg-pill img{flex:none;width:30px;height:38px;object-fit:cover;border-radius:4px}' +
+      '.wg-pill button{flex:none;width:36px;height:36px;margin-right:4px;border:0;background:none;font-size:1.3rem;line-height:1;color:var(--plum-soft,#6b6a60);cursor:pointer;border-radius:50%}.wg-pill button:hover{background:var(--olive-t,#E3E6CC)}' +
+      '.wg-own{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--line,#e5e2d8)}.wg-own:first-of-type{border-top:0}' +
+      '.wg-own b{font-family:var(--serif);font-size:1.12rem;font-weight:600}.wg-own span{font-size:.9rem;color:var(--plum-soft,#6b6a60)}.wg-own .btn{justify-self:start;margin-top:6px}' +
+      '.card .tag.wg-yours{background:var(--olive,#6E7A3F);color:#fff}';
+    d.head.appendChild(css);
+  }
+  function cover(base) { return '/assets/img/products/' + (base === 'wife-material-blueprint' ? 'wife-material' : base) + '-cover.webp?v=20261009c'; }
+  function line(p) { return p.finished ? 'You have read it all' : p.next ? 'Up next: ' + p.next : p.started ? 'Pick up where you stopped' : 'Not started yet'; }
+  // 1. "My programs" in the site header, before Programs. On a phone it shows inside the open menu.
+  function headerMenu(list) {
+    var ul = d.querySelector('.site-header .nav-links'), cta = ul && ul.querySelector('.nav-cta');
+    if (!ul || d.querySelector('.wg-mine')) return;
+    var li = d.createElement('li'); li.className = 'wg-mine';
+    li.innerHTML = '<button type="button" class="wg-mine-btn" aria-expanded="false" aria-haspopup="true">My programs</button><div class="wg-mine-menu">' +
+      list.map(function (p) {
+        return '<a class="wg-mine-item" href="' + escHtml(p.href) + '"><b>' + escHtml(p.name) + '</b><span>' + escHtml(line(p)) + '</span><em>' + escHtml(p.btn) + ' &rarr;</em></a>' +
+          '<a class="wg-mine-home" href="' + escHtml(p.home) + '">Program home</a>';
+      }).join('') + '</div>';
+    ul.insertBefore(li, cta ? cta.parentNode : null);
+    var btn = li.querySelector('button');
+    var set = function (on) { li.classList.toggle('open', on); btn.setAttribute('aria-expanded', on ? 'true' : 'false'); };
+    btn.addEventListener('click', function (e) { e.stopPropagation(); set(!li.classList.contains('open')); });
+    d.addEventListener('click', function (e) { if (!li.contains(e.target)) set(false); });
+    d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && li.classList.contains('open')) { set(false); btn.focus(); } });
+  }
+  // 2. The homepage programs block lists her programs, and on /programs/ the cards she owns say "Yours".
+  function programBlocks(list) {
+    var box = d.querySelector('#program .card');
+    if (box) {
+      box.innerHTML = '<span class="tag wg-yours">Yours</span><h3>Your programs</h3>' + list.map(function (p) {
+        return '<div class="wg-own"><b>' + escHtml(p.name) + '</b><span>' + escHtml(line(p)) + '</span><a class="btn btn-primary" href="' + escHtml(p.href) + '">' + escHtml(p.btn) + ' &rarr;</a></div>';
+      }).join('');
+      var more = d.querySelector('#program .hero-actions .btn'); if (more) more.textContent = 'See every program';
+    }
+    if (path.replace(/\/$/, '') !== '/programs') return;
+    var bundle = list.filter(function (p) { return p.base === 'complete-motherhood-journey'; })[0];
+    [].forEach.call(d.querySelectorAll('a.card[href^="/programs/"], a.btn[href^="/programs/complete-motherhood-journey"]'), function (a) {
+      var base = a.getAttribute('href').split('/')[2], mine = list.filter(function (p) { return p.base === base; })[0];
+      var viaBundle = !mine && bundle && MOTHERHOOD.indexOf(base) > -1;
+      if (!mine && !viaBundle) return;
+      var href = mine ? mine.href : '/programs/' + base + (/-diaspora$/.test(bundle.slug) ? '-diaspora' : '') + '/read';
+      a.setAttribute('href', href);
+      var tag = a.querySelector('.tag'); if (tag) { tag.textContent = viaBundle ? 'Yours, in your Motherhood Journey' : 'Yours'; tag.classList.add('wg-yours'); }
+      var arrow = a.querySelector('.arrow'); if (arrow) arrow.innerHTML = (mine ? escHtml(mine.btn) : 'Open it') + ' &rarr;';
+      if (a.classList.contains('btn')) a.innerHTML = escHtml(mine.btn) + ' &rarr;';
+    });
+  }
+  // 3. A small resume pill at the bottom: the program she read most recently. Not inside the app (the tab bar has
+  //    My program), not on her program home or reader, sales pages, bridges or the quiet pages; hidden for the visit with ×.
+  function pill(list) {
+    if (standalone || noPrompt || session('wg_pill_off') || /^\/programs\/[^/]+\/(thank-you|read)$/.test(path) || /^\/app\/?$/.test(path)) return;
+    var p = list.slice().sort(function (a, b) { return b.at - a.at; }).filter(function (x) { return !x.finished; })[0];
+    if (!p) return;
+    setTimeout(function () {
+      if (d.documentElement.classList.contains('show--consent') || d.querySelector('.wg-app-bar')) return;
+      var el = d.createElement('div'); el.className = 'wg-pill'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Your program');
+      el.innerHTML = '<a href="' + escHtml(p.href) + '"><img src="' + cover(p.base) + '" alt="">' + (p.started ? 'Continue your ' : 'Start your ') + escHtml(p.word) + ' &rarr;</a>' +
+        '<button type="button" aria-label="Hide for now">&times;</button>';
+      el.querySelector('button').addEventListener('click', function () { el.remove(); session('wg_pill_off', '1'); push('resume_pill_hidden'); });
+      el.querySelector('a').addEventListener('click', function () { push('resume_pill_click'); });
+      d.body.appendChild(el);
+      // It steps aside while she scrolls down through a page and comes back when she scrolls up, so it never sits
+      // on a tool's own buttons while she uses them.
+      var lastY = w.scrollY;
+      w.addEventListener('scroll', function () {
+        var y = w.scrollY;
+        if (Math.abs(y - lastY) < 8) return;
+        el.classList.toggle('away', y > lastY && y > 120); lastY = y;
+      }, { passive: true });
+    }, 1200);
+  }
+  // The "Stages" menu in the site header opens on a tap (its button carries the toggle); a tap elsewhere or Escape closes it.
+  d.addEventListener('click', function (e) {
+    var open = d.querySelector('.nav-stages.open');
+    if (open && !open.contains(e.target)) { open.classList.remove('open'); open.querySelector('button').setAttribute('aria-expanded', 'false'); }
+  });
+  d.addEventListener('keydown', function (e) {
+    var open = d.querySelector('.nav-stages.open');
+    if (e.key === 'Escape' && open) { open.classList.remove('open'); var b = open.querySelector('button'); b.setAttribute('aria-expanded', 'false'); b.focus(); }
+  });
+  d.addEventListener('DOMContentLoaded', function () {
+    var list = owned();
+    if (!list.length) return;
+    mineStyle(); headerMenu(list); programBlocks(list); pill(list);
+  });
 
   w.WGApp = {
     standalone: standalone, ios: ios, android: android, inApp: inApp, phone: phone, iosBrowser: iosBrowser,

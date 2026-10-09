@@ -35,7 +35,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "assets/data/program-homes.json")
 START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
-ASSET_VERSION = "20261009g"
+ASSET_VERSION = "20261009k"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
@@ -129,20 +129,38 @@ def pdf_link(href, text, cls):
     return f'<a class="{cls}" href="{attr(href)}" target="_blank" rel="noopener">{text}</a>'
 
 
+def kits(h):
+    """The bundle's four toolkits: each row opens that toolkit's reader, and the PDFs stay one tap away underneath."""
+    if not h.get("toolkits"):
+        return ""
+    rows = "".join(
+        f'<a class="ph-tool" href="{attr(k["reader"])}"><span class="ph-ico" data-ico="book" aria-hidden="true"></span><span class="ph-tool-t"><b>{k["title"]}</b>'
+        f'<span>{k["text"]}</span></span><span class="ph-chev" aria-hidden="true">&rsaquo;</span></a>' for k in h["toolkits"])
+    pdfs = "".join(pdf_link(k["href"], k["title"] + " PDF", "") for k in h["toolkits"]).replace('<a class="" ', "<a ")
+    return (f'\n        <div class="ph-read ph-kitlist">\n'
+            f'          <p class="ph-label">Your four toolkits</p>\n'
+            f'          <p class="muted ph-intro">Open each one when you reach that stage.</p>\n'
+            f'          <div class="ph-tools ph-kits">{rows}</div>\n'
+            f'        </div>\n'
+            f'        <div class="ph-pdfs"><p class="muted">Prefer a PDF? Download one:</p>{pdfs}</div>')
+
+
 def reading(h):
     w = word(h)
     if h.get("reader"):
         n, parts = lessons(h["reader"])
         key = "wg_read_" + h["reader"].strip("/").split("/")[1]
-        return (f'<div class="ph-read" id="phRead" data-reader="{h["reader"]}" data-read-key="{key}">\n'
+        size = f"{n} short lessons in {parts} parts" if parts > 1 else f"{n} short lessons"
+        main = (f'<div class="ph-read" id="phRead" data-reader="{h["reader"]}" data-read-key="{key}">\n'
                 f'          <p class="ph-label" id="phLabel">Read your {w}</p>\n'
-                f'          <p class="ph-title" id="phTitle">{n} short lessons in {parts} parts. Your place is saved on this phone.</p>\n'
+                f'          <p class="ph-title" id="phTitle">{size}. Your place is saved on this phone.</p>\n'
                 f'          <div class="ph-prog"><div class="ph-ring" id="phRing" aria-hidden="true"><span>0<small>started</small></span></div>'
                 f'<p class="muted ph-count" id="phCount">Not started yet</p></div>\n'
                 f'          <a class="btn btn-primary btn-lg" id="phGo" href="{h["reader"]}">Start reading &rarr;</a>\n'
                 f'        </div>\n'
                 f'        <p class="ph-links"><a href="{h["reader"]}">See your plan</a>'
                 f'{pdf_link(h["pdf"], "Download the PDF", "")}</p>').replace('<a class="" ', "<a ")
+        return main + kits(h)
     if h.get("toolkits"):
         rows = "".join(
             f'<a class="ph-tool" href="{attr(k["href"])}" target="_blank" rel="noopener"><span class="ph-ico" data-ico="book" aria-hidden="true"></span><span class="ph-tool-t"><b>{k["title"]}</b>'
@@ -189,7 +207,7 @@ def block(m, h):
     extra = f'\n      <p style="margin-top:10px;">{sh["extra"]}</p>' if sh.get("extra") else ""
     community = f'\n    <section class="ph-sec">{card(h["community"])}</section>' if h.get("community") else ""
     nxt = f'\n    <section class="ph-sec">{card(h["cross_sell"])}</section>' if h.get("cross_sell") else ""
-    code = (f'\n    <section class="ph-sec ph-code" style="text-align:center;padding-top:0">'
+    code = (f'\n    <section class="ph-sec ph-code" style="text-align:center;padding-top:14px">'
             f'<p class="muted" style="margin:0">Your program code: <b>{h["code"]}</b></p>'
             f'<p class="muted" style="margin:6px auto 0;max-width:54ch;font-size:.9rem">Use it to add this program to the Girlies app on another phone, '
             f'or if you added the app before you bought.</p></section>')
@@ -216,7 +234,7 @@ def block(m, h):
     </section>
   </div>
   <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
-  <div class="wrap narrow">{community}
+  <div class="wrap narrow">{code}{community}
     <section class="ph-sec">
       <h2>Your tools</h2>
       {tools(m, h)}
@@ -232,7 +250,7 @@ def block(m, h):
       <div class="wg-share" data-share-id="{sh["id"]}" data-share-surface="thank_you" data-share-path="{sh["path"]}" data-share-align="center"
            data-share-text="{sh["share_text"]}"></div>
       <p class="muted" style="font-size:.85rem;margin-top:14px;">Your friend sees the program page. Nothing about you or your purchase is shared.</p>{extra}
-    </section>{code}
+    </section>
   </div>
 </main>
 {END}"""

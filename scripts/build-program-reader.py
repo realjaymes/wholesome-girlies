@@ -10,6 +10,7 @@ parts out as a plan of cards, each with its own progress bar, that opens into on
 Edit the manuscript in the vault, never the page, then run:  python3 scripts/build-program-reader.py [slug ...]
 """
 import html
+import json
 import os
 import re
 import sys
@@ -17,13 +18,36 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OFFERS = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Offers")
 SITE = "https://wholesomegirlies.xyz"
-READER_VERSION = "20261009h"
+READER_VERSION = "20261009k"
+COVERS = "/assets/img/products/{}-cover.webp?v=20261009c"
+# One manuscript per program. The diaspora home reads the same manuscript; its reader only links back to the diaspora home.
 PROGRAMS = {
     "wife-material-blueprint": {
         "folder": "The Wife Material Blueprint", "stage": "relationships", "book": "Blueprint",
         "home": "Wife Material home", "cover": "/assets/img/products/wife-material-cover.webp?v=20261009a",
     },
+    "trying-to-conceive-blueprint": {
+        "folder": "The Trying-to-Conceive Blueprint", "stage": "fertility", "book": "Blueprint",
+        "home": "Conception home", "cover": COVERS.format("trying-to-conceive-blueprint"), "flag": "wg_fertility_home",
+    },
+    "first-pregnancy-plan": {
+        "folder": "The First Pregnancy Plan", "stage": "pregnancy", "book": "Plan",
+        "home": "Pregnancy home", "cover": COVERS.format("first-pregnancy-plan"), "flag": "wg_pregnancy_home",
+    },
+    "postpartum-reset": {
+        "folder": "The 6-Week Postpartum Reset", "stage": "postpartum", "book": "Reset",
+        "home": "Postpartum home", "cover": COVERS.format("postpartum-reset"), "flag": "wg_pp_home",
+    },
+    "first-baby-playbook": {
+        "folder": "The First Baby Playbook", "stage": "parenting", "book": "Playbook",
+        "home": "First Baby home", "cover": COVERS.format("first-baby-playbook"), "flag": "wg_parenting_home",
+    },
+    "complete-motherhood-journey": {
+        "folder": "The Complete Motherhood Journey", "stage": "fertility", "book": "Complete Motherhood Journey",
+        "home": "Motherhood Journey home", "cover": COVERS.format("complete-motherhood-journey"),
+    },
 }
+PROGRAMS.update({k + "-diaspora": v for k, v in list(PROGRAMS.items())})
 
 
 def slugify(s):
@@ -40,19 +64,44 @@ def inline(s):
     return s
 
 
+def toolkit_readers():
+    """Drive file id of each toolkit PDF -> that program's slug, so a manuscript link to a toolkit PDF opens its reader."""
+    with open(os.path.join(ROOT, "assets", "data", "program-homes.json"), encoding="utf-8") as f:
+        homes = json.load(f)["homes"]
+    out = {}
+    for slug, h in homes.items():
+        m = re.search(r"drive\.google\.com/file/d/([\w-]+)", h.get("pdf", ""))
+        if m and not slug.endswith("-diaspora") and slug in PROGRAMS:
+            out[m.group(1)] = slug
+    return out
+
+
+TOOLKITS = {}
+MARKET = {"suffix": ""}  # "-diaspora" while a diaspora reader is built, so its toolkit links stay in that market
+
+
 def local(url):
+    m = re.search(r"drive\.google\.com/file/d/([\w-]+)", url)
+    if m and m.group(1) in TOOLKITS:
+        return f"/programs/{TOOLKITS[m.group(1)]}{MARKET['suffix']}/read"
     return url[len(SITE):] or "/" if url.startswith(SITE) else url
 
 
 def ext(url):
-    return "" if url.startswith((SITE, "/")) else ' target="_blank" rel="noopener"'
+    return "" if local(url).startswith("/") else ' target="_blank" rel="noopener"'
 
 
 def blocks(lines):
     """Turns markdown lines into HTML blocks: paragraphs, lists, tool callouts and question-and-answer pairs."""
-    out, para, items = [], [], []
+    out, para, items, rows = [], [], [], []
 
     def flush():
+        if rows:
+            cells = [[c.strip() for c in r.strip().strip("|").split("|")] for r in rows if not re.match(r"^\|[-:| ]+\|?$", r.strip())]
+            head = "".join(f"<th>{inline(c)}</th>" for c in cells[0])
+            trs = "".join("<tr>" + "".join(f'<td data-label="{html.escape(h, quote=True)}">{inline(c)}</td>' for h, c in zip(cells[0], r)) + "</tr>" for r in cells[1:])
+            out.append(f'<div class="rd-table"><table><thead><tr>{head}</tr></thead><tbody>{trs}</tbody></table></div>')
+            rows.clear()
         if para:
             text = "\n".join(para)
             q = re.match(r"\*\*(.+?\?)\*\*\n(.+)", text, re.S)
@@ -72,6 +121,13 @@ def blocks(lines):
     for line in lines:
         if not line.strip() or line.strip() == "---":
             flush()
+        elif line.startswith("|"):
+            if para or items:
+                flush()
+            rows.append(line)
+        elif rows:
+            flush()
+            para.append(line.rstrip())
         elif line.startswith("### "):
             flush()
             out.append(f"<h4>{inline(line[4:].strip())}</h4>")
@@ -120,6 +176,7 @@ def parse(path):
 
 
 def page(slug, cfg):
+    MARKET["suffix"] = "-diaspora" if slug.endswith("-diaspora") else ""
     folder = os.path.join(OFFERS, cfg["folder"], "02 - Deliverables")
     path = next(os.path.join(folder, f) for f in sorted(os.listdir(folder)) if f.endswith("Manuscript.md"))
     title, sub, parts = parse(path)
@@ -142,6 +199,7 @@ def page(slug, cfg):
         toc.append(f'<div class="rd-toc-part" data-part="{pid}"><p class="rd-toc-title"><span>{inline(p["title"])}</span><span class="rd-count"></span></p><ol>{"".join(links)}</ol></div>')
         body.append(f'<section class="rd-part" id="{pid}"><header class="rd-part-head"><h2>{inline(p["title"])}</h2><p class="rd-part-meta"></p><div class="rd-part-bar" aria-hidden="true"><span></span></div></header>\n'
                     + (f'<div class="rd-intro">{intro}</div>\n' if intro else "") + "\n".join(arts) + "\n</section>")
+    flag = f' data-flag="{cfg["flag"]}"' if cfg.get("flag") else ""
     tpl = open(os.path.join(ROOT, "programs", slug, "thank-you.html"), encoding="utf-8").read()
     headtop = tpl[:tpl.index("<!-- No-crawl")]
     head_tail = re.search(r'<link rel="preconnect".*?<link rel="stylesheet" href="/assets/css/styles\.css[^>]*>', tpl, re.S).group(0)
@@ -167,7 +225,7 @@ def page(slug, cfg):
   <div class="rd-bar" aria-hidden="true"><span></span></div>
 </header>
 
-<main class="rd" data-program="{slug}" data-total="{n}">
+<main class="rd" data-program="{slug}" data-total="{n}"{flag}>
 <div class="wrap rd-plan-page">
 <section class="rd-hero">
   <img class="rd-cover" src="{cfg["cover"]}" width="480" height="600" alt="Cover of {html.escape(title)}">
@@ -205,6 +263,7 @@ def page(slug, cfg):
 
 
 def main():
+    TOOLKITS.update(toolkit_readers())
     for slug in sys.argv[1:] or PROGRAMS:
         out = os.path.join(ROOT, "programs", slug, "read.html")
         s = page(slug, PROGRAMS[slug])

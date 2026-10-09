@@ -274,7 +274,8 @@
     "share_text": "Dating with marriage in mind? This plan shows how to read a man early and move a good one forward. No games.",
     "path": "/programs/wife-material-blueprint",
     "id": "wife-material-blueprint"
-   }
+   },
+   "reader": "/programs/wife-material-blueprint-diaspora/read"
   },
   "trying-to-conceive-blueprint": {
    "slug": "trying-to-conceive-blueprint",
@@ -303,8 +304,8 @@
    "cross_sell": {
     "eyebrow": "The whole journey, for less",
     "h2": "Want pregnancy and the baby years ready before you need them?",
-    "text": "The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
-    "href": "/programs/complete-motherhood-journey",
+    "text": "The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+    "href": "/programs/complete-motherhood-journey?coupon=MOTHER",
     "button": "See the Complete Motherhood Journey &rarr;"
    },
    "share": {
@@ -313,7 +314,8 @@
     "share_text": "A plan for women trying for a first baby. It explains the cycle, how to prepare, and what to ask the doctor.",
     "path": "/programs/trying-to-conceive-blueprint",
     "id": "trying-to-conceive-blueprint"
-   }
+   },
+   "reader": "/programs/trying-to-conceive-blueprint/read"
   },
   "trying-to-conceive-blueprint-diaspora": {
    "slug": "trying-to-conceive-blueprint-diaspora",
@@ -342,8 +344,8 @@
    "cross_sell": {
     "eyebrow": "The whole journey, for less",
     "h2": "Want pregnancy and the baby years covered too?",
-    "text": "The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
-    "href": "/programs/complete-motherhood-journey-diaspora",
+    "text": "The Complete Motherhood Journey adds pregnancy, the months after birth, and the baby years to what you have, ready for whenever you reach them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+    "href": "/programs/complete-motherhood-journey-diaspora?coupon=MOTHER",
     "button": "See the Complete Motherhood Journey &rarr;"
    },
    "share": {
@@ -352,7 +354,8 @@
     "share_text": "A step-by-step plan for trying for a first baby: understand the cycle, prepare the body, and know what to ask the doctor.",
     "path": "/programs/trying-to-conceive-blueprint",
     "id": "trying-to-conceive-blueprint"
-   }
+   },
+   "reader": "/programs/trying-to-conceive-blueprint-diaspora/read"
   },
   "first-pregnancy-plan": {
    "slug": "first-pregnancy-plan",
@@ -381,8 +384,8 @@
    "cross_sell": {
     "eyebrow": "The whole journey, for less",
     "h2": "Want the other stages ready before you reach them?",
-    "text": "The Complete Motherhood Journey adds the stages before and after pregnancy, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
-    "href": "/programs/complete-motherhood-journey",
+    "text": "The Complete Motherhood Journey adds the stages before and after pregnancy, ready for whenever you reach them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+    "href": "/programs/complete-motherhood-journey?coupon=MOTHER",
     "button": "See the Complete Motherhood Journey &rarr;"
    },
    "share": {
@@ -391,7 +394,8 @@
     "share_text": "Expecting a first baby? This week-by-week plan explains what&#x27;s normal, what&#x27;s safe to eat, and when to call the doctor.",
     "path": "/programs/first-pregnancy-plan",
     "id": "first-pregnancy-plan"
-   }
+   },
+   "reader": "/programs/first-pregnancy-plan/read"
   },
   "first-pregnancy-plan-diaspora": {
    "slug": "first-pregnancy-plan-diaspora",
@@ -420,8 +424,8 @@
    "cross_sell": {
     "eyebrow": "The whole journey, for less",
     "h2": "Want the other three stages too?",
-    "text": "The Complete Motherhood Journey brings all four stages together, ready for whenever you reach them. As a member, use the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong> at checkout for your member discount on the bundle.",
-    "href": "/programs/complete-motherhood-journey-diaspora",
+    "text": "The Complete Motherhood Journey brings all four stages together, ready for whenever you reach them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+    "href": "/programs/complete-motherhood-journey-diaspora?coupon=MOTHER",
     "button": "See the Complete Motherhood Journey &rarr;"
    },
    "share": {
@@ -430,7 +434,8 @@
     "share_text": "Expecting a first baby? This week-by-week plan explains what&#x27;s normal, what&#x27;s safe to eat, and when to call the doctor.",
     "path": "/programs/first-pregnancy-plan",
     "id": "first-pregnancy-plan"
-   }
+   },
+   "reader": "/programs/first-pregnancy-plan-diaspora/read"
   },
   "postpartum-reset": {
    "slug": "postpartum-reset",
@@ -469,7 +474,8 @@
     "share_text": "A 6-week plan for the weeks after birth. It covers body, marriage and mind, with no pressure to look like before and no shame.",
     "path": "/programs/postpartum-reset",
     "id": "postpartum-reset"
-   }
+   },
+   "reader": "/programs/postpartum-reset/read"
   },
   "postpartum-reset-diaspora": {
    "slug": "postpartum-reset-diaspora",
@@ -508,7 +514,8 @@
     "share_text": "For the weeks after birth: one plan for body, marriage and mind, with no bounce-back pressure and no shame.",
     "path": "/programs/postpartum-reset",
     "id": "postpartum-reset"
-   }
+   },
+   "reader": "/programs/postpartum-reset-diaspora/read"
   },
   "first-baby-playbook": {
    "slug": "first-baby-playbook",
@@ -541,7 +548,8 @@
     "path": "/programs/first-baby-playbook",
     "id": "first-baby-playbook",
     "extra": "<a href=\"/programs/\">See all the programs &rarr;</a>"
-   }
+   },
+   "reader": "/programs/first-baby-playbook/read"
   },
   "first-baby-playbook-diaspora": {
    "slug": "first-baby-playbook-diaspora",
@@ -574,7 +582,8 @@
     "path": "/programs/first-baby-playbook",
     "id": "first-baby-playbook",
     "extra": "<a href=\"/programs/\">See all the programs &rarr;</a>"
-   }
+   },
+   "reader": "/programs/first-baby-playbook-diaspora/read"
   },
   "complete-motherhood-journey": {
    "slug": "complete-motherhood-journey",
@@ -597,25 +606,29 @@
      "title": "The Trying-to-Conceive Blueprint",
      "text": "For the trying stage. It covers your body, your cycle and when to get help.",
      "href": "https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link",
-     "button": "Open the Blueprint &rarr;"
+     "button": "Open the Blueprint &rarr;",
+     "reader": "/programs/trying-to-conceive-blueprint/read"
     },
     {
      "title": "The First Pregnancy Plan",
      "text": "It covers what is normal each week, what to eat, and getting ready for birth.",
      "href": "https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link",
-     "button": "Open the Plan &rarr;"
+     "button": "Open the Plan &rarr;",
+     "reader": "/programs/first-pregnancy-plan/read"
     },
     {
      "title": "The 6-Week Postpartum Reset",
      "text": "It covers healing, feeding, rest and your mind in the first weeks after birth.",
      "href": "https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link",
-     "button": "Open the Reset &rarr;"
+     "button": "Open the Reset &rarr;",
+     "reader": "/programs/postpartum-reset/read"
     },
     {
      "title": "The First Baby Playbook",
      "text": "It covers sleep, feeding and solids, milestones and what is normal.",
      "href": "https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link",
-     "button": "Open the Playbook &rarr;"
+     "button": "Open the Playbook &rarr;",
+     "reader": "/programs/first-baby-playbook/read"
     }
    ],
    "community": {
@@ -637,7 +650,8 @@
     "path": "/programs/complete-motherhood-journey",
     "id": "complete-motherhood-journey"
    },
-   "guide": "parenting"
+   "guide": "parenting",
+   "reader": "/programs/complete-motherhood-journey/read"
   },
   "complete-motherhood-journey-diaspora": {
    "slug": "complete-motherhood-journey-diaspora",
@@ -660,25 +674,29 @@
      "title": "The Trying-to-Conceive Blueprint",
      "text": "For the trying stage. It covers your body, your cycle and when to get help.",
      "href": "https://drive.google.com/file/d/1yEa4RLrzEBMEkzC5ZWMAPj_fR-1-dQvs/view?usp=drive_link",
-     "button": "Open the Blueprint &rarr;"
+     "button": "Open the Blueprint &rarr;",
+     "reader": "/programs/trying-to-conceive-blueprint-diaspora/read"
     },
     {
      "title": "The First Pregnancy Plan",
      "text": "For pregnancy. It covers what is normal week by week, what to eat and how to get ready for birth.",
      "href": "https://drive.google.com/file/d/1QVGTJ3n6xfjUNFjm8uO1O6Qkw0DhBtFX/view?usp=drive_link",
-     "button": "Open the Plan &rarr;"
+     "button": "Open the Plan &rarr;",
+     "reader": "/programs/first-pregnancy-plan-diaspora/read"
     },
     {
      "title": "The 6-Week Postpartum Reset",
      "text": "For the first weeks after birth. It covers healing, feeding, rest and your mind.",
      "href": "https://drive.google.com/file/d/1FWQQuaRTOfsxo9Y2Sini_YxhJ5ooX0B2/view?usp=drive_link",
-     "button": "Open the Reset &rarr;"
+     "button": "Open the Reset &rarr;",
+     "reader": "/programs/postpartum-reset-diaspora/read"
     },
     {
      "title": "The First Baby Playbook",
      "text": "For the baby years. It covers sleep, feeding and solids, milestones, and what is normal.",
      "href": "https://drive.google.com/file/d/1Ue998-X6wrP6HTNtXRy_YRG-GP80rAdX/view?usp=drive_link",
-     "button": "Open the Playbook &rarr;"
+     "button": "Open the Playbook &rarr;",
+     "reader": "/programs/first-baby-playbook-diaspora/read"
     }
    ],
    "community": {
@@ -700,7 +718,8 @@
     "path": "/programs/complete-motherhood-journey",
     "id": "complete-motherhood-journey"
    },
-   "guide": "parenting"
+   "guide": "parenting",
+   "reader": "/programs/complete-motherhood-journey-diaspora/read"
   }
  }
 }

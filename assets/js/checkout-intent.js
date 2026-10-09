@@ -208,4 +208,55 @@
     open(k); // show the form, prefilled with "Not you?" when details were saved on this device
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* ── member coupon on the bundle ────────────────────────────────────────────
+   * A Trying-to-Conceive or First Pregnancy Plan buyer gets the MOTHER coupon (35% off) on the Complete
+   * Motherhood Journey. She counts as a member when her program home saved its flag on this device, or when she
+   * came from that home's bundle card (?coupon=MOTHER). Every bundle buy button then carries &coupon=MOTHER, which
+   * Selar applies at checkout, and the price card tells her the code and her price. A bundle owner and every other
+   * visitor see the plain price. */
+  var COUPON = 'MOTHER', COUPON_OFF = 0.35;
+  function couponMember() {
+    var single = false, bundle = false;
+    ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
+      try {
+        var v = JSON.parse(localStorage.getItem(k) || 'null'), u = (v && v.u) || '';
+        if (/^\/programs\/complete-motherhood-journey/.test(u)) bundle = true;
+        else if (/^\/programs\/(trying-to-conceive-blueprint|first-pregnancy-plan)(-diaspora)?\/thank-you/.test(u)) single = true;
+      } catch (e) {}
+    });
+    var fromHome = new URLSearchParams(location.search).get('coupon') === COUPON;
+    return !bundle && (single || fromHome);
+  }
+  function memberPrice(text) {
+    var m = (text || '').match(/([₦$])\s*([\d,]+(?:\.\d+)?)/);
+    if (!m) return '';
+    var n = parseFloat(m[2].replace(/,/g, '')) * (1 - COUPON_OFF);
+    return m[1] + (Math.abs(n - Math.round(n)) < 0.005 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2));
+  }
+  function applyCoupon() {
+    var links = document.querySelectorAll('a[href*="selar.com/completemotherhoodjourney"]');
+    if (!links.length || !couponMember()) return;
+    [].forEach.call(links, function (a) {
+      try { var url = new URL(a.getAttribute('href')); url.searchParams.set('coupon', COUPON); a.setAttribute('href', url.toString()); } catch (e) {}
+    });
+    // The buy buttons and the sticky bar show her price; the "bought one by one" sum stays as it is.
+    var plain = ((document.querySelector('.price') || {}).textContent || '').trim(), mine = memberPrice(plain);
+    if (plain && mine) {
+      [].forEach.call(document.querySelectorAll('a[href*="selar.com/completemotherhoodjourney"], .sc-price'), function (el) {
+        var walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n;
+        while ((n = walk.nextNode())) if (n.nodeValue.indexOf(plain) >= 0) n.nodeValue = n.nodeValue.replace(plain, mine);
+      });
+    }
+    [].forEach.call(document.querySelectorAll('.price'), function (p) {
+      var price = memberPrice(p.textContent);
+      if (!price || p.parentNode.querySelector('.wg-member-price')) return;
+      var note = document.createElement('p');
+      note.className = 'wg-member-price';
+      note.style.cssText = 'margin:8px 0 0;padding:10px 12px;border:2px solid var(--ink,#33322A);border-radius:12px;background:var(--mustard-t,#F6E4BC);color:var(--ink,#33322A);font-weight:700;font-size:.92rem;';
+      note.innerHTML = 'Your member code <strong>' + COUPON + '</strong> gives you ' + Math.round(COUPON_OFF * 100) + '% off. We add it at checkout, so you pay ' + price + '.';
+      p.parentNode.insertBefore(note, p.nextSibling);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyCoupon); else applyCoupon();
 })();
