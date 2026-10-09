@@ -583,6 +583,12 @@ if os.path.isdir(VIDEO_DIR):
         rel = f.split("AI Video/")[1]
         if rel not in filmed:
             warn(rel, "tool short brief has no entry in assets/data/tool-shorts.json yet (rendering pending); publish-to-site adds it")
+    # Every tool short has a matching carousel: a ```carousel block and a "## Carousel post caption" in the
+    # same brief, built by the motion kit's build-carousels.mjs. Advisory until the backlog is written.
+    for f in video_briefs("*Tool Short*.md"):
+        text = read(f)
+        if "```carousel" not in text or "## Carousel post caption" not in text:
+            warn(f.split("AI Video/")[1], "tool short brief has no carousel yet: add the ```carousel block and \"## Carousel post caption\" (see _Video Brief Template), then run build-carousels.mjs")
 for p in PAGES:
     if KIND[p] in ("PROG", "PROG-D") and "Who guides you" in SRC[p]:
         fail(p, 'no "Who guides you" credentials section on sales pages: they stay lean (CLAUDE.md section 4)')

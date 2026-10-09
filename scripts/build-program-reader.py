@@ -148,6 +148,8 @@ def blocks(lines):
 def parse(path):
     text = open(path, encoding="utf-8").read()
     text = re.sub(r"\A---\n.*?\n---\n", "", text, flags=re.S)
+    # The program code line in the title block is for page 1 of the PDF; the program home already shows her code.
+    text = re.sub(r"^(\*\*)?Your program code:.*\n", "", text, flags=re.M)
     lines = text.split("\n")
     title = next(l[2:].strip() for l in lines if l.startswith("# "))
     start = lines.index("# " + title) + 1
