@@ -185,7 +185,8 @@
 
   // 1. On a tool, after she saves an entry (only when her entries are kept on this device).
   // wg_played_v1 (the finished-games marker) is not a saved entry, so it never offers the install bar.
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_)(?!.*_home$)/;
+  // wg_name_v1 (her name) is not a saved entry either.
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$)(?!.*_home$)/;
   if (/\/tools\//.test(path) && w.Storage) {
     var set = w.Storage.prototype.setItem;
     w.Storage.prototype.setItem = function (k, v) {
@@ -335,6 +336,29 @@
     w.wgShowResult.wgHooked = true;
   }
   hookResult(); d.addEventListener('DOMContentLoaded', hookResult);
+
+  // ── Her name ───────────────────────────────────────────
+  // wg_name_v1 = {"v":1,"name":"Ada","asked":true}. She is asked once on the app home; saving or skipping sets asked,
+  // and removing her name keeps asked, so the question never comes back. The name stays on her phone: it is never
+  // sent anywhere, never in the dataLayer, a URL or a share line, and it is not a saved entry (TOOL_KEY skips it).
+  // It travels in the backup because savedKeys() packs every wg_ key. Pages show it with textContent only, and never
+  // on the quiet pages or inside the sensitive check-ins.
+  var NAME_KEY = 'wg_name_v1', NAME_MAX = 30;
+  var NAME_QUIET = /mind-check-in|the-wait-check-in|warning-signs|loss|miscarriage|stillbirth/;
+  function cleanName(v) {
+    return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, NAME_MAX).trim();
+  }
+  function nameState() {
+    try {
+      var o = JSON.parse(w.localStorage.getItem(NAME_KEY) || 'null');
+      if (o && typeof o === 'object' && o.v === 1) { var n = cleanName(o.name); return { name: n, asked: !!o.asked || !!n }; }
+    } catch (e) {}
+    return { name: '', asked: false };
+  }
+  function nameWrite(n) {
+    try { w.localStorage.setItem(NAME_KEY, JSON.stringify({ v: 1, name: n, asked: true })); return nameState().asked; } catch (e) { return false; }
+  }
+  function herName() { return QUIET.indexOf(path.replace(/\/$/, '')) > -1 || NAME_QUIET.test(path) ? '' : nameState().name; }
 
   // ── Saved entries: backup and restore ──────────────────
   function savedKeys() {
@@ -494,6 +518,17 @@
     var open = d.querySelector('.nav-stages.open');
     if (e.key === 'Escape' && open) { open.classList.remove('open'); var b = open.querySelector('button'); b.setAttribute('aria-expanded', 'false'); b.focus(); }
   });
+  // The Birth Plan Builder starts its "Your name" field with her saved name. It only fills an empty field, and it does
+  // not save anything: the plan's own entry is written when she types or changes a field.
+  d.addEventListener('DOMContentLoaded', function () {
+    if (path !== '/pregnancy/tools/birth-plan-builder') return;
+    var f = d.getElementById('name'), n = herName();
+    if (!f || !n || f.value) return;
+    f.value = n;
+    var note = d.createElement('p'); note.className = 'muted'; note.style.cssText = 'font-size:.85rem;margin:6px 0 0';
+    note.textContent = 'Filled in from your saved name. You can change it for this plan only.';
+    f.parentNode.appendChild(note);
+  });
   d.addEventListener('DOMContentLoaded', function () {
     var list = owned();
     if (!list.length) return;
@@ -505,6 +540,11 @@
     install: install,
     appWords: appWords,
     savedKeys: savedKeys,
+    name: herName,
+    nameState: nameState,
+    setName: function (raw) { var n = cleanName(raw); return n ? nameWrite(n) : false; },
+    skipName: function () { return nameWrite(nameState().name); },
+    removeName: function () { return nameWrite(''); },
     remembering: function () { return !w.WGConsent || !w.WGConsent.state || !!w.WGConsent.state.remember; },
     downloadBackup: function () {
       var blob = new Blob([JSON.stringify(pack(), null, 1)], { type: 'application/json' });

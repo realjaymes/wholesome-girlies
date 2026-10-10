@@ -89,7 +89,7 @@ button.big{background:var(--rust);text-align:center}
 
   var SCENARIOS = [
     {id: 'new', title: 'New visitor, nothing saved', set: function(s){},
-      expect: 'The five stage cards under Wherever you are, start here. No program picks.',
+      expect: 'The five stage cards under Wherever you are, start here. No program picks. A What should we call you? card under the greeting, with Save and Not now (once only).',
       go: [['Open the app home', '/app/']]},
     {id: 'fert', title: 'Fertility tools saved', set: function(s){ saved(s, 'fert'); },
       expect: 'One pick: The Trying-to-Conceive Blueprint. No bundle line.',
@@ -129,7 +129,19 @@ button.big{background:var(--rust);text-align:center}
       go: [['Period Tracker', '/fertility/tools/period-tracker'], ['Ovulation Calculator', '/fertility/tools/ovulation-calculator'], ['Due Date Calculator', '/pregnancy/tools/due-date-calculator'],
         ['Week-by-Week Tracker', '/pregnancy/tools/week-by-week-tracker'], ['Birth Plan Builder', '/pregnancy/tools/birth-plan-builder'],
         ['Recovery Timeline Calculator', '/postpartum/tools/recovery-timeline-calculator'], ['Milestone Tracker', '/parenting/tools/milestone-tracker'],
-        ['Baby Routine Planner', '/parenting/tools/baby-routine-planner'], ['Baby Name Explorer', '/parenting/tools/baby-name-explorer']]}
+        ['Baby Routine Planner', '/parenting/tools/baby-routine-planner'], ['Baby Name Explorer', '/parenting/tools/baby-name-explorer']]},
+    {id: 'namefirst', title: 'First open: you will be asked your name', set: function(s){},
+      expect: 'The app home, as the installed app, greets you with You are set and shows a What should we call you? card under it, with Save and Not now. Save once and the greeting adds your name. Not now hides the card for good.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed']]},
+    {id: 'name', title: 'Name saved: Ada', set: function(s){ s.wg_name_v1 = JSON.stringify({v: 1, name: 'Ada', asked: true}); },
+      expect: 'The app home greets her by name (You are set, Ada, then Welcome back, Ada) and no longer asks. After you take the Girl\'s Girl quiz the result starts Ada, you are, with a Put my name on my result card box unticked under it: tick it and the preview picture says ADA\'S RESULT. The Birth Plan Builder starts with Ada in its name field. The Mind Check-in shows no name. Under Back up or restore on the app home you can change the name or remove it.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed'], ['Open Are You a Girl\'s Girl?', '/relationships/tools/girls-girl-quiz'], ['Open the Birth Plan Builder', '/pregnancy/tools/birth-plan-builder'], ['Open the Mind Check-in (no name)', '/postpartum/tools/mind-check-in']]},
+    {id: 'namebuyer', title: 'Ada as a buyer', set: function(s){ s.wg_name_v1 = JSON.stringify({v: 1, name: 'Ada', asked: true}); flag(s, HOMES.preg); },
+      expect: 'App home: Welcome back, Ada (or You are set, Ada), with her Pregnancy program first. Her Pregnancy home: the heading starts Ada, your Plan, your community and your tools are all here, with Zainab beside it.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed'], ['Open her Pregnancy home', '/programs/first-pregnancy-plan/thank-you']]},
+    {id: 'nameskip', title: 'Name skipped', set: function(s){ s.wg_name_v1 = JSON.stringify({v: 1, name: '', asked: true}); },
+      expect: 'The app home shows no What should we call you? card and no name in the greeting. Under Back up or restore she can still add a name, and Remove my name is not shown.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed']]}
   ];
 
   // ---- storage helpers (every call wrapped) ----
@@ -174,7 +186,7 @@ button.big{background:var(--rust);text-align:center}
     list.appendChild(card);
   });
   var nm = document.createElement('section'); nm.className = 'card'; nm.id = 'names';
-  nm.innerHTML = '<h2>Your name options (ideas, not live yet)</h2><p class="expect">You should see: the name ideas page. It changes nothing on this phone.</p><a href="/lab/names/" style="display:block;min-height:46px;padding:10px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--white);color:var(--ink);font-weight:700;box-shadow:2px 2px 0 var(--ink);text-decoration:none">Open the name options \u2192</a>';
+  nm.innerHTML = '<h2>Her name options (Option A chosen and live)</h2><p class="expect">You should see: the name options page, with Option A marked chosen and live. Options B and C stay there for reference. It changes nothing on this phone.</p><a href="/lab/names/" style="display:block;min-height:46px;padding:10px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--white);color:var(--ink);font-weight:700;box-shadow:2px 2px 0 var(--ink);text-decoration:none">Open the name options \u2192</a>';
   list.appendChild(nm);
   $('restore').addEventListener('click', function(){
     if (!LS) return;

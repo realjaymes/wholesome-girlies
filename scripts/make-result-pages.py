@@ -209,11 +209,53 @@ JS = """// Share a quiz or checker result. Written by scripts/make-result-pages.
 // Tool pages call wgShowResult("<result>") after scoring (or wgShowResult(null) to hide it), and carry an
 // empty <div id="wg-result-share"></div> inside the result panel. The share link points at the result page,
 // /<stage>/tools/<tool>/result/<result>, whose link preview is the result card. Her answers never leave the page.
+// Her name (WGApp.name(), saved on her phone only) leads the headline on her own screen when it starts "I am" or "I'm".
+// It goes on the Status picture only when she ticks "Put my name on my result card" (off every time): the picture is
+// drawn on her phone, and the share link and the share text never carry it.
 (function () {
   var DATA = __DATA__;
   var V = "__V__";
   function tool() { var m = location.pathname.match(/\\/tools\\/([^\\/?#.]+)/); return m && m[1]; }
   function push(ev, id) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: ev, share_item: id, share_surface: "result" }); }
+  function herName() { try { return (window.WGApp && window.WGApp.name && window.WGApp.name()) || ""; } catch (e) { return ""; } }
+  function style() {
+    if (document.getElementById("wg-name-style")) return;
+    var st = document.createElement("style"); st.id = "wg-name-style";
+    st.textContent = ".wg-namecard{display:grid;grid-template-columns:104px 1fr;gap:14px;align-items:start;margin:14px 0 0}.wg-namecard img{display:block;width:104px;height:auto;border:2px solid var(--ink,#33322A);border-radius:12px;background:var(--cream,#FBF8EF)}.wg-namecheck{display:flex;gap:8px;align-items:flex-start;font-weight:800;font-size:.95rem;line-height:1.3;cursor:pointer}.wg-namecheck input{width:20px;height:20px;margin-top:1px;accent-color:var(--terracotta,#6E7A3F);flex:none}";
+    document.head.appendChild(st);
+  }
+  // Her own screen: "I am a certified girl's girl." becomes "Ada, you are a certified girl's girl."
+  function lead(box, n) {
+    var res = box.closest(".result") || box.parentNode, h = res && res.querySelector(".big");
+    if (!h || !n) return;
+    var m = /^I(?: am|'m) (.*)$/.exec(h.textContent.trim());
+    if (m) h.textContent = n + ", you are " + m[1];
+  }
+  // The Status picture with "MY RESULT" changed to "<NAME>'S RESULT", drawn here on her phone.
+  function drawCard(src, n) {
+    return new Promise(function (resolve, reject) {
+      var im = new Image();
+      im.onload = function () {
+        var go = function () {
+          try {
+            var c = document.createElement("canvas"); c.width = im.naturalWidth; c.height = im.naturalHeight;
+            var x = c.getContext("2d"); x.drawImage(im, 0, 0);
+            var k = c.width / 1080, bg = x.getImageData(Math.round(40 * k), Math.round(268 * k), 1, 1).data;
+            var reg = x.getImageData(Math.round(80 * k), Math.round(250 * k), Math.round(200 * k), Math.round(36 * k)).data, ink = [bg[0], bg[1], bg[2]], far = 0;
+            for (var i = 0; i < reg.length; i += 4) { var dd = Math.abs(reg[i] - bg[0]) + Math.abs(reg[i + 1] - bg[1]) + Math.abs(reg[i + 2] - bg[2]); if (dd > far) { far = dd; ink = [reg[i], reg[i + 1], reg[i + 2]]; } }
+            x.fillStyle = "rgb(" + bg[0] + "," + bg[1] + "," + bg[2] + ")"; x.fillRect(Math.round(70 * k), Math.round(238 * k), Math.round(240 * k), Math.round(60 * k));
+            var label = (n + "'s result").toUpperCase(), size = 30 * k, gap = 2.2 * k, wide;
+            do { x.font = "800 " + size + "px 'Nunito Sans', system-ui, sans-serif"; wide = x.measureText(label).width + gap * label.length; size -= 1; } while (wide > 880 * k && size > 14 * k);
+            x.fillStyle = "rgb(" + ink[0] + "," + ink[1] + "," + ink[2] + ")"; x.textBaseline = "alphabetic";
+            var px = 80 * k; for (var j = 0; j < label.length; j++) { x.fillText(label[j], px, 282 * k); px += x.measureText(label[j]).width + gap; }
+            c.toBlob(function (b) { b ? resolve(b) : reject(new Error("blob")); }, "image/jpeg", 0.92);
+          } catch (e) { reject(e); }
+        };
+        if (document.fonts && document.fonts.load) document.fonts.load("800 30px 'Nunito Sans'").then(go, go); else go();
+      };
+      im.onerror = reject; im.src = src;
+    });
+  }
   window.wgShowResult = function (type) {
     var box = document.getElementById("wg-result-share"), t = DATA[tool()];
     if (!box || !t) return;
@@ -221,9 +263,13 @@ JS = """// Share a quiz or checker result. Written by scripts/make-result-pages.
     box.innerHTML = "";
     box.hidden = !r;
     if (!r) return;
-    var id = tool() + ":" + type, img = "/assets/img/results/" + tool() + "/" + type + "-status.jpg?v=" + V;
+    var id = tool() + ":" + type, img = "/assets/img/results/" + tool() + "/" + type + "-status.jpg?v=" + V, n = herName();
+    lead(box, n);
     box.innerHTML = '<p class="sub">Share your result</p><div class="wg-share" data-share-size="sm"></div>' +
-      '<p style="margin:12px 0 0;"><a class="btn btn-ghost" style="background:#fff;" href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>' +
+      (n ? '<div class="wg-namecard"><img alt="" width="104" height="185" data-pic src="' + img + '"><div><label class="wg-namecheck"><input type="checkbox" data-tick> <span>Put my name on my result card</span></label>' +
+        '<p class="muted" style="font-size:.85rem;margin:6px 0 0;">Off unless you tick it. The link never carries your name. The picture is made on your phone.</p></div></div>' +
+        '<p style="margin:14px 0 0;"><a class="btn btn-ghost" style="background:#fff;" data-save href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>' :
+      '<p style="margin:12px 0 0;"><a class="btn btn-ghost" style="background:#fff;" data-save href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>') +
       '<p class="muted" style="font-size:.85rem;margin:8px 0 0;">The link and the picture show your result only, never your answers.</p>';
     var s = box.querySelector(".wg-share");
     s.setAttribute("data-share-id", id);
@@ -231,14 +277,28 @@ JS = """// Share a quiz or checker result. Written by scripts/make-result-pages.
     s.setAttribute("data-share-path", t.path + "/result/" + type);
     s.setAttribute("data-share-text", t.share.replace("{title}", r.title.replace(/\\.$/, "")));
     if (window.wgShareInit) window.wgShareInit();
-    box.querySelector("a[download]").addEventListener("click", function (e) {
+    var tick = box.querySelector("[data-tick]"), pic = box.querySelector("[data-pic]"), made = "", mine = null;
+    if (n) style();
+    if (tick) tick.addEventListener("change", function () {
+      if (made) { URL.revokeObjectURL(made); made = ""; }
+      if (!tick.checked) { pic.src = img; return; }
+      drawCard(img, n).then(function (b) { if (tick.checked) { made = URL.createObjectURL(b); pic.src = made; } }, function () {});
+    });
+    var file = function () {
+      return (tick && tick.checked ? drawCard(img, n) : fetch(img).then(function (res) { return res.blob(); })).then(function (b) {
+        return new File([b], "wholesome-girlies-" + type + ".jpg", { type: "image/jpeg" });
+      });
+    };
+    box.querySelector("[data-save]").addEventListener("click", function (e) {
       push("result_save", id);
-      if (!(navigator.canShare && /Android|iPhone|iPad/i.test(navigator.userAgent))) return;
+      var named = !!(tick && tick.checked), phone = navigator.canShare && /Android|iPhone|iPad/i.test(navigator.userAgent);
+      if (!named && !phone) return;
       e.preventDefault();
-      fetch(img).then(function (res) { return res.blob(); }).then(function (b) {
-        var f = new File([b], "wholesome-girlies-" + type + ".jpg", { type: "image/jpeg" });
-        if (navigator.canShare({ files: [f] })) return navigator.share({ files: [f] });
-        location.href = img;
+      file().then(function (f) {
+        if (phone && navigator.canShare({ files: [f] })) return navigator.share({ files: [f] });
+        if (!named) { location.href = img; return; }
+        var u = URL.createObjectURL(f), a = document.createElement("a"); a.href = u; a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
       }).catch(function () {});
     });
   };

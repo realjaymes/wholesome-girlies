@@ -48,6 +48,17 @@
     if (has(a.getAttribute('data-key'))) a.querySelector('.ph-saved').hidden = false;
   });
 
+  // 6. Her name leads the greeting on a program home ("Ada, your Plan, your community and your tools are all here."), with
+  // her guide still beside it. It comes from wg_name_v1 (wg-app.js, WGApp.name), is set with textContent only, and with no
+  // name saved the heading stays as built. Runs once every deferred script has loaded, because wg-app.js loads after this file.
+  d.addEventListener('DOMContentLoaded', function () {
+    var h = d.querySelector('.ph-top h1'), n = w.WGApp && w.WGApp.name && w.WGApp.name();
+    if (!h || !n || h.getAttribute('data-named')) return;
+    var t = h.textContent;
+    h.setAttribute('data-named', '1');
+    h.textContent = /^Welcome in\.\s/.test(t) ? 'Welcome in, ' + n + '. ' + t.replace(/^Welcome in\.\s/, '') : n + ', ' + t.charAt(0).toLowerCase() + t.slice(1);
+  });
+
   // 5. A Complete Motherhood Journey owner is never offered the bundle again: the build script marks every next-step
   // card that offers it (or the single programs it holds) with data-bundle-offer, and those cards stay hidden for her.
   var own = ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].some(function (k) {

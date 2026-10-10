@@ -73,9 +73,9 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     ok('lab: not linked from the home page or /tools/', !/href="\/lab/.test(home) && !/href="\/lab/.test(tools));
     const sw = await (await fetch(B + '/sw.js')).text();
     ok('lab: the service worker never caches it', /\^\\\/lab\\\//.test(sw));
-    ok('lab: every scenario has a "You should see" line and a button', await page.evaluate(() => [...document.querySelectorAll('.card:not(#names)')].length >= 13 && [...document.querySelectorAll('.card:not(#names)')].every((c) => /You should see/.test(c.textContent) && c.querySelector('button[data-run]'))));
+    ok('lab: every scenario has a "You should see" line and a button', await page.evaluate(() => [...document.querySelectorAll('.card:not(#names)')].length >= 16 && [...document.querySelectorAll('.card:not(#names)')].every((c) => /You should see/.test(c.textContent) && c.querySelector('button[data-run]'))));
     ok('lab: the mum scenario links all nine tools', await page.evaluate(() => document.querySelectorAll('#mum button[data-run]').length === 9));
-    ok('lab: one card links to the name options page', await page.evaluate(() => { const a = document.querySelector('#names a'); return !!a && a.getAttribute('href') === '/lab/names/' && /Your name options \(ideas, not live yet\)/.test(document.querySelector('#names h2').textContent); }));
+    ok('lab: one card links to the name options page, marked chosen and live', await page.evaluate(() => { const a = document.querySelector('#names a'); return !!a && a.getAttribute('href') === '/lab/names/' && /Her name options \(Option A chosen and live\)/.test(document.querySelector('#names h2').textContent); }));
     ok('lab: Restore and Clear buttons are on top', await page.evaluate(() => !!document.getElementById('restore') && !!document.getElementById('clear')));
     await shot(page, 'lab');
     await page._ctx.close();
@@ -83,7 +83,7 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     // ---- restore and clear ----
     page = await newPage({ tag: 'restore' });
     await go(page, '/lab/');
-    await page.evaluate(() => { localStorage.setItem('wg_name_shortlist_v1', '{"v":1,"items":[{"n":"Real"}]}'); localStorage.setItem('wg_fertility_home', '{"u":"/programs/trying-to-conceive-blueprint/thank-you","l":"Conception home"}'); });
+    await page.evaluate(() => { localStorage.setItem('wg_name_v1', '{"v":1,"name":"RealName","asked":true}'); localStorage.setItem('wg_name_shortlist_v1', '{"v":1,"items":[{"n":"Real"}]}'); localStorage.setItem('wg_fertility_home', '{"u":"/programs/trying-to-conceive-blueprint/thank-you","l":"Conception home"}'); });
     await lab(page, 'bundleowner');
     ok('lab: a scenario replaces her real data', (await store(page, 'wg_name_shortlist_v1')) === null && /complete-motherhood/.test(await store(page, 'wg_fertility_home')));
     ok('lab: her real data is kept under a lab-only key', !!(await store(page, 'wglab_snapshot')));
@@ -93,8 +93,32 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     ok('lab: Clear everything removes every wg_ key', await page.evaluate(() => !Object.keys(localStorage).some((k) => /^wg_/.test(k))));
     await page.$eval('#restore', (e) => e.click()); await wait(200);
     ok('lab: Restore puts her real data back', /Real/.test(await store(page, 'wg_name_shortlist_v1')) && /trying-to-conceive/.test(await store(page, 'wg_fertility_home')));
+    ok('lab: Restore puts her real saved name back too', /RealName/.test(await store(page, 'wg_name_v1')));
     ok('lab: Restore deletes the lab key', (await store(page, 'wglab_snapshot')) === null);
     ok('lab: the bar says her real data is back', /real data is in place/i.test(await page.$eval('#status', (e) => e.textContent)));
+    await page._ctx.close();
+
+    // ---- her name: the four name scenarios ----
+    page = await newPage({ tag: 'names' });
+    await lab(page, 'namefirst');
+    ok('name scenario, first open: the ask shows and no name is stored', await page.evaluate(() => { const a = document.getElementById('appAsk'); return !!a && !a.hidden && localStorage.getItem('wg_name_v1') === null; }));
+    ok('name scenario, first open: the greeting is the plain one', /^You are set$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())));
+    await lab(page, 'name', 0);
+    ok('name scenario, saved: the app home greets Ada and does not ask', /, Ada$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())) && await page.evaluate(() => document.getElementById('appAsk').hidden));
+    await lab(page, 'name', 1);
+    await page.evaluate(() => { for (let i = 0; i < 10; i++) { const r = document.querySelector('input[name="s' + i + '"][value="0"]'); if (r) r.checked = true; } readFriend(); }); await wait(500);
+    ok('name scenario, saved: the quiz result starts "Ada, you are" with an unticked box', /^Ada, you are /.test(await page.$eval('#headline', (e) => e.textContent.trim())) && await page.evaluate(() => { const t = document.querySelector('#wg-result-share [data-tick]'); return !!t && !t.checked; }));
+    await lab(page, 'name', 2);
+    ok('name scenario, saved: the Birth Plan Builder starts with Ada', (await page.$eval('#name', (e) => e.value)) === 'Ada');
+    await lab(page, 'name', 3);
+    ok('name scenario, saved: the Mind Check-in shows no name', !/\bAda\b/.test(await page.evaluate(() => document.body.innerText)));
+    await lab(page, 'namebuyer', 0);
+    ok('name scenario, buyer: the app home greets Ada and shows her program first', /, Ada$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())) && await page.evaluate(() => !document.getElementById('appProgram').hidden));
+    await lab(page, 'namebuyer', 1);
+    ok('name scenario, buyer: her Pregnancy home heading starts "Ada, your Plan"', /^Ada, your Plan, your community and your tools are all here\.$/.test(await page.$eval('.ph-top h1', (e) => e.textContent.trim())));
+    await lab(page, 'nameskip');
+    ok('name scenario, skipped: no ask and no name in the greeting', await page.evaluate(() => document.getElementById('appAsk').hidden && !/,/.test(document.getElementById('appTitle').textContent)));
+    ok('name scenario, skipped: Remove my name is hidden', await page.evaluate(() => document.getElementById('appNameRemove').hidden));
     await page._ctx.close();
 
     // ---- the app home, non-buyers ----
