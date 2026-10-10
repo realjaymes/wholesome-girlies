@@ -1,0 +1,283 @@
+{
+ "_about": "Games placed inside the program readers and homes. build-program-reader.py puts a 'Play this' card at the end of the named lesson; build-program-homes.py lists the same games under 'Play' on the home. Keyed by program (the diaspora edition reads its base program's plan). Fertility has no games, by rule, and the Complete Motherhood Journey companion carries none: its four toolkit readers carry theirs. Never place a game beside loss, mental-health, warning-signs or safety content, and keep 3am Group Chat away from the Mind Check-in. 'review' marks health content still waiting for medical review. Plan and reasons: the vault note 09 - Games in Programs.",
+ "games": {
+  "girls-girl-quiz": {
+   "name": "Are You a Girl&#8217;s Girl?",
+   "path": "/relationships/tools/girls-girl-quiz",
+   "line": "Find your girl's girl type and send the result to your group chat.",
+   "button": "Play it"
+  },
+  "put-a-finger-down-dating": {
+   "name": "Put a Finger Down: Dating Edition",
+   "path": "/relationships/tools/put-a-finger-down-dating",
+   "line": "Put a finger down for the dating moments you know too well.",
+   "button": "Play it"
+  },
+  "red-flag-radar": {
+   "name": "Red Flag Radar",
+   "path": "/relationships/tools/red-flag-radar",
+   "line": "Decide whether each dating situation is green, worth discussing or a red flag.",
+   "button": "Play it"
+  },
+  "delulu-or-clear-eyed": {
+   "name": "Delulu or Clear-Eyed?",
+   "path": "/relationships/tools/delulu-or-clear-eyed",
+   "line": "Read each talking stage and see whether you are clear eyed or delulu.",
+   "button": "Play it"
+  },
+  "is-he-husband-material": {
+   "name": "Is He Husband Material?",
+   "path": "/relationships/tools/is-he-husband-material",
+   "line": "Answer from his actions and see whether he looks ready for marriage.",
+   "button": "Play it"
+  },
+  "how-do-you-love": {
+   "name": "How Do You Love?",
+   "path": "/relationships/tools/how-do-you-love",
+   "line": "Find the way you give love and the signs you notice first.",
+   "button": "Play it"
+  },
+  "couple-alignment": {
+   "name": "Couple Alignment",
+   "path": "/relationships/tools/couple-alignment",
+   "line": "You and your partner compare answers on money, children, family, faith, work and home.",
+   "button": "Play together"
+  },
+  "what-kind-of-mum": {
+   "name": "What Kind of Mum Will You Be?",
+   "path": "/pregnancy/tools/what-kind-of-mum",
+   "line": "Choose what you would do in pregnancy moments and get your mum type.",
+   "button": "Play it"
+  },
+  "pregnancy-cravings-tier-list": {
+   "name": "Pregnancy Cravings Tier List",
+   "path": "/pregnancy/tools/pregnancy-cravings-tier-list",
+   "line": "Rank Nigerian pregnancy cravings from favourite to never again.",
+   "button": "Play it"
+  },
+  "old-wives-tales-pregnancy": {
+   "name": "Old Wives&#8217; Tales: Pregnancy",
+   "path": "/pregnancy/tools/old-wives-tales-pregnancy",
+   "line": "Test the pregnancy beliefs Nigerian families repeat and read the explanation.",
+   "button": "Play it",
+   "review": true
+  },
+  "baby-name-battle": {
+   "name": "Baby Name Battle",
+   "path": "/pregnancy/tools/baby-name-battle",
+   "line": "You and your partner pick names separately, then compare your choices.",
+   "button": "Play together"
+  },
+  "who-knows-mummy-best": {
+   "name": "Who Knows Mummy Best?",
+   "path": "/pregnancy/tools/who-knows-mummy-best",
+   "line": "Answer baby shower questions, then have the host share the private link with guests.",
+   "button": "Set it up"
+  },
+  "omugwo-your-mum-or-his-mum": {
+   "name": "Omugwo: Your Mum or His Mum?",
+   "path": "/postpartum/tools/omugwo-your-mum-or-his-mum",
+   "line": "Choose between your mum and his mum across everyday omugwo dilemmas.",
+   "button": "Play it"
+  },
+  "visitors-bingo": {
+   "name": "Visitors Bingo",
+   "path": "/postpartum/tools/visitors-bingo",
+   "line": "Tick the things visitors say and do after the baby arrives.",
+   "button": "Play it",
+   "review": true
+  },
+  "3am-group-chat": {
+   "name": "3am Group Chat",
+   "path": "/postpartum/tools/3am-group-chat",
+   "line": "Turn a 3am newborn thought into a funny group chat reply.",
+   "button": "Play it"
+  },
+  "how-well-do-you-know-me": {
+   "name": "How Well Do You Know Me?",
+   "path": "/postpartum/tools/how-well-do-you-know-me",
+   "line": "Your partner guesses your answers, then you swap and compare scores.",
+   "button": "Play together"
+  },
+  "mum-wrapped": {
+   "name": "Mum Wrapped",
+   "path": "/postpartum/tools/mum-wrapped",
+   "line": "See the numbers from the feeding and sleep entries you logged over six weeks.",
+   "button": "See your six weeks"
+  },
+  "which-nigerian-parent": {
+   "name": "Which Nigerian Parent Are You?",
+   "path": "/parenting/tools/which-nigerian-parent",
+   "line": "Choose what you would do in everyday parenting moments and get your result.",
+   "button": "Play it"
+  },
+  "old-wives-tales-baby": {
+   "name": "Old Wives&#8217; Tales: Baby",
+   "path": "/parenting/tools/old-wives-tales-baby",
+   "line": "Test familiar newborn beliefs and read the explanation after each answer.",
+   "button": "Play it",
+   "review": true
+  },
+  "new-parent-bingo": {
+   "name": "New Parent Bingo",
+   "path": "/parenting/tools/new-parent-bingo",
+   "line": "Both parents tick the newborn moments they have lived through and compare cards.",
+   "button": "Play together"
+  },
+  "milestone-guess": {
+   "name": "Baby Milestone Guess",
+   "path": "/parenting/tools/milestone-guess",
+   "line": "Guess when babies reach common milestones, then see the published age ranges.",
+   "button": "Play it",
+   "review": true
+  },
+  "finish-mummys-sentence": {
+   "name": "Finish Mummy&#8217;s Sentence",
+   "path": "/parenting/tools/finish-mummys-sentence",
+   "line": "Guess how a Nigerian mum finishes the sentence before your four tries run out.",
+   "button": "Play today&#8217;s"
+  }
+ },
+ "play": {
+  "wife-material-blueprint": [
+   {
+    "game": "girls-girl-quiz",
+    "lesson": "Rebuilding your confidence",
+    "when": "Part 1",
+    "lead": "Healing is easier with your girls around. Find your girl's girl type and send it to the group chat."
+   },
+   {
+    "game": "put-a-finger-down-dating",
+    "lesson": "Where serious men actually are, beyond church and work",
+    "when": "Part 2",
+    "lead": "How many talking stages, aunty questions and returning exes have you survived? Put a finger down and count what is left."
+   },
+   {
+    "game": "red-flag-radar",
+    "lesson": "Red flags: what wastes your best years",
+    "when": "Part 3",
+    "lead": "You have read the red flags. Now call the made up situations before they waste anybody's time."
+   },
+   {
+    "game": "delulu-or-clear-eyed",
+    "lesson": "The talking stage that never becomes more",
+    "when": "Part 4",
+    "lead": "Eight months of good morning texts can still leave you guessing. See how clearly you read a talking stage."
+   },
+   {
+    "game": "is-he-husband-material",
+    "lesson": "Why he has not proposed",
+    "when": "Part 4",
+    "lead": "Answer from what you have seen him do. See what it says about him as husband material."
+   },
+   {
+    "game": "how-do-you-love",
+    "lesson": "Communication that builds instead of breaks",
+    "when": "Part 5",
+    "lead": "Before the next serious conversation, find out how you give love and what you notice first."
+   },
+   {
+    "game": "couple-alignment",
+    "lesson": "Money, in-laws, and expectations, before they surprise you",
+    "when": "Part 5",
+    "lead": "You and the man you are serious about answer separately. Then compare money, children, family, faith, work and home."
+   }
+  ],
+  "first-pregnancy-plan": [
+   {
+    "game": "what-kind-of-mum",
+    "lesson": "Welcome",
+    "when": "Day 1",
+    "lead": "Aunty advice, shower plans, the name argument. Answer nine pregnancy moments and meet your mum type."
+   },
+   {
+    "game": "pregnancy-cravings-tier-list",
+    "lesson": "Eating well, the simple version",
+    "when": "Weeks 8 to 20",
+    "lead": "Where do suya, agege bread and puff puff sit on your cravings list? Rank them and share yours."
+   },
+   {
+    "game": "old-wives-tales-pregnancy",
+    "lesson": "Coffee, and the everyday questions",
+    "when": "Weeks 14 to 27",
+    "lead": "Your aunty has heard one thing. Your neighbour swears by another. Test the pregnancy beliefs everyone keeps repeating."
+   },
+   {
+    "game": "baby-name-battle",
+    "lesson": "The common scans, in plain terms",
+    "when": "Weeks 18 to 22, around your mid-pregnancy scan",
+    "lead": "You and your partner pick a name from each pair. See where you agree before the family WhatsApp group joins in."
+   },
+   {
+    "game": "who-knows-mummy-best",
+    "lesson": "What the baby actually needs",
+    "when": "Weeks 30 to 34",
+    "lead": "How well do your baby shower guests know you? Answer first, then have the host share the link privately with guests."
+   }
+  ],
+  "postpartum-reset": [
+   {
+    "game": "visitors-bingo",
+    "lesson": "Your six weeks, gently",
+    "when": "Week 1",
+    "lead": "Has a visitor claimed the baby looks exactly like his father? Tick the things people have said or done since the birth."
+   },
+   {
+    "game": "omugwo-your-mum-or-his-mum",
+    "lesson": "Feeding your baby, your way",
+    "when": "Weeks 1 to 2",
+    "lead": "Your mum has her way. His mum has hers. Pick your side in these omugwo dilemmas."
+   },
+   {
+    "game": "3am-group-chat",
+    "lesson": "Surviving on broken sleep",
+    "when": "Weeks 2 to 3",
+    "lead": "It is 3am and the baby is awake. Pick your 3am thought and get a friend's reply as a chat card."
+   },
+   {
+    "game": "how-well-do-you-know-me",
+    "lesson": "Finding your way back",
+    "when": "Weeks 4 to 5",
+    "lead": "Your partner guesses your answers to questions about you. Then you swap and see who knows whom best."
+   },
+   {
+    "game": "mum-wrapped",
+    "lesson": "Continue your journey",
+    "when": "Week 6, the end",
+    "lead": "See your first six weeks in numbers, from the feeds and sleep you logged."
+   }
+  ],
+  "first-baby-playbook": [
+   {
+    "game": "which-nigerian-parent",
+    "lesson": "Welcome",
+    "when": "Day 1",
+    "lead": "What would you do when Grandma sends another voice note? Pick your answers and meet your Nigerian parent type."
+   },
+   {
+    "game": "old-wives-tales-baby",
+    "lesson": "Skin, rashes, and the usual marks",
+    "when": "Weeks 1 to 8",
+    "lead": "Coin on the navel or menthol rub? Test the baby beliefs family members keep passing around."
+   },
+   {
+    "game": "new-parent-bingo",
+    "lesson": "Gentle ways through the hard nights",
+    "when": "Weeks 2 to 12",
+    "lead": "You and your partner have both lived these newborn moments. Tick your boxes and compare who gets bingo first."
+   },
+   {
+    "game": "milestone-guess",
+    "lesson": "What tends to come when, roughly",
+    "when": "Months 2 to 12",
+    "lead": "When do babies usually sit, crawl or wave? Make your guess, then see the published age ranges."
+   },
+   {
+    "game": "finish-mummys-sentence",
+    "lesson": "The toddler years: tantrums, teething, and more",
+    "when": "Month 9 onward",
+    "lead": "You know how Mummy starts the sentence. Can you guess how she finishes it before your four tries run out?"
+   }
+  ]
+ }
+}

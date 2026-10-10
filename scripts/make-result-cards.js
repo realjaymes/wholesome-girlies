@@ -9,7 +9,8 @@
 //
 //   npm install --prefix /tmp/wgog puppeteer-core@23
 //   NODE_PATH=/tmp/wgog/node_modules node scripts/make-result-cards.js [tool ...]
-// After a re-render, bump RESULT_VERSION here and in scripts/make-result-pages.py.
+// Look B is the live look (scripts/og-looks.js); --look a|b|c|all renders review previews into _lab/og-preview/.
+// After a re-render, bump RESULT_VERSION in scripts/make-result-pages.py.
 const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer-core");
@@ -19,23 +20,27 @@ const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "assets/img/results");
 const RESULTS = JSON.parse(fs.readFileSync(path.join(__dirname, "results.json"), "utf8"));
 const ART = { "ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship",
-  "red-flag-radar": "radar", "is-he-husband-material": "husband" };
+  "red-flag-radar": "radar", "is-he-husband-material": "husband", "girls-girl-quiz": "girls-girl",
+  "3am-group-chat": "3am-group-chat",
+  "delulu-or-clear-eyed": "delulu-or-clear-eyed",
+  "how-do-you-love": "how-do-you-love",
+  "how-well-do-you-know-me": "how-well-do-you-know-me",
+  "milestone-guess": "milestone-guess",
+  "mum-wrapped": "mum-wrapped",
+  "new-parent-bingo": "new-parent-bingo",
+  "old-wives-tales-baby": "old-wives-tales-baby",
+  "old-wives-tales-pregnancy": "old-wives-tales-pregnancy",
+  "omugwo-your-mum-or-his-mum": "omugwo-your-mum-or-his-mum",
+  "pregnancy-cravings-tier-list": "pregnancy-cravings-tier-list",
+  "put-a-finger-down-dating": "put-a-finger-down-dating",
+  "visitors-bingo": "visitors-bingo",
+  "what-kind-of-mum": "what-kind-of-mum",
+  "which-nigerian-parent": "which-nigerian-parent" };
 const art = (tool, id) => "data:image/jpeg;base64," + fs.readFileSync(path.join(ROOT, "assets/img/cast/results", `${ART[tool]}-${id}.jpg`)).toString("base64");
 
-function ogCard(t, r, img) {
-  const size = r.title.length > 32 ? 50 : 58;
-  return og.shell(`
-<div style="position:absolute;left:64px;top:62px;width:600px">
-  <span class="chip">${og.esc(t.name)}</span>
-  <p style="margin-top:30px;font-size:22px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C0763F">My result</p>
-  <h1 class="serif" style="font-size:${size}px;line-height:1.06;margin-top:10px">${og.esc(r.title)}</h1>
-  <div style="display:inline-block;margin-top:26px;background:#6E7A3F;color:#fff;font-weight:800;font-size:22px;padding:10px 20px;border-radius:999px;transform:rotate(-2deg)">${og.esc(t.cta)} →</div>
-</div>
-<div style="position:absolute;right:70px;top:36px;width:380px;height:560px;border-radius:26px;overflow:hidden;transform:rotate(3deg);
-  box-shadow:0 24px 60px rgba(51,50,42,.22),0 0 0 6px #fff">
-  <img src="${img}" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block">
-</div>`);
-}
+// Look B (cream, tint circle, ink-outlined sticker frame) from scripts/og-looks.js, for the link preview and the Status card.
+const looks = require("./og-looks.js");
+const ogCard = (t, r, img) => looks.resultCard("b", og, t, r, img);
 
 // The names, read from the Baby Name Explorer's NAMES list, so a new name gets its card on the next run.
 function readNames() {
@@ -46,50 +51,13 @@ const nameSlug = (n) => n.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/
 const meaningLine = (m) => (/^from /.test(m) ? `It comes ${m}.` : `It means ${m}.`);
 const originLine = (o) => `${/^[AEIOU]/.test(o) ? "An" : "A"} ${o} name`;
 
-function nameCard(nm, img) {
-  const meaning = meaningLine(nm.m);
-  return og.shell(`
-<div style="position:absolute;left:64px;top:62px;width:620px">
-  <span class="chip">${og.esc(originLine(nm.o))}</span>
-  <h1 class="serif" style="font-size:${nm.n.length > 9 ? 66 : 78}px;line-height:1.04;margin-top:30px">Meet ${og.esc(nm.n)}.</h1>
-  <p class="serif" style="font-size:${meaning.length > 40 ? 30 : 40}px;line-height:1.16;margin-top:14px;color:#55602F">${og.esc(meaning)}</p>
-  <div style="display:inline-block;margin-top:26px;background:#6E7A3F;color:#fff;font-weight:800;font-size:22px;padding:10px 20px;border-radius:999px;transform:rotate(-2deg)">Find a name →</div>
-</div>
-<div style="position:absolute;right:70px;top:36px;width:380px;height:560px;border-radius:26px;overflow:hidden;transform:rotate(3deg);
-  box-shadow:0 24px 60px rgba(51,50,42,.22),0 0 0 6px #fff">
-  <img src="${img}" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block">
-</div>`);
-}
+const nameCard = (nm, img) => looks.nameCardB(og, nm, img, { meaningLine, originLine });
 
-function statusCard(t, r, img) {
-  const size = r.title.length > 32 ? 76 : 88;
-  return `<!doctype html><html><head><meta charset="utf-8"><style>${og.fonts()}
-*{box-sizing:border-box;margin:0}
-body{width:1080px;height:1920px;overflow:hidden;background:#FBF8EF;font-family:'Nunito Sans',sans-serif;color:#33322A;position:relative}
-.serif{font-family:'DM Serif Display',serif;font-weight:400}
-.chip{display:inline-block;background:#6E7A3F;color:#FBF8EF;font-weight:800;font-size:28px;letter-spacing:.08em;text-transform:uppercase;padding:12px 26px;border-radius:999px}
-</style></head><body>
-<div style="position:absolute;width:760px;height:760px;border-radius:50%;right:-300px;top:-300px;background:#EAE9D2"></div>
-<div style="position:absolute;width:420px;height:420px;border-radius:50%;left:-180px;bottom:-200px;background:#DFDCC0;opacity:.6"></div>
-<div style="position:absolute;left:80px;top:130px;width:920px">
-  <span class="chip">${og.esc(t.name)}</span>
-  <p style="margin-top:44px;font-size:32px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C0763F">My result</p>
-  <h1 class="serif" style="font-size:${size}px;line-height:1.05;margin-top:14px">${og.esc(r.title)}</h1>
-</div>
-<div style="position:absolute;left:110px;top:${r.title.length > 32 ? 560 : 520}px;width:860px;height:1060px;border-radius:40px;overflow:hidden;transform:rotate(-2deg);
-  box-shadow:0 30px 80px rgba(51,50,42,.22),0 0 0 10px #fff">
-  <img src="${img}" style="width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block">
-</div>
-<div style="position:absolute;left:80px;right:80px;bottom:90px;display:flex;align-items:center;justify-content:space-between">
-  <div style="display:flex;align-items:center;gap:18px">${og.LOGO.replace(/width="46" height="46"/, 'width="64" height="64"')}
-    <div><b class="serif" style="font-size:40px;font-weight:400">Wholesome Girlies</b>
-    <span style="display:block;font-size:26px;color:#66645A;margin-top:2px">wholesomegirlies.xyz</span></div></div>
-  <div style="background:#C0763F;color:#fff;font-weight:800;font-size:30px;padding:16px 30px;border-radius:999px;transform:rotate(-2deg)">${og.esc(t.cta)} →</div>
-</div>
-</body></html>`;
-}
+const statusCard = (t, r, img) => looks.statusCardB(og, t, r, img);
 
 if (require.main === module) (async () => {
+  // --look a|b|c|all: render the design options for review into _lab/og-preview/<look>/results/, never over assets/img/results/
+  if (process.argv.includes("--look")) { await og.loadFonts(); return require("./og-looks.js").runResults(og, process.argv.slice(2), { RESULTS, art }); }
   const only = process.argv.slice(2);
   await og.loadFonts();
   const browser = await puppeteer.launch({ executablePath: og.CHROME, headless: true });

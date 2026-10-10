@@ -21,9 +21,24 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://wholesomegirlies.xyz"
-RESULT_VERSION = "20261009a"
+RESULT_VERSION = "20261010b"
 ART = {"ready-for-love-quiz": "ready-for-love", "green-red-flags-checker": "flags", "situationship-checker": "situationship",
-       "red-flag-radar": "radar", "is-he-husband-material": "husband"}
+       "red-flag-radar": "radar", "is-he-husband-material": "husband", "girls-girl-quiz": "girls-girl",
+       "3am-group-chat": "3am-group-chat",
+       "delulu-or-clear-eyed": "delulu-or-clear-eyed",
+       "how-do-you-love": "how-do-you-love",
+       "how-well-do-you-know-me": "how-well-do-you-know-me",
+       "milestone-guess": "milestone-guess",
+       "mum-wrapped": "mum-wrapped",
+       "new-parent-bingo": "new-parent-bingo",
+       "old-wives-tales-baby": "old-wives-tales-baby",
+       "old-wives-tales-pregnancy": "old-wives-tales-pregnancy",
+       "omugwo-your-mum-or-his-mum": "omugwo-your-mum-or-his-mum",
+       "pregnancy-cravings-tier-list": "pregnancy-cravings-tier-list",
+       "put-a-finger-down-dating": "put-a-finger-down-dating",
+       "visitors-bingo": "visitors-bingo",
+       "what-kind-of-mum": "what-kind-of-mum",
+       "which-nigerian-parent": "which-nigerian-parent"}
 ALT = {
     "ready-for-love-grounded": "Illustration of Tolu walking down a sunny Lagos street",
     "ready-for-love-close": "Illustration of Tolu writing in her journal while Kemi gives her a thumbs up",
@@ -42,6 +57,67 @@ ALT = {
     "husband-showing-it": "Illustration of Femi carrying Aunty Bisi's handbag and cooler at a family party while Tolu smiles",
     "husband-promising": "Illustration of Tolu asking Femi a question across a cafe table while he thinks it over",
     "husband-not-yet": "Illustration of Tolu and Kemi walking off arm in arm while Femi plays on his phone on a bench",
+    "girls-girl-certified": "Illustration of Tolu cheering for Kemi with a little megaphone at Kemi's market table",
+    "girls-girl-ride-or-die": "Illustration of Kemi in sunglasses guarding Tolu like a bodyguard while Tolu smiles behind her",
+    "girls-girl-lowkey": "Illustration of Tolu passing Kemi a cup of tea on the sofa",
+    "girls-girl-own-time": "Illustration of Tolu rushing in with flowers and a gift while Kemi laughs and opens her arms",
+    "girls-girl-pick-me": "Illustration of Tolu laughing at Femi's joke at a café table while Kemi stands behind them holding the bill and a bag, one eyebrow raised",
+    "3am-group-chat-card": "Illustration of Funmi on a sofa at night with her baby asleep on her shoulder while Kemi laughs on a video call",
+    "delulu-or-clear-eyed-certified-delulu": "Illustration of Tolu laughing at her phone on her bed beside a notebook of hearts while Kemi watches from the doorway",
+    "delulu-or-clear-eyed-hopeful": "Illustration of Tolu at a window with her phone in her hand and a hopeful half smile",
+    "delulu-or-clear-eyed-clear-eyed": "Illustration of Tolu sitting upright at a table with a cup of tea and her phone face down",
+    "delulu-or-clear-eyed-case-closed": "Illustration of Tolu closing a laptop and putting her phone in her bag while Kemi gives a thumbs up",
+    "how-do-you-love-reassurer": "Illustration of Tolu texting on a sofa while Kemi reads over her shoulder and laughs",
+    "how-do-you-love-space-keeper": "Illustration of Tolu reading by a sunny window with a cup of tea, a bunch of flowers on the table beside her",
+    "how-do-you-love-steady-one": "Illustration of Tolu writing in a planner at a neat desk with a wall calendar behind her",
+    "how-do-you-love-all-in": "Illustration of Tolu carrying a big gift box and balloons through a door while Kemi laughs behind her",
+    "how-well-do-you-know-me-back-of-my-hand": "Illustration of Funmi and Tunde laughing together on a sofa over her phone",
+    "how-well-do-you-know-me-well-with-surprises": "Illustration of Tunde looking pleasantly surprised at Funmi's phone while she grins",
+    "how-well-do-you-know-me-half-and-half": "Illustration of Funmi and Tunde sitting close with a phone each, comparing answers with raised eyebrows",
+    "how-well-do-you-know-me-ask-more": "Illustration of Tunde scratching his head with a smile while Funmi laughs and points at the phone",
+    "milestone-guess-spot-on": "Illustration of Funmi on the floor with her baby sitting up on a mat between her knees",
+    "milestone-guess-close": "Illustration of Funmi and Tunde kneeling beside a baby on a play mat while Tunde points and Funmi laughs",
+    "milestone-guess-own-clock": "Illustration of Funmi sitting on a play mat with her phone, watching her baby reach for a toy",
+    "mum-wrapped-night-shift-legend": "Illustration of Funmi walking a quiet hallway at night with a sleeping baby on her shoulder",
+    "mum-wrapped-milk-bar-manager": "Illustration of Funmi feeding her baby in an armchair with a phone propped beside her and a plate of snacks",
+    "mum-wrapped-visitor-hostess": "Illustration of Funmi handing a cup of water to Aunty Bisi and Mama Ngozi, who sit on the sofa cooing at the baby",
+    "mum-wrapped-cold-tea-queen": "Illustration of Funmi holding her baby and looking fondly at a steaming mug of tea she has not reached yet",
+    "mum-wrapped-one-tap-at-a-time": "Illustration of Funmi on the bed with her baby, thumb on her phone, smiling at the baby",
+    "new-parent-bingo-just-landed": "Illustration of Funmi in a nursery doorway holding a sleeping baby and a half-folded bib",
+    "new-parent-bingo-a-few-nights-in": "Illustration of Funmi and Tunde on a sofa in lamplight with a baby between them, laughing quietly over a phone",
+    "new-parent-bingo-deep-in-it": "Illustration of Funmi walking a living room at night with a baby on her shoulder while Tunde holds up a phone",
+    "new-parent-bingo-full-bingo": "Illustration of Funmi and Tunde holding a baby in front of a fridge with a ticked grid pinned to it",
+    "old-wives-tales-baby-sharp": "Illustration of Funmi holding her baby on her shoulder in a bright room with her phone in her other hand",
+    "old-wives-tales-baby-half": "Illustration of Funmi and Aunty Bisi laughing at Funmi's phone at a table with a baby between them",
+    "old-wives-tales-baby-raised": "Illustration of Funmi holding her baby and smiling while Mama Ngozi tells a story with her hands",
+    "old-wives-tales-pregnancy-sharp": "Illustration of Zainab on a sofa with her phone while Aunty Bisi holds up a finger mid-story",
+    "old-wives-tales-pregnancy-half": "Illustration of Zainab and Aunty Bisi leaning over one phone, Zainab laughing and Aunty Bisi raising an eyebrow",
+    "old-wives-tales-pregnancy-raised": "Illustration of Mama Ngozi telling a story with her hands while Zainab listens with a fond smile",
+    "omugwo-your-mum-or-his-mum-team-my-mum": "Illustration of Funmi on a sofa with her baby while Mama Ngozi stands behind her holding a bowl of food and Tunde smiles nearby",
+    "omugwo-your-mum-or-his-mum-team-his-mum": "Illustration of Funmi on a sofa with her baby while Aunty Bisi hands her a warm drink and Tunde sits beside them",
+    "omugwo-your-mum-or-his-mum-team-both": "Illustration of Funmi on a sofa between Mama Ngozi and Aunty Bisi, all three smiling at the baby",
+    "omugwo-your-mum-or-his-mum-team-just-us": "Illustration of Funmi and Tunde relaxing on a sofa with their baby and two gift bags by the door",
+    "pregnancy-cravings-tier-list-street": "Illustration of Zainab on a bench by a roadside grill holding a suya wrap while Kemi laughs beside her with roasted corn",
+    "pregnancy-cravings-tier-list-sweet": "Illustration of Kemi holding a plate of puff-puff and a glass of chapman while Zainab reaches for one",
+    "pregnancy-cravings-tier-list-pot": "Illustration of Zainab at a family table with a plate of jollof rice while Mama Ngozi serves her a second spoon",
+    "pregnancy-cravings-tier-list-mixed": "Illustration of Zainab at a kitchen counter pointing playfully at a mango, a plate of puff-puff and a bowl of pepper soup",
+    "put-a-finger-down-dating-none-left": "Illustration of Tolu and Kemi laughing on a bed with their phones, Tolu's hands open and empty",
+    "put-a-finger-down-dating-last-fingers": "Illustration of Tolu holding up one finger at a restaurant table while Kemi and Amaka lean in laughing",
+    "put-a-finger-down-dating-half-a-hand": "Illustration of Tolu holding up five fingers and counting with Kemi on a balcony with drinks",
+    "put-a-finger-down-dating-mostly-up": "Illustration of Tolu raising her hand with her fingers up while Femi and Kemi laugh at a phone",
+    "put-a-finger-down-dating-all-up": "Illustration of Tolu in front of a mirror with all ten fingers lifted and a bright smile",
+    "visitors-bingo-first-guests": "Illustration of Funmi on a sofa holding a baby and looking at the front door with a small smile",
+    "visitors-bingo-a-few-visits-in": "Illustration of Funmi holding a baby and a cup of tea while Aunty Bisi leans in and talks",
+    "visitors-bingo-open-house": "Illustration of a crowded living room where Aunty Bisi, Mama Ngozi and a neighbour all talk at once around Funmi and her baby",
+    "visitors-bingo-full-house": "Illustration of Funmi in a doorway holding a baby while Aunty Bisi, Mama Ngozi and Kemi arrive with food bowls and gift bags",
+    "what-kind-of-mum-planner": "Illustration of Zainab at a tidy table ticking items off a checklist with a notebook and a cup of tea",
+    "what-kind-of-mum-soft-life": "Illustration of Zainab in an armchair with her feet up and a book, one hand on her belly",
+    "what-kind-of-mum-hype": "Illustration of Zainab laughing at a baby shower while Amaka and Kemi cheer and hold up their phones",
+    "what-kind-of-mum-naija-strict": "Illustration of Zainab holding a clipboard in a neat living room with a small bag packed by the door",
+    "which-nigerian-parent-remote-control": "Illustration of Funmi holding the TV remote to her chest with a mock-serious look while Tunde laughs with his hands up",
+    "which-nigerian-parent-ask-your-father": "Illustration of Funmi pointing playfully at Tunde, who looks up from his phone with wide eyes, while a child waits beside them",
+    "which-nigerian-parent-long-speech": "Illustration of Funmi on the sofa with a child, one finger raised and an open book in her lap",
+    "which-nigerian-parent-soft-landing": "Illustration of Funmi hugging a laughing child in the kitchen and handing over a bowl of noodles while Tunde smiles in the doorway",
     "naming-ceremony": "Illustration of Tunde holding up the new baby at a naming ceremony while Funmi smiles and Aunty Bisi cheers",
 }
 NAME_TOOL = "baby-name-explorer"
@@ -115,7 +191,7 @@ def page(tool, t, rid, r, art=None, title=None, eyebrow=None, lead=None, desc=No
     <a class="btn btn-primary" href="/{t['stage']}/tools/{tool}?ref=result">{e(t['cta'])} &rarr;</a>
     <p class="sub">Pass it on</p>
     <div class="wg-share" data-share-id="{tool}:{rid}" data-share-surface="result-page" data-share-path="{path}" data-share-text="{e(share)}" data-share-align="center"></div>
-    <p class="muted" style="margin-top:28px;font-size:.9rem;">{e(t.get("note", "This is a reflection tool. It runs in your browser, and nothing anyone answers is saved or sent."))}</p>
+    <p class="muted" style="margin-top:28px;font-size:.9rem;">{e(t.get("note", "This is a reflection tool. It runs on this device, and nothing anyone answers is saved or sent."))}</p>
   </div>
 </section>
 </main>

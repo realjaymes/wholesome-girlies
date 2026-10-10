@@ -12,6 +12,7 @@
 //   npm install --prefix /tmp/wgog puppeteer-core@23
 //   NODE_PATH=/tmp/wgog/node_modules node scripts/make-og.js [slug ... | default]
 // Guide hooks come from scripts/og-hooks.json (python3 scripts/share-bank.py --og-json).
+//   Look options for review: node scripts/make-og.js --look a|b|c|all [slug ...] (see scripts/og-looks.js).
 // After a re-render, bump OG_VERSION so WhatsApp, X and Facebook fetch the new image.
 const fs = require("fs");
 const path = require("path");
@@ -22,12 +23,13 @@ const BASE = "http://localhost:8001";
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const OUT = path.join(ROOT, "assets/img/og");
 const SQUARE_OUT = process.env.WG_SQUARE_DIR || path.join(require("os").homedir(), "Downloads/Wholesome Girlies/Social Posts");
-const OG_VERSION = "20261008a";
+const OG_VERSION = "20261010b";
 const STAGES = { relationships: "Relationships", fertility: "Trying to conceive", pregnancy: "Pregnancy", postpartum: "Postpartum", parenting: "Parenting" };
 // sensitive guides: a single heart reaction, never the playful ones
 const GENTLE = new Set(["chemical-miscarriage", "postpartum-warning-signs"]);
 // loss pages carry one gentle share line, so their card message is set here
 const HOOK_OVERRIDES = { "/pregnancy/guides/chemical-miscarriage": "A positive test, then a period." };
+const looks = { defaultCard: (...a) => require("./og-looks.js").defaultCard(...a), toolCard: (...a) => require("./og-looks.js").toolCard(...a) };
 const hooks = JSON.parse(fs.readFileSync(path.join(__dirname, "og-hooks.json"), "utf8"));
 
 const unesc = (s) => s.replace(/&amp;/g, "&").replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/<[^>]+>/g, "").trim();
@@ -212,10 +214,13 @@ async function screenshot(page, p) {
   return shot;
 }
 
-module.exports = { shell, esc, loadFonts, fonts: () => FONTS, screenshot, LOGO, STAGES, BASE, CHROME, OUT, SQUARE_OUT, HEADLINE, EYEBROW, STICKERS };
+module.exports = { shell, esc, loadFonts, fonts: () => FONTS, screenshot, pages, LOGO, STAGES, BASE, CHROME, OUT, SQUARE_OUT, HEADLINE, EYEBROW, STICKERS };
 
 if (require.main === module) (async () => {
   const args = process.argv.slice(2);
+  // --look a|b|c|all: render the design options for review into _lab/og-preview/<look>/, never over assets/img/og/
+  if (args.includes("--pages")) return require("./og-looks.js").runPages(module.exports, args);
+  if (args.includes("--look")) return require("./og-looks.js").runOg(module.exports, args);
   const square = !args.includes("--no-square");
   const cards = !args.includes("--square-only");
   const only = args.filter((a) => !a.startsWith("--"));
@@ -230,19 +235,21 @@ if (require.main === module) (async () => {
   await page.setViewport({ width: 760, height: 1200, deviceScaleFactor: 2 });
   const card = await browser.newPage();
   const render = async (html, w, h, file, quality) => {
+    await card.bringToFront();
     await card.setViewport({ width: w, height: h, deviceScaleFactor: 1 });
     await card.setContent(html, { waitUntil: "load" });
     await card.evaluate(() => document.fonts.ready);
     await card.screenshot({ path: file, type: "jpeg", quality });
   };
   if (!only.length || only.includes("default")) {
-    if (cards) await render(defaultCard(), 1200, 630, path.join(OUT, "default.jpg"), 88);
+    if (cards) await render(looks.defaultCard("c", module.exports), 1200, 630, path.join(OUT, "default.jpg"), 88);
     if (square) { fs.mkdirSync(SQUARE_OUT, { recursive: true }); await render(defaultCard(true), 1080, 1350, path.join(SQUARE_OUT, "Wholesome Girlies.jpg"), 90); }
     console.log("og default", square ? "+ square" : "");
   }
   for (const p of pages().filter((x) => !only.length || only.includes(x.slug))) {
-    const shot = p.kind === "tool" ? await screenshot(page, p) : null;
-    if (cards) await render(shot ? toolCard(p, shot) : guideCard(p), 1200, 630, path.join(OUT, p.slug + ".jpg"), 86);
+    let shot = null;
+    if (p.kind === "tool") { try { shot = await screenshot(page, p); } catch (e) { console.log("FAILED", p.slug, e.message); continue; } }
+    if (cards) await render(shot ? looks.toolCard("a", module.exports, p, shot) : guideCard(p), 1200, 630, path.join(OUT, p.slug + ".jpg"), 86);
     if (square) {
       const dir = path.join(SQUARE_OUT, STAGES[p.stage]);
       fs.mkdirSync(dir, { recursive: true });

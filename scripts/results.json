@@ -123,5 +123,453 @@
         "summary": "Right now, what you see does not add up to the man you want to marry. People can grow, but you do not have to wait while he does. Decide what you need to see from him, and by when."
       }
     }
+  },
+  "girls-girl-quiz": {
+    "stage": "relationships",
+    "name": "Are You a Girl's Girl?",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the Are You a Girl's Girl? quiz 👀 Ten friendship situations, from aso ebi money to a 1am breakup call. Take it and send me your result.",
+    "results": {
+      "certified": {
+        "title": "I am a certified girl's girl.",
+        "band": "Shows up with care",
+        "summary": "You hype your friends, protect their dignity and tell them the hard thing when it matters. You do not confuse support with agreement. Your friends know you will show up and still tell them what they need to hear."
+      },
+      "ride-or-die": {
+        "title": "I am a ride-or-die girl's girl.",
+        "band": "Loyal with your full chest",
+        "summary": "You defend your friends fast and love them loudly. Sometimes you enter a battle before asking if they want one. Keep the loyalty, but let your friend choose what help looks like."
+      },
+      "lowkey": {
+        "title": "I am a lowkey girl's girl.",
+        "band": "Quiet but present",
+        "summary": "You may not write a long birthday post, but you send the message and turn up in person. Your care happens in private, where your friend can feel it. Say it out loud sometimes, because she may not always know."
+      },
+      "own-time": {
+        "title": "I am a girl's girl on my own time.",
+        "band": "Love that arrives a little late",
+        "summary": "You love your friends, but work, family and your own life can get loud. You may miss the launch post or return the call later, but the affection is still there. A reminder and one small action can help your love arrive on time."
+      },
+      "pick-me": {
+        "title": "I am a pick-me, and I know it.",
+        "band": "Pick-me with full chest",
+        "summary": "The pick-me habit keeps turning every room into an audition, with your girls cast as supporting characters. Next time, pause before you move and choose your friend once."
+      }
+    }
+  },
+  "3am-group-chat": {
+    "stage": "postpartum",
+    "name": "3am Group Chat",
+    "cta": "Get your chat card",
+    "share": "I made a 3am chat card 😂 \"{title}\" Pick your 3am thought, get a friend's reply and send it to a new mum.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "card": {
+        "title": "Even at 3am, my girls reply.",
+        "band": "3am Group Chat",
+        "summary": "You picked your 3am thought and a friend answered. Save the card, or send it to the friend who just had a baby. She may be awake."
+      }
+    }
+  },
+  "delulu-or-clear-eyed": {
+    "stage": "relationships",
+    "name": "Delulu or Clear-Eyed?",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the Delulu or Clear-Eyed? quiz 👀 Ten talking-stage situations. Take it and send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "certified-delulu": {
+        "title": "I am certified delulu.",
+        "band": "Reads the whole love story from one story view",
+        "summary": "You hear a maybe and plan the wedding. Your hope is lovely, and right now it is doing the work his actions should be doing. Next time he is vague, ask him one direct question before you decide what it means."
+      },
+      "hopeful": {
+        "title": "I am hopeful, with one eye open.",
+        "band": "Gives him time and watches a little",
+        "summary": "You give people room and you wait to see if his actions match his words. That is a good start. Put a date on the waiting, so hope does not turn into six months, and ask when you are unsure."
+      },
+      "clear-eyed": {
+        "title": "I am clear-eyed and still soft.",
+        "band": "Warm, direct and hard to confuse",
+        "summary": "You listen to what he says and you watch what he does. When something does not add up, you ask the question instead of guessing. Keep doing that, and keep letting good men in."
+      },
+      "case-closed": {
+        "title": "I am very clear-eyed. Case closed.",
+        "band": "Quick to close the door",
+        "summary": "You do not wait around for a man to make up his mind, and you do not accept nonsense. Sometimes you close the door before he has had a chance to explain. Ask one question before you leave, so you go for the right reason."
+      }
+    }
+  },
+  "how-do-you-love": {
+    "stage": "relationships",
+    "name": "How Do You Love?",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the How Do You Love? quiz 👀 Ten everyday relationship moments. Take it and send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "reassurer": {
+        "title": "I love like a reassurer.",
+        "band": "Says it, checks in, keeps it warm",
+        "summary": "You love by staying close in words. You check in, say what you feel and like to hear it back. Tell the people you love what reassurance looks like for you, so they can give it before you have to ask."
+      },
+      "space-keeper": {
+        "title": "I love like a space-keeper.",
+        "band": "Gives room and shows it in actions",
+        "summary": "You love by giving people room and showing it through what you do. You may say the words rarely, and you may need time alone to feel close again. Say it out loud sometimes, because someone who loves you may not read your quiet."
+      },
+      "steady-one": {
+        "title": "I love like the steady one.",
+        "band": "The same love, week after week",
+        "summary": "You love through routine: the call at the same time and the plan you keep. People rely on you. Leave room for a surprise now and then, and say what you feel before it turns into habit."
+      },
+      "all-in": {
+        "title": "I love like the all-in one.",
+        "band": "Big heart, big gestures, full speed",
+        "summary": "You love fast, loud and with everything you have. The surprise, the plan and the full effort show it. Pace yourself sometimes and check that the other person is moving at your speed."
+      }
+    }
+  },
+  "how-well-do-you-know-me": {
+    "stage": "postpartum",
+    "name": "How Well Do You Know Me?",
+    "cta": "Play the game",
+    "share": "I got \"{title}\" on How Well Do You Know Me? 👀 One of you answers ten questions, the other guesses. Play with your spouse and send me your score.",
+    "note": "This game is for fun. Answers travel only in the private link between the two of you, never in a shared result.",
+    "results": {
+      "back-of-my-hand": {
+        "title": "I know my spouse like the back of my hand.",
+        "band": "Knows you inside out",
+        "summary": "You got nine or ten right. You remembered the small things. Keep asking, because answers can change."
+      },
+      "well-with-surprises": {
+        "title": "I know my spouse well. They can still surprise me.",
+        "band": "Knows you well",
+        "summary": "You got seven or eight right. You know the big picture, and a few answers caught you out. Ask about those. They can start the best conversations."
+      },
+      "half-and-half": {
+        "title": "Half right. My spouse still has stories for me.",
+        "band": "Half right, half to learn",
+        "summary": "You got between four and six right. Busy seasons, work and children can take over the small talk. Try one question a day this week and see what you find out."
+      },
+      "ask-more": {
+        "title": "My spouse still has plenty to tell me.",
+        "band": "Time to ask more",
+        "summary": "You got three or fewer right. Now you have plenty to ask about. Swap places, ask each other these questions out loud and take your time."
+      }
+    }
+  },
+  "milestone-guess": {
+    "stage": "parenting",
+    "name": "Milestone Guess",
+    "cta": "Play the game",
+    "share": "I got \"{title}\" on Milestone Guess 👶 Guess the age for eight baby milestones and see the real ranges. Play and send me your score.",
+    "note": "This game is for fun and learning. It is educational, not medical advice, and not yet reviewed by a clinician.",
+    "results": {
+      "spot-on": {
+        "title": "I know when babies reach their milestones.",
+        "band": "Spot on",
+        "summary": "Your guesses were close on almost every milestone. Remember that the ages are ranges, and every baby moves at their own pace. If you ever have a worry about your own baby, ask at the clinic."
+      },
+      "close": {
+        "title": "I was close on most baby milestones.",
+        "band": "Close on most",
+        "summary": "You were near the usual age on most of them, and a few surprised you. The ranges are wider than many people think, and the sources are listed below. Every baby has their own pace."
+      },
+      "own-clock": {
+        "title": "Every baby has their own clock, and now I know the ranges.",
+        "band": "Learning the ranges",
+        "summary": "Milestone ages surprise a lot of parents, and the ranges are wide on purpose. You now have the ranges and the sources. A baby who reaches a milestone later than a friend's baby is often right inside the range."
+      }
+    }
+  },
+  "mum-wrapped": {
+    "stage": "postpartum",
+    "name": "Mum Wrapped",
+    "cta": "Make my cards",
+    "share": "I got \"{title}\" on Mum Wrapped. My first six weeks with a baby, counted in cards. Try it and send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "night-shift-legend": {
+        "title": "I ran the night shift.",
+        "band": "Night shift legend",
+        "summary": "A big share of what you logged happened between 10pm and 5am, and you were there for each tap. The night shift was yours."
+      },
+      "milk-bar-manager": {
+        "title": "I kept the milk bar open.",
+        "band": "Milk bar manager",
+        "summary": "Feeds were the biggest part of your six weeks, and you kept showing up for every one. That is real work."
+      },
+      "visitor-hostess": {
+        "title": "I hosted the visitors and survived.",
+        "band": "Visitor hostess",
+        "summary": "Your door kept opening. You found the chairs, served the water and kept going with a new baby in the house."
+      },
+      "cold-tea-queen": {
+        "title": "My tea went cold and I kept going.",
+        "band": "Cold tea queen",
+        "summary": "A hot cup of tea and a new baby do not often meet. You made the next cup anyway."
+      },
+      "one-tap-at-a-time": {
+        "title": "I took six weeks one tap at a time.",
+        "band": "One tap at a time",
+        "summary": "You logged what you could, when you could. Every tap was you showing up for your baby."
+      }
+    }
+  },
+  "new-parent-bingo": {
+    "stage": "parenting",
+    "name": "New Parent Bingo",
+    "cta": "Play the game",
+    "share": "I got \"{title}\" on New Parent Bingo 👀 Tick the newborn moments you have lived through, like checking the baby was breathing three times in one night. Play it and send me your score.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "just-landed": {
+        "title": "We're still new at this.",
+        "band": "Just landed",
+        "summary": "You have lived only a few of these so far, or you are just starting. The rest will come, and every parent has a story for each one. Send the grid to the other parent and compare."
+      },
+      "a-few-nights-in": {
+        "title": "We've lived a few of these.",
+        "band": "A few nights in",
+        "summary": "You have been in the newborn days long enough to know these moments when they come. Ask the other parent to play on their own phone. You will find squares you each lived without the other knowing."
+      },
+      "deep-in-it": {
+        "title": "We're deep in the newborn days.",
+        "band": "Deep in it",
+        "summary": "More than half the grid has happened in your house. You know the diaper trips, the whispering and the 3am search. Send it to the group chat and see who has the higher score."
+      },
+      "full-bingo": {
+        "title": "We've lived almost all of it.",
+        "band": "Seen it all",
+        "summary": "You have been through nearly every square. Newborn days make good stories, and yours are well stocked. Send the grid to a friend who is still expecting."
+      }
+    }
+  },
+  "old-wives-tales-baby": {
+    "stage": "parenting",
+    "name": "Old Wives' Tales: True or False? Baby Edition",
+    "cta": "Play the game",
+    "share": "I got \"{title}\" on Old Wives' Tales: Baby Edition 👀 Ten baby tales, True or False, each with a source. Play and send me your score.",
+    "note": "This game is for fun and learning. It is educational, not medical advice, and not yet reviewed by a clinician.",
+    "results": {
+      "sharp": {
+        "title": "I know my baby facts from my baby tales.",
+        "band": "Fact from folklore",
+        "summary": "You got most of the baby tales right. Check the ones you missed, because the source and what to do instead sit under each answer. Send the game to a friend and see her score."
+      },
+      "half": {
+        "title": "I knew half. I'm glad I checked the rest.",
+        "band": "Half and half",
+        "summary": "Some baby beliefs are safe, some are not and some depend on age. Read the answers you missed and open the sources. A friend may enjoy the game too."
+      },
+      "raised": {
+        "title": "I grew up on these baby tales. Now I check first.",
+        "band": "Raised on the tales",
+        "summary": "These beliefs come from families who love their babies. A few are not safe, and the answers say plainly what to do instead. Take your own questions to your clinic or paediatrician."
+      }
+    }
+  },
+  "old-wives-tales-pregnancy": {
+    "stage": "pregnancy",
+    "name": "Old Wives' Tales: True or False? Pregnancy Edition",
+    "cta": "Play the game",
+    "share": "I got \"{title}\" on Old Wives' Tales: Pregnancy Edition 👀 Ten pregnancy tales, True or False, each with a source. Play and send me your score.",
+    "note": "This game is for fun and learning. It is educational, not medical advice, and not yet reviewed by a clinician.",
+    "results": {
+      "sharp": {
+        "title": "I know my facts from my old wives' tales.",
+        "band": "Fact from folklore",
+        "summary": "You got most of the pregnancy tales right. Check the ones you missed, because the source sits under each answer. Send the game to a friend and see her score."
+      },
+      "half": {
+        "title": "I knew half. The other half surprised me.",
+        "band": "Half and half",
+        "summary": "Some of these tales are true, some are false and some depend. Look at the answers you missed and read the source. A friend may enjoy the game too."
+      },
+      "raised": {
+        "title": "I grew up on these tales. Now I have the sources.",
+        "band": "Raised on the tales",
+        "summary": "These beliefs come from families who care about the mother and the baby. Some are worth a second look, and the answers and sources are listed below. Take your own questions to your midwife or doctor."
+      }
+    }
+  },
+  "omugwo-your-mum-or-his-mum": {
+    "stage": "postpartum",
+    "name": "Omugwo: Your Mum or His Mum?",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the Omugwo: Your Mum or His Mum? quiz 👀 Nine omugwo dilemmas. Take it and send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "team-my-mum": {
+        "title": "I am Team My Mum.",
+        "band": "Her own mother in her corner",
+        "summary": "You feel most at ease with your own mother, and that matters in the weeks after birth. Tell your husband and his mother early and warmly, so his family feels included, and find a part of the month that is theirs."
+      },
+      "team-his-mum": {
+        "title": "I am Team His Mum.",
+        "band": "Honouring his family's way",
+        "summary": "You want to honour his family and follow the elder in the house. That can build a strong bond with his mother. Say what you need out loud too, because she can only help with what she knows."
+      },
+      "team-both": {
+        "title": "I am Team Both.",
+        "band": "Two mothers, one plan",
+        "summary": "You want both families in. That takes planning: dates, roles and one person who explains the plan to everyone. If you agree it before the baby arrives, both mothers will feel valued."
+      },
+      "team-just-us": {
+        "title": "I am Team Just Us, thank you.",
+        "band": "Our house, our rhythm, family on visits",
+        "summary": "You want to find your feet as a family first, with visits instead of a long stay. You are choosing a quiet start, and that rejects nobody. Tell both mothers early what you would love from them, so they can still be part of it."
+      }
+    }
+  },
+  "pregnancy-cravings-tier-list": {
+    "stage": "pregnancy",
+    "name": "Pregnancy Cravings Tier List",
+    "cta": "Make your tier list",
+    "share": "My cravings tier list is done 👀 \"{title}\" Rank suya, agege bread, puff-puff and more, then send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "street": {
+        "title": "My S tier is pure roadside.",
+        "band": "Roadside queen",
+        "summary": "You put suya, roasted corn or agege bread at the top. Roadside food won this round. Your tier list is ready for your Status."
+      },
+      "sweet": {
+        "title": "My S tier is all sugar.",
+        "band": "Sweet tooth",
+        "summary": "You put puff-puff, chin chin, mango or a cold drink at the top. The sweet things won this round. Your tier list is ready for your Status."
+      },
+      "pot": {
+        "title": "My S tier comes from the pot.",
+        "band": "Pot of soup",
+        "summary": "You put jollof, eba and soup, pepper soup or Indomie at the top. Your S tier is a full plate. Your tier list is ready for your Status."
+      },
+      "mixed": {
+        "title": "My S tier has no rules.",
+        "band": "No rules",
+        "summary": "Your S tier has roadside food, sweet things and food from the pot, or it is very full. You refused to choose one side. Your tier list is ready for your Status."
+      }
+    }
+  },
+  "put-a-finger-down-dating": {
+    "stage": "relationships",
+    "name": "Put a Finger Down: Dating Edition",
+    "cta": "Play the game",
+    "share": "Put a finger down: \"{title}\" 😅 Ten lines on talking stages, aunties and the ex who texts “hey stranger”. How many fingers do you have left? Send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "none-left": {
+        "title": "I have no fingers left.",
+        "band": "Hands down",
+        "summary": "You have lived all ten. You know the talking stage, the aunties and the ex who texts. You are still here, and the group chat has the full story. Send it to your friends and see who has one left."
+      },
+      "last-fingers": {
+        "title": "I'm down to my last fingers.",
+        "band": "Last fingers",
+        "summary": "You have lived nearly all of it. One or two lines have not found you yet. Send it to your friends and compare who has the most gist."
+      },
+      "half-a-hand": {
+        "title": "I'm down to half a hand.",
+        "band": "Half a hand",
+        "summary": "You have been through a fair share of dating, and you can tell a repeated line when you hear one. Compare with your friends and see who put down more."
+      },
+      "mostly-up": {
+        "title": "Most of my fingers are still up.",
+        "band": "Mostly up",
+        "summary": "A few of these have found you, and most have not. Your friends will have stories for the rest. Send it to them and see how their hands look."
+      },
+      "all-up": {
+        "title": "Nearly all my fingers are still up.",
+        "band": "Still standing",
+        "summary": "Almost none of these has happened to you. Send it to your friends and let them tell you what they have lived."
+      }
+    }
+  },
+  "visitors-bingo": {
+    "stage": "postpartum",
+    "name": "Visitors Bingo",
+    "cta": "Play the game",
+    "share": "I got \"{title}\" on Visitors Bingo 👀 Tick everything your visitors said after the birth, from “He looks exactly like his father” to “Is she eating?”. Play it and send me your score.",
+    "note": "This game is for fun and learning. It is educational, not medical advice, and not yet reviewed by a clinician.",
+    "results": {
+      "first-guests": {
+        "title": "My first visitors are still on the way.",
+        "band": "First guests",
+        "summary": "You have lived only a few of these so far. Keep the grid for later. Visitors are coming. Keep the grid and tick it after each visit."
+      },
+      "a-few-visits-in": {
+        "title": "My house has had its share of visitors.",
+        "band": "A few visits in",
+        "summary": "You have heard some of the classics. A few more are surely coming. Keep a bottle of sanitiser by the door."
+      },
+      "open-house": {
+        "title": "My living room has been an open house.",
+        "band": "Open house",
+        "summary": "More than half the grid has walked through your door. You know who comes with food and who comes with advice. Send the game to another new mum and see whose visitors win."
+      },
+      "full-house": {
+        "title": "I've hosted nearly every visitor.",
+        "band": "Full house",
+        "summary": "Nearly every visitor on the grid has been to your home. That is a lot of love and a lot of jollof. Send it to the group chat and see who beats you."
+      }
+    }
+  },
+  "what-kind-of-mum": {
+    "stage": "pregnancy",
+    "name": "What Kind of Mum Will You Be?",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the What Kind of Mum Will You Be? quiz 👀 Nine pregnancy moments. Take it and send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "planner": {
+        "title": "I am the planner mum.",
+        "band": "Lists, dates and a backup plan",
+        "summary": "You like to know what is coming. Your lists and your calendar keep you steady, and your family will lean on them. Leave room for plans to change, because babies like to surprise people."
+      },
+      "soft-life": {
+        "title": "I am the soft-life mum.",
+        "band": "Comfort, beauty and no rushing",
+        "summary": "You want this season to feel good, and you protect your joy. You pick what suits you and let the rest pass. Write down the two or three things you must not forget, so the soft life stays soft."
+      },
+      "hype": {
+        "title": "I am the hype mum.",
+        "band": "Loud love and a full group chat",
+        "summary": "You celebrate everything, and your people feel it. You bring the energy and the community with you. Pick a few moments to keep just for yourself and your family."
+      },
+      "naija-strict": {
+        "title": "I am the Naija-strict mum.",
+        "band": "House rules, with love",
+        "summary": "You like order, you say what you mean and your home runs on a system. Your family always knows where they stand. Leave a little room for the days when the rules need to bend."
+      }
+    }
+  },
+  "which-nigerian-parent": {
+    "stage": "parenting",
+    "name": "Which Nigerian Parent Are You?",
+    "cta": "Take the quiz",
+    "share": "I got \"{title}\" on the Which Nigerian Parent Are You? quiz 😂 Nine everyday moments. Take it and send me yours.",
+    "note": "This game is for fun. It runs on this device, and nothing anyone answers is saved or sent.",
+    "results": {
+      "remote-control": {
+        "title": "I am the remote control parent.",
+        "band": "Rules, and the remote",
+        "summary": "Your house has rules and everyone knows them. You decide fast, so your children always know what to expect. Leave a little room for a child to explain, because a good reason deserves a hearing."
+      },
+      "ask-your-father": {
+        "title": "I am the \"go and ask your father\" parent.",
+        "band": "Delegates like a managing director",
+        "summary": "You are a team player, or a very good manager. You pass the big decisions to the other parent and keep the peace. Make sure it is a decision you also agree with, so your children hear one voice."
+      },
+      "long-speech": {
+        "title": "I am the long speech parent.",
+        "band": "Every moment is a lesson",
+        "summary": "You turn every moment into a lesson, with a story, a proverb and the full background. Your children learn that you care about who they become. Keep a short version ready, because the long one is so good they only hear the first half."
+      },
+      "soft-landing": {
+        "title": "I am the soft landing parent.",
+        "band": "Rules, then \"just this once\"",
+        "summary": "You are the parent they run to. You say yes more than you planned to, and the house feels safe because of you. Pick one or two rules you will hold, so your yes stays a real yes."
+      }
+    }
   }
 }
