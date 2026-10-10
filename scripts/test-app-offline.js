@@ -2,7 +2,7 @@
 // tools, stops the server, then opens tools, the app home, an unsaved guide and a sales page.
 //   NODE_PATH=/tmp/wgog/node_modules node scripts/test-app-offline.js
 const puppeteer = require('puppeteer-core'); const { spawn } = require('child_process');
-const B = 'http://localhost:8019'; const wait = (ms) => new Promise(r => setTimeout(r, ms));
+const B = 'http://localhost:' + (process.env.WG_PORT || 8019); const wait = (ms) => new Promise(r => setTimeout(r, ms));
 (async () => {
   const srv = spawn('python3', ['serve.py', '8019'], { cwd: require('path').join(__dirname, '..'), stdio: 'ignore' });
   await wait(1200);
