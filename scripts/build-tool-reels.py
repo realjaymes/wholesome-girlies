@@ -138,11 +138,26 @@ def pages_of(slug):
     ]
 
 
+def game_paths():
+    """Tool paths tagged Game or Quiz on /tools/, the one place that says what counts as a game."""
+    with open(os.path.join(ROOT, "tools/index.html"), encoding="utf-8") as f:
+        src = f.read()
+    out = set()
+    for href, body in re.findall(r'<a[^>]*href="(/[a-z]+/tools/[^"#?]+)"[^>]*>(.*?)</a>', src, flags=re.S):
+        tag = re.search(r'<span class="tag">([^<]*)', body)
+        if tag and tag.group(1).strip() in ("Game", "Quiz"):
+            out.add(href)
+    return out
+
+
 def members(m, slug, kind):
-    """Tool ids in the reel of a program page: the program's order list first, then any others."""
+    """Tool ids in the reel of a program page: games first (CLAUDE.md section 9, games lead every list),
+    then the program's order list, then any others."""
     ids = [i for i, t in m["tools"].items() if slug in t.get("programs", [])]
     order = m["programs"][slug][kind]["order"]
-    return [i for i in order if i in ids] + [i for i in ids if i not in order]
+    listed = [i for i in order if i in ids] + [i for i in ids if i not in order]
+    games = game_paths()
+    return [i for i in listed if m["tools"][i]["tool"] in games] + [i for i in listed if m["tools"][i]["tool"] not in games]
 
 
 def esc(s):

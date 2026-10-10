@@ -98,12 +98,12 @@
     },
     "order": [
      "ready-for-love-quiz",
+     "red-flag-radar",
+     "is-he-husband-material",
      "standards-non-negotiables-worksheet",
      "meet-marriage-minded-men-checklist",
      "green-red-flags-checker",
      "situationship-checker",
-     "red-flag-radar",
-     "is-he-husband-material",
      "the-talk-planner"
     ]
    }
@@ -753,6 +753,329 @@
    "captured_at": "2026-10-10",
    "tool_fingerprint": "1331f03853aacf06",
    "source_render": "The Wife Material Blueprint/08 - The Talk Planner 9x16.mp4"
+  },
+  "delulu-or-clear-eyed": {
+   "tool": "/relationships/tools/delulu-or-clear-eyed",
+   "title": "Delulu or Clear-Eyed?",
+   "programs": [
+    "wife-material-blueprint"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/delulu-or-clear-eyed.mp4",
+   "poster": "/assets/img/tool-shorts/delulu-or-clear-eyed.webp",
+   "sales_line": {
+    "home": "Read each talking stage and see whether you are clear eyed or delulu."
+   },
+   "brief": "The Wife Material Blueprint/10 - Tool Short - Delulu or Clear-Eyed.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "890336bcfc33b1c1",
+   "source_render": "The Wife Material Blueprint/10 - Delulu or Clear-Eyed 9x16.mp4"
+  },
+  "put-a-finger-down-dating": {
+   "tool": "/relationships/tools/put-a-finger-down-dating",
+   "title": "Put a Finger Down: Dating Edition",
+   "programs": [
+    "wife-material-blueprint"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/put-a-finger-down-dating.mp4",
+   "poster": "/assets/img/tool-shorts/put-a-finger-down-dating.webp",
+   "sales_line": {
+    "home": "Put a finger down for the dating moments you know too well."
+   },
+   "brief": "The Wife Material Blueprint/11 - Tool Short - Put a Finger Down Dating Edition.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "7b0d4b09a6a3aa50",
+   "source_render": "The Wife Material Blueprint/11 - Put a Finger Down Dating Edition 9x16.mp4"
+  },
+  "how-do-you-love": {
+   "tool": "/relationships/tools/how-do-you-love",
+   "title": "How Do You Love?",
+   "programs": [
+    "wife-material-blueprint"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/how-do-you-love.mp4",
+   "poster": "/assets/img/tool-shorts/how-do-you-love.webp",
+   "sales_line": {
+    "home": "Find the way you give love and the signs you notice first."
+   },
+   "brief": "The Wife Material Blueprint/12 - Tool Short - How Do You Love.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "6d27eb69fd7c2394",
+   "source_render": "The Wife Material Blueprint/12 - How Do You Love 9x16.mp4"
+  },
+  "couple-alignment": {
+   "tool": "/relationships/tools/couple-alignment",
+   "title": "Couple Alignment",
+   "programs": [
+    "wife-material-blueprint"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/couple-alignment.mp4",
+   "poster": "/assets/img/tool-shorts/couple-alignment.webp",
+   "sales_line": {
+    "home": "You and your partner compare answers on money, children, family, faith, work and home."
+   },
+   "brief": "The Wife Material Blueprint/13 - Tool Short - Couple Alignment.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "d0f7a6644a34c813",
+   "source_render": "The Wife Material Blueprint/13 - Couple Alignment 9x16.mp4"
+  },
+  "visitors-bingo": {
+   "tool": "/postpartum/tools/visitors-bingo",
+   "title": "Visitors Bingo",
+   "programs": [
+    "postpartum-reset"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/visitors-bingo.mp4",
+   "poster": "/assets/img/tool-shorts/visitors-bingo.webp",
+   "sales_line": {
+    "home": "Tick the things visitors say and do after the baby arrives."
+   },
+   "brief": "The 6-Week Postpartum Reset/08 - Tool Short - Visitors Bingo.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "1da9338bb157ba28",
+   "source_render": "The 6-Week Postpartum Reset/08 - Visitors Bingo 9x16.mp4"
+  },
+  "omugwo-your-mum-or-his-mum": {
+   "tool": "/postpartum/tools/omugwo-your-mum-or-his-mum",
+   "title": "Omugwo: Your Mum or His Mum?",
+   "programs": [
+    "postpartum-reset"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/omugwo-your-mum-or-his-mum.mp4",
+   "poster": "/assets/img/tool-shorts/omugwo-your-mum-or-his-mum.webp",
+   "sales_line": {
+    "home": "Choose between your mum and his mum across everyday omugwo dilemmas."
+   },
+   "brief": "The 6-Week Postpartum Reset/09 - Tool Short - Omugwo Your Mum or His Mum.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "562732b6d31924ac",
+   "source_render": "The 6-Week Postpartum Reset/09 - Omugwo Your Mum or His Mum 9x16.mp4"
+  },
+  "3am-group-chat": {
+   "tool": "/postpartum/tools/3am-group-chat",
+   "title": "3am Group Chat",
+   "programs": [
+    "postpartum-reset"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/3am-group-chat.mp4",
+   "poster": "/assets/img/tool-shorts/3am-group-chat.webp",
+   "sales_line": {
+    "home": "Turn a 3am newborn thought into a funny group chat reply."
+   },
+   "brief": "The 6-Week Postpartum Reset/10 - Tool Short - 3am Group Chat.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "d81deef3f4feb0b0",
+   "source_render": "The 6-Week Postpartum Reset/10 - 3am Group Chat 9x16.mp4"
+  },
+  "mum-wrapped": {
+   "tool": "/postpartum/tools/mum-wrapped",
+   "title": "Mum Wrapped",
+   "programs": [
+    "postpartum-reset"
+   ],
+   "private": true,
+   "video": "/assets/video/tool-shorts/mum-wrapped.mp4",
+   "poster": "/assets/img/tool-shorts/mum-wrapped.webp",
+   "sales_line": {
+    "home": "See the numbers from the feeding and sleep entries you logged over six weeks."
+   },
+   "brief": "The 6-Week Postpartum Reset/11 - Tool Short - Mum Wrapped.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "3081454401af8249",
+   "source_render": "The 6-Week Postpartum Reset/11 - Mum Wrapped 9x16.mp4"
+  },
+  "how-well-do-you-know-me": {
+   "tool": "/postpartum/tools/how-well-do-you-know-me",
+   "title": "How Well Do You Know Me?",
+   "programs": [
+    "postpartum-reset"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/how-well-do-you-know-me.mp4",
+   "poster": "/assets/img/tool-shorts/how-well-do-you-know-me.webp",
+   "sales_line": {
+    "home": "Your partner guesses your answers, then you swap and compare scores."
+   },
+   "brief": "The 6-Week Postpartum Reset/12 - Tool Short - How Well Do You Know Me.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "499909c5ffd95c65",
+   "source_render": "The 6-Week Postpartum Reset/12 - How Well Do You Know Me 9x16.mp4"
+  },
+  "pregnancy-cravings-tier-list": {
+   "tool": "/pregnancy/tools/pregnancy-cravings-tier-list",
+   "title": "Pregnancy Cravings Tier List",
+   "programs": [
+    "first-pregnancy-plan"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/pregnancy-cravings-tier-list.mp4",
+   "poster": "/assets/img/tool-shorts/pregnancy-cravings-tier-list.webp",
+   "sales_line": {
+    "home": "Rank Nigerian pregnancy cravings from favourite to never again."
+   },
+   "brief": "The First Pregnancy Plan/08 - Tool Short - Pregnancy Cravings Tier List.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "d7a477b7fcdd178c",
+   "source_render": "The First Pregnancy Plan/08 - Pregnancy Cravings Tier List 9x16.mp4"
+  },
+  "what-kind-of-mum": {
+   "tool": "/pregnancy/tools/what-kind-of-mum",
+   "title": "What Kind of Mum Will You Be?",
+   "programs": [
+    "first-pregnancy-plan"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/what-kind-of-mum.mp4",
+   "poster": "/assets/img/tool-shorts/what-kind-of-mum.webp",
+   "sales_line": {
+    "home": "Choose what you would do in pregnancy moments and get your mum type."
+   },
+   "brief": "The First Pregnancy Plan/09 - Tool Short - What Kind of Mum Will You Be.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "93a10c9ae884a03d",
+   "source_render": "The First Pregnancy Plan/09 - What Kind of Mum Will You Be 9x16.mp4"
+  },
+  "old-wives-tales-pregnancy": {
+   "tool": "/pregnancy/tools/old-wives-tales-pregnancy",
+   "title": "Old Wives’ Tales: Pregnancy",
+   "programs": [
+    "first-pregnancy-plan"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/old-wives-tales-pregnancy.mp4",
+   "poster": "/assets/img/tool-shorts/old-wives-tales-pregnancy.webp",
+   "sales_line": {
+    "home": "Test the pregnancy beliefs Nigerian families repeat and read the explanation."
+   },
+   "brief": "The First Pregnancy Plan/10 - Tool Short - Old Wives' Tales Pregnancy.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "8287d8924750f2da",
+   "source_render": "The First Pregnancy Plan/10 - Old Wives' Tales Pregnancy 9x16.mp4"
+  },
+  "baby-name-battle": {
+   "tool": "/pregnancy/tools/baby-name-battle",
+   "title": "Baby Name Battle",
+   "programs": [
+    "first-pregnancy-plan"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/baby-name-battle.mp4",
+   "poster": "/assets/img/tool-shorts/baby-name-battle.webp",
+   "sales_line": {
+    "home": "You and your partner pick names separately, then compare your choices."
+   },
+   "brief": "The First Pregnancy Plan/11 - Tool Short - Baby Name Battle.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "a564ba50492e7b57",
+   "source_render": "The First Pregnancy Plan/11 - Baby Name Battle 9x16.mp4"
+  },
+  "who-knows-mummy-best": {
+   "tool": "/pregnancy/tools/who-knows-mummy-best",
+   "title": "Who Knows Mummy Best?",
+   "programs": [
+    "first-pregnancy-plan"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/who-knows-mummy-best.mp4",
+   "poster": "/assets/img/tool-shorts/who-knows-mummy-best.webp",
+   "sales_line": {
+    "home": "Answer baby shower questions, then have the host share the private link with guests."
+   },
+   "brief": "The First Pregnancy Plan/12 - Tool Short - Who Knows Mummy Best.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "28b59930ef2ccb34",
+   "source_render": "The First Pregnancy Plan/12 - Who Knows Mummy Best 9x16.mp4"
+  },
+  "which-nigerian-parent": {
+   "tool": "/parenting/tools/which-nigerian-parent",
+   "title": "Which Nigerian Parent Are You?",
+   "programs": [
+    "first-baby-playbook"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/which-nigerian-parent.mp4",
+   "poster": "/assets/img/tool-shorts/which-nigerian-parent.webp",
+   "sales_line": {
+    "home": "Choose what you would do in everyday parenting moments and get your result."
+   },
+   "brief": "The First Baby Playbook/09 - Tool Short - Which Nigerian Parent Are You.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "c14164be5977dbaf",
+   "source_render": "The First Baby Playbook/09 - Which Nigerian Parent Are You 9x16.mp4"
+  },
+  "finish-mummys-sentence": {
+   "tool": "/parenting/tools/finish-mummys-sentence",
+   "title": "Finish Mummy’s Sentence",
+   "programs": [
+    "first-baby-playbook"
+   ],
+   "private": true,
+   "video": "/assets/video/tool-shorts/finish-mummys-sentence.mp4",
+   "poster": "/assets/img/tool-shorts/finish-mummys-sentence.webp",
+   "sales_line": {
+    "home": "Guess how a Nigerian mum finishes the sentence before your four tries run out."
+   },
+   "brief": "The First Baby Playbook/10 - Tool Short - Finish Mummy's Sentence.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "9448453ed4ce5959",
+   "source_render": "The First Baby Playbook/10 - Finish Mummy's Sentence 9x16.mp4"
+  },
+  "old-wives-tales-baby": {
+   "tool": "/parenting/tools/old-wives-tales-baby",
+   "title": "Old Wives’ Tales: Baby",
+   "programs": [
+    "first-baby-playbook"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/old-wives-tales-baby.mp4",
+   "poster": "/assets/img/tool-shorts/old-wives-tales-baby.webp",
+   "sales_line": {
+    "home": "Test familiar newborn beliefs and read the explanation after each answer."
+   },
+   "brief": "The First Baby Playbook/11 - Tool Short - Old Wives' Tales Baby.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "ed6cec69b5f001e2",
+   "source_render": "The First Baby Playbook/11 - Old Wives' Tales Baby 9x16.mp4"
+  },
+  "milestone-guess": {
+   "tool": "/parenting/tools/milestone-guess",
+   "title": "Baby Milestone Guess",
+   "programs": [
+    "first-baby-playbook"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/milestone-guess.mp4",
+   "poster": "/assets/img/tool-shorts/milestone-guess.webp",
+   "sales_line": {
+    "home": "Guess when babies reach common milestones, then see the published age ranges."
+   },
+   "brief": "The First Baby Playbook/12 - Tool Short - Milestone Guess.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "c4b5246fae1e4205",
+   "source_render": "The First Baby Playbook/12 - Milestone Guess 9x16.mp4"
+  },
+  "new-parent-bingo": {
+   "tool": "/parenting/tools/new-parent-bingo",
+   "title": "New Parent Bingo",
+   "programs": [
+    "first-baby-playbook"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/new-parent-bingo.mp4",
+   "poster": "/assets/img/tool-shorts/new-parent-bingo.webp",
+   "sales_line": {
+    "home": "Both parents tick the newborn moments they have lived through and compare cards."
+   },
+   "brief": "The First Baby Playbook/13 - Tool Short - New Parent Bingo.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "ebb7e2c3725f6b59",
+   "source_render": "The First Baby Playbook/13 - New Parent Bingo 9x16.mp4"
   }
  }
 }
