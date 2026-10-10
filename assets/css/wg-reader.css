@@ -64,6 +64,11 @@ body:not(.rd-reading) .rd-plan { display: none; }
 .rd-body li { margin-bottom: 8px; }
 .rd-tool { background: var(--blush); border: 2px solid var(--ink); border-left-width: 6px; box-shadow: var(--sticker-md); border-radius: 12px; padding: 14px 16px; margin: 18px 0; }
 .rd-tool p { margin: 0 0 12px; }
+.rd-play { background: var(--st, var(--blush)); border: 2px solid var(--ink); border-left-width: 6px; border-left-color: var(--s, var(--rust)); box-shadow: var(--sticker-md); border-radius: 12px; padding: 14px 16px 16px; margin: 22px 0 18px; }
+.rd-play p { margin: 0 0 10px; }
+.rd-play-tag { font-family: var(--sans); font-weight: 800; font-size: .74rem !important; letter-spacing: .08em; text-transform: uppercase; }
+.rd-play-tag span { font-weight: 700; text-transform: none; letter-spacing: 0; opacity: .8; }
+.rd-play-name { font-family: var(--serif, inherit); font-weight: 800; font-size: 1.2rem !important; line-height: 1.25; margin-bottom: 6px !important; }
 .rd-qa { border-bottom: 1px solid var(--line); padding: 12px 0; }
 .rd-qa summary { font-weight: 800; cursor: pointer; line-height: 1.45; }
 .rd-qa p { margin: 10px 0 0; }

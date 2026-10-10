@@ -23,7 +23,8 @@
    "/relationships/tools/standards-non-negotiables-worksheet",
    "/relationships/tools/meet-marriage-minded-men-checklist",
    "/relationships/tools/ready-for-love-quiz",
-   "/relationships/tools/red-flag-radar"
+   "/relationships/tools/red-flag-radar",
+   "/relationships/tools/girls-girl-quiz"
   ],
   "fertility": [
    "/fertility/tools/ovulation-calculator",
@@ -51,6 +52,7 @@
    "/postpartum/tools/mind-check-in"
   ],
   "parenting": [
+   "/parenting/tools/finish-mummys-sentence",
    "/parenting/tools/milestone-tracker",
    "/parenting/tools/feeding-sleep-tracker",
    "/parenting/tools/vaccination-tracker",
@@ -73,6 +75,10 @@
   "/relationships/tools/situationship-checker": {
    "name": "Situationship Checker",
    "line": "Is it a relationship or a situationship? Six questions, and the words to ask him where it is going."
+  },
+  "/relationships/tools/girls-girl-quiz": {
+   "name": "Are You a Girl's Girl?",
+   "line": "Ten friendship situations, from aso ebi money to her man's flirty DM. Find your girl's girl type and send it to the group chat."
   },
   "/relationships/tools/red-flag-radar": {
    "name": "Red Flag Radar",
@@ -222,6 +228,11 @@
    "name": "First Foods Planner",
    "line": "First foods to try at around six months, with ugu, pap and moi moi on the list.",
    "key": "wg_first_foods_v1"
+  },
+  "/parenting/tools/finish-mummys-sentence": {
+   "name": "Finish Mummy's Sentence",
+   "line": "A new Nigerian mum line every day. Guess how Mummy finishes it in four tries and send your squares.",
+   "key": "wg_daily_mummy"
   }
  },
  "homes": {

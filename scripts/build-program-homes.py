@@ -196,6 +196,41 @@ def tools(m, h):
         f'<div class="ph-tools">{tool_rows(m, s)}</div></details>' for s in h["stages"])
 
 
+GAMES = os.path.join(ROOT, "assets/data/program-games.json")
+STAGE_PROGRAM = {"relationships": "wife-material-blueprint", "pregnancy": "first-pregnancy-plan",
+                 "postpartum": "postpartum-reset", "parenting": "first-baby-playbook"}
+
+
+def game_rows(g, program):
+    """One row per game placed in that program's reader, in reading order, in the same row pattern as the tools."""
+    out = []
+    for m in g["play"].get(program, []):
+        t = g["games"][m["game"]]
+        out.append(f'<a class="ph-tool" href="{t["path"]}"><span class="ph-ico" data-ico="target" data-kind="game" aria-hidden="true"></span>'
+                   f'<span class="ph-tool-t"><b>{t["name"]}</b><span>{m["when"]}: {t["line"]}</span></span>'
+                   f'<span class="ph-chev" aria-hidden="true">&rsaquo;</span></a>')
+    return "".join(out)
+
+
+def play_section(m, h):
+    """'Play': the games the reader places along the program. A single program lists its own; the bundle groups the three
+    stages that have games. Fertility has none, by rule, so a fertility-only home and the bundle's fertility part show none."""
+    with open(GAMES, encoding="utf-8") as f:
+        g = json.load(f)
+    if h["program"] == "complete-motherhood-journey":
+        groups = [(s, game_rows(g, STAGE_PROGRAM[s])) for s in h["stages"] if s in STAGE_PROGRAM]
+        body = "\n      ".join(f'<details class="ph-group"><summary>{m["stage_names"][s].replace(" tools", "")} games <small>{rows.count("ph-tool\"")}</small></summary>'
+                              f'<div class="ph-tools">{rows}</div></details>' for s, rows in groups if rows)
+    else:
+        rows = game_rows(g, h["program"])
+        body = f'<div class="ph-tools">{rows}</div>' if rows else ""
+    if not body:
+        return ""
+    return (f'\n    <section class="ph-sec">\n      <h2>Play along</h2>\n'
+            f'      <p class="muted" style="margin:0 0 10px">A game for each stretch of your program, to make following it fun. Your reader shows each one where it fits.</p>\n'
+            f'      {body}\n    </section>')
+
+
 def card(c, level="h3"):
     return (f'<div class="ph-card"><p class="eyebrow">{c["eyebrow"]}</p><{level}>{c["h2"]}</{level}>'
             f'<p class="muted">{c["text"]}</p>'
@@ -234,7 +269,7 @@ def block(m, h):
     </section>
   </div>
   <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
-  <div class="wrap narrow">{code}{community}
+  <div class="wrap narrow">{code}{community}{play_section(m, h)}
     <section class="ph-sec">
       <h2>Your tools</h2>
       {tools(m, h)}

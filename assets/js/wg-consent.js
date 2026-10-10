@@ -23,11 +23,11 @@
   var PRIVACY = '/legal/privacy';
 
   var description = region === 'us'
-    ? 'We use <b>Google Analytics</b> and <b>Microsoft Clarity</b> to see how the site is used, and your browser to remember your tool entries. <b>Meta</b> and <b>TikTok</b>, which measure our ads, only run if you accept.'
-    : 'We use <b>Google Analytics</b> and <b>Microsoft Clarity</b> to see how the site is used, <b>Meta</b> and <b>TikTok</b> to measure our ads, and your browser to remember your tool entries. None of it runs until you choose.';
+    ? 'We use <b>Google Analytics</b> and <b>Microsoft Clarity</b> to see how Wholesome Girlies is used, and this device to remember your tool entries. <b>Meta</b> and <b>TikTok</b>, which measure our ads, only run if you accept.'
+    : 'We use <b>Google Analytics</b> and <b>Microsoft Clarity</b> to see how Wholesome Girlies is used, <b>Meta</b> and <b>TikTok</b> to measure our ads, and this device to remember your tool entries. None of it runs until you choose.';
 
   var advertisingDescription = 'Meta and TikTok measure whether our ads led you here.' +
-    (WG.gpc ? ' <b>Your browser’s Global Privacy Control setting is on, so advertising stays off.</b>' : '');
+    (WG.gpc ? ' <b>Global Privacy Control is on, so advertising stays off.</b>' : '');
 
   function sync() {
     // Only a real saved choice changes anything; until then the region defaults from
@@ -86,10 +86,10 @@
             savePreferencesBtn: 'Save choices',
             closeIconLabel: 'Close',
             sections: [
-              { title: 'Essential', description: 'Keeps the site secure and working. Nothing personal.', linkedCategory: 'necessary' },
+              { title: 'Essential', description: 'Keeps Wholesome Girlies secure and working. Nothing personal.', linkedCategory: 'necessary' },
               { title: 'Analytics', description: 'Google Analytics counts visits and pages. Microsoft Clarity records clicks and scrolling, with text hidden, so we can fix confusing pages.', linkedCategory: 'analytics' },
               { title: 'Advertising', description: advertisingDescription, linkedCategory: 'advertising' },
-              { title: 'Remember on this device', description: 'Saves your tool entries and checkout details in this browser so you don’t retype them. They never leave your device.', linkedCategory: 'remember' },
+              { title: 'Remember on this device', description: 'Saves your tool entries and checkout details on this device so you don’t retype them. They never leave your device.', linkedCategory: 'remember' },
               { title: 'More information', description: 'Wholesome Girlies Media Limited. <a href="' + PRIVACY + '#cookies">Privacy policy</a> · <a href="/legal/consumer-health-data">Consumer health data</a>' }
             ]
           }

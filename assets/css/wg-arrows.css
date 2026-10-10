@@ -1,0 +1,20 @@
+/* The Wholesome Girlies arrow (CLAUDE.md section 7). wg-arrows.js swaps the text arrows (→ ← ›) on links and buttons for this
+   inline SVG and sets data-arrow on <html>, so a visitor without JavaScript keeps the text arrows. Every rule is scoped to [data-arrow]. */
+[data-arrow] .wga { display: inline-flex; align-items: center; justify-content: center; flex: none; vertical-align: -.06em; margin-left: .3em; color: inherit; line-height: 1; }
+[data-arrow] .wga--back { margin-left: 0; margin-right: .35em; }
+[data-arrow] .wga svg { display: block; width: .85em; height: .85em; overflow: visible; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: butt; stroke-linejoin: miter; transform: rotate(0); transition: transform 320ms cubic-bezier(.34, 1.56, .64, 1); }
+[data-arrow] .wga--back svg { transform: scaleX(-1); }
+[data-arrow] .wga--chev { margin: 0; }
+/* the turn: the arrow rests pointing up and to the right, then turns to point right when the link is hovered, focused or pressed */
+[data-arrow] a:hover .wga svg, [data-arrow] button:hover .wga svg, [data-arrow] a:focus-visible .wga svg, [data-arrow] button:focus-visible .wga svg, [data-arrow] a:active .wga svg, [data-arrow] button:active .wga svg { transform: rotate(45deg); }
+[data-arrow] a:hover .wga--back svg, [data-arrow] button:hover .wga--back svg, [data-arrow] a:focus-visible .wga--back svg, [data-arrow] button:focus-visible .wga--back svg, [data-arrow] a:active .wga--back svg, [data-arrow] button:active .wga--back svg { transform: scaleX(-1) rotate(45deg); }
+/* inside a small row the arrow keeps the row's height */
+[data-arrow] .ph-chev { display: inline-flex; font-size: 1rem; line-height: 1; }
+[data-arrow] .ph-chev .wga { font-size: 1rem; margin: 0 -2px 0 -4px; }
+[data-arrow] .btn-primary .wga { vertical-align: -.1em; color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-arrow] .wga svg { transition: none !important; }
+  [data-arrow] a:hover .wga svg, [data-arrow] button:hover .wga svg, [data-arrow] a:active .wga svg, [data-arrow] button:active .wga svg, [data-arrow] a:focus-visible .wga svg, [data-arrow] button:focus-visible .wga svg { transform: none !important; }
+  [data-arrow] a:hover .wga--back svg, [data-arrow] button:hover .wga--back svg, [data-arrow] a:active .wga--back svg, [data-arrow] button:active .wga--back svg { transform: scaleX(-1) !important; }
+}

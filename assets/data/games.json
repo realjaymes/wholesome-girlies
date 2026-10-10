@@ -1,0 +1,143 @@
+{
+ "_about": "Built by scripts/build-game-pool.py from the Game and Quiz cards on tools/index.html. Do not edit.",
+ "games": [
+  {
+   "path": "/relationships/tools/ready-for-love-quiz",
+   "name": "Are You Ready for Love? Quiz",
+   "stage": "relationships",
+   "line": "Eight questions on what you want, your standards, how healed you are, and whether pressure is driving who you date."
+  },
+  {
+   "path": "/relationships/tools/girls-girl-quiz",
+   "name": "Are You a Girl's Girl?",
+   "stage": "relationships",
+   "line": "Ten friendship situations, from aso ebi money to her man's flirty DM. Find your girl's girl type and send it to the group chat."
+  },
+  {
+   "path": "/relationships/tools/red-flag-radar",
+   "name": "Red Flag Radar",
+   "stage": "relationships",
+   "line": "Call each dating situation green flag, let's talk or red flag, and see what your radar says."
+  },
+  {
+   "path": "/relationships/tools/is-he-husband-material",
+   "name": "Is He Husband Material?",
+   "stage": "relationships",
+   "line": "Answer from what you have seen him do and see what he is showing you, plus what to raise with him."
+  },
+  {
+   "path": "/relationships/tools/couple-alignment",
+   "name": "Couple Alignment",
+   "stage": "relationships",
+   "line": "Both answer 12 questions on money, children, family and home, then see where you agree."
+  },
+  {
+   "path": "/relationships/tools/delulu-or-clear-eyed",
+   "name": "Delulu or Clear-Eyed?",
+   "stage": "relationships",
+   "line": "Ten talking-stage situations, from the unanswered story to the \"we'll see\". Delulu or clear-eyed? Send your result to the group chat."
+  },
+  {
+   "path": "/relationships/tools/how-do-you-love",
+   "name": "How Do You Love?",
+   "stage": "relationships",
+   "line": "Ten everyday relationship moments. Find out if you love like the reassurer, the space-keeper, the steady one or the all-in one."
+  },
+  {
+   "path": "/relationships/tools/put-a-finger-down-dating",
+   "name": "Put a Finger Down: Dating Edition",
+   "stage": "relationships",
+   "line": "Ten dating lines, ten fingers. Put one down for each that has happened and see how many you have left."
+  },
+  {
+   "path": "/pregnancy/tools/baby-name-battle",
+   "name": "Baby Name Battle",
+   "stage": "pregnancy",
+   "line": "Pick one name from each of 12 pairs, send it to your partner and see which names you both chose."
+  },
+  {
+   "path": "/pregnancy/tools/old-wives-tales-pregnancy",
+   "name": "Old Wives' Tales: True or False? Pregnancy Edition",
+   "stage": "pregnancy",
+   "line": "Ten pregnancy beliefs families repeat. Tap True, False or It depends and see the source."
+  },
+  {
+   "path": "/pregnancy/tools/pregnancy-cravings-tier-list",
+   "name": "Pregnancy Cravings Tier List",
+   "stage": "pregnancy",
+   "line": "Rank suya, agege bread, puff-puff and more in S, A, B, C or Never, then save your tier list."
+  },
+  {
+   "path": "/pregnancy/tools/what-kind-of-mum",
+   "name": "What Kind of Mum Will You Be?",
+   "stage": "pregnancy",
+   "line": "Nine pregnancy moments, from the baby shower to the aunty advice. Planner, soft-life, hype or Naija-strict mum?"
+  },
+  {
+   "path": "/pregnancy/tools/who-knows-mummy-best",
+   "name": "Who Knows Mummy Best?",
+   "stage": "pregnancy",
+   "line": "She answers ten questions, guests guess and get a score. For people she has already told."
+  },
+  {
+   "path": "/postpartum/tools/3am-group-chat",
+   "name": "3am Group Chat",
+   "stage": "postpartum",
+   "line": "Pick your 3am thought, get a friend's reply as a chat card and send it to a new mum."
+  },
+  {
+   "path": "/postpartum/tools/how-well-do-you-know-me",
+   "name": "How Well Do You Know Me?",
+   "stage": "postpartum",
+   "line": "One spouse answers ten questions, the other guesses. Get a score out of ten."
+  },
+  {
+   "path": "/postpartum/tools/mum-wrapped",
+   "name": "Mum Wrapped",
+   "stage": "postpartum",
+   "line": "Tap through cards that count your first six weeks with a baby, then save the last one for your Status."
+  },
+  {
+   "path": "/postpartum/tools/omugwo-your-mum-or-his-mum",
+   "name": "Omugwo: Your Mum or His Mum?",
+   "stage": "postpartum",
+   "line": "Nine omugwo dilemmas, from who comes first to who runs the kitchen. Team My Mum, His Mum, Both or Just Us?"
+  },
+  {
+   "path": "/postpartum/tools/visitors-bingo",
+   "name": "Visitors Bingo",
+   "stage": "postpartum",
+   "line": "Tick what every visitor says or does after the birth and send it to the group chat."
+  },
+  {
+   "path": "/parenting/tools/finish-mummys-sentence",
+   "name": "Finish Mummy's Sentence",
+   "stage": "parenting",
+   "line": "A new Nigerian mum line every day. Guess how Mummy finishes it in four tries and send your squares."
+  },
+  {
+   "path": "/parenting/tools/milestone-guess",
+   "name": "Milestone Guess",
+   "stage": "parenting",
+   "line": "Guess the age for eight baby milestones and see the CDC and WHO ranges."
+  },
+  {
+   "path": "/parenting/tools/new-parent-bingo",
+   "name": "New Parent Bingo",
+   "stage": "parenting",
+   "line": "Tick the newborn moments you have lived through and see how many lines you get."
+  },
+  {
+   "path": "/parenting/tools/old-wives-tales-baby",
+   "name": "Old Wives' Tales: True or False? Baby Edition",
+   "stage": "parenting",
+   "line": "Ten newborn and baby beliefs. Tap True, False or It depends and see the source."
+  },
+  {
+   "path": "/parenting/tools/which-nigerian-parent",
+   "name": "Which Nigerian Parent Are You?",
+   "stage": "parenting",
+   "line": "\"Go and ask your father.\" The remote control. \"I will count to three.\" Which Nigerian parent are you?"
+  }
+ ]
+}

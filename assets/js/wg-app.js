@@ -218,7 +218,18 @@
     //    progress would stay behind. A top card asks her to open the page in her real browser.
     if (inApp && !standalone && /^\/programs\/[^/]+\/thank-you$/.test(path)) inAppCard();
     if (standalone) { tabBar(); appFooter(); }
+    appWords();
   });
+  // Copy that must say "site" or "browser" on the website is wrapped as <span data-app-word="app">site</span>.
+  // Inside the installed app the text becomes the attribute value. Safe to run twice; a no-op in a browser tab.
+  function appWords(root) {
+    if (!standalone) return;
+    var list = (root || d).querySelectorAll('[data-app-word]');
+    for (var i = 0; i < list.length; i++) {
+      var word = list[i].getAttribute('data-app-word');
+      if (list[i].textContent !== word) list[i].textContent = word;
+    }
+  }
   function inAppCard() {
     var main = d.querySelector('main.ph');
     if (!main || d.getElementById('wg-app-inapp')) return;
@@ -469,6 +480,7 @@
   w.WGApp = {
     standalone: standalone, ios: ios, android: android, inApp: inApp, phone: phone, iosBrowser: iosBrowser,
     install: install,
+    appWords: appWords,
     savedKeys: savedKeys,
     remembering: function () { return !w.WGConsent || !w.WGConsent.state || !!w.WGConsent.state.remember; },
     downloadBackup: function () {

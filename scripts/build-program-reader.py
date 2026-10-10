@@ -7,6 +7,8 @@ The script writes programs/<slug>/read.html (noindex, served at /programs/<slug>
 wg-reader.css and wg-reader.js, which save her progress on her phone under wg_read_<slug> and lay the
 parts out as a plan of cards, each with its own progress bar, that opens into one lesson at a time.
 
+The "Play this" cards at the end of chosen lessons come from assets/data/program-games.json (the games placed in
+each program), not from the manuscript, so the toolkit PDF stays as bought.
 Edit the manuscript in the vault, never the page, then run:  python3 scripts/build-program-reader.py [slug ...]
 """
 import html
@@ -18,7 +20,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OFFERS = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Offers")
 SITE = "https://wholesomegirlies.xyz"
-READER_VERSION = "20261009k"
+READER_VERSION = "20261010a"
 COVERS = "/assets/img/products/{}-cover.webp?v=20261009c"
 # One manuscript per program. The diaspora home reads the same manuscript; its reader only links back to the diaspora home.
 PROGRAMS = {
@@ -62,6 +64,19 @@ def inline(s):
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", s)
     return s
+
+
+def load_games():
+    """assets/data/program-games.json: the games and where each program's reader plays them (keyed by base program)."""
+    with open(os.path.join(ROOT, "assets", "data", "program-games.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def play_card(g, mom):
+    """The 'Play this' card at the end of a lesson: tag with the day or week, game name, one line, button."""
+    return (f'<aside class="rd-play"><p class="rd-play-tag">Play this<span> &middot; {html.escape(mom["when"], quote=False)}</span></p>'
+            f'<p class="rd-play-name">{g["name"]}</p><p>{html.escape(mom["lead"], quote=False)}</p>'
+            f'<a class="btn btn-primary" href="{g["path"]}">{g["button"]} &rarr;</a></aside>')
 
 
 def toolkit_readers():
@@ -177,11 +192,18 @@ def parse(path):
     return title, sub, parts
 
 
+def play(lesson_title, plan, games):
+    m = plan.pop(lesson_title, None)
+    return play_card(games["games"][m["game"]], m) + "\n" if m else ""
+
+
 def page(slug, cfg):
     MARKET["suffix"] = "-diaspora" if slug.endswith("-diaspora") else ""
     folder = os.path.join(OFFERS, cfg["folder"], "02 - Deliverables")
     path = next(os.path.join(folder, f) for f in sorted(os.listdir(folder)) if f.endswith("Manuscript.md"))
     title, sub, parts = parse(path)
+    games = load_games()
+    plan = {m["lesson"]: m for m in games["play"].get(slug.replace("-diaspora", ""), [])}
     home = f"/programs/{slug}/thank-you"
     seen, toc, body, n = set(), [], [], 0
     for pi, p in enumerate(parts):
@@ -195,12 +217,14 @@ def page(slug, cfg):
             n += 1
             links.append(f'<li><a href="#{lid}" data-lesson="{lid}"><span class="rd-tick" aria-hidden="true"></span><span>{inline(le["title"])}</span></a></li>')
             heading = "" if len(p["lessons"]) == 1 and le["title"] == p["title"] else f"<h3>{inline(le['title'])}</h3>"
-            arts.append(f'<article class="rd-lesson" id="{lid}" data-part="{pid}" data-title="{html.escape(le["title"])}">\n{heading}\n{blocks(le["lines"])}\n'
+            arts.append(f'<article class="rd-lesson" id="{lid}" data-part="{pid}" data-title="{html.escape(le["title"])}">\n{heading}\n{blocks(le["lines"])}\n{play(le["title"], plan, games)}'
                         f'<div class="rd-end"><button type="button" class="rd-done" data-lesson="{lid}">Done, next lesson</button></div>\n</article>')
         intro = blocks(p["intro"])
         toc.append(f'<div class="rd-toc-part" data-part="{pid}"><p class="rd-toc-title"><span>{inline(p["title"])}</span><span class="rd-count"></span></p><ol>{"".join(links)}</ol></div>')
         body.append(f'<section class="rd-part" id="{pid}"><header class="rd-part-head"><h2>{inline(p["title"])}</h2><p class="rd-part-meta"></p><div class="rd-part-bar" aria-hidden="true"><span></span></div></header>\n'
                     + (f'<div class="rd-intro">{intro}</div>\n' if intro else "") + "\n".join(arts) + "\n</section>")
+    if plan:
+        raise SystemExit(f"{slug}: program-games.json names lessons the manuscript does not have: {sorted(plan)}")
     flag = f' data-flag="{cfg["flag"]}"' if cfg.get("flag") else ""
     tpl = open(os.path.join(ROOT, "programs", slug, "thank-you.html"), encoding="utf-8").read()
     headtop = tpl[:tpl.index("<!-- No-crawl")]
