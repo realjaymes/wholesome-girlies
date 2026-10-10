@@ -84,7 +84,7 @@ def build():
     head = ("# Wholesome Girlies Post Captions\n\n"
             "Each video and carousel below has its caption between two lines. Find the video by its file name, or "
             "the carousel by its folder, copy everything between the two lines and paste it as the post caption. "
-            "The same caption works on TikTok, Instagram and Facebook, and the 9x16, 4x5 and 16x9 versions of a "
+            "The same caption works on TikTok, Instagram, Facebook, X and LinkedIn, and the 9x16, 4x5 and 16x9 versions of a "
             "video share it. Post a carousel's slides in number order, and on LinkedIn post its PDF instead.\n\n"
             "For the story and talking-head videos, which show AI people, and for the launch films The Girlies App and Game Night, "
             "which have an AI voice, switch on the platform's AI label when you post.\n\n"
@@ -94,8 +94,16 @@ def build():
     return head + "\n" + "\n\n".join(blocks) + "\n"
 
 
+def x_length(text):
+    """Length as X counts it: every link counts as 23 characters."""
+    return len(re.sub(r"\S*wholesomegirlies\.xyz\S*|https?://\S+", "x" * 23, text))
+
+
 def main():
     body = build()
+    for title, cap in re.findall(r"### (.*?)\n.*?\n---\n\n(.*?)\n\n---", body, re.S):
+        if x_length(cap) > 280:
+            print(f"post-captions: WARNING {title} runs {x_length(cap)} characters on X (limit 280); trim it in the brief")
     for out in OUTPUTS:
         old = open(out, encoding="utf-8").read() if os.path.exists(out) else ""
         strip = lambda s: re.sub(r"\*\*Updated:\*\* .*\n", "", s)
