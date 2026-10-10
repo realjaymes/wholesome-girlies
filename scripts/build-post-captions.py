@@ -86,7 +86,8 @@ def build():
             "the carousel by its folder, copy everything between the two lines and paste it as the post caption. "
             "The same caption works on TikTok, Instagram and Facebook, and the 9x16, 4x5 and 16x9 versions of a "
             "video share it. Post a carousel's slides in number order, and on LinkedIn post its PDF instead.\n\n"
-            "For the story and talking-head videos, which show AI people, switch on the platform's AI label when you post.\n\n"
+            "For the story and talking-head videos, which show AI people, and for the launch films The Girlies App and Game Night, "
+            "which have an AI voice, switch on the platform's AI label when you post.\n\n"
             f"**Videos:** {count}\n\n"
             f"**Carousels:** {slides_count}\n\n"
             f"**Updated:** {datetime.date.today().strftime('%-d %B %Y')}\n")
