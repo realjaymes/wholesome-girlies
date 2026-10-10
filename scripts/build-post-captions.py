@@ -103,7 +103,7 @@ def main():
     body = build()
     for title, cap in re.findall(r"### (.*?)\n.*?\n---\n\n(.*?)\n\n---", body, re.S):
         if x_length(cap) > 280:
-            print(f"post-captions: WARNING {title} runs {x_length(cap)} characters on X (limit 280); trim it in the brief")
+            print(f"post-captions: WARNING {title} runs {x_length(cap)} characters on X (over 280), so it needs X Premium on the posting account or a shorter X cut")
     for out in OUTPUTS:
         old = open(out, encoding="utf-8").read() if os.path.exists(out) else ""
         strip = lambda s: re.sub(r"\*\*Updated:\*\* .*\n", "", s)
