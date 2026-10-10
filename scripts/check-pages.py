@@ -17,6 +17,8 @@ import importlib.util
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -290,6 +292,101 @@ for p in PAGES:
     if KIND[p] == "TOOL" and f'href="{path}"' not in SRC.get("tools/index.html", ""):
         fail(p, "tool not carded on /tools/")
 
+# Tool <-> guide cross-links. Header, footer and head links do not count, only the page body.
+def _body(s):
+    return re.sub(r"<head>.*?</head>|<header.*?</header>|<footer.*?</footer>", "", s, flags=re.S)
+
+
+# Tools that have no written guide to link, on purpose. Keep this list short: a new tool links a guide in its stage.
+NO_GUIDE = {
+    # No guide in the parenting stage covers home safety, so there is nothing relevant to link.
+    "parenting/tools/babyproofing-safety-checklist.html",
+    # No guide in the parenting stage covers paediatric visits, so there is nothing relevant to link.
+    "parenting/tools/paediatric-visit-questions.html",
+}
+_guide_links = {}  # tool page -> guide pages that link it
+_tool_guides = {}  # tool page -> guide paths in its stage that it links
+for p in PAGES:
+    if KIND[p] not in ("TOOL", "GUIDE") or p.endswith("index.html"):
+        continue
+    links = set(re.findall(r'href="(/[a-z]+/(?:tools|guides)/[a-z0-9-]+)(?:[?#"])', _body(SRC[p])))
+    if KIND[p] == "GUIDE":
+        for l in links:
+            if "/tools/" in l and (l[1:] + ".html") in SRC:
+                _guide_links.setdefault(l[1:] + ".html", []).append(p)
+    else:
+        _tool_guides[p] = {l for l in links if "/guides/" in l and l.startswith("/" + p.split("/")[0] + "/")}
+for tool, guides in sorted(_guide_links.items()):
+    if KIND.get(tool) != "TOOL":
+        continue
+    back = set(re.findall(r'href="(/[a-z]+/guides/[a-z0-9-]+)', _body(SRC[tool])))
+    for g in guides:
+        if "/" + g[:-5] not in back:
+            fail(tool, f"guide {g[:-5]} links this tool but the tool does not link back")
+for tool, gs in sorted(_tool_guides.items()):
+    if not gs and tool not in NO_GUIDE:
+        fail(tool, "links no guide in its stage: add a guide card to its Related block, or list it in NO_GUIDE with a reason")
+
+# Result cards: every quiz or checker result type has its images, its result page, and the tool wires them up.
+if os.path.exists("scripts/results.json"):
+    for tool, t in json.load(open("scripts/results.json")).items():
+        page = f"{t['stage']}/tools/{tool}.html"
+        if page not in SRC:
+            fail("scripts/results.json", f"{tool}: tool page {page} does not exist yet, so its result cards cannot be checked")
+            continue
+        for rid in t.get("results", {}):
+            for img in (f"{rid}.jpg", f"{rid}-status.jpg"):
+                if not os.path.exists(f"assets/img/results/{tool}/{img}"):
+                    fail(page, f"result {rid}: assets/img/results/{tool}/{img} is missing: run node scripts/make-result-cards.js {tool}")
+            rp = f"{t['stage']}/tools/{tool}/result/{rid}.html"
+            if rp not in SRC:
+                fail(page, f"result {rid}: result page {rp} is missing: run python3 scripts/make-result-pages.py")
+        # The call can sit in the page or in the game engine it loads (wg-pair.js, wg-chatcard.js, wg-tierlist.js).
+        _engines = [m for m in re.findall(r'src="/assets/js/(wg-[a-z-]+\.js)', SRC[page]) if m not in ("wg-result.js", "wg-app.js")]
+        if "wgShowResult" not in SRC[page] and not any("wgShowResult" in read("assets/js/" + e) for e in _engines):
+            fail(page, "quiz or checker must call wgShowResult(type) after scoring")
+        if 'id="wg-result-share"' not in SRC[page]:
+            fail(page, 'quiz or checker must carry id="wg-result-share" in its result panel')
+
+# The app home: a line in APP_PROGRAMS for every program, and two game cards that point at real games or quizzes.
+if os.path.exists("app/index.html") and os.path.exists("assets/data/program-homes.json"):
+    _app_src = SRC["app/index.html"]
+    _m = re.search(r"var APP_PROGRAMS = \{(.*?)\};", _app_src, flags=re.S)
+    _prog_lines = _m.group(1) if _m else ""
+    # One line per stage, for the Nigerian program. Diaspora homes share it and the Complete Motherhood Journey spans four stages.
+    for slug in json.load(open("assets/data/program-homes.json"))["homes"]:
+        if slug.endswith("-diaspora") or slug == "complete-motherhood-journey":
+            continue
+        if f"'{slug}'" not in _prog_lines:
+            fail("app/index.html", f"program {slug} has no line in APP_PROGRAMS")
+    _gm = re.search(r'id="appGames".*?<div class="grid[^>]*>(.*?)</div>\s*</div>', _app_src, flags=re.S)
+    _cards = re.findall(r'<a class="card" href="(/[^"]+)"', _gm.group(1)) if _gm else []
+    _tools_idx = SRC.get("tools/index.html", "")
+    if len(_cards) != 2:
+        fail("app/index.html", f'"Games to play and send to a friend" must hold exactly two cards, found {len(_cards)}')
+    for href in _cards:
+        _tag = re.search(r'href="' + re.escape(href) + r'"[^>]*><span class="tag">([^<]*)', _tools_idx)
+        if (href[1:] + ".html") not in SRC:
+            fail("app/index.html", f"game card {href} does not match a tool page")
+        elif not _tag or _tag.group(1) not in ("Game", "Quiz"):
+            fail("app/index.html", f"game card {href} must be a tool tagged Game or Quiz on /tools/")
+    # James picks the two top games (CLAUDE.md section 10). Change this list only when he picks others.
+    APP_TOP_GAMES = ["/relationships/tools/girls-girl-quiz", "/relationships/tools/is-he-husband-material"]
+    if _cards and _cards != APP_TOP_GAMES:
+        fail("app/index.html", f"the app's games must be {', '.join(APP_TOP_GAMES)} in that order, found {', '.join(_cards)}")
+
+# Games lead every tool list (CLAUDE.md section 9): on the homepage Tools grid no tool card comes before a
+# game card. A game is a tool tagged Game or Quiz on /tools/. Program reels are sorted by build-tool-reels.py.
+if "index.html" in SRC and "tools/index.html" in SRC:
+    _games = {h for h, t in re.findall(r'<a[^>]*href="(/[a-z]+/tools/[^"#?]+)"[^>]*>\s*<span class="tag">([^<]*)', SRC["tools/index.html"]) if t.strip() in ("Game", "Quiz")}
+    _grid = re.search(r'id="toolGrid">(.*?)\n    </div>', SRC["index.html"], flags=re.S)
+    _seen_tool = None
+    for href in re.findall(r'<a class="card tool-item" href="([^"]+)"', _grid.group(1) if _grid else ""):
+        if href in _games and _seen_tool:
+            fail("index.html", f"Tools section: game {href} sits after the tool {_seen_tool}; games come first")
+        elif href not in _games:
+            _seen_tool = _seen_tool or href
+
 for line in read("llms.txt").splitlines():
     for u in re.findall(r"https://wholesomegirlies\.xyz(/[^\s)>\]]*)", line):
         if not resolves(u):
@@ -446,9 +543,13 @@ for stage, paths in HOMES["stages"].items():
     for tp in paths:
         if tp not in HOMES["tools"]:
             fail("assets/data/program-homes.json", f"{tp} is listed under {stage} but has no entry in tools")
+# A game placed in a program's "Play along" list (assets/data/program-games.json) counts as listed: it stays out of "Your tools".
+_placed_games = set()
+if os.path.exists("assets/data/program-games.json"):
+    _placed_games = {g["path"] for g in json.load(open("assets/data/program-games.json"))["games"].values()}
 for p in PAGES:
-    if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in HOMES["tools"]:
-        fail(p, "tool is missing from assets/data/program-homes.json, so no program home lists it (add it to tools and its stage)")
+    if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in HOMES["tools"] and "/" + p[:-5] not in _placed_games:
+        fail(p, "tool is missing from assets/data/program-homes.json and from assets/data/program-games.json, so no program home lists it (add it to tools and its stage, or place the game in program-games.json)")
 
 # ---------- 5. Compliance and 6. Brand ----------
 
@@ -482,6 +583,40 @@ for p in PAGES:
 if re.search(r"\bWG\b", read("scripts/results.json")):
     fail("scripts/results.json", 'write "Wholesome Girlies" in full, never "WG"')
 
+# The installed app is the website, so one page serves both. Visible body text never says "site", "website" or
+# "browser": a reader in the app has no such thing. Say "here", "on Wholesome Girlies", "on this device", or wrap the
+# word as <span data-app-word="app">site</span>, which wg-app.js swaps for the attribute inside the installed app.
+# Not read: head, meta tags, scripts, JSON-LD, comments, HTML attributes, URLs and domains, /legal/ (where
+# "website" is the legal term), mockups. ALLOW_WEB_WORDS lists lines that must keep the word, each with its reason.
+WEB_WORDS = re.compile(r"\b(?:web ?sites?|sites?|browsers?)\b", re.I)
+ALLOW_WEB_WORDS = {
+    ("about/medical-policy.html", "not a website"): "tells her to get a hospital, not a website: a general noun for other websites",
+    ("postpartum/guides/omugwo.html", "health websites"): "names other health websites in a research claim",
+    ("pregnancy/tools/due-date-calculator.html", "NHS site"): "names the NHS website as a separate source",
+}
+
+
+def web_word_text(s):
+    b = s[s.find("<body"):] if "<body" in s else s
+    b = re.sub(r"<(script|style|noscript|template)[^>]*>.*?</\1>|<!--.*?-->", " ", b, flags=re.S | re.I)
+    b = re.sub(r"<span[^>]*\bdata-app-word=[^>]*>.*?</span>", " ", b, flags=re.S | re.I)
+    b = html.unescape(re.sub(r"<[^>]+>", " ", b))
+    return re.sub(r"https?://\S+|[\w.-]+\.(?:xyz|com|ng|org)\b\S*", " ", b)
+
+
+for p in PAGES:
+    if KIND[p] == "MOCKUP" or p.startswith("legal/"):
+        continue
+    t = web_word_text(SRC[p])
+    found = set()
+    for m in WEB_WORDS.finditer(t):
+        around = t[max(0, m.start() - 40):m.end() + 20]
+        if any(pg == p and phrase in around for (pg, phrase) in ALLOW_WEB_WORDS):
+            continue
+        found.add(re.sub(r"\s+", " ", around).strip())
+    for ctx in sorted(found)[:3]:
+        fail(p, f'"site", "website" or "browser" in text the installed app also shows (say "here", "on Wholesome Girlies" or "on this device", or wrap the word in data-app-word): ...{ctx}...')
+
 # ---------- 7. Operations: one cache version per asset ----------
 
 refs = {}
@@ -493,10 +628,39 @@ for name, vers in refs.items():
         detail = ", ".join(f"?v={v} on {len(ps)} file(s)" for v, ps in vers.items())
         problems.append(f"{name}: mixed cache versions ({detail}); bump every reference to one value")
 
+# An asset that differs from git HEAD must load under a new ?v=, because sw.js serves /assets/ cache-first
+# and a changed file under the same version stays old on her phone. New files (not at HEAD) are exempt, and the
+# check skips itself when git is unavailable or this is not a checkout (the GitHub runner checks out HEAD, so
+# its diff is empty).
+def _git(*args):
+    try:
+        r = subprocess.run(["git", *args], capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.stdout if r.returncode == 0 else None
+
+
+if shutil.which("git"):
+    _changed = _git("diff", "--name-only", "HEAD", "--", "assets/js", "assets/css")
+    if _changed and _changed.strip():
+        _old = _git("grep", "-h", "-o", "-E", r"/assets/(js|css)/[A-Za-z0-9_.-]+\?v=[A-Za-z0-9]+",
+                    "HEAD", "--", "*.html", "assets/js/wg-article.js")
+        if _old is not None:
+            _head = {}
+            for _m in re.finditer(r"/assets/(?:js|css)/([A-Za-z0-9_.-]+)\?v=([A-Za-z0-9]+)", _old):
+                _head.setdefault(_m.group(1), set()).add(_m.group(2))
+            for _f in sorted(set(_changed.split())):
+                _name = os.path.basename(_f)
+                if _name not in _head or _name not in refs:
+                    continue
+                _stale = sorted(set(refs[_name]) & _head[_name])
+                if _stale:
+                    problems.append(f"{_f}: changed since git HEAD but still loads as ?v={_stale[0]}, the version at HEAD "
+                                    f"({len(refs[_name][_stale[0]])} reference(s)); bump it in every page that references it, "
+                                    f"or the service worker keeps serving the old copy")
+
 # Inline scripts must parse. One syntax error stops a whole tool working, so a broken
 # script never ships. Uses Node when it is available (it is on the GitHub runner).
-import shutil
-import subprocess
 if shutil.which("node"):
     jobs = []
     for p in PAGES:
@@ -524,6 +688,19 @@ for p in RESOURCES:
     if img and tw and tw.group(1) != img.group(1):
         fail(p, "twitter:image must match og:image")
 
+# Tool and guide cards: an own-slug og:image that exists is checked above and in the indexable-page loop.
+# Every shared result page carries its own result card as og:image, never default.jpg and never a missing file
+for p in PAGES:
+    if KIND[p] != "RESULT":
+        continue
+    s = read(p)
+    img = re.search(r'property="og:image" content="([^"]+)"', s)
+    m = re.search(r"([^/]+)/tools/([^/]+)/result/([^/]+)\.html$", p)
+    if not img or "/og/default.jpg" in img.group(1) or f"/assets/img/results/{m.group(2)}/{m.group(3)}.jpg" not in img.group(1):
+        fail(p, f"og:image must be its own result card, /assets/img/results/{m.group(2)}/{m.group(3)}.jpg (run scripts/make-result-cards.js)")
+    elif not resolves(img.group(1).replace(SITE, "").split("?")[0]):
+        fail(p, "og:image file does not exist: run node scripts/make-result-cards.js " + m.group(2))
+
 # Every tool, game and quiz has a tool short brief in the vault video program folders, written the
 # day the tool is built. Runs only where the vault exists (James's machine); the GitHub runner skips it.
 # Briefs sit one level down in a folder per program (or Brand); the hub notes above them and
@@ -545,6 +722,16 @@ if os.path.isdir(VIDEO_DIR):
     for p in PAGES:
         if KIND[p] == "TOOL" and not p.endswith("index.html") and "/" + p[:-5] not in briefed:
             fail(p, f"no tool short brief: add one under Content/AI Video/<Program>/ with destination: /{p[:-5]} (see 01 - Video Roadmap)")
+
+# Every cast image is archived in the vault's WG Cast folder and in ~/Downloads/Wholesome Girlies/WG Cast/, and
+# indexed (CLAUDE.md section 4, Cast archive). Same vault-only guard: the GitHub runner skips it.
+if os.path.isdir(VIDEO_DIR):
+    import subprocess as _sp
+    _r = _sp.run([sys.executable, "scripts/check-cast-archive.py"], capture_output=True, text=True)
+    if _r.returncode:
+        for _l in _r.stdout.splitlines():
+            if not _l.startswith("check-cast-archive:"):
+                fail("cast archive", _l)
 
 # ---------- Tool reels: every filmed tool short sits on every page it belongs to ----------
 # assets/data/tool-shorts.json lists one entry per rendered tool short. scripts/build-tool-reels.py
@@ -600,7 +787,8 @@ for f in ("manifest.webmanifest", "sw.js", "app/index.html", "offline.html"):
     if not os.path.exists(f):
         fail(f, "the app needs this file")
 APP_TAGS = ['<link rel="manifest" href="/manifest.webmanifest">', '<meta name="theme-color" content="#6E7A3F">',
-            '<meta name="apple-mobile-web-app-title" content="Girlies">', 'src="/assets/js/wg-app.js?v=']
+            '<meta name="apple-mobile-web-app-title" content="Girlies">', 'src="/assets/js/wg-app.js?v=',
+            'href="/assets/css/wg-arrows.css?v=', 'src="/assets/js/wg-arrows.js?v=']  # the site arrow (section 7)
 for p in PAGES:
     if KIND[p] == "MOCKUP":
         continue
@@ -612,6 +800,8 @@ for p in PAGES:
     m = re.search(r"<h4>Explore</h4>\s*<ul>(.*?)</ul>", SRC[p], flags=re.S)
     if m and 'href="/app/"' not in m.group(1):
         fail(p, 'footer Explore list is missing "Get the app": run python3 scripts/add-app-tags.py')
+# Tools that read another tool's entries and save none of their own, so the app's saved tools never lists them.
+READS_ONLY = {"postpartum/tools/mum-wrapped.html"}  # reads the Feeding and Sleep Tracker's wg_feedsleep_ entries
 if os.path.exists("app/index.html"):
     app_src = SRC["app/index.html"]
     listed = dict(re.findall(r'\["(wg_[a-z0-9_]+)", "(/[a-z-]+/tools/[a-z0-9-]+)"', app_src))
@@ -619,6 +809,8 @@ if os.path.exists("app/index.html"):
         if KIND[p] != "TOOL":
             continue
         keys = {k for k in re.findall(r"""["'`](wg_[a-z0-9_]+)""", SRC[p]) if not re.search(r"_home$|^wg_lead$|^wg_app_|^wg_consent", k)}
+        if p in READS_ONLY:
+            continue
         if keys and url_of(p).replace(SITE, "") not in listed.values():
             fail(p, "this tool saves entries but is missing from APP_TOOLS in app/index.html, so the app home never shows it")
     for k, path in listed.items():
@@ -628,6 +820,13 @@ if os.path.exists("app/index.html"):
 
 
 # ---------- Ratchet rules (frozen backlog, no new violations) ----------
+
+
+# A game or quiz carded as Game or Quiz on /tools/ is exempt from the doctor box unless it carries health facts (HEALTH_GAMES).
+HEALTH_GAMES = {"/pregnancy/tools/old-wives-tales-pregnancy", "/parenting/tools/old-wives-tales-baby",
+                "/parenting/tools/milestone-guess", "/postpartum/tools/visitors-bingo"}
+NON_HEALTH_GAMES = {m.group(1) for m in re.finditer(r'<a class="card ti" href="([^"]+)"[^>]*><span class="tag">(?:Game|Quiz)</span>',
+                                                  SRC.get("tools/index.html", ""))} - HEALTH_GAMES
 
 
 def ratchet_counts():
@@ -652,7 +851,7 @@ def ratchet_counts():
             t = ld_types(s) or set()
             add("tool schema: FAQPage on every tool", p, int("FAQPage" not in t))
             add("tool trust: Person author and citation array in schema", p, int('"citation"' not in s) + int('"Person"' not in s))
-        if k in ("TOOL", "GUIDE") and not p.startswith("relationships/"):
+        if k in ("TOOL", "GUIDE") and not p.startswith("relationships/") and "/" + p[:-5] not in NON_HEALTH_GAMES:
             add("safety: health tools and guides carry a when-to-see-a-doctor block", p, int("doctor-box" not in s))
         if k in ("PROG", "PROG-D") and "testimonial" in s:
             add("results vary: sales pages with testimonials carry a results-vary line", p, int(not re.search(r"results (?:vary|differ)", text, flags=re.I)))
@@ -672,6 +871,24 @@ for p in PAGES:
     hits = FILLER.findall(html.unescape(re.sub(r"<[^>]+>", " ", body) + " ".join(desc)))
     if len(hits) > 1:
         warn(p, f'"honest", "calm" or "gentle" used {len(hits)} times; say the specific thing, one literal use per page at most')
+
+# A quiz or game never puts all its questions or options in one long stretch: more than 3 static questions need
+# data-steps (wg-steps.js), and a long static list of choices (more than 6 option buttons or radios) is not allowed
+# outside a stepper. The browser test scripts/test-one-screen.js covers the rest (height of the playing area).
+for p in PAGES:
+    if KIND[p] != "TOOL" or p.endswith("index.html"):
+        continue
+    _t = re.search(r'href="/' + re.escape(p[:-5]) + r'"[^>]*><span class="tag">([^<]*)', SRC.get("tools/index.html", ""))
+    _eng = re.search(r"wg-(?:count|pair|truefalse|tierlist|chatcard|wrapped|daily|steps)\.js", SRC[p]) or "data-steps" in SRC[p]
+    if (_t and _t.group(1) in ("Game", "Quiz")) or _eng:
+        _app = SRC[p].split('class="tool-app', 1)[-1].split('class="disclaimer', 1)[0]
+        _qs = len(re.findall(r'class="(?:q|rq)[ "]', _app))
+        _stepped = "data-steps" in SRC[p]
+        if _qs > 3 and not _stepped:
+            fail(p, f"{_qs} questions and no data-steps: show one question at a time with wg-steps.js")
+        _opts = len(re.findall(r'type="radio"', _app)) + len(re.findall(r'<button[^>]*class="[^"]*\b(?:opt|choice)\b', _app))
+        if _opts > 6 and not _stepped:
+            fail(p, f"{_opts} option buttons or radios in one long list: show a few at a time (stepper, paging or one-by-one)")
 
 now = ratchet_counts()
 if "--update-baseline" in sys.argv:

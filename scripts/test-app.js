@@ -49,6 +49,7 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   const flags = () => cp.evaluate(() => ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].filter(k => localStorage.getItem(k)));
   const addCode = async (c) => { await cp.$eval('#appAdd', d => d.open = true); await cp.$eval('#appCode', e => e.value = ''); await cp.type('#appCode', c); await cp.click('#appCodeForm button'); await wait(500); };
   await addCode('WRONG-ABCD');
+  await cp.waitForFunction(() => /did not match/.test(document.getElementById('appMsg').textContent), { timeout: 3000 }).catch(() => {});
   ok('wrong program code adds nothing', (await flags()).length === 0 && /did not match/.test(await cp.$eval('#appMsg', e => e.textContent)));
   const wife = HOMES['wife-material-blueprint'].code;
   await addCode(' ' + wife.toLowerCase().replace('-', ' ') + ' ');

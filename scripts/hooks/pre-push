@@ -1,0 +1,11 @@
+#!/bin/sh
+# Blocks a push when the page check fails or a game or quiz no longer fits one phone screen.
+# Install: cp scripts/hooks/pre-push .git/hooks/
+cd "$(git rev-parse --show-toplevel)" || exit 1
+python3 scripts/check-pages.py || { echo "pre-push: check-pages failed, push blocked."; exit 1; }
+# One-screen browser test. Runs only when the local site is up on :8001 (the script skips itself with a message when it is not).
+if command -v node >/dev/null 2>&1; then
+  node scripts/test-one-screen.js || { echo "pre-push: a game or quiz is taller than one phone screen, push blocked."; exit 1; }
+else
+  echo "pre-push: node not found, skipping the one-screen test."
+fi
