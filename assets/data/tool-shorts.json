@@ -1076,6 +1076,23 @@
    "captured_at": "2026-10-10",
    "tool_fingerprint": "ebb7e2c3725f6b59",
    "source_render": "The First Baby Playbook/13 - New Parent Bingo 9x16.mp4"
+  },
+  "girls-girl-quiz": {
+   "tool": "/relationships/tools/girls-girl-quiz",
+   "title": "Are You a Girl's Girl?",
+   "programs": [
+    "wife-material-blueprint"
+   ],
+   "private": false,
+   "video": "/assets/video/tool-shorts/girls-girl-quiz.mp4",
+   "poster": "/assets/img/tool-shorts/girls-girl-quiz.webp",
+   "sales_line": {
+    "home": "Ten friendship situations show what kind of girl's girl you are."
+   },
+   "brief": "The Wife Material Blueprint/09 - Tool Short - Are You a Girl's Girl.md",
+   "captured_at": "2026-10-10",
+   "tool_fingerprint": "5182de85040deb77",
+   "source_render": "The Wife Material Blueprint/09 - Are You a Girl's Girl 9x16.mp4"
   }
  }
 }
