@@ -68,7 +68,7 @@ def build(path, src):
 def pages():
     os.chdir(ROOT)
     for p in sorted(glob.glob("**/*.html", recursive=True)):
-        if p in SKIP or p.startswith(("_lab/", "node_modules/", ".")):
+        if p in SKIP or p.startswith(("_lab/", "lab/", "node_modules/", ".")):
             continue
         yield p
 

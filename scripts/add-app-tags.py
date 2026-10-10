@@ -29,7 +29,7 @@ SKIP = {"branding-options.html", "logo-options.html"}
 
 changed = 0
 for p in sorted(glob.glob("**/*.html", recursive=True)):
-    if p in SKIP or p.startswith(("_lab/", "node_modules/", ".")):
+    if p in SKIP or p.startswith(("_lab/", "lab/", "node_modules/", ".")):
         continue
     s = before = open(p, encoding="utf-8").read()
     if 'rel="manifest"' not in s:
