@@ -98,15 +98,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <label for="cyc">Your usual cycle length (days)</label>
         <select id="cyc"></select>
       </div>
+      <p class="muted" id="cycNote" style="margin:-6px 0 16px;font-size:.9rem;" aria-live="polite"></p>
       <button class="btn btn-primary" onclick="calcPeriods()">Predict my next periods</button>
       <div class="result" id="res">
         <h3>Your next three periods (estimated)</h3>
         <div id="list"></div>
       </div>
+      <div id="logBox" hidden style="margin-top:22px;">
+        <h3 style="margin:0 0 6px;">Your logged periods</h3>
+        <p class="muted" style="margin:0 0 12px;font-size:.92rem;">Log each period on the day it starts. Once you have three, we use your own average cycle instead of a guess.</p>
+        <button type="button" class="btn btn-ghost" id="logToday">My period started today</button>
+        <div class="field" style="margin:14px 0 0;"><label for="logDate">Or add an earlier period</label>
+          <div style="display:flex;gap:10px;"><input type="date" id="logDate" style="flex:1;min-width:0;"><button type="button" class="btn btn-ghost" id="logAdd">Add</button></div></div>
+        <p class="muted" id="logEmpty" style="margin:12px 0 0;font-size:.92rem;">Nothing logged yet.</p>
+        <ul id="logList" style="list-style:none;margin:8px 0 0;padding:0;"></ul>
+      </div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> These are estimates based on a regular cycle. Real cycles vary from month to month, so treat this as a guide. It runs on this device and stores nothing.
+      <strong>Educational, not medical advice.</strong> These are estimates based on a regular cycle. Real cycles vary from month to month, so treat this as a guide. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="doctor-box">
@@ -205,19 +216,78 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
+// Saved on this phone in wg_stage_fertility_v1: her last period, usual cycle length and logged period dates. Format and rules: assets/js/wg-stage-date.js.
 (function(){ var s=document.getElementById('cyc'); for(var d=21; d<=40; d++){ var o=document.createElement('option'); o.value=d; o.textContent=d+' days'; if(d===28)o.selected=true; s.appendChild(o); } })();
+var ST=window.WGStage;
 function fmt(d){ return d.toLocaleDateString(undefined,{weekday:'long', day:'numeric', month:'long', year:'numeric'}); }
 function addDays(date,n){ var x=new Date(date.getTime()); x.setDate(x.getDate()+n); return x; }
-function calcPeriods(){
-  var v=document.getElementById('lmp').value, cyc=parseInt(document.getElementById('cyc').value,10);
-  if(!v){ alert('Please enter the first day of your last period.'); return; }
+function el(id){ return document.getElementById(id); }
+function longDate(s){ var dt=ST.parse(s); return dt?ST.nice(dt):''; }
+function cycleNote(){
+  var e=ST.fertility.effectiveCycle(), f=ST.fertility.read(), chosen=parseInt(el('cyc').value,10), n=el('cycNote');
+  if(e.source==='average'){ n.textContent='Using your own average of '+e.days+' days, from your last '+e.n+' cycles. The box above is used only until you have logged three periods.'; }
+  else { n.textContent='Using the cycle length you picked above ('+chosen+' days).'+(f.starts.length?' Once you have logged three periods, we use your own average instead.':''); }
+  return e.source==='average'?e.days:chosen;
+}
+function calcPeriods(quiet){
+  var v=el('lmp').value;
+  if(!v){ if(quiet!==true) alert('Please enter the first day of your last period.'); return; }
+  var ok=true;
+  if(quiet!==true){ ST.fertility.setCycle(parseInt(el('cyc').value,10)); ok=ST.fertility.logStart(v) && ST.fertility.setLmp(v); renderLog(); }
+  var cyc=cycleNote();
   var lmp=new Date(v+'T00:00:00'), html='';
   for(var i=1;i<=3;i++){ var d=addDays(lmp, cyc*i); html+='<div style="padding:12px 0; border-bottom:1px solid var(--line);"><div class="big">Period '+i+'</div><p class="muted" style="margin:2px 0 0;">Around '+fmt(d)+'</p></div>'; }
-  document.getElementById('list').innerHTML=html;
-  document.getElementById('res').classList.add('show');
-  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+  el('list').innerHTML=html;
+  el('res').classList.add('show');
+  if(quiet!==true){ if(!ok && ST.canSave()) el('cycNote').textContent+=' That date could not be saved on this phone.'; el('res').scrollIntoView({behavior:'smooth', block:'nearest'}); }
 }
+function renderLog(){
+  var f=ST.fertility.read(), box=el('logBox'), ul=el('logList');
+  box.hidden=!ST.canSave();
+  ul.innerHTML='';
+  f.starts.slice().reverse().forEach(function(s){
+    var li=document.createElement('li'); li.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);';
+    var t=document.createElement('span'); t.textContent=longDate(s);
+    var b=document.createElement('button'); b.type='button'; b.className='btn btn-ghost'; b.style.padding='6px 14px'; b.textContent='Remove'; b.setAttribute('aria-label','Remove '+longDate(s));
+    b.addEventListener('click',function(){ ST.fertility.removeStart(s); afterLogChange(); });
+    li.appendChild(t); li.appendChild(b); ul.appendChild(li);
+  });
+  el('logEmpty').hidden=f.starts.length>0;
+  cycleNote();
+}
+function afterLogChange(){
+  var f=ST.fertility.read();
+  el('lmp').value=f.lmp||'';
+  if(f.lmp) calcPeriods(true); else el('res').classList.remove('show');
+  renderLog();
+}
+function logOn(s){
+  if(!s){ return; }
+  var ok=ST.fertility.logStart(s);
+  if(!ok){ el('cycNote').textContent=ST.canSave()?'That date cannot be saved. Pick a date from the last two years.':'Your dates cannot be saved on this phone right now.'; return; }
+  afterLogChange();
+}
+(function(){
+  var iso=ST.iso(ST.today());
+  el('logDate').max=iso;
+  var f=ST.fertility.read();
+  if(f.cycle) el('cyc').value=String(f.cycle);
+  if(f.lmp){ el('lmp').value=f.lmp; }
+  el('lmp').addEventListener('change',function(){ if(this.value) ST.fertility.setLmp(this.value); });
+  el('cyc').addEventListener('change',function(){ ST.fertility.setCycle(parseInt(this.value,10)); cycleNote(); });
+  el('logToday').addEventListener('click',function(){ logOn(iso); });
+  el('logAdd').addEventListener('click',function(){ logOn(el('logDate').value); el('logDate').value=''; });
+  ST.mountStage(el('wgSaved'),'fertility',function(){
+    var g=ST.fertility.read(), n=g.starts.length;
+    return (g.lmp?'Saved on this phone: your last period started '+longDate(g.lmp)+'.':'Saved on this phone.')+(n?' '+n+(n===1?' period':' periods')+' logged.':'');
+  },function(){
+    el('lmp').value=''; el('cyc').value='28'; el('res').classList.remove('show'); el('list').innerHTML=''; renderLog();
+  });
+  renderLog();
+  if(f.lmp) calcPeriods(true);
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>

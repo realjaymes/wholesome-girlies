@@ -96,10 +96,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p id="triline" style="margin:6px 0;"></p>
         <p class="muted" id="note" style="margin:0;"></p>
       </div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> These are general, typical notes and do not describe your own pregnancy. Your midwife or doctor and your scans are the guide to that. It runs on this device and stores nothing.
+      <strong>Educational, not medical advice.</strong> These are general, typical notes and do not describe your own pregnancy. Your midwife or doctor and your scans are the guide to that. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="doctor-box">
@@ -161,7 +162,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
+// Saved on this phone in wg_stage_pregnancy_v1: her due date, shared with every pregnancy tool. Format and rules: assets/js/wg-stage-date.js.
 function noteFor(w){
   if(w<5) return 'Very early. A test may only just be positive. Start folic acid if you have not.';
   if(w<9) return 'The baby’s major organs are forming. Nausea and tiredness are common. Register at an antenatal clinic if you have not (this first visit is called booking).';
@@ -173,20 +176,37 @@ function noteFor(w){
   if(w<=42) return 'Full term. Baby could arrive any time. Know the signs of labour and when to go in.';
   return 'That is beyond a typical pregnancy length, please check the date with your midwife.';
 }
-function calcWeek(){
+function calcWeek(quiet){
   var v=document.getElementById('lmp').value;
-  if(!v){ alert('Please enter the first day of your last period.'); return; }
+  if(!v){ if(quiet!==true) alert('Please enter the first day of your last period.'); return; }
   var lmp=new Date(v+'T00:00:00'), now=new Date();
   var days=Math.floor((now-lmp)/(1000*60*60*24));
   if(days<0){ document.getElementById('weekline').textContent='That date is in the future.'; document.getElementById('triline').textContent=''; document.getElementById('note').textContent=''; document.getElementById('res').classList.add('show'); return; }
   var w=Math.floor(days/7), d=days%7;
+  // Saving the due date: only a real pregnancy week is kept, and only when she pressed the button.
+  if(quiet!==true && w<=45){ var ST=window.WGStage; ST.pregnancy.setDue(ST.iso(ST.addDays(lmp,280))); }
   document.getElementById('weekline').textContent='You are '+w+' weeks and '+d+' days pregnant';
   var tri = w<13?'First trimester':(w<28?'Second trimester':'Third trimester');
   document.getElementById('triline').textContent=tri;
   document.getElementById('note').textContent=noteFor(w);
   document.getElementById('res').classList.add('show');
-  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(quiet!==true) document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+(function(){
+  var ST=window.WGStage, lmp=document.getElementById('lmp');
+  var p=ST.pregnancy.read();
+  if(p){
+    // The saved due date is the start date plus 280 days, so the start date is 280 days before it.
+    lmp.value=ST.iso(ST.addDays(ST.parse(p.due),-280));
+    calcWeek(true);
+  }
+  ST.mountStage(document.getElementById('wgSaved'),'pregnancy',function(){
+    var q=ST.pregnancy.read();
+    return q?'Saved on this phone: your due date is '+ST.nice(ST.parse(q.due))+'.':'';
+  },function(){
+    lmp.value=''; document.getElementById('res').classList.remove('show');
+  });
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>

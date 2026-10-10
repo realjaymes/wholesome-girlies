@@ -804,16 +804,18 @@ for p in PAGES:
 READS_ONLY = {"postpartum/tools/mum-wrapped.html"}  # reads the Feeding and Sleep Tracker's wg_feedsleep_ entries
 if os.path.exists("app/index.html"):
     app_src = SRC["app/index.html"]
-    listed = dict(re.findall(r'\["(wg_[a-z0-9_]+)", "(/[a-z-]+/tools/[a-z0-9-]+)"', app_src))
+    # one row per tool; several tools in a stage may share one key (the stage date), so keep every (key, path) pair
+    listed = re.findall(r'\["(wg_[a-z0-9_]+)", "(/[a-z-]+/tools/[a-z0-9-]+)"', app_src)
+    listed_paths = {path for _k, path in listed}
     for p in PAGES:
         if KIND[p] != "TOOL":
             continue
         keys = {k for k in re.findall(r"""["'`](wg_[a-z0-9_]+)""", SRC[p]) if not re.search(r"_home$|^wg_lead$|^wg_app_|^wg_consent", k)}
         if p in READS_ONLY:
             continue
-        if keys and url_of(p).replace(SITE, "") not in listed.values():
+        if keys and url_of(p).replace(SITE, "") not in listed_paths:
             fail(p, "this tool saves entries but is missing from APP_TOOLS in app/index.html, so the app home never shows it")
-    for k, path in listed.items():
+    for k, path in listed:
         page = path.lstrip("/") + ".html"
         if page not in SRC or k not in SRC[page]:
             fail("app/index.html", f"APP_TOOLS entry {k} does not match a key saved by {path}")

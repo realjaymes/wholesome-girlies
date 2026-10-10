@@ -91,13 +91,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="tool-app">
       <label for="dob" style="display:block;font-weight:800;margin-bottom:6px;">Your baby's date of birth</label>
       <input type="date" id="dob" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);font-family:var(--sans);font-size:1rem;">
-      <p class="muted" style="margin:8px 0 18px;font-size:0.92rem;">Add it and every visit below shows the date it falls due. The date stays on this device.</p>
+      <p class="muted" style="margin:8px 0 18px;font-size:0.92rem;">Add it and every visit below shows the date it falls due. Saved only on this phone. Nothing is sent to us.</p>
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <strong id="progText">0 of 0 done</strong>
         <button class="btn btn-ghost" style="padding:8px 16px;" onclick="resetList()">Reset</button>
       </div>
       <div class="progress-bar"><span id="progFill"></span></div>
       <ul class="checklist" id="list"></ul>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
@@ -206,6 +207,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
 var ITEMS=[
   {t:"At birth", w:0, v:"BCG, oral polio (OPV 0), hepatitis B birth dose"},
@@ -222,7 +224,7 @@ var KEY="wg_vax_v2", DOBKEY="wg_vax_dob";
 function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
 function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
 function getDob(){ try{ return localStorage.getItem(DOBKEY)||""; }catch(e){ return ""; } }
-function setDob(v){ try{ localStorage.setItem(DOBKEY, v); }catch(e){} }
+function setDob(v){ try{ if(v) localStorage.setItem(DOBKEY, v); else localStorage.removeItem(DOBKEY); }catch(e){} if(window.WGStage) window.WGStage.refresh(); }
 function dueDate(dob, it){
   var d = new Date(dob + "T00:00:00");
   if (isNaN(d)) return "";
@@ -250,6 +252,9 @@ function resetList(){ save({}); render(); }
   var f=document.getElementById('dob');
   f.value=getDob();
   f.addEventListener('change', function(){ setDob(this.value); render(); });
+  window.WGStage.mountStage(document.getElementById('wgSaved'),'parenting',function(){
+    var p=window.WGStage.parenting.read(); return p?'Saved on this phone: your baby\u2019s date of birth is '+window.WGStage.nice(window.WGStage.parse(p.dob))+'.':'';
+  },function(){ f.value=''; render(); });
 })();
 render();
 </script>

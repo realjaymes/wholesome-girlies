@@ -51,6 +51,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .add-name[open] summary { margin-bottom: 12px; }
   .add-name .opt-l { font-weight: 400; color: var(--plum-soft); }
   .own-tag { font-size: .8rem; font-weight: 800; color: var(--sage); }
+  .wg-heart { display: block; background: none; border: 0; padding: 8px 0 0; color: var(--terracotta-dark); font-weight: 800; font-size: .85rem; cursor: pointer; text-decoration: underline; }
+  #shortlist h3 { margin: 6px 0 4px; }
 </style>
 <link rel="stylesheet" href="/assets/css/wg-rail.css?v=20261009a">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
@@ -105,7 +107,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="field"><label for="anOrigin">Where it comes from <span class="opt-l">(optional)</span></label><select id="anOrigin"><option value="">Skip this</option></select></div>
         <p id="anErr" role="alert" style="display:none;margin:0 0 10px;color:var(--terracotta-dark);font-weight:700;">Type the name first.</p>
         <button type="button" class="btn btn-primary" id="anAdd">Add it and make a naming card</button>
-        <p class="muted" style="font-size:.85rem;margin:10px 0 0;">The name stays on this page, on your device. We never see it or save it.</p>
+        <p class="muted" style="font-size:.85rem;margin:10px 0 0;">A name you add stays on this phone. It is kept for next time only if you add it to your shortlist. We never see it.</p>
       </details>
       <div class="result" id="nameCard" aria-live="polite">
         <p class="sub" style="margin-top:0;">Your naming card</p>
@@ -115,12 +117,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div id="ncShare" style="margin-top:14px;"></div>
         <p style="margin:12px 0 0;"><button type="button" class="btn btn-ghost" id="ncSave">Save for your Status</button></p>
       </div>
+      <div id="shortlist" aria-live="polite"></div>
+      <div id="wgSaved"></div>
       <div id="list" style="margin-top:6px;"></div>
       <p class="muted" id="none" style="display:none;">No names match. Try another word, or <button type="button" class="nc-btn" id="noneAdd" style="padding:0;">add the name yourself</button>.</p>
     </div>
 
     <div class="disclaimer">
-      <strong>Meanings differ by family.</strong> A name can carry a different meaning in another town or another family, and it can be spelled more than one way. Ask the elders in your family before you decide.
+      <strong>Meanings differ by family.</strong> A name can carry a different meaning in another town or another family, and it can be spelled more than one way. Ask the elders in your family before you decide. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="card program-cta">
@@ -175,6 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
 var NAMES=[
  // original set
@@ -321,6 +326,41 @@ var NAMES=[
  {n:"Ama",g:"f",o:"Akan",m:"born on Saturday"},
  {n:"Simba",g:"m",o:"Swahili",m:"lion"}
 ];
+// Her shortlist: saved on this phone only, as {"v":1,"items":[{n,m,o,g,own}]}. Clearing removes the key.
+var ST=window.WGStage, SL_KEY='wg_name_shortlist_v1', SHORT=[];
+function slLoad(){
+  var o=ST.json(SL_KEY), out=[];
+  if(!o||o.v!==1||!Array.isArray(o.items)) return out;
+  o.items.slice(0,100).forEach(function(x){
+    if(!x||typeof x.n!=='string'||!x.n||x.n.length>30) return;
+    if(out.some(function(y){return y.n.toLowerCase()===x.n.toLowerCase();})) return;
+    out.push({n:x.n, m:typeof x.m==='string'?x.m.slice(0,80):'', o:typeof x.o==='string'?x.o.slice(0,30):'', g:(x.g==='f'||x.g==='m'||x.g==='u')?x.g:'', own:x.own===true});
+  });
+  return out;
+}
+function slSave(){ if(SHORT.length) ST.set(SL_KEY, JSON.stringify({v:1,items:SHORT})); else ST.del(SL_KEY); ST.refresh(); }
+function inShort(n){ return SHORT.some(function(y){return y.n.toLowerCase()===String(n).toLowerCase();}); }
+function heart(x){
+  var on=inShort(x.n);
+  return '<button type="button" class="wg-heart" data-heart="'+esc(x.n)+'" aria-pressed="'+(on?'true':'false')+'" aria-label="'+(on?'Remove '+esc(x.n)+' from your shortlist':'Add '+esc(x.n)+' to your shortlist')+'">'+(on?'\u2665 On your shortlist':'\u2661 Add to shortlist')+'</button>';
+}
+function renderShort(){
+  var box=document.getElementById('shortlist');
+  if(!SHORT.length){ box.innerHTML=''; return; }
+  box.innerHTML='<h3>Your shortlist</h3>'+SHORT.map(function(x){
+    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+esc(x.n)+'</span>'+(x.o?' <span class="muted" style="font-size:.85rem;">'+esc(x.o)+'</span>':'')+'<br><button type="button" class="nc-btn" data-n="'+esc(x.n)+'">Make a naming card</button><button type="button" class="wg-heart" data-heart="'+esc(x.n)+'" aria-pressed="true" aria-label="Remove '+esc(x.n)+' from your shortlist">Remove</button></div><div class="muted" style="text-align:right;">'+esc(x.m)+'</div></div>';
+  }).join('');
+}
+function toggleHeart(n){
+  var i=-1; SHORT.forEach(function(y,k){ if(y.n.toLowerCase()===n.toLowerCase()) i=k; });
+  if(i>-1) SHORT.splice(i,1);
+  else {
+    var item=OWN.concat(NAMES).filter(function(x){return x.n===n;})[0];
+    if(!item) return;
+    SHORT.push({n:item.n, m:item.m||'', o:item.o||'', g:item.g||'', own:item.own===true});
+  }
+  slSave(); renderShort(); render();
+}
 function render(){
   var q=(document.getElementById('q').value||'').toLowerCase().trim();
   var g=document.getElementById('g').value;
@@ -334,13 +374,14 @@ function render(){
   });
   var gl={f:'Girl',m:'Boy',u:'Unisex'};
   document.getElementById('list').innerHTML = mine.map(function(x){
-    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+esc(x.n)+'</span> <span class="own-tag">Added by you'+(x.o?' · '+esc(x.o):'')+'</span><br><button type="button" class="nc-btn" data-n="'+esc(x.n)+'">Make a naming card</button></div><div class="muted" style="text-align:right;">'+esc(x.m)+'</div></div>';
+    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+esc(x.n)+'</span> <span class="own-tag">Added by you'+(x.o?' · '+esc(x.o):'')+'</span><br><button type="button" class="nc-btn" data-n="'+esc(x.n)+'">Make a naming card</button>'+heart(x)+'</div><div class="muted" style="text-align:right;">'+esc(x.m)+'</div></div>';
   }).join('') + out.map(function(x){
-    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+x.n+'</span> <span class="muted" style="font-size:.85rem;">'+gl[x.g]+' · '+x.o+'</span><br><button type="button" class="nc-btn" data-n="'+x.n+'">Make a naming card</button></div><div class="muted" style="text-align:right;">'+x.m+'</div></div>';
+    return '<div style="padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; align-items:baseline;"><div><span class="big">'+x.n+'</span> <span class="muted" style="font-size:.85rem;">'+gl[x.g]+' · '+x.o+'</span><br><button type="button" class="nc-btn" data-n="'+x.n+'">Make a naming card</button>'+heart(x)+'</div><div class="muted" style="text-align:right;">'+x.m+'</div></div>';
   }).join('');
   document.getElementById('none').style.display = (out.length||mine.length)? 'none':'block';
 }
-// Names she adds herself. They live in this page only: never stored, never sent, never in a link or an analytics event.
+// Names she adds herself. They live in this page only, unless she adds one to her shortlist, which saves it on this phone.
+// They are never sent, and never in a link or an analytics event.
 var OWN=[];
 function esc(t){ return String(t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 (function(){ // populate the Origin dropdown from the data (Nigerian origins first, then A to Z)
@@ -360,10 +401,23 @@ function ncMeaning(m){ return /^from /.test(m) ? 'It comes '+m+'.' : 'It means '
 function ncOrigin(o){ return (/^[AEIOU]/.test(o) ? 'An ' : 'A ')+o+' name.'; }
 function ncPush(ev){ window.dataLayer = window.dataLayer || []; window.dataLayer.push({event: ev, share_item: 'baby-name-explorer:'+ncItem(), share_surface: 'result'}); }
 function ncItem(){ return NC.own ? 'own-name' : ncSlug(NC.n); }
-document.getElementById('list').addEventListener('click', function(e){
-  var b = e.target.closest('.nc-btn'); if(!b) return;
-  var n = b.getAttribute('data-n');
-  var item = OWN.concat(NAMES).filter(function(x){ return x.n === n; })[0]; if(item) ncShow(item);
+['list','shortlist'].forEach(function(id){
+  document.getElementById(id).addEventListener('click', function(e){
+    var h = e.target.closest('.wg-heart');
+    if(h){ toggleHeart(h.getAttribute('data-heart')); return; }
+    var b = e.target.closest('.nc-btn'); if(!b) return;
+    var n = b.getAttribute('data-n');
+    var item = OWN.concat(NAMES, SHORT).filter(function(x){ return x.n === n; })[0]; if(item) ncShow(item);
+  });
+});
+SHORT = slLoad();
+renderShort(); render();
+ST.mount(document.getElementById('wgSaved'), {
+  has: function(){ return SHORT.length > 0; },
+  summary: function(){ return ''; },
+  clear: function(){ SHORT = []; ST.del(SL_KEY); },
+  onClear: function(){ renderShort(); render(); },
+  label: 'Clear shortlist', note: 'This removes every name you saved on this phone.', done: 'Your shortlist is cleared from this phone.'
 });
 // An added name shares a link to this page, never a link carrying her name.
 function ncShow(item){

@@ -87,6 +87,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap narrow">
     <div class="tool-app">
       <div class="field">
+        <label for="dob">Your baby's date of birth <span style="font-weight:400;">(optional)</span></label>
+        <input type="date" id="dob">
+        <p class="muted" id="dobNote" style="margin:6px 0 0;font-size:.9rem;" aria-live="polite">Add it and we pick the right age for you. You can still change the age below.</p>
+      </div>
+      <div class="field">
         <label for="age">Your baby's age</label>
         <select id="age" onchange="render()">
           <option value="2">Around 2 months</option>
@@ -99,10 +104,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </select>
       </div>
       <div id="out"></div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> Milestones are typical ranges. Babies develop at very different rates, and reaching something later is often completely normal.
+      <strong>Educational, not medical advice.</strong> Milestones are typical ranges. Babies develop at very different rates, and reaching something later is often completely normal. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="doctor-box">
@@ -165,7 +171,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
+// Saved on this phone in wg_vax_dob: the baby's date of birth, the same key the Vaccination Tracker uses (never rename it). Format and rules: assets/js/wg-stage-date.js.
 var M={
  2:["Smiles at people","Can briefly calm themselves","Starts to look at faces and follow with eyes","Coos and makes gurgling sounds","Holds head up during tummy time"],
  4:["Smiles spontaneously, especially at people","Babbles and copies some sounds","Reaches for toys with one hand","Holds head steady","Pushes up on elbows during tummy time"],
@@ -181,6 +189,28 @@ function render(){
   document.getElementById('out').innerHTML='<h3 style="margin:6px 0 10px;">Around this age, many babies:</h3><ul class="check">'+items.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>';
 }
 render();
+(function(){
+  var ST=window.WGStage, dob=document.getElementById('dob'), age=document.getElementById('age'), note=document.getElementById('dobNote');
+  var HELP=note.textContent;
+  dob.max=ST.iso(ST.today());
+  function apply(){
+    var m=ST.parenting.ageMonths();
+    if(m<0){ note.textContent=HELP; return; }
+    if(m>30){ note.textContent='Your baby is older than this tracker covers. Pick the nearest age below.'; return; }
+    var pick=2; [2,4,6,9,12,18,24].forEach(function(o){ if(m>=o) pick=o; });
+    age.value=String(pick); render();
+    note.textContent='Showing the milestones for around '+pick+' months, from the date of birth you added. You can still change the age below.';
+  }
+  var saved=ST.parenting.read();
+  if(saved){ dob.value=saved.dob; apply(); }
+  dob.addEventListener('change',function(){
+    if(!this.value){ ST.parenting.setDob(''); note.textContent=HELP; return; }
+    if(ST.parenting.setDob(this.value)) apply(); else note.textContent='That date does not look right. Check it and try again.';
+  });
+  ST.mountStage(document.getElementById('wgSaved'),'parenting',function(){
+    var p=ST.parenting.read(); return p?'Saved on this phone: your baby\u2019s date of birth is '+ST.nice(ST.parse(p.dob))+'.':'';
+  },function(){ dob.value=''; note.textContent=HELP; });
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>

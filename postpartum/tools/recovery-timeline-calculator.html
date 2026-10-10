@@ -111,10 +111,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="muted" id="resWhere"></p>
         <div id="milestones"></div>
       </div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> This tool shows general patterns of postpartum recovery. It does not diagnose or treat anything, and your own recovery may look different. It runs entirely on this device, and we do not store your date.
+      <strong>Educational, not medical advice.</strong> This tool shows general patterns of postpartum recovery. It does not diagnose or treat anything, and your own recovery may look different. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="doctor-box">
@@ -176,14 +177,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
+// Saved on this phone in wg_stage_postpartum_v1: her delivery date and type, shared with every postpartum tool. Format and rules: assets/js/wg-stage-date.js.
 function addWeeks(date, w){ var d = new Date(date.getTime()); d.setDate(d.getDate() + w*7); return d; }
 function fmt(d){ return d.toLocaleDateString(undefined, {weekday:'short', day:'numeric', month:'long', year:'numeric'}); }
 
-function calcTimeline(){
+function calcTimeline(quiet){
   var val = document.getElementById('dd').value;
   var type = document.getElementById('dt').value;
-  if(!val){ alert('Please enter your delivery date.'); return; }
+  if(!val){ if(quiet !== true) alert('Please enter your delivery date.'); return; }
+  if(quiet !== true) window.WGStage.postpartum.set(val, type);
   var start = new Date(val + 'T00:00:00');
   var now = new Date();
   var weeksSince = Math.floor((now - start) / (1000*60*60*24*7));
@@ -215,8 +219,22 @@ function calcTimeline(){
   });
   document.getElementById('milestones').innerHTML = html;
   document.getElementById('res').classList.add('show');
-  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(quiet !== true) document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+(function(){
+  var ST = window.WGStage, dd = document.getElementById('dd'), dt = document.getElementById('dt');
+  var p = ST.postpartum.read();
+  if(p){ dd.value = p.delivery; if(p.type) dt.value = p.type; calcTimeline(true); }
+  function keep(){ if(dd.value) ST.postpartum.set(dd.value, dt.value); }
+  dd.addEventListener('change', keep);
+  dt.addEventListener('change', keep);
+  ST.mountStage(document.getElementById('wgSaved'), 'postpartum', function(){
+    var q = ST.postpartum.read();
+    return q ? 'Saved on this phone: you delivered on ' + ST.nice(ST.parse(q.delivery)) + '.' : '';
+  }, function(){
+    dd.value = ''; dt.value = 'vaginal'; document.getElementById('res').classList.remove('show');
+  });
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>

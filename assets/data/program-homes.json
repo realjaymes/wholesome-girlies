@@ -105,11 +105,13 @@
   },
   "/fertility/tools/ovulation-calculator": {
    "name": "Ovulation &amp; Fertile Window Calculator",
-   "line": "Estimate your fertile days and most likely day of ovulation."
+   "line": "Estimate your fertile days and most likely day of ovulation.",
+   "key": "wg_stage_fertility_v1"
   },
   "/fertility/tools/period-tracker": {
    "name": "Period Tracker",
-   "line": "Predict your next three periods and see your pattern."
+   "line": "Predict your next three periods and see your pattern.",
+   "key": "wg_stage_fertility_v1"
   },
   "/fertility/tools/ttc-checklist": {
    "name": "Trying-to-Conceive Checklist",
@@ -133,11 +135,13 @@
   },
   "/pregnancy/tools/due-date-calculator": {
    "name": "Due Date Calculator",
-   "line": "Estimate your due date and how many weeks along you are."
+   "line": "Estimate your due date and how many weeks along you are.",
+   "key": "wg_stage_pregnancy_v1"
   },
   "/pregnancy/tools/week-by-week-tracker": {
    "name": "Week-by-Week Tracker",
-   "line": "See your week, your trimester, and what is happening now."
+   "line": "See your week, your trimester, and what is happening now.",
+   "key": "wg_stage_pregnancy_v1"
   },
   "/pregnancy/tools/hospital-bag-checklist": {
    "name": "Hospital Bag Checklist",
@@ -146,7 +150,8 @@
   },
   "/pregnancy/tools/birth-plan-builder": {
    "name": "Birth Plan Builder",
-   "line": "Turn your preferences into a clear one-page plan."
+   "line": "Turn your preferences into a clear one-page plan.",
+   "key": "wg_birth_plan_v1"
   },
   "/pregnancy/tools/safe-foods-checklist": {
    "name": "Safe Foods Checklist",
@@ -165,7 +170,8 @@
   },
   "/postpartum/tools/recovery-timeline-calculator": {
    "name": "Recovery Timeline Calculator",
-   "line": "Enter your delivery date and delivery type to see what many women experience each week as they heal."
+   "line": "Enter your delivery date and delivery type to see what many women experience each week as they heal.",
+   "key": "wg_stage_postpartum_v1"
   },
   "/postpartum/tools/recovery-checklist": {
    "name": "Postpartum Recovery Checklist",
@@ -194,7 +200,8 @@
   },
   "/parenting/tools/milestone-tracker": {
    "name": "Baby Milestone Tracker",
-   "line": "See the milestones many babies reach at each age."
+   "line": "See the milestones many babies reach at each age.",
+   "key": "wg_vax_dob"
   },
   "/parenting/tools/feeding-sleep-tracker": {
    "name": "Feeding &amp; Sleep Tracker",
@@ -208,11 +215,13 @@
   },
   "/parenting/tools/baby-routine-planner": {
    "name": "Baby Routine Planner",
-   "line": "A sample day of feeds, naps and play for your baby's age."
+   "line": "A sample day of feeds, naps and play for your baby's age.",
+   "key": "wg_vax_dob"
   },
   "/parenting/tools/baby-name-explorer": {
    "name": "Baby Name Explorer",
-   "line": "Search Yoruba, Igbo and Hausa baby names by meaning."
+   "line": "Search Yoruba, Igbo and Hausa baby names by meaning.",
+   "key": "wg_name_shortlist_v1"
   },
   "/parenting/tools/babyproofing-safety-checklist": {
    "name": "Baby Safety Checklist",

@@ -105,10 +105,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p id="weeks" style="margin:6px 0;"></p>
         <p class="muted" id="tri" style="margin:0;"></p>
       </div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> This uses the standard method (last period plus 280 days, adjusted for your cycle length). Your dating scan is the most accurate. It runs on this device and stores nothing.
+      <strong>Educational, not medical advice.</strong> This uses the standard method (last period plus 280 days, adjusted for your cycle length). Your dating scan is the most accurate. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="doctor-box">
@@ -204,7 +205,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
+// Saved on this phone in wg_stage_pregnancy_v1: her due date, shared with every pregnancy tool. Format and rules: assets/js/wg-stage-date.js.
 (function(){ var s=document.getElementById('cyc'); for(var d=21; d<=40; d++){ var o=document.createElement('option'); o.value=d; o.textContent=d+' days'; if(d===28)o.selected=true; s.appendChild(o); } })();
 function fmt(d){ return d.toLocaleDateString(undefined,{weekday:'long', day:'numeric', month:'long', year:'numeric'}); }
 function addDays(date,n){ var x=new Date(date.getTime()); x.setDate(x.getDate()+n); return x; }
@@ -230,8 +233,19 @@ function calcDue(){
     document.getElementById('tri').textContent=tri + '. Every pregnancy is different. Your scan gives the most accurate dates.';
   }
   document.getElementById('res').classList.add('show');
+  // Only a date that makes sense is saved: the last period is not in the future and not more than 45 weeks ago.
+  if(days>=0 && w<=45) window.WGStage.pregnancy.setDue(window.WGStage.iso(due));
   document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+(function(){
+  var ST=window.WGStage, lmp=document.getElementById('lmp');
+  ST.mountStage(document.getElementById('wgSaved'),'pregnancy',function(){
+    var p=ST.pregnancy.read();
+    return p?'Saved on this phone: your due date is '+ST.nice(ST.parse(p.due))+'.':'';
+  },function(){
+    lmp.value=''; document.getElementById('res').classList.remove('show');
+  });
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>

@@ -100,6 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <!-- populated by JS 21..40, default 28 -->
         </select>
       </div>
+      <p class="muted" id="cycNote" style="margin:-6px 0 16px;font-size:.9rem;" aria-live="polite"></p>
       <button class="btn btn-primary" onclick="calcOvulation()">Show my fertile window</button>
 
       <div class="result" id="res">
@@ -108,10 +109,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p id="ovday" style="margin:6px 0;"></p>
         <p class="muted" id="nextp" style="margin:0;"></p>
       </div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> This calculator uses the standard method (ovulation about 14 days before your next period, with a fertile window of roughly six days). Cycles vary, so treat this as a guide. It runs on this device and stores nothing.
+      <strong>Educational, not medical advice.</strong> This calculator uses the standard method (ovulation about 14 days before your next period, with a fertile window of roughly six days). Cycles vary, so treat this as a guide. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="doctor-box">
@@ -211,7 +213,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
+// Saved on this phone in wg_stage_fertility_v1: her last period and usual cycle length, shared with the Period Tracker. Format and rules: assets/js/wg-stage-date.js.
 (function(){
   var sel = document.getElementById('cyc');
   for(var d=21; d<=40; d++){
@@ -221,23 +225,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     sel.appendChild(o);
   }
 })();
+var ST = window.WGStage;
 function fmt(d){ return d.toLocaleDateString(undefined,{weekday:'short', day:'numeric', month:'long', year:'numeric'}); }
 function addDays(date, n){ var x = new Date(date.getTime()); x.setDate(x.getDate()+n); return x; }
-function calcOvulation(){
-  var v = document.getElementById('lmp').value;
-  var cyc = parseInt(document.getElementById('cyc').value, 10);
-  if(!v){ alert('Please enter the first day of your last period.'); return; }
+function el(id){ return document.getElementById(id); }
+function cycleNote(){
+  var e = ST.fertility.effectiveCycle(), chosen = parseInt(el('cyc').value, 10), n = el('cycNote');
+  if(e.source === 'average'){ n.textContent = 'Using your own average of ' + e.days + ' days, from your last ' + e.n + ' cycles in the Period Tracker. The box above is used only until you have logged three periods.'; }
+  else { n.textContent = 'Using the cycle length you picked above (' + chosen + ' days). Log your periods in the Period Tracker and we use your own average instead.'; }
+  return e.source === 'average' ? e.days : chosen;
+}
+function calcOvulation(quiet){
+  var v = el('lmp').value;
+  if(!v){ if(quiet !== true) alert('Please enter the first day of your last period.'); return; }
+  if(quiet !== true){ ST.fertility.setCycle(parseInt(el('cyc').value, 10)); ST.fertility.setLmp(v); }
+  var cyc = cycleNote();
   var lmp = new Date(v + 'T00:00:00');
   var ovulation = addDays(lmp, cyc - 14);
   var winStart = addDays(ovulation, -5);
   var winEnd = addDays(ovulation, 1);
   var nextPeriod = addDays(lmp, cyc);
-  document.getElementById('window').textContent = fmt(winStart) + '  to  ' + fmt(winEnd);
-  document.getElementById('ovday').innerHTML = 'Most likely day of ovulation: <b>' + fmt(ovulation) + '</b>';
-  document.getElementById('nextp').textContent = 'Your next period is due around ' + fmt(nextPeriod) + '. If it is late, take a pregnancy test. If you go three months without a period and you are not pregnant, see a doctor.';
-  document.getElementById('res').classList.add('show');
-  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+  el('window').textContent = fmt(winStart) + '  to  ' + fmt(winEnd);
+  el('ovday').innerHTML = 'Most likely day of ovulation: <b>' + fmt(ovulation) + '</b>';
+  el('nextp').textContent = 'Your next period is due around ' + fmt(nextPeriod) + '. If it is late, take a pregnancy test. If you go three months without a period and you are not pregnant, see a doctor.';
+  el('res').classList.add('show');
+  if(quiet !== true) el('res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+(function(){
+  var f = ST.fertility.read();
+  if(f.cycle) el('cyc').value = String(f.cycle);
+  if(f.lmp) el('lmp').value = f.lmp;
+  el('lmp').addEventListener('change', function(){ if(this.value) ST.fertility.setLmp(this.value); });
+  el('cyc').addEventListener('change', function(){ ST.fertility.setCycle(parseInt(this.value, 10)); cycleNote(); });
+  ST.mountStage(el('wgSaved'), 'fertility', function(){
+    var g = ST.fertility.read();
+    return g.lmp ? 'Saved on this phone: your last period started ' + ST.nice(ST.parse(g.lmp)) + '.' : 'Saved on this phone.';
+  }, function(){
+    el('lmp').value = ''; el('cyc').value = '28'; el('res').classList.remove('show'); cycleNote();
+  });
+  cycleNote();
+  if(f.lmp) calcOvulation(true);
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>

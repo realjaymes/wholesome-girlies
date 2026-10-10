@@ -106,10 +106,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div id="plan" style="white-space:pre-wrap;"></div>
         <button class="btn btn-ghost" style="margin-top:14px;" data-wg-print onclick="window.print()">Print or save as PDF</button>
       </div>
+      <div id="wgSaved"></div>
     </div>
 
     <div class="disclaimer">
-      <strong>Educational, not medical advice.</strong> A birth plan states your wishes and guarantees nothing. Your team will always put your safety and your baby's first, and plans often change on the day. That is normal. It saves only on your own device.
+      <strong>Educational, not medical advice.</strong> A birth plan states your wishes and guarantees nothing. Your team will always put your safety and your baby's first, and plans often change on the day. That is normal. Saved only on this phone. Nothing is sent to us.
     </div>
 
     <div class="byline"><span class="av" style="background:none;overflow:hidden;"><img src="/assets/img/team/cynthia-obinatu-sm.jpg" alt="Cynthia Obinatu" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></span> <span>Written by <a href="/about/cynthia-obinatu">Cynthia Obinatu</a>, community and editorial lead. Educational, not medical advice.</span></div>
@@ -166,9 +167,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
 <script>
 function v(id){ return document.getElementById(id).value.trim(); }
-function buildPlan(){
+function buildPlan(quiet){
   var name=v('name');
   var lines=[];
   lines.push('BIRTH PLAN'+(name?': '+name:''));
@@ -183,8 +185,45 @@ function buildPlan(){
   lines.push('I understand birth can change, and I trust my team to keep me and my baby safe.');
   document.getElementById('plan').textContent=lines.join('\n');
   document.getElementById('res').classList.add('show');
-  document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
+  if(quiet!==true) document.getElementById('res').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+// Saved on this phone as she types: {"v":1,"f":{field id: value}}. Clearing removes the key.
+(function(){
+  var ST=window.WGStage, KEY='wg_birth_plan_v1', IDS=['name','support','pain','env','mobility','feeding','notes'], timer=0;
+  function field(id){ return document.getElementById(id); }
+  function read(){
+    var o=ST.json(KEY); if(!o||o.v!==1||!o.f||typeof o.f!=='object') return null;
+    var out={}, any=false;
+    IDS.forEach(function(id){
+      var x=o.f[id], e=field(id); if(typeof x!=='string'||!e) return;
+      if(e.tagName==='SELECT'){ var ok=false; [].forEach.call(e.options,function(op){ if(op.value===x) ok=true; }); if(!ok) return; }
+      else x=x.slice(0,300);
+      out[id]=x; any=true;
+    });
+    return any?out:null;
+  }
+  function save(){
+    timer=0;
+    var f={}; IDS.forEach(function(id){ f[id]=field(id).value; });
+    ST.set(KEY, JSON.stringify({v:1,f:f}));
+    ST.refresh();
+  }
+  function later(){ if(timer) clearTimeout(timer); timer=setTimeout(save,400); }
+  var saved=read();
+  if(saved){ IDS.forEach(function(id){ if(saved[id]!==undefined) field(id).value=saved[id]; }); buildPlan(true); }
+  IDS.forEach(function(id){ field(id).addEventListener('input',later); field(id).addEventListener('change',later); });
+  window.addEventListener('pagehide',function(){ if(timer){ clearTimeout(timer); save(); } });
+  ST.mount(document.getElementById('wgSaved'),{
+    has:function(){ return !!read(); },
+    summary:function(){ return 'Your birth plan is saved on this phone as you type.'; },
+    clear:function(){ if(timer){ clearTimeout(timer); timer=0; } ST.del(KEY); },
+    onClear:function(){
+      IDS.forEach(function(id){ var e=field(id); if(e.tagName==='SELECT') e.selectedIndex=0; else e.value=''; });
+      document.getElementById('plan').textContent=''; document.getElementById('res').classList.remove('show');
+    },
+    label:'Clear my plan', note:'This clears every answer in your plan on this phone.', done:'Your plan is cleared from this phone.'
+  });
+})();
 </script>
 <script src="/assets/js/member-cta.js" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>
