@@ -8,11 +8,36 @@
   "parenting": "Baby and parenting tools"
  },
  "guides": {
-  "relationships": ["Tolu", "tolu", 392, 620],
-  "fertility": ["Amaka", "amaka", 255, 569],
-  "pregnancy": ["Zainab", "zainab", 289, 563],
-  "postpartum": ["Funmi", "funmi", 293, 569],
-  "parenting": ["Funmi", "funmi", 293, 569]
+  "relationships": [
+   "Tolu",
+   "tolu",
+   392,
+   620
+  ],
+  "fertility": [
+   "Amaka",
+   "amaka",
+   255,
+   569
+  ],
+  "pregnancy": [
+   "Zainab",
+   "zainab",
+   289,
+   563
+  ],
+  "postpartum": [
+   "Funmi",
+   "funmi",
+   293,
+   569
+  ],
+  "parenting": [
+   "Funmi",
+   "funmi",
+   293,
+   569
+  ]
  },
  "stages": {
   "relationships": [
@@ -269,7 +294,20 @@
     "path": "/programs/wife-material-blueprint",
     "id": "wife-material-blueprint"
    },
-   "reader": "/programs/wife-material-blueprint/read"
+   "reader": "/programs/wife-material-blueprint/read",
+   "cross_sell": {
+    "eyebrow": "What comes after",
+    "h2": "Thinking about trying for a baby?",
+    "text": "The Trying-to-Conceive Blueprint picks up when you are ready to plan a pregnancy, with a private community and a professional to ask.",
+    "href": "/programs/trying-to-conceive-blueprint",
+    "button": "See The Trying-to-Conceive Blueprint &rarr;",
+    "link2": {
+     "text": "The Complete Motherhood Journey covers every stage, from trying to the baby years.",
+     "href": "/programs/complete-motherhood-journey",
+     "button": "See the Complete Motherhood Journey &rarr;"
+    },
+    "bundle_offer": true
+   }
   },
   "wife-material-blueprint-diaspora": {
    "slug": "wife-material-blueprint-diaspora",
@@ -295,7 +333,20 @@
     "path": "/programs/wife-material-blueprint",
     "id": "wife-material-blueprint"
    },
-   "reader": "/programs/wife-material-blueprint-diaspora/read"
+   "reader": "/programs/wife-material-blueprint-diaspora/read",
+   "cross_sell": {
+    "eyebrow": "What comes after",
+    "h2": "Thinking about trying for a baby?",
+    "text": "The Trying-to-Conceive Blueprint picks up when you are ready to plan a pregnancy, with a private community and a professional to ask.",
+    "href": "/programs/trying-to-conceive-blueprint-diaspora",
+    "button": "See The Trying-to-Conceive Blueprint &rarr;",
+    "link2": {
+     "text": "The Complete Motherhood Journey covers every stage, from trying to the baby years.",
+     "href": "/programs/complete-motherhood-journey-diaspora",
+     "button": "See the Complete Motherhood Journey &rarr;"
+    },
+    "bundle_offer": true
+   }
   },
   "trying-to-conceive-blueprint": {
    "slug": "trying-to-conceive-blueprint",
@@ -481,13 +532,22 @@
     "h3": "Your safety net",
     "text": "The When to See a Doctor red-flag guide is inside your toolkit. If you ever notice a warning sign, contact your doctor or clinic straight away. In Nigeria you can call MANI on <a href=\"tel:08091116264\">0809 111 6264</a>."
    },
-   "cross_sell": {
-    "eyebrow": "When you&#8217;re ready",
-    "h2": "What comes after the first six weeks?",
-    "text": "The First Baby Playbook picks up where the Reset ends. It covers sleep, feeding and solids, milestones and what is normal, with the same moderated community.",
-    "href": "/programs/first-baby-playbook",
-    "button": "See The First Baby Playbook &rarr;"
-   },
+   "cross_sell": [
+    {
+     "eyebrow": "When you&#8217;re ready",
+     "h2": "What comes after the first six weeks?",
+     "text": "The First Baby Playbook picks up where the Reset ends. It covers sleep, feeding and solids, milestones and what is normal, with the same moderated community.",
+     "href": "/programs/first-baby-playbook",
+     "button": "See The First Baby Playbook &rarr;"
+    },
+    {
+     "eyebrow": "The whole journey, for less",
+     "h2": "Want the other stages ready too?",
+     "text": "The Complete Motherhood Journey adds trying to conceive, pregnancy and the baby years to what you have, ready for whenever you reach them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+     "href": "/programs/complete-motherhood-journey?coupon=MOTHER",
+     "button": "See the Complete Motherhood Journey &rarr;"
+    }
+   ],
    "share": {
     "h2": "Know a new mum who needs this?",
     "text": "If a friend has just had a baby, send her the plan that covers her body, her marriage and her mind.",
@@ -521,13 +581,22 @@
     "h3": "Your safety net",
     "text": "The When to See a Doctor red-flag guide is inside your toolkit. If you ever notice a warning sign, contact your doctor or clinic straight away. In Nigeria you can call MANI on <a href=\"tel:08091116264\">0809 111 6264</a>. In the UK you can call Samaritans on <a href=\"tel:116123\">116 123</a>. In the US or Canada you can call or text <a href=\"tel:988\">988</a>."
    },
-   "cross_sell": {
-    "eyebrow": "What's next, when you're ready",
-    "h2": "What comes after the first six weeks?",
-    "text": "The First Baby Playbook picks up where The 6-Week Postpartum Reset leaves off. It covers sleep, feeding, milestones and the toddler years, with the same plain guidance built on research and real data.",
-    "href": "/programs/first-baby-playbook-diaspora",
-    "button": "See The First Baby Playbook &rarr;"
-   },
+   "cross_sell": [
+    {
+     "eyebrow": "What's next, when you're ready",
+     "h2": "What comes after the first six weeks?",
+     "text": "The First Baby Playbook picks up where The 6-Week Postpartum Reset leaves off. It covers sleep, feeding, milestones and the toddler years, with the same plain guidance built on research and real data.",
+     "href": "/programs/first-baby-playbook-diaspora",
+     "button": "See The First Baby Playbook &rarr;"
+    },
+    {
+     "eyebrow": "The whole journey, for less",
+     "h2": "Want the other stages ready too?",
+     "text": "The Complete Motherhood Journey adds trying to conceive, pregnancy and the baby years to what you have, ready for whenever you reach them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+     "href": "/programs/complete-motherhood-journey-diaspora?coupon=MOTHER",
+     "button": "See the Complete Motherhood Journey &rarr;"
+    }
+   ],
    "share": {
     "h2": "Know a new mom who needs this?",
     "text": "The weeks after birth are hard on everyone. Send a friend the plan that covers her body, her marriage and her mind.",
@@ -569,7 +638,14 @@
     "id": "first-baby-playbook",
     "extra": "<a href=\"/programs/\">See all the programs &rarr;</a>"
    },
-   "reader": "/programs/first-baby-playbook/read"
+   "reader": "/programs/first-baby-playbook/read",
+   "cross_sell": {
+    "eyebrow": "The whole journey, for less",
+    "h2": "Want the other stages too?",
+    "text": "The Complete Motherhood Journey adds trying to conceive, pregnancy and the first six weeks after birth to what you have, for whenever you need them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+    "href": "/programs/complete-motherhood-journey?coupon=MOTHER",
+    "button": "See the Complete Motherhood Journey &rarr;"
+   }
   },
   "first-baby-playbook-diaspora": {
    "slug": "first-baby-playbook-diaspora",
@@ -603,7 +679,14 @@
     "id": "first-baby-playbook",
     "extra": "<a href=\"/programs/\">See all the programs &rarr;</a>"
    },
-   "reader": "/programs/first-baby-playbook-diaspora/read"
+   "reader": "/programs/first-baby-playbook-diaspora/read",
+   "cross_sell": {
+    "eyebrow": "The whole journey, for less",
+    "h2": "Want the other stages too?",
+    "text": "The Complete Motherhood Journey adds trying to conceive, pregnancy and the first six weeks after birth to what you have, for whenever you need them. As a member, you get 35% off the bundle with the code <strong style=\"color:var(--terracotta-dark);\">MOTHER</strong>. We add the code at checkout when you use the button below.",
+    "href": "/programs/complete-motherhood-journey-diaspora?coupon=MOTHER",
+    "button": "See the Complete Motherhood Journey &rarr;"
+   }
   },
   "complete-motherhood-journey": {
    "slug": "complete-motherhood-journey",

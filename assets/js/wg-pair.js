@@ -307,6 +307,7 @@
   };
 
   P.finish = function (who) {
+    if (w.wgPlayed) w.wgPlayed();
     if (who === "A") {
       this.aAns = this.mine.slice();
       this.share();

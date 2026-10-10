@@ -210,19 +210,31 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 
   /* ── member coupon on the bundle ────────────────────────────────────────────
-   * A Trying-to-Conceive or First Pregnancy Plan buyer gets the MOTHER coupon (35% off) on the Complete
-   * Motherhood Journey. She counts as a member when her program home saved its flag on this device, or when she
+   * A buyer of any motherhood program (Trying-to-Conceive, First Pregnancy Plan, 6-Week Postpartum Reset or
+   * First Baby Playbook, either market) gets the MOTHER coupon (35% off) on the Complete Motherhood Journey.
+   * A Wife Material buyer never does. She counts as a member when her program home saved its flag on this device, or when she
    * came from that home's bundle card (?coupon=MOTHER). Every bundle buy button then carries &coupon=MOTHER, which
    * Selar applies at checkout, and the price card tells her the code and her price. A bundle owner and every other
-   * visitor see the plain price. */
+   * visitor see the plain price, and a bundle owner sees no bundle offer on a sales page at all. */
   var COUPON = 'MOTHER', COUPON_OFF = 0.35;
+  function bundleOwner() {
+    var own = false;
+    ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
+      try { var v = JSON.parse(localStorage.getItem(k) || 'null'); if (v && /^\/programs\/complete-motherhood-journey/.test(v.u || '')) own = true; } catch (e) {}
+    });
+    return own;
+  }
+  function hideBundleOffers() {
+    if (!bundleOwner()) return;
+    [].forEach.call(document.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
+  }
   function couponMember() {
     var single = false, bundle = false;
     ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
       try {
         var v = JSON.parse(localStorage.getItem(k) || 'null'), u = (v && v.u) || '';
         if (/^\/programs\/complete-motherhood-journey/.test(u)) bundle = true;
-        else if (/^\/programs\/(trying-to-conceive-blueprint|first-pregnancy-plan)(-diaspora)?\/thank-you/.test(u)) single = true;
+        else if (/^\/programs\/(trying-to-conceive-blueprint|first-pregnancy-plan|postpartum-reset|first-baby-playbook)(-diaspora)?\/thank-you/.test(u)) single = true;
       } catch (e) {}
     });
     var fromHome = new URLSearchParams(location.search).get('coupon') === COUPON;
@@ -258,5 +270,6 @@
       p.parentNode.insertBefore(note, p.nextSibling);
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyCoupon); else applyCoupon();
+  function bundleRules() { hideBundleOffers(); applyCoupon(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bundleRules); else bundleRules();
 })();

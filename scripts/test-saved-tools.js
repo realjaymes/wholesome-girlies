@@ -11,7 +11,7 @@ const path = require('path');
 const B = process.env.WG_BASE || 'http://localhost:' + (process.env.WG_PORT || 8001); // WG_BASE=https://wholesomegirlies.xyz tests the live site
 const SHOTS = process.env.WG_SHOTS || '';
 const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
-const TOOL_KEY = /^wg_(?!lead$|app_|consent)(?!.*_home$)/; // the same pattern as wg-app.js
+const TOOL_KEY = /^wg_(?!lead$|app_|consent|played_)(?!.*_home$)/; // the same pattern as wg-app.js
 const out = [];
 const ok = (name, pass, extra = '') => { out.push(`${pass ? 'PASS' : 'FAIL'}  ${name}${!pass && extra ? '  (' + extra + ')' : ''}`); };
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));

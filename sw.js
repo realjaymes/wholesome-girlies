@@ -6,9 +6,9 @@
 // /assets/ files those pages load, so a tool she has never opened still works offline. Pages load from the
 // network first and fall back to the saved copy; versioned /assets/ files load from the cache first.
 // Bump VERSION when this file's logic changes; the old cache is deleted on activate.
-const VERSION = "wg-20261008a";
+const VERSION = "wg-20261011a";
 const CORE = ["/app/", "/offline", "/tools/", "/manifest.webmanifest"];
-const SKIP = /^\/go\/|^\/programs\/[^/]+$|^\/assets\/video\//; // ad bridges, sales pages and video clips always come from the network
+const SKIP = /^\/go\/|^\/lab\/|^\/programs\/[^/]+$|^\/assets\/video\//; // ad bridges, the private lab, sales pages and video clips always come from the network
 const LATER = /^\/assets\/img\/tool-shorts\//; // reel posters are cached when she scrolls to them, so installing costs less data
 
 self.addEventListener("install", (event) => {

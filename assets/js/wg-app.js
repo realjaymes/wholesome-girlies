@@ -184,7 +184,8 @@
   }
 
   // 1. On a tool, after she saves an entry (only when her entries are kept on this device).
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent)(?!.*_home$)/;
+  // wg_played_v1 (the finished-games marker) is not a saved entry, so it never offers the install bar.
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_)(?!.*_home$)/;
   if (/\/tools\//.test(path) && w.Storage) {
     var set = w.Storage.prototype.setItem;
     w.Storage.prototype.setItem = function (k, v) {
@@ -312,6 +313,28 @@
     line.querySelector('[data-wg-choices]').addEventListener('click', function (e) { e.preventDefault(); try { w.CookieConsent.showPreferences(); } catch (err) {} });
     f.appendChild(line); f.classList.add('wg-app-foot-on');
   }
+
+  // ── Finished games: a private, per-device marker ──────────────────
+  // wg_played_v1 = { "/stage/tools/slug": timestamp }. The app home reads it to see which stage she plays in. It is
+  // never sent anywhere, never in analytics, and not a saved entry. A game calls wgPlayed() when she reaches a result.
+  var PLAYED = 'wg_played_v1';
+  w.wgPlayed = function () {
+    try {
+      var m = w.location.pathname.match(/^\/(relationships|fertility|pregnancy|postpartum|parenting)\/tools\/([a-z0-9-]+)/);
+      if (!m) return;
+      var o = {}; try { o = JSON.parse(w.localStorage.getItem(PLAYED) || '{}') || {}; } catch (e) {}
+      o['/' + m[1] + '/tools/' + m[2]] = Date.now();
+      w.localStorage.setItem(PLAYED, JSON.stringify(o));
+    } catch (e) {}
+  };
+  // Every quiz and checker already calls wgShowResult(type) when it scores, so a finished result counts as played.
+  function hookResult() {
+    if (typeof w.wgShowResult !== 'function' || w.wgShowResult.wgHooked) return;
+    var orig = w.wgShowResult;
+    w.wgShowResult = function (type) { if (type) w.wgPlayed(); return orig.apply(this, arguments); };
+    w.wgShowResult.wgHooked = true;
+  }
+  hookResult(); d.addEventListener('DOMContentLoaded', hookResult);
 
   // ── Saved entries: backup and restore ──────────────────
   function savedKeys() {

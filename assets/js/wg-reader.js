@@ -11,7 +11,11 @@
   if (flag && homeLink) {
     try {
       var held = JSON.parse(w.localStorage.getItem(flag) || 'null');
-      if (held && /^\/programs\/complete-motherhood-journey/.test(held.u)) { homeLink.href = held.u; homeLink.innerHTML = '&larr; Motherhood Journey home'; }
+      if (held && /^\/programs\/complete-motherhood-journey/.test(held.u)) {
+        homeLink.href = held.u; homeLink.innerHTML = '&larr; Motherhood Journey home';
+        // She owns the bundle, so the "Want it all, for less?" line (with the MOTHER code) never shows to her.
+        [].forEach.call(d.querySelectorAll('.rd p a[href^="/programs/complete-motherhood-journey"]'), function (a) { var p = a.closest('p'); if (p) p.remove(); });
+      }
     } catch (e) {}
   }
   var body = d.body;

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Lab | Wholesome Girlies</title>
+<style>
+:root{--cream:#FBF8EF;--ink:#33322A;--muted:#66645A;--olive:#6E7A3F;--rust:#C0763F;--mustard:#F6E4BC;--line:#E4E1CE;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:16px 16px 60px}
+main{max-width:560px;margin:0 auto}
+h1{font-size:1.5rem;margin:8px 0 6px}
+h2{font-size:1.05rem;margin:0 0 4px}
+p{margin:0 0 10px}
+.muted{color:var(--muted);font-size:.92rem}
+.bar{border:2px solid var(--ink);border-radius:14px;background:var(--mustard);padding:12px 14px;margin:14px 0;box-shadow:3px 3px 0 var(--ink)}
+.card{border:2px solid var(--ink);border-radius:14px;background:var(--white);padding:14px;margin:14px 0;box-shadow:3px 3px 0 var(--ink)}
+.expect{background:var(--cream);border-left:4px solid var(--olive);padding:8px 10px;margin:8px 0 12px;font-size:.95rem}
+button{font:inherit;font-weight:700;min-height:46px;padding:10px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--olive);color:#fff;box-shadow:2px 2px 0 var(--ink);width:100%;margin:0 0 8px;text-align:left}
+button.alt{background:var(--white);color:var(--ink)}
+button.big{background:var(--rust);text-align:center}
+.row{display:flex;gap:8px}.row button{text-align:center}
+.tag{display:inline-block;font-size:.75rem;font-weight:800;border:1.5px solid var(--ink);border-radius:99px;padding:1px 8px;margin-bottom:6px;background:var(--cream)}
+</style>
+</head>
+<body>
+<main>
+<h1>Lab</h1>
+<p class="muted">A private test page. Each button saves a pretend visitor on this phone, then opens the page that shows what she sees. Nothing is sent anywhere, and no events are recorded.</p>
+
+<div class="bar" id="status" role="status"></div>
+<div class="row"><button class="big" id="restore" type="button">Restore my real data</button><button class="alt" id="clear" type="button">Clear everything</button></div>
+<p class="muted">If a scenario looks empty, open Privacy choices on the site and turn on Remember on this device, then try again.</p>
+
+<div id="list"></div>
+</main>
+<script>
+(function(){
+  var SNAP = 'wglab_snapshot', LS;
+  try { LS = window.localStorage; LS.getItem('x'); } catch (e) { LS = null; }
+  var $ = function(id){ return document.getElementById(id); };
+
+  // ---- dates, as local calendar days ----
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function iso(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function day(n){ var d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + n); return iso(d); }
+
+  // ---- program home flags ----
+  var HOMES = {
+    wm: ['wg_relationships_home', 'wife-material-blueprint', 'Wife Material home'],
+    wmd: ['wg_relationships_home', 'wife-material-blueprint-diaspora', 'Wife Material home'],
+    ttc: ['wg_fertility_home', 'trying-to-conceive-blueprint', 'Conception home'],
+    preg: ['wg_pregnancy_home', 'first-pregnancy-plan', 'Pregnancy home'],
+    pp: ['wg_pp_home', 'postpartum-reset', 'Postpartum home'],
+    baby: ['wg_parenting_home', 'first-baby-playbook', 'First Baby home']
+  };
+  var BUNDLE_KEYS = ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'];
+  function flag(s, h){ s[h[0]] = JSON.stringify({u: '/programs/' + h[1] + '/thank-you', l: h[2]}); }
+  function bundle(s){ BUNDLE_KEYS.forEach(function(k){ s[k] = JSON.stringify({u: '/programs/complete-motherhood-journey/thank-you', l: 'Motherhood Journey home'}); }); }
+
+  // ---- saved tools (any saved value counts on the app home) and finished games ----
+  var CHECK = JSON.stringify({0: true, 1: true});
+  var SAVED = {
+    fert: ['wg_ttc_checklist_v1', 'wg_his_fertility_checklist_v1'],
+    preg: ['wg_hospitalbag_v1', 'wg_safe_foods_checklist_v1'],
+    pp: ['wg_postpartum_checklist_v1'],
+    baby: ['wg_babyproofing_v1'],
+    rel: ['wg_meet_men_v1', 'wg_non_negotiables_v1']
+  };
+  function saved(s, which){ SAVED[which].forEach(function(k){ s[k] = CHECK; }); }
+  function played(s, list){
+    var o = {}, now = Date.now();
+    list.forEach(function(x, i){ o[x[0]] = now - (x[1] || (i + 1)) * 60000; });
+    s.wg_played_v1 = JSON.stringify(o);
+  }
+  // ---- stage dates and entries for the nine saved tools ----
+  function mum(s){
+    s.wg_stage_fertility_v1 = JSON.stringify({v: 1, lmp: day(-5), cycle: 28, starts: [day(-61), day(-33), day(-5)]});
+    s.wg_stage_pregnancy_v1 = JSON.stringify({v: 1, due: day(120)});
+    s.wg_stage_postpartum_v1 = JSON.stringify({v: 1, delivery: day(-20), type: 'vaginal'});
+    s.wg_vax_dob = day(-150);
+    s.wg_birth_plan_v1 = JSON.stringify({v: 1, f: {name: 'Ada', support: 'my sister and my mother', pain: 'Would like an epidural if available', feeding: 'Undecided', notes: 'I am afraid of needles'}});
+    s.wg_name_shortlist_v1 = JSON.stringify({v: 1, items: [{n: 'Amara'}, {n: 'Tunde'}]});
+  }
+
+  var GIRLS = '/relationships/tools/girls-girl-quiz', HUSBAND = '/relationships/tools/is-he-husband-material',
+      MUM = '/pregnancy/tools/what-kind-of-mum', PARENT = '/parenting/tools/which-nigerian-parent';
+
+  var SCENARIOS = [
+    {id: 'new', title: 'New visitor, nothing saved', set: function(s){},
+      expect: 'The five stage cards under Wherever you are, start here. No program picks.',
+      go: [['Open the app home', '/app/']]},
+    {id: 'fert', title: 'Fertility tools saved', set: function(s){ saved(s, 'fert'); },
+      expect: 'One pick: The Trying-to-Conceive Blueprint. No bundle line.',
+      go: [['Open the app home', '/app/']]},
+    {id: 'relfert', title: 'Relationships plus fertility', set: function(s){ saved(s, 'fert'); s.wg_meet_men_v1 = CHECK; played(s, [[GIRLS]]); },
+      expect: 'Two picks. The Trying-to-Conceive Blueprint first (more activity), then The Wife Material Blueprint.',
+      go: [['Open the app home', '/app/']]},
+    {id: 'two', title: 'Two motherhood stages', set: function(s){ saved(s, 'fert'); s.wg_hospitalbag_v1 = CHECK; },
+      expect: 'One pick: The Trying-to-Conceive Blueprint, with the line "Covers every stage, from trying to the baby years" and a bundle link. Not a third card.',
+      go: [['Open the app home', '/app/']]},
+    {id: 'three', title: 'Three or more motherhood stages', set: function(s){ saved(s, 'fert'); s.wg_hospitalbag_v1 = CHECK; s.wg_postpartum_checklist_v1 = CHECK; },
+      expect: 'One pick: The Complete Motherhood Journey.',
+      go: [['Open the app home', '/app/']]},
+    {id: 'games', title: 'Games only, no saved tools', set: function(s){ played(s, [[GIRLS, 5], [HUSBAND, 4], [MUM, 1]]); },
+      expect: 'Two picks. The Wife Material Blueprint first (two relationship games), then The First Pregnancy Plan (one pregnancy game).',
+      go: [['Open the app home', '/app/']]},
+    {id: 'wmbuyer', title: 'Wife Material buyer with fertility activity', set: function(s){ flag(s, HOMES.wm); saved(s, 'fert'); },
+      expect: 'App home: one pick, The Trying-to-Conceive Blueprint, full price. Her program home: a What comes after card for the Trying-to-Conceive Blueprint, a line about the bundle, and no MOTHER code anywhere.',
+      go: [['Open the app home', '/app/'], ['Open her Wife Material home', '/programs/wife-material-blueprint/thank-you'], ['Open the bundle page (plain price)', '/programs/complete-motherhood-journey']]},
+    {id: 'wmbuyerd', title: 'Wife Material buyer, diaspora', set: function(s){ flag(s, HOMES.wmd); saved(s, 'fert'); },
+      expect: 'The pick and the home card link to the diaspora pages. No MOTHER code.',
+      go: [['Open the app home', '/app/'], ['Open her diaspora Wife Material home', '/programs/wife-material-blueprint-diaspora/thank-you']]},
+    {id: 'ttcbuyer', title: 'Trying-to-Conceive buyer', set: function(s){ flag(s, HOMES.ttc); saved(s, 'fert'); },
+      expect: 'App home: no program pick. Her home: the bundle card with the code MOTHER. The bundle page shows her member price.',
+      go: [['Open her home', '/programs/trying-to-conceive-blueprint/thank-you'], ['Open the app home', '/app/'], ['Open the bundle page', '/programs/complete-motherhood-journey']]},
+    {id: 'ppbuyer', title: 'Postpartum buyer', set: function(s){ flag(s, HOMES.pp); },
+      expect: 'Her home: the First Baby Playbook card first, then the bundle card with the code MOTHER.',
+      go: [['Open her home', '/programs/postpartum-reset/thank-you'], ['Open the bundle page', '/programs/complete-motherhood-journey']]},
+    {id: 'babybuyer', title: 'First Baby buyer', set: function(s){ flag(s, HOMES.baby); },
+      expect: 'Her home: the bundle card with the code MOTHER. The bundle page shows her member price.',
+      go: [['Open her home', '/programs/first-baby-playbook/thank-you'], ['Open the bundle page', '/programs/complete-motherhood-journey']]},
+    {id: 'bundleowner', title: 'Complete Motherhood Journey owner', set: function(s){ bundle(s); saved(s, 'fert'); played(s, [[GIRLS]]); },
+      expect: 'The bundle is never offered. App home: no pick. A single program home she opens: no bundle card. Postpartum reader: no Want it all line. The bundle page: plain price and no MOTHER note.',
+      go: [['Open the app home', '/app/'], ['Open the Trying-to-Conceive home', '/programs/trying-to-conceive-blueprint/thank-you'], ['Open the Postpartum home', '/programs/postpartum-reset/thank-you'], ['Open the Postpartum reader', '/programs/postpartum-reset/read'], ['Open the bundle page', '/programs/complete-motherhood-journey']]},
+    {id: 'mum', title: 'A mum with dates and entries saved', set: function(s){ mum(s); },
+      expect: 'Each of the nine tools opens already filled in from her saved dates, period log, birth plan and shortlist. Each has a Forget or Clear button.',
+      go: [['Period Tracker', '/fertility/tools/period-tracker'], ['Ovulation Calculator', '/fertility/tools/ovulation-calculator'], ['Due Date Calculator', '/pregnancy/tools/due-date-calculator'],
+        ['Week-by-Week Tracker', '/pregnancy/tools/week-by-week-tracker'], ['Birth Plan Builder', '/pregnancy/tools/birth-plan-builder'],
+        ['Recovery Timeline Calculator', '/postpartum/tools/recovery-timeline-calculator'], ['Milestone Tracker', '/parenting/tools/milestone-tracker'],
+        ['Baby Routine Planner', '/parenting/tools/baby-routine-planner'], ['Baby Name Explorer', '/parenting/tools/baby-name-explorer']]}
+  ];
+
+  // ---- storage helpers (every call wrapped) ----
+  function wgKeys(){ var k = []; try { for (var i = 0; i < LS.length; i++) { var n = LS.key(i); if (/^wg_/.test(n)) k.push(n); } } catch (e) {} return k; }
+  function clearWg(){ wgKeys().forEach(function(k){ try { LS.removeItem(k); } catch (e) {} }); }
+  function snapshot(){
+    try {
+      if (LS.getItem(SNAP)) return;
+      var o = {}; wgKeys().forEach(function(k){ o[k] = LS.getItem(k); });
+      LS.setItem(SNAP, JSON.stringify(o));
+    } catch (e) {}
+  }
+  function status(){
+    var t;
+    if (!LS) t = 'This browser blocks storage, so the lab cannot save a scenario here.';
+    else if (LS.getItem(SNAP)) t = 'A lab scenario is active. Your real data is saved safely. Press Restore my real data when you are done.';
+    else t = 'Your real data is in place. Nothing from the lab is saved.';
+    $('status').textContent = t;
+  }
+  function run(sc, i){
+    if (!LS) return;
+    snapshot(); clearWg();
+    var s = {}; sc.set(s);
+    Object.keys(s).forEach(function(k){ try { LS.setItem(k, s[k]); } catch (e) {} });
+    location.href = sc.go[i][1];
+  }
+
+  // ---- the page ----
+  var list = $('list');
+  SCENARIOS.forEach(function(sc){
+    var card = document.createElement('section'); card.className = 'card'; card.id = sc.id;
+    card.innerHTML = '<h2></h2><p class="expect"></p>';
+    card.querySelector('h2').textContent = sc.title;
+    card.querySelector('.expect').textContent = 'You should see: ' + sc.expect;
+    sc.go.forEach(function(g, i){
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = g[0] + ' →';
+      b.setAttribute('data-run', sc.id); b.setAttribute('data-t', i);
+      if (i) b.className = 'alt';
+      b.addEventListener('click', function(){ run(sc, i); });
+      card.appendChild(b);
+    });
+    list.appendChild(card);
+  });
+  var nm = document.createElement('section'); nm.className = 'card'; nm.id = 'names';
+  nm.innerHTML = '<h2>Your name options (ideas, not live yet)</h2><p class="expect">You should see: the name ideas page. It changes nothing on this phone.</p><a href="/lab/names/" style="display:block;min-height:46px;padding:10px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--white);color:var(--ink);font-weight:700;box-shadow:2px 2px 0 var(--ink);text-decoration:none">Open the name options \u2192</a>';
+  list.appendChild(nm);
+  $('restore').addEventListener('click', function(){
+    if (!LS) return;
+    try {
+      var raw = LS.getItem(SNAP);
+      if (raw) { clearWg(); var o = JSON.parse(raw); Object.keys(o).forEach(function(k){ LS.setItem(k, o[k]); }); LS.removeItem(SNAP); }
+    } catch (e) {}
+    status();
+  });
+  $('clear').addEventListener('click', function(){ if (!LS) return; snapshot(); clearWg(); status(); });
+  status();
+})();
+</script>
+</body>
+</html>

@@ -20,7 +20,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OFFERS = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Offers")
 SITE = "https://wholesomegirlies.xyz"
-READER_VERSION = "20261010a"
+READER_VERSION = "20261011a"
 COVERS = "/assets/img/products/{}-cover.webp?v=20261009c"
 # One manuscript per program. The diaspora home reads the same manuscript; its reader only links back to the diaspora home.
 PROGRAMS = {

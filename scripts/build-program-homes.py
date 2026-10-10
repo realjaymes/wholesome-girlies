@@ -35,7 +35,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "assets/data/program-homes.json")
 START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
-ASSET_VERSION = "20261009k"
+ASSET_VERSION = "20261011a"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
@@ -234,14 +234,36 @@ def play_section(m, h):
 def card(c, level="h3"):
     return (f'<div class="ph-card"><p class="eyebrow">{c["eyebrow"]}</p><{level}>{c["h2"]}</{level}>'
             f'<p class="muted">{c["text"]}</p>'
-            f'<a class="btn btn-primary" href="{attr(c["href"])}">{c["button"]}</a></div>')
+            f'<a class="btn btn-primary" href="{attr(c["href"])}">{c["button"]}</a>{link2(c)}</div>')
+
+
+def link2(c):
+    """A second, quieter line under the button (the Wife Material bridge names the bundle without a coupon)."""
+    l = c.get("link2")
+    if not l:
+        return ""
+    return (f'<p class="muted" style="margin-top:14px">{l["text"]} '
+            f'<a href="{attr(l["href"])}">{l["button"]}</a></p>')
+
+
+def next_cards(h):
+    """The next-step cards: one section each. cross_sell is one card or a list. A section that offers the bundle
+    carries data-bundle-offer, which wg-program-home.js hides for a Complete Motherhood Journey owner."""
+    cs = h.get("cross_sell")
+    if not cs:
+        return ""
+    out = ""
+    for c in (cs if isinstance(cs, list) else [cs]):
+        offer = "complete-motherhood-journey" in c["href"] or c.get("bundle_offer")
+        out += f'\n    <section class="ph-sec"{" data-bundle-offer" if offer else ""}>{card(c)}</section>'
+    return out
 
 
 def block(m, h):
     sh, g = h["share"], guide(m, h)
     extra = f'\n      <p style="margin-top:10px;">{sh["extra"]}</p>' if sh.get("extra") else ""
     community = f'\n    <section class="ph-sec">{card(h["community"])}</section>' if h.get("community") else ""
-    nxt = f'\n    <section class="ph-sec">{card(h["cross_sell"])}</section>' if h.get("cross_sell") else ""
+    nxt = next_cards(h)
     code = (f'\n    <section class="ph-sec ph-code" style="text-align:center;padding-top:14px">'
             f'<p class="muted" style="margin:0">Your program code: <b>{h["code"]}</b></p>'
             f'<p class="muted" style="margin:6px auto 0;max-width:54ch;font-size:.9rem">Use it to add this program to the Girlies app on another phone, '

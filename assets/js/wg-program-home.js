@@ -48,6 +48,13 @@
     if (has(a.getAttribute('data-key'))) a.querySelector('.ph-saved').hidden = false;
   });
 
+  // 5. A Complete Motherhood Journey owner is never offered the bundle again: the build script marks every next-step
+  // card that offers it (or the single programs it holds) with data-bundle-offer, and those cards stay hidden for her.
+  var own = ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].some(function (k) {
+    try { var v = JSON.parse(get(k) || 'null'); return !!(v && /^\/programs\/complete-motherhood-journey/.test(v.u || '')); } catch (e) { return false; }
+  });
+  if (own) [].forEach.call(d.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
+
   // 4. Tool icons, drawn as lines in the ink colour. WGIcons.draw(root) fills every empty .ph-ico under root.
   var ICO = {
     check: '<path d="M4 12.5l5 5L20 6.5"/>', chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
