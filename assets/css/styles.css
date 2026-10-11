@@ -189,6 +189,9 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
 .field label { display: block; font-weight: 800; margin-bottom: 6px; font-size: .95rem; }
 .field input, .field select { width: 100%; padding: 13px 15px; border-radius: var(--radius-sm); border: 2px solid var(--sand); font-family: var(--sans); font-size: 1rem; background: var(--white); color: var(--plum); }
 .field input:focus, .field select:focus { outline: none; border-color: var(--terracotta); }
+/* iPhone Safari gives date fields a native minimum width that ignores width:100%, so they overflow the card; drop the native look and left-align the value to match the selects */
+.field input[type="date"] { -webkit-appearance: none; appearance: none; min-width: 0; display: block; min-height: 52px; }
+.field input[type="date"]::-webkit-date-and-time-value { text-align: left; }
 .result { margin-top: 20px; padding: 20px; background: var(--blush); border-radius: var(--radius-sm); display: none; }
 .result.show { display: block; }
 .result h3 { color: var(--terracotta-dark); }
