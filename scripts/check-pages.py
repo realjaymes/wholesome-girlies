@@ -387,6 +387,19 @@ if "index.html" in SRC and "tools/index.html" in SRC:
         elif href not in _games:
             _seen_tool = _seen_tool or href
 
+# The stage picker on /tools/ (CLAUDE.md section 10) reads the five stage groups by name, in life order, and replaces
+# the inline search, so it must load after it. A renamed or reordered group would drop out of the picker.
+if "tools/index.html" in SRC:
+    _tsrc = SRC["tools/index.html"]
+    _tgroups = re.findall(r'class="tgroup" data-group="([^"]+)"', _tsrc)
+    if _tgroups != ["Relationships", "Fertility", "Pregnancy", "Postpartum", "Parenting"]:
+        fail("tools/index.html", f"stage groups must be Relationships, Fertility, Pregnancy, Postpartum, Parenting in that order for the stage picker, found {', '.join(_tgroups)}")
+    _sp = _tsrc.find('src="/assets/js/wg-stage-picker.js?v=')
+    if _sp < 0:
+        fail("tools/index.html", "the stage picker script assets/js/wg-stage-picker.js is missing")
+    elif _sp < _tsrc.find("function doFilter("):
+        fail("tools/index.html", "wg-stage-picker.js must load after the inline doFilter search script")
+
 for line in read("llms.txt").splitlines():
     for u in re.findall(r"https://wholesomegirlies\.xyz(/[^\s)>\]]*)", line):
         if not resolves(u):

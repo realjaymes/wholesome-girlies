@@ -29,7 +29,7 @@
   var css = d.createElement('style');
   css.textContent = '.rg{margin:16px 0 0}.rg .btn{display:inline-flex;align-items:center;gap:8px}.rg-help{margin:8px 0 0;font-size:.9rem}' +
     '.rg-card{display:block;margin-top:12px;padding:14px 16px;background:#fff;color:var(--ink,#222);border:2px solid var(--ink,#222);border-radius:16px;box-shadow:var(--sticker-sm,3px 3px 0 #222);text-decoration:none}' +
-    '.rg-card:hover{text-decoration:none}.rg-card .tag{display:inline-block;margin-bottom:6px;padding:2px 10px;border-radius:999px;background:var(--s,#6E7A3F);color:var(--s-on,#fff);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.rg-card b{display:block;font-size:1.05rem;line-height:1.25}.rg-card span.rg-line{display:block;margin-top:4px;font-size:.92rem}' +
+    '.rg-card[hidden]{display:none}.rg-card:hover{text-decoration:none}.rg-card .tag{display:inline-block;margin-bottom:6px;padding:2px 10px;border-radius:999px;background:var(--s,#6E7A3F);color:var(--s-on,#fff);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.rg-card b{display:block;font-size:1.05rem;line-height:1.25}.rg-card span.rg-line{display:block;margin-top:4px;font-size:.92rem}' +
     '.rg-card .rg-go{display:inline-block;margin-top:10px;font-weight:800;color:var(--ink,#222)}' +
     '.rg-card.spin b{animation:rgp .14s linear infinite}@keyframes rgp{0%{transform:translateY(-4px);opacity:.5}100%{transform:translateY(0);opacity:1}}' +
     '@media (prefers-reduced-motion:reduce){.rg-card.spin b{animation:none}}';
