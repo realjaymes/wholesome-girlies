@@ -400,6 +400,21 @@ if "tools/index.html" in SRC:
     elif _sp < _tsrc.find("function doFilter("):
         fail("tools/index.html", "wg-stage-picker.js must load after the inline doFilter search script")
 
+# Get help on the app home (CLAUDE.md section 10): the Telegram group and care@, shown only in the installed app.
+if "app/index.html" in SRC:
+    _app = SRC["app/index.html"]
+    _help = re.search(r'<details class="[^"]*app-help[^"]*" id="appHelp" hidden>(.*?)</details>', _app, flags=re.S)
+    if not _help:
+        fail("app/index.html", 'the Get help card (details#appHelp, hidden until the app is installed) is missing')
+    else:
+        for _need in ('href="https://t.me/wholesomegirlies"', 'href="mailto:care@wholesomegirlies.xyz'):
+            if _need not in _help.group(1):
+                fail("app/index.html", f"the Get help card needs the link {_need}")
+        if re.search(r"\bcommunity\b", _help.group(1), flags=re.I):
+            fail("app/index.html", 'the Get help card must not call the open Telegram group "the community"')
+    if "$('appHelp').hidden = false" not in _app:
+        fail("app/index.html", "Get help must be shown inside the installed app (WGApp.standalone) only")
+
 for line in read("llms.txt").splitlines():
     for u in re.findall(r"https://wholesomegirlies\.xyz(/[^\s)>\]]*)", line):
         if not resolves(u):

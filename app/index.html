@@ -86,6 +86,13 @@ main [hidden]{display:none!important} /* .card and .app-install set display, whi
 .app-backup p{margin:12px 14px 0;font-size:.95rem}
 .app-backup .app-btns{margin:14px 14px 14px}
 @media (prefers-reduced-motion:reduce){.app-backup summary::after{transition:none}}
+/* Get help: the open Telegram group for shared questions, care@ for anything private (installed app only) */
+.app-help-pick{margin:12px 14px 10px;display:grid;gap:10px}
+.app-help-opt{display:flex;align-items:center;gap:12px;padding:10px 12px;border:2px solid var(--ink);border-radius:14px;color:var(--ink);font-weight:800;line-height:1.25;background:#fff;text-decoration:none}
+.app-help-opt:hover{text-decoration:none}.app-help-opt .t{flex:1;min-width:0}.app-help-opt small{display:block;font-weight:600;font-size:.82rem;color:var(--plum-soft);margin-top:2px}
+.app-help-ico{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink)}
+.app-help-ico.tgb{background:#2AABEE;color:#fff}.app-help-ico.mlb{background:var(--peach-t);color:var(--ink)}
+.app-help .app-help-note{margin:0 14px 14px;font-size:.85rem}
 .app-code{flex:1 1 0;min-width:0;font:inherit;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:10px 12px;border:2px solid var(--ink,#33322A);border-radius:12px;background:#fff}
 .app-btns .btn[type=submit]{flex:0 0 auto}
 .app-name{flex:1 1 0;min-width:0;font:inherit;font-weight:700;padding:10px 12px;border:2px solid var(--ink,#33322A);border-radius:12px;background:#fff}
@@ -269,6 +276,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="muted" style="margin-top:14px">Your entries live on this phone only. We never see them. A backup file keeps them safe if you change phones or clear your saved data.</p>
       <div class="app-btns"><button type="button" class="btn btn-primary" id="appBackup">Save a backup</button>
         <label class="btn btn-ghost">Restore a backup<input type="file" id="appRestore" accept="application/json,.json" hidden></label></div>
+    </details>
+    <details class="app-backup app-backup-next app-help" id="appHelp" hidden>
+      <summary><span class="ab-ico" aria-hidden="true">💬</span><span class="ab-txt">Get help<small>Ask in the group or email us</small></span></summary>
+      <p class="muted">Get news about new games and tools, tips, polls and ideas, or choose where to ask for help.</p>
+      <div class="app-help-pick">
+        <a class="app-help-opt" href="https://t.me/wholesomegirlies" target="_blank" rel="noopener" data-help="telegram"><span class="app-help-ico tgb" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M21.4 3.6 2.9 10.7c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5ZM9.1 13.4l9-5.7c.4-.3.8-.1.5.2l-7.5 6.8-.3 3.1-1.7-4.4Z"/></svg></span><span class="t">Open Telegram group<small>For news, tips, polls, ideas and app help everyone can see.</small></span></a>
+        <a class="app-help-opt" href="mailto:care@wholesomegirlies.xyz?subject=Help%20with%20Wholesome%20Girlies" data-help="email"><span class="app-help-ico mlb" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="2" d="M3 6h18v12H3z M3 7l9 6 9-6"/></svg></span><span class="t">Email us<small>For purchases, program codes or anything you would rather keep private.<br>care@wholesomegirlies.xyz</small></span></a>
+      </div>
+      <p class="muted app-help-note">The group is shared. Do not post private health details or phone numbers there.</p>
     </details>
     <p class="muted" id="appMsg" role="status" style="margin-top:12px;"></p>
   </div>
@@ -601,6 +617,11 @@ document.addEventListener('DOMContentLoaded', function(){
   var $ = function(id){ return document.getElementById(id); };
   if (WGApp.standalone) {
     WGApp.keep();
+    // Get help shows only in the installed app (James, 2026-10-11); each tap is counted as app_help
+    $('appHelp').hidden = false;
+    document.querySelectorAll('#appHelp [data-help]').forEach(function(a){
+      a.addEventListener('click', function(){ (window.dataLayer = window.dataLayer || []).push({ event: 'app_help', help_channel: a.getAttribute('data-help') }); });
+    });
     var first = false; try { first = !localStorage.getItem('wg_app_welcomed'); localStorage.setItem('wg_app_welcomed', '1'); } catch (e) {}
     APP_TITLE = first ? 'You are set' : 'Welcome back';
     $('appTitle').textContent = APP_TITLE;
