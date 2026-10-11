@@ -16,7 +16,7 @@
     { g: 'Parenting', key: 'parenting', emoji: '👶🏾', plain: 'I am raising children', c: 'var(--denim)', t: 'var(--denim-t)' }
   ];
   var groups = {}, empty = d.getElementById('noresults'), search = d.querySelector('.toolsearch');
-  d.querySelectorAll('.tgroup').forEach(function (g) { groups[g.getAttribute('data-group')] = g; });
+  d.querySelectorAll('.tgroup').forEach(function (g) { groups[g.getAttribute('data-group')] = g; g.setAttribute('data-mt', g.style.marginTop); });
   if (!search || !empty || !Object.keys(groups).length) return;
   var sel = '', sm = w.location.search.match(/[?&]stage=([a-z]+)/);
   STAGES.forEach(function (s) { if (sm && s.key === sm[1] && groups[s.g]) sel = s.g; });
@@ -50,7 +50,7 @@
       });
       var vis = (!sel || sel === k) && anyIn;
       g.style.display = vis ? '' : 'none';
-      g.style.marginTop = '';
+      g.style.marginTop = g.getAttribute('data-mt') || '';
       if (vis) { any = true; if (!first) first = g; }
     });
     if (first && sel) first.style.marginTop = '0';

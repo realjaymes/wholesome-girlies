@@ -2,34 +2,10 @@
  "_about": "Built by scripts/build-game-pool.py from the Game and Quiz cards on tools/index.html. Do not edit.",
  "games": [
   {
-   "path": "/relationships/tools/ready-for-love-quiz",
-   "name": "Are You Ready for Love? Quiz",
-   "stage": "relationships",
-   "line": "Eight questions on what you want, your standards, how healed you are, and whether pressure is driving who you date."
-  },
-  {
    "path": "/relationships/tools/girls-girl-quiz",
    "name": "Are You a Girl's Girl?",
    "stage": "relationships",
    "line": "Ten friendship situations, from aso ebi money to her man's flirty DM. Find your girl's girl type and send it to the group chat."
-  },
-  {
-   "path": "/relationships/tools/red-flag-radar",
-   "name": "Red Flag Radar",
-   "stage": "relationships",
-   "line": "Call each dating situation green flag, let's talk or red flag, and see what your radar says."
-  },
-  {
-   "path": "/relationships/tools/is-he-husband-material",
-   "name": "Is He Husband Material?",
-   "stage": "relationships",
-   "line": "Answer from what you have seen him do and see what he is showing you, plus what to raise with him."
-  },
-  {
-   "path": "/relationships/tools/couple-alignment",
-   "name": "Couple Alignment",
-   "stage": "relationships",
-   "line": "Both answer 12 questions on money, children, family and home, then see where you agree."
   },
   {
    "path": "/relationships/tools/delulu-or-clear-eyed",
@@ -38,16 +14,40 @@
    "line": "Ten talking-stage situations, from the unanswered story to the \"we'll see\". Delulu or clear-eyed? Send your result to the group chat."
   },
   {
-   "path": "/relationships/tools/how-do-you-love",
-   "name": "How Do You Love?",
+   "path": "/relationships/tools/is-he-husband-material",
+   "name": "Is He Husband Material?",
    "stage": "relationships",
-   "line": "Ten everyday relationship moments. Find out if you love like the reassurer, the space-keeper, the steady one or the all-in one."
+   "line": "Answer from what you have seen him do and see what he is showing you, plus what to raise with him."
   },
   {
    "path": "/relationships/tools/put-a-finger-down-dating",
    "name": "Put a Finger Down: Dating Edition",
    "stage": "relationships",
    "line": "Ten dating lines, ten fingers. Put one down for each that has happened and see how many you have left."
+  },
+  {
+   "path": "/relationships/tools/ready-for-love-quiz",
+   "name": "Are You Ready for Love? Quiz",
+   "stage": "relationships",
+   "line": "Eight questions on what you want, your standards, how healed you are, and whether pressure is driving who you date."
+  },
+  {
+   "path": "/relationships/tools/red-flag-radar",
+   "name": "Red Flag Radar",
+   "stage": "relationships",
+   "line": "Call each dating situation green flag, let's talk or red flag, and see what your radar says."
+  },
+  {
+   "path": "/relationships/tools/couple-alignment",
+   "name": "Couple Alignment",
+   "stage": "relationships",
+   "line": "Both answer 12 questions on money, children, family and home, then see where you agree."
+  },
+  {
+   "path": "/relationships/tools/how-do-you-love",
+   "name": "How Do You Love?",
+   "stage": "relationships",
+   "line": "Ten everyday relationship moments. Find out if you love like the reassurer, the space-keeper, the steady one or the all-in one."
   },
   {
    "path": "/pregnancy/tools/baby-name-battle",
@@ -110,6 +110,18 @@
    "line": "Tick what every visitor says or does after the birth and send it to the group chat."
   },
   {
+   "path": "/parenting/tools/new-parent-bingo",
+   "name": "New Parent Bingo",
+   "stage": "parenting",
+   "line": "Tick the newborn moments you have lived through and see how many lines you get."
+  },
+  {
+   "path": "/parenting/tools/which-nigerian-parent",
+   "name": "Which Nigerian Parent Are You?",
+   "stage": "parenting",
+   "line": "\"Go and ask your father.\" The remote control. \"I will count to three.\" Which Nigerian parent are you?"
+  },
+  {
    "path": "/parenting/tools/finish-mummys-sentence",
    "name": "Finish Mummy's Sentence",
    "stage": "parenting",
@@ -122,22 +134,10 @@
    "line": "Guess the age for eight baby milestones and see the CDC and WHO ranges."
   },
   {
-   "path": "/parenting/tools/new-parent-bingo",
-   "name": "New Parent Bingo",
-   "stage": "parenting",
-   "line": "Tick the newborn moments you have lived through and see how many lines you get."
-  },
-  {
    "path": "/parenting/tools/old-wives-tales-baby",
    "name": "Old Wives' Tales: True or False? Baby Edition",
    "stage": "parenting",
    "line": "Ten newborn and baby beliefs. Tap True, False or It depends and see the source."
-  },
-  {
-   "path": "/parenting/tools/which-nigerian-parent",
-   "name": "Which Nigerian Parent Are You?",
-   "stage": "parenting",
-   "line": "\"Go and ask your father.\" The remote control. \"I will count to three.\" Which Nigerian parent are you?"
   }
  ]
 }
