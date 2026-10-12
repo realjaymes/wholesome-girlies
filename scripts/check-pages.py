@@ -299,10 +299,6 @@ def _body(s):
 
 # Tools that have no written guide to link, on purpose. Keep this list short: a new tool links a guide in its stage.
 NO_GUIDE = {
-    # No guide in the parenting stage covers home safety, so there is nothing relevant to link.
-    "parenting/tools/babyproofing-safety-checklist.html",
-    # No guide in the parenting stage covers paediatric visits, so there is nothing relevant to link.
-    "parenting/tools/paediatric-visit-questions.html",
 }
 _guide_links = {}  # tool page -> guide pages that link it
 _tool_guides = {}  # tool page -> guide paths in its stage that it links

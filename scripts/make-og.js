@@ -26,7 +26,7 @@ const SQUARE_OUT = process.env.WG_SQUARE_DIR || path.join(require("os").homedir(
 const OG_VERSION = "20261010b";
 const STAGES = { relationships: "Relationships", fertility: "Trying to conceive", pregnancy: "Pregnancy", postpartum: "Postpartum", parenting: "Parenting" };
 // sensitive guides: a single heart reaction, never the playful ones
-const GENTLE = new Set(["chemical-miscarriage", "postpartum-warning-signs"]);
+const GENTLE = new Set(["chemical-miscarriage", "postpartum-warning-signs", "when-to-take-your-baby-to-hospital"]);
 // loss pages carry one gentle share line, so their card message is set here
 const HOOK_OVERRIDES = { "/pregnancy/guides/chemical-miscarriage": "A positive test, then a period." };
 const looks = { defaultCard: (...a) => require("./og-looks.js").defaultCard(...a), toolCard: (...a) => require("./og-looks.js").toolCard(...a) };
