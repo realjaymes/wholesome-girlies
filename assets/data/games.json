@@ -41,7 +41,8 @@
    "path": "/relationships/tools/couple-alignment",
    "name": "Couple Alignment",
    "stage": "relationships",
-   "line": "Both answer 12 questions on money, children, family and home, then see where you agree."
+   "line": "Both answer 12 questions on money, children, family and home, then see where you agree.",
+   "pair": true
   },
   {
    "path": "/relationships/tools/how-do-you-love",
@@ -53,7 +54,8 @@
    "path": "/pregnancy/tools/baby-name-battle",
    "name": "Baby Name Battle",
    "stage": "pregnancy",
-   "line": "Pick one name from each of 12 pairs, send it to your partner and see which names you both chose."
+   "line": "Pick one name from each of 12 pairs, send it to your partner and see which names you both chose.",
+   "pair": true
   },
   {
    "path": "/pregnancy/tools/old-wives-tales-pregnancy",
@@ -77,7 +79,8 @@
    "path": "/pregnancy/tools/who-knows-mummy-best",
    "name": "Who Knows Mummy Best?",
    "stage": "pregnancy",
-   "line": "She answers ten questions, guests guess and get a score. For people she has already told."
+   "line": "She answers ten questions, guests guess and get a score. For people she has already told.",
+   "pair": true
   },
   {
    "path": "/postpartum/tools/3am-group-chat",
@@ -89,7 +92,8 @@
    "path": "/postpartum/tools/how-well-do-you-know-me",
    "name": "How Well Do You Know Me?",
    "stage": "postpartum",
-   "line": "One spouse answers ten questions, the other guesses. Get a score out of ten."
+   "line": "One spouse answers ten questions, the other guesses. Get a score out of ten.",
+   "pair": true
   },
   {
    "path": "/postpartum/tools/mum-wrapped",

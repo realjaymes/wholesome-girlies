@@ -29,7 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261012a">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261012b">
 <link rel="stylesheet" href="/assets/css/wg-arrows.css?v=20261010b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -163,19 +163,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script src="/assets/js/wg-stage-date.js?v=20261010a"></script>
+<script src="/assets/js/wg-weeks.js?v=20261012a"></script>
 <script>
 // Saved on this phone in wg_stage_pregnancy_v1: her due date, shared with every pregnancy tool. Format and rules: assets/js/wg-stage-date.js.
-function noteFor(w){
-  if(w<5) return 'Very early. A test may only just be positive. Start folic acid if you have not.';
-  if(w<9) return 'The baby’s major organs are forming. Nausea and tiredness are common. Register at an antenatal clinic if you have not (this first visit is called booking).';
-  if(w<13) return 'Ending the first trimester. Your first scan is often around now. Sickness often begins to ease.';
-  if(w<19) return 'The second trimester. Many women feel more energy. You may start to show.';
-  if(w<25) return 'Around now many women feel the first movements. The detailed scan that checks how your baby is growing (the anomaly scan) usually happens near week 20.';
-  if(w<29) return 'Entering the third trimester. Baby is growing fast. Start thinking about your hospital bag and birth plan.';
-  if(w<37) return 'Getting closer. Rest when you can, watch baby’s movements, and pack your hospital bag by about week 36.';
-  if(w<=42) return 'Full term. Baby could arrive any time. Know the signs of labour and when to go in.';
-  return 'That is beyond a typical pregnancy length, please check the date with your midwife.';
-}
+function noteFor(w){ return WGWeeks.noteFor(w); } // the notes live in assets/js/wg-weeks.js, shared with the app home's This week card
 function calcWeek(quiet){
   var v=document.getElementById('lmp').value;
   if(!v){ if(quiet!==true) alert('Please enter the first day of your last period.'); return; }
@@ -213,6 +204,7 @@ function calcWeek(quiet){
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20261012a"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261012c"></script>
+<script defer src="/assets/js/wg-app.js?v=20261012g"></script>
+<script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
 </body>
 </html>

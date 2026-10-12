@@ -20,7 +20,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OFFERS = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Offers")
 SITE = "https://wholesomegirlies.xyz"
-READER_VERSION = "20261011a"
+READER_VERSION = "20261012c"
 COVERS = "/assets/img/products/{}-cover.webp?v=20261009c"
 # One manuscript per program. The diaspora home reads the same manuscript; its reader only links back to the diaspora home.
 PROGRAMS = {
@@ -64,6 +64,20 @@ def inline(s):
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])", r"<em>\1</em>", s)
     return s
+
+
+def read_minutes(markup):
+    """Minutes to read a lesson: its words at 200 a minute, rounded up, never under 1. Written into the page at build time
+    (data-min), so the lapse wording on the reading card is true. The Done button does not count."""
+    text = html.unescape(re.sub(r"<[^>]+>", " ", markup))
+    return max(1, -(-len(text.split()) // 200))
+
+
+def community_link(slug):
+    """The private buyers' group from program-homes.json (Wife Material has none)."""
+    with open(os.path.join(ROOT, "assets", "data", "program-homes.json"), encoding="utf-8") as f:
+        home = json.load(f)["homes"].get(slug, {})
+    return (home.get("community") or {}).get("href", "")
 
 
 def load_games():
@@ -217,7 +231,8 @@ def page(slug, cfg):
             n += 1
             links.append(f'<li><a href="#{lid}" data-lesson="{lid}"><span class="rd-tick" aria-hidden="true"></span><span>{inline(le["title"])}</span></a></li>')
             heading = "" if len(p["lessons"]) == 1 and le["title"] == p["title"] else f"<h3>{inline(le['title'])}</h3>"
-            arts.append(f'<article class="rd-lesson" id="{lid}" data-part="{pid}" data-title="{html.escape(le["title"])}">\n{heading}\n{blocks(le["lines"])}\n{play(le["title"], plan, games)}'
+            inner = f'{heading}\n{blocks(le["lines"])}\n{play(le["title"], plan, games)}'
+            arts.append(f'<article class="rd-lesson" id="{lid}" data-part="{pid}" data-title="{html.escape(le["title"])}" data-min="{read_minutes(inner)}">\n{inner}'
                         f'<div class="rd-end"><button type="button" class="rd-done" data-lesson="{lid}">Done, next lesson</button></div>\n</article>')
         intro = blocks(p["intro"])
         toc.append(f'<div class="rd-toc-part" data-part="{pid}"><p class="rd-toc-title"><span>{inline(p["title"])}</span><span class="rd-count"></span></p><ol>{"".join(links)}</ol></div>')
@@ -226,6 +241,8 @@ def page(slug, cfg):
     if plan:
         raise SystemExit(f"{slug}: program-games.json names lessons the manuscript does not have: {sorted(plan)}")
     flag = f' data-flag="{cfg["flag"]}"' if cfg.get("flag") else ""
+    group = community_link(slug)
+    community = f' data-community="{html.escape(group)}"' if group else ""
     tpl = open(os.path.join(ROOT, "programs", slug, "thank-you.html"), encoding="utf-8").read()
     headtop = tpl[:tpl.index("<!-- No-crawl")]
     head_tail = re.search(r'<link rel="preconnect".*?<link rel="stylesheet" href="/assets/css/styles\.css[^>]*>', tpl, re.S).group(0)
@@ -251,7 +268,7 @@ def page(slug, cfg):
   <div class="rd-bar" aria-hidden="true"><span></span></div>
 </header>
 
-<main class="rd" data-program="{slug}" data-total="{n}"{flag}>
+<main class="rd" data-program="{slug}" data-total="{n}" data-name="{html.escape(cfg["folder"])}"{community}{flag}>
 <div class="wrap rd-plan-page">
 <section class="rd-hero">
   <img class="rd-cover" src="{cfg["cover"]}" width="480" height="600" alt="Cover of {html.escape(title)}">
@@ -282,6 +299,7 @@ def page(slug, cfg):
 
 {footer}
 
+<script defer src="/assets/js/wg-share.js?v=20261007a"></script>
 <script defer src="/assets/js/wg-reader.js?v={READER_VERSION}"></script>
 {tail}
 </html>

@@ -32,10 +32,11 @@
     iosBrowser = preview === 'iphone-chrome' ? 'chrome' : 'safari'; inApp = preview === 'in-app';
   }
   var phone = ios || android;
-  var QUIET = ['/pregnancy/guides/chemical-miscarriage', '/postpartum/guides/postpartum-warning-signs',
+  var QUIET = ['/pregnancy/guides/chemical-miscarriage', '/postpartum/guides/postpartum-warning-signs', '/parenting/guides/when-to-take-your-baby-to-hospital',
     '/postpartum/tools/mind-check-in', '/fertility/tools/the-wait-check-in'];
   var noPrompt = /^\/go\//.test(path) || /^\/programs\/[^/]+$/.test(path) || QUIET.indexOf(path.replace(/\/$/, '')) > -1;
   var DISMISS = 'wg_app_dismissed';
+  var TEST_KEY = 'wg_install_test_v1'; // the install timing test's group (see testState)
   var deferred = null;
 
   if ('serviceWorker' in nav && (w.location.protocol === 'https:' || w.location.hostname === 'localhost' || w.location.hostname === '127.0.0.1')) {
@@ -46,6 +47,7 @@
     w.dataLayer = w.dataLayer || [];
     var o = { event: ev, app_platform: ios ? 'ios' : android ? 'android' : 'other', app_in_app_browser: inApp };
     if (surface) o.app_surface = surface;
+    var grp = testState(false); if (grp) o.app_install_group = grp.g; // the install timing test's group label only (never her entries)
     w.dataLayer.push(o);
   }
   function session(k, v) { try { if (v === undefined) return w.sessionStorage.getItem(k); w.sessionStorage.setItem(k, v); } catch (e) { return null; } }
@@ -72,6 +74,7 @@
       'body.wg-in-app{padding-bottom:calc(66px + env(safe-area-inset-bottom))}' +
       '@media (min-width:900px){body.wg-web-tabs .wg-app-nav{display:none}body.wg-web-tabs{padding-bottom:0}}' +
       'body.wg-in-app .wg-app-bar{bottom:calc(var(--wg-nav-h,66px) + 12px)}' +
+      'body.wg-in-app .wg-pill{bottom:calc(var(--wg-nav-h,66px) + 12px)}' +
       // a sales page's floating price bar sits above the tab bar, and hides fully behind it when not shown
       'body.wg-in-app .sticky-cta{bottom:var(--wg-nav-h,calc(66px + env(safe-area-inset-bottom)));transform:translateY(calc(100% + var(--wg-nav-h,calc(66px + env(safe-area-inset-bottom)))))}' +
       'body.wg-in-app .sticky-cta.is-visible{transform:translateY(0)}' +
@@ -193,14 +196,46 @@
   // 1. On a tool, after she saves an entry (only when her entries are kept on this device).
   // wg_played_v1 (the finished-games marker) is not a saved entry, so it never offers the install bar.
   // wg_name_v1 (her name) is not a saved entry either.
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$)(?!.*_home$)/;
+  // Keys that are not her entries never count: the spin button's last game, the hidden resume pill, location and
+  // first-visit markers, consent, her name, finished games, the answer to "Is this still right?" and the install test's group.
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$)(?!.*_home$)/;
+  // The install timing test (wg_install_test_v1, {v, g, s}): a random group per device, drawn the first time the bar could show.
+  // Group "now" sees the bar after her first saved tool, as always. Group "later" sees it after a second saved tool or on a
+  // later visit (a visit is one browser session). With remembering off the group cannot be kept, so each page draws again.
+  // The group label rides on the app_* events as app_install_group; nothing she entered goes with it.
+  function testState(create) {
+    var o = null;
+    try { o = JSON.parse(w.localStorage.getItem(TEST_KEY) || 'null'); } catch (e) {}
+    if (!(o && o.v === 1 && (o.g === 'now' || o.g === 'later') && o.s)) {
+      if (!create) return null;
+      o = { v: 1, g: Math.random() < 0.5 ? 'now' : 'later', s: Math.random().toString(36).slice(2, 10) };
+      try { w.localStorage.setItem(TEST_KEY, JSON.stringify(o)); } catch (e) {}
+      session('wgapp_test', o.s);
+    }
+    return o;
+  }
+  function savedToolCount() {
+    var n = 0;
+    try { for (var i = 0; i < w.localStorage.length; i++) { var k = w.localStorage.key(i); if (TOOL_KEY.test(k) && !/^wg_read_/.test(k)) n++; } } catch (e) {}
+    return n;
+  }
+  function installTiming() {
+    var t = testState(true);
+    if (t.g === 'now') return true;
+    var later = session('wgapp_test') !== t.s;
+    if (later) session('wgapp_test', t.s);
+    return later || savedToolCount() >= 2;
+  }
   if (/\/tools\//.test(path) && w.Storage) {
     var set = w.Storage.prototype.setItem;
     w.Storage.prototype.setItem = function (k, v) {
       var r = set.apply(this, arguments);
       try {
         var keep = !w.WGConsent || !w.WGConsent.state || w.WGConsent.state.remember;
-        if (this === w.localStorage && TOOL_KEY.test(String(k)) && keep) setTimeout(function () { bar('Add Wholesome Girlies to your home screen. This tool and your saved entries are one tap away.', 'tool_save'); }, 1200);
+        if (this === w.localStorage && TOOL_KEY.test(String(k))) {
+          d.dispatchEvent(new CustomEvent('wg:saved')); // wg-ideas.js offers "Continue in your stage" after a save
+          if (keep) setTimeout(function () { if (installTiming()) bar('Add Wholesome Girlies to your home screen. This tool and your saved entries are one tap away.', 'tool_save'); }, 1200);
+        }
       } catch (e) {}
       return r;
     };
@@ -294,10 +329,10 @@
     if (standalone) [].forEach.call(d.querySelectorAll('a[href="/app/"]'), function (a) {
       if (/get the app/i.test(a.textContent)) (a.closest('li') || a).style.display = 'none';
     });
-    // A program sales page leaves the bottom of the screen to the price bar. In the installed app a round Back
+    // A program sales page leaves the bottom of the screen to the price bar, and an ad bridge (/go/) stays brand only. In the installed app a round Back
     // button floats at the top left, below the header until the header scrolls away, and goes to the app home when
     // there is nothing to go back to. A browser tab gets no bar at all, because the browser has its own back button.
-    if (d.querySelector('.sticky-cta')) {
+    if (d.querySelector('.sticky-cta') || /^\/go\//.test(path)) {
       if (!standalone) return;
       var bk = d.createElement('button'); bk.type = 'button'; bk.id = 'wg-back'; bk.className = 'wg-back'; bk.setAttribute('aria-label', 'Back');
       bk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON.back + '</svg>';
@@ -439,7 +474,9 @@
       if (!meta) return null;
       var st = readState(slug) || {}, reader = '/programs/' + slug + '/read';
       var n = st.n || 0, total = st.total || 0, started = !!(n || st.last), finished = total && n >= total;
-      return { home: p.u, slug: slug, base: base, name: meta[0], word: meta[1], stage: meta[2], at: st.at || 0, finished: finished, started: started,
+      // More than 7 days since she last read an unfinished program: the card, the pill and the menu say how long it has been.
+      var days = st.at ? Math.floor((Date.now() - st.at) / 864e5) : 0, lapse = started && !finished && st.next && days > 7 ? days : 0;
+      return { home: p.u, slug: slug, base: base, name: meta[0], word: meta[1], stage: meta[2], at: st.at || 0, finished: finished, started: started, lapse: lapse,
         next: started && !finished ? st.next || '' : '', href: started && !finished && st.nextId ? reader + '#' + st.nextId : reader,
         btn: finished ? 'Read it again' : started ? 'Continue reading' : 'Start reading' };
     }).filter(Boolean);
@@ -474,7 +511,7 @@
     d.head.appendChild(css);
   }
   function cover(base) { return '/assets/img/products/' + (base === 'wife-material-blueprint' ? 'wife-material' : base) + '-cover.webp?v=20261009c'; }
-  function line(p) { return p.finished ? 'You have read it all' : p.next ? 'Up next: ' + p.next : p.started ? 'Pick up where you stopped' : 'Not started yet'; }
+  function line(p) { if (p.lapse) return 'You last read: ' + p.next + '.'; return p.finished ? 'You have read it all' : p.next ? 'Up next: ' + p.next : p.started ? 'Pick up where you stopped' : 'Not started yet'; }
   // 1. "My programs" in the site header, before Programs. On a phone it shows inside the open menu.
   function headerMenu(list) {
     var ul = d.querySelector('.site-header .nav-links'), cta = ul && ul.querySelector('.nav-cta');
@@ -520,10 +557,11 @@
     if (standalone || noPrompt || session('wg_pill_off') || /^\/programs\/[^/]+\/(thank-you|read)$/.test(path) || /^\/app\/?$/.test(path)) return;
     var p = list.slice().sort(function (a, b) { return b.at - a.at; }).filter(function (x) { return !x.finished; })[0];
     if (!p) return;
+    // A lapsed reader sees the pill on the first page of the visit, with no wait.
     setTimeout(function () {
       if (d.documentElement.classList.contains('show--consent') || d.querySelector('.wg-app-bar')) return;
       var el = d.createElement('div'); el.className = 'wg-pill'; el.setAttribute('role', 'region'); el.setAttribute('aria-label', 'Your program');
-      el.innerHTML = '<a href="' + escHtml(p.href) + '"><img src="' + cover(p.base) + '" alt="">' + (p.started ? 'Continue your ' : 'Start your ') + escHtml(p.word) + ' &rarr;</a>' +
+      el.innerHTML = '<a href="' + escHtml(p.href) + '"><img src="' + cover(p.base) + '" alt="">' + (p.lapse ? 'Continue with: ' + escHtml(p.next) : (p.started ? 'Continue your ' : 'Start your ') + escHtml(p.word)) + ' &rarr;</a>' +
         '<button type="button" aria-label="Hide for now">&times;</button>';
       el.querySelector('button').addEventListener('click', function () { el.remove(); session('wg_pill_off', '1'); push('resume_pill_hidden'); });
       el.querySelector('a').addEventListener('click', function () { push('resume_pill_click'); });
@@ -536,7 +574,7 @@
         if (Math.abs(y - lastY) < 8) return;
         el.classList.toggle('away', y > lastY && y > 120); lastY = y;
       }, { passive: true });
-    }, 1200);
+    }, p.lapse ? 0 : 1200);
   }
   // The "Stages" menu in the site header opens on a tap (its button carries the toggle); a tap elsewhere or Escape closes it.
   d.addEventListener('click', function (e) {
@@ -571,6 +609,8 @@
     savedKeys: savedKeys,
     name: herName,
     nameState: nameState,
+    programs: myPrograms,
+    quiet: function () { return QUIET.indexOf(path.replace(/\/$/, '')) > -1 || NAME_QUIET.test(path); },
     setName: function (raw) { var n = cleanName(raw); return n ? nameWrite(n) : false; },
     skipName: function () { return nameWrite(nameState().name); },
     removeName: function () { return nameWrite(''); },

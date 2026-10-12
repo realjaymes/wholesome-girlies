@@ -124,7 +124,7 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     // ---- the app home, non-buyers ----
     page = await newPage({ tag: 'app' });
     await lab(page, 'new');
-    ok('new visitor: five stage cards, no pick', (await page.$$eval('#appStages .stage-card', (a) => a.length)) === 5 && await vis(page, '#appStages') && !(await pickBox(page)));
+    ok('new visitor: the five-stage line, no pick', (await page.$$eval('#appStages .stage-stop', (a) => a.length)) === 5 && await vis(page, '#appStages') && !(await pickBox(page)));
     await shot(page, 'app-new-visitor');
 
     await lab(page, 'fert');
@@ -353,12 +353,43 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     // ---- storage blocked ----
     page = await newPage({ blocked: true, tag: 'blocked' });
     await go(page, '/app/');
-    ok('storage blocked: the app home shows the stage cards and no pick', (await page.$$eval('#appStages .stage-card', (a) => a.length)) === 5 && !(await pickBox(page)));
+    ok('storage blocked: the app home shows the stage line and no pick', (await page.$$eval('#appStages .stage-stop', (a) => a.length)) === 5 && !(await pickBox(page)));
     await go(page, '/relationships/tools/girls-girl-quiz');
     const thrown = await page.evaluate(() => { try { window.wgPlayed(); window.wgShowResult('certified'); return false; } catch (e) { return String(e); } });
     ok('storage blocked: finishing a game throws nothing', thrown === false, thrown);
     await go(page, '/programs/postpartum-reset/thank-you');
     ok('storage blocked: a program home still shows its cards', /MOTHER/.test(await mainText(page)));
+    await page._ctx.close();
+
+    // Stage dates in the picks: a shared key counts once, a current date counts 6, an old due or delivery date counts 0.
+    page = await newPage({ tag: 'dates' });
+    await go(page, '/app/');
+    const score = (seed) => page.evaluate((seed) => {
+      Object.keys(localStorage).filter((k) => /^wg_/.test(k)).forEach((k) => localStorage.removeItem(k));
+      const day = (n) => { const d = new Date(Date.now() - n * 864e5); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+      const played = {};
+      Object.entries(seed).forEach(([k, v]) => {
+        if (k === 'games') v.forEach((p, i) => { played[p] = Date.now() - i * 1000; });
+        else localStorage.setItem(k, typeof v === 'number' ? (k === 'wg_vax_dob' ? day(v) : JSON.stringify(k === 'wg_stage_pregnancy_v1' ? { v: 1, due: day(v) } : { v: 1, delivery: day(v), type: 'vaginal' })) : v);
+      });
+      localStorage.setItem('wg_played_v1', JSON.stringify(played));
+      const keys = WGApp.savedKeys();
+      const saved = APP_TOOLS.filter((t) => appHas(keys, t[0]) && APP_DATA.tools[t[1]]).map((t) => t[1]);
+      return appActivity(saved);
+    }, seed);
+    const PP_GAMES = ['/postpartum/tools/a', '/postpartum/tools/b', '/postpartum/tools/c', '/postpartum/tools/d', '/postpartum/tools/e'];
+    let a = await score({ wg_stage_pregnancy_v1: -60 });
+    ok('dates: a due date shared by two tools counts once, as 6', a.score.pregnancy === 6, JSON.stringify(a.score));
+    a = await score({ wg_stage_pregnancy_v1: -60, games: PP_GAMES });
+    ok('dates: a current due date outranks five games of another stage', a.order[0] === 'pregnancy', JSON.stringify(a.score));
+    a = await score({ wg_stage_pregnancy_v1: 250, games: PP_GAMES.slice(0, 3) });
+    ok('dates: a due date 250 days past counts nothing', !a.score.pregnancy && a.order[0] === 'postpartum', JSON.stringify(a.score));
+    a = await score({ wg_stage_postpartum_v1: 30 });
+    ok('dates: a delivery date inside 12 weeks counts 6', a.score.postpartum === 6, JSON.stringify(a.score));
+    a = await score({ wg_stage_postpartum_v1: 200 });
+    ok('dates: a delivery date past 12 weeks counts nothing', !a.score.postpartum, JSON.stringify(a.score));
+    a = await score({ wg_vax_dob: 300 });
+    ok('dates: a baby date counts 6 once (milestones and routine share it)', a.score.parenting === 6, JSON.stringify(a.score));
     await page._ctx.close();
 
     ok('no page errors', errs.length === 0, errs.slice(0, 3).join(' | '));

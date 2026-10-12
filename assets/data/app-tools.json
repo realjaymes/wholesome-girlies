@@ -1,0 +1,217 @@
+{
+ "_about": "Written by scripts/build-program-homes.py from app/index.html (APP_TOOLS) and program-homes.json. Do not edit.",
+ "stages": {
+  "relationships": [
+   "/relationships/tools/situationship-checker",
+   "/relationships/tools/green-red-flags-checker",
+   "/relationships/tools/is-he-husband-material",
+   "/relationships/tools/the-talk-planner",
+   "/relationships/tools/standards-non-negotiables-worksheet",
+   "/relationships/tools/meet-marriage-minded-men-checklist",
+   "/relationships/tools/ready-for-love-quiz",
+   "/relationships/tools/red-flag-radar",
+   "/relationships/tools/girls-girl-quiz"
+  ],
+  "fertility": [
+   "/fertility/tools/ovulation-calculator",
+   "/fertility/tools/period-tracker",
+   "/fertility/tools/ttc-checklist",
+   "/fertility/tools/his-fertility-checklist",
+   "/fertility/tools/fertility-appointment-questions",
+   "/fertility/tools/the-wait-check-in"
+  ],
+  "pregnancy": [
+   "/pregnancy/tools/due-date-calculator",
+   "/pregnancy/tools/week-by-week-tracker",
+   "/pregnancy/tools/hospital-bag-checklist",
+   "/pregnancy/tools/birth-plan-builder",
+   "/pregnancy/tools/safe-foods-checklist",
+   "/pregnancy/tools/antenatal-appointment-questions",
+   "/pregnancy/tools/baby-essentials-checklist"
+  ],
+  "postpartum": [
+   "/postpartum/tools/recovery-timeline-calculator",
+   "/postpartum/tools/recovery-checklist",
+   "/postpartum/tools/partner-support-planner",
+   "/postpartum/tools/night-feed-rota",
+   "/postpartum/tools/check-up-questions",
+   "/postpartum/tools/mind-check-in"
+  ],
+  "parenting": [
+   "/parenting/tools/finish-mummys-sentence",
+   "/parenting/tools/milestone-tracker",
+   "/parenting/tools/feeding-sleep-tracker",
+   "/parenting/tools/vaccination-tracker",
+   "/parenting/tools/baby-routine-planner",
+   "/parenting/tools/baby-name-explorer",
+   "/parenting/tools/babyproofing-safety-checklist",
+   "/parenting/tools/paediatric-visit-questions",
+   "/parenting/tools/first-foods-planner"
+  ]
+ },
+ "names": {
+  "/relationships/tools/ready-for-love-quiz": "Are You Ready for Love? Quiz",
+  "/relationships/tools/green-red-flags-checker": "Green Flags & Red Flags Checker",
+  "/relationships/tools/situationship-checker": "Situationship Checker",
+  "/relationships/tools/girls-girl-quiz": "Are You a Girl's Girl?",
+  "/relationships/tools/red-flag-radar": "Red Flag Radar",
+  "/relationships/tools/is-he-husband-material": "Is He Husband Material?",
+  "/relationships/tools/standards-non-negotiables-worksheet": "Non-Negotiables Worksheet",
+  "/relationships/tools/the-talk-planner": "The Talk Planner",
+  "/relationships/tools/meet-marriage-minded-men-checklist": "Meet Marriage-Minded Men",
+  "/fertility/tools/ovulation-calculator": "Ovulation & Fertile Window Calculator",
+  "/fertility/tools/period-tracker": "Period Tracker",
+  "/fertility/tools/ttc-checklist": "Trying-to-Conceive Checklist",
+  "/fertility/tools/his-fertility-checklist": "His Fertility Checklist",
+  "/fertility/tools/fertility-appointment-questions": "Fertility Appointment Questions",
+  "/fertility/tools/the-wait-check-in": "The Wait Check-in",
+  "/pregnancy/tools/due-date-calculator": "Due Date Calculator",
+  "/pregnancy/tools/week-by-week-tracker": "Week-by-Week Tracker",
+  "/pregnancy/tools/hospital-bag-checklist": "Hospital Bag Checklist",
+  "/pregnancy/tools/birth-plan-builder": "Birth Plan Builder",
+  "/pregnancy/tools/safe-foods-checklist": "Safe Foods Checklist",
+  "/pregnancy/tools/antenatal-appointment-questions": "Antenatal Questions",
+  "/pregnancy/tools/baby-essentials-checklist": "Newborn Essentials Checklist",
+  "/postpartum/tools/recovery-timeline-calculator": "Recovery Timeline Calculator",
+  "/postpartum/tools/recovery-checklist": "Postpartum Recovery Checklist",
+  "/postpartum/tools/partner-support-planner": "Partner Support Planner",
+  "/postpartum/tools/night-feed-rota": "Night Feeding Schedule",
+  "/postpartum/tools/check-up-questions": "Six-Week Check-up Questions",
+  "/postpartum/tools/mind-check-in": "Postpartum Mind Check-in",
+  "/parenting/tools/milestone-tracker": "Baby Milestone Tracker",
+  "/parenting/tools/feeding-sleep-tracker": "Feeding & Sleep Tracker",
+  "/parenting/tools/vaccination-tracker": "Vaccination Tracker",
+  "/parenting/tools/baby-routine-planner": "Baby Routine Planner",
+  "/parenting/tools/baby-name-explorer": "Baby Name Explorer",
+  "/parenting/tools/babyproofing-safety-checklist": "Baby Safety Checklist",
+  "/parenting/tools/paediatric-visit-questions": "Paediatric Visit Questions",
+  "/parenting/tools/first-foods-planner": "First Foods Planner",
+  "/parenting/tools/finish-mummys-sentence": "Finish Mummy's Sentence"
+ },
+ "keys": [
+  [
+   "wg_meet_men_v1",
+   "/relationships/tools/meet-marriage-minded-men-checklist"
+  ],
+  [
+   "wg_non_negotiables_v1",
+   "/relationships/tools/standards-non-negotiables-worksheet"
+  ],
+  [
+   "wg_talk_planner_v1",
+   "/relationships/tools/the-talk-planner"
+  ],
+  [
+   "wg_ttc_checklist_v1",
+   "/fertility/tools/ttc-checklist"
+  ],
+  [
+   "wg_his_fertility_checklist_v1",
+   "/fertility/tools/his-fertility-checklist"
+  ],
+  [
+   "wg_fertility_questions_v1",
+   "/fertility/tools/fertility-appointment-questions"
+  ],
+  [
+   "wg_wait_checkin_v1",
+   "/fertility/tools/the-wait-check-in"
+  ],
+  [
+   "wg_stage_fertility_v1",
+   "/fertility/tools/period-tracker"
+  ],
+  [
+   "wg_stage_fertility_v1",
+   "/fertility/tools/ovulation-calculator"
+  ],
+  [
+   "wg_antenatal_questions_v1",
+   "/pregnancy/tools/antenatal-appointment-questions"
+  ],
+  [
+   "wg_safe_foods_checklist_v1",
+   "/pregnancy/tools/safe-foods-checklist"
+  ],
+  [
+   "wg_hospitalbag_v1",
+   "/pregnancy/tools/hospital-bag-checklist"
+  ],
+  [
+   "wg_stage_pregnancy_v1",
+   "/pregnancy/tools/due-date-calculator"
+  ],
+  [
+   "wg_stage_pregnancy_v1",
+   "/pregnancy/tools/week-by-week-tracker"
+  ],
+  [
+   "wg_birth_plan_v1",
+   "/pregnancy/tools/birth-plan-builder"
+  ],
+  [
+   "wg_newborn_essentials_v1",
+   "/pregnancy/tools/baby-essentials-checklist"
+  ],
+  [
+   "wg_postpartum_checklist_v1",
+   "/postpartum/tools/recovery-checklist"
+  ],
+  [
+   "wg_night_rota_v1",
+   "/postpartum/tools/night-feed-rota"
+  ],
+  [
+   "wg_partner_support_planner_v1",
+   "/postpartum/tools/partner-support-planner"
+  ],
+  [
+   "wg_checkup_questions_v1",
+   "/postpartum/tools/check-up-questions"
+  ],
+  [
+   "wg_mind_checkin_v1",
+   "/postpartum/tools/mind-check-in"
+  ],
+  [
+   "wg_stage_postpartum_v1",
+   "/postpartum/tools/recovery-timeline-calculator"
+  ],
+  [
+   "wg_feedsleep_",
+   "/parenting/tools/feeding-sleep-tracker"
+  ],
+  [
+   "wg_vax_v2",
+   "/parenting/tools/vaccination-tracker"
+  ],
+  [
+   "wg_vax_dob",
+   "/parenting/tools/milestone-tracker"
+  ],
+  [
+   "wg_vax_dob",
+   "/parenting/tools/baby-routine-planner"
+  ],
+  [
+   "wg_name_shortlist_v1",
+   "/parenting/tools/baby-name-explorer"
+  ],
+  [
+   "wg_first_foods_v1",
+   "/parenting/tools/first-foods-planner"
+  ],
+  [
+   "wg_daily_mummy",
+   "/parenting/tools/finish-mummys-sentence"
+  ],
+  [
+   "wg_paediatric_questions_v1",
+   "/parenting/tools/paediatric-visit-questions"
+  ],
+  [
+   "wg_babyproofing_v1",
+   "/parenting/tools/babyproofing-safety-checklist"
+  ]
+ ]
+}

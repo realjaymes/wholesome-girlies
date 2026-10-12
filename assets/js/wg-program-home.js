@@ -66,6 +66,61 @@
   });
   if (own) [].forEach.call(d.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
 
+  // 7. The member bundle card moves up. A buyer of a single motherhood program (never a Complete Motherhood Journey owner,
+  // never Wife Material only) who has read half of her reader or all of it sees the MOTHER card under her reading card instead
+  // of at the bottom of the page. It says MOTHER is 35% off (never a price) and links the bundle by name. Her place is read from
+  // wg_read_<program> on this phone only.
+  var MOTHERHOOD = ['trying-to-conceive-blueprint', 'first-pregnancy-plan', 'postpartum-reset', 'first-baby-playbook'];
+  function singleMember() {
+    return ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].some(function (k) {
+      try { var v = JSON.parse(get(k) || 'null'); return !!(v && v.u && !/^\/programs\/complete-motherhood-journey/.test(v.u)); } catch (e) { return false; }
+    });
+  }
+  (function () {
+    var rd = d.getElementById('phRead'), links = rd && rd.parentNode.querySelector('.ph-links');
+    if (!rd || !links || own || !singleMember()) return;
+    var key = rd.getAttribute('data-read-key') || '', slug = key.replace(/^wg_read_/, ''), base = slug.replace(/-diaspora$/, '');
+    if (MOTHERHOOD.indexOf(base) < 0) return;
+    var st = null; try { st = JSON.parse(get(key)); } catch (e) {}
+    if (!st || !st.total || st.n / st.total < 0.5) return;
+    var done = st.n >= st.total, dia = /-diaspora$/.test(slug) ? '-diaspora' : '';
+    var box = d.createElement('div'); box.className = 'ph-card ph-member'; box.setAttribute('data-bundle-offer', '');
+    box.innerHTML = '<p class="eyebrow"></p><h3></h3><p class="muted"></p><a class="btn btn-primary"></a>';
+    box.querySelector('.eyebrow').textContent = 'The Complete Motherhood Journey';
+    box.querySelector('h3').textContent = done ? 'Continue your motherhood journey' : 'Keep going through motherhood';
+    var body = box.querySelector('p.muted'), a = d.createElement('a');
+    a.href = '/programs/complete-motherhood-journey' + dia; a.innerHTML = '<b>The Complete Motherhood Journey</b>';
+    body.appendChild(a); body.appendChild(d.createTextNode(' covers every stage of motherhood. Use code MOTHER to get 35% off.'));
+    var btn = box.querySelector('.btn'); btn.href = '/programs/complete-motherhood-journey' + dia + '?coupon=MOTHER'; btn.innerHTML = 'See the complete journey &rarr;';
+    links.parentNode.insertBefore(box, links.nextSibling);
+    // the card at the bottom of the page is replaced, not repeated
+    [].forEach.call(d.querySelectorAll('section[data-bundle-offer]'), function (sec) {
+      if (sec.querySelector('a[href*="complete-motherhood-journey"]')) { sec.hidden = true; sec.style.display = 'none'; }
+    });
+  })();
+
+  // 8. In a region that asks first (Europe, the UK, Canada), with remembering off, in a browser tab: a closed card under the hero.
+  // While remembering is off every wg_ key lives in memory for one page, so her program and her place would not carry to the
+  // next page. The card opens only on her tap, its button opens Privacy choices, and it changes no default. It never shows in the app.
+  (function () {
+    var C = w.WGConsent, top = d.querySelector('.ph-top-wrap');
+    if (!C || !top || C.region !== 'consent' || (C.state && C.state.remember) || C.appContext) return;
+    if (w.WGApp && w.WGApp.standalone) return;
+    var box = d.createElement('div'); box.className = 'wrap narrow';
+    box.innerHTML = '<details class="ph-card ph-remember"><summary></summary><p class="muted"></p><button type="button" class="btn btn-primary" data-open></button>' +
+      '<button type="button" class="ph-later" data-later></button></details>';
+    box.querySelector('summary').textContent = 'Keep my programs and reading place on this device';
+    box.querySelector('p').textContent = 'Turning on "Remember on this device" keeps your programs and your place in the reader on this device. Nothing is sent to us.';
+    box.querySelector('[data-open]').textContent = 'Open Privacy choices';
+    box.querySelector('[data-later]').textContent = 'I will decide later';
+    var det = box.querySelector('details');
+    box.querySelector('[data-open]').addEventListener('click', function () {
+      try { w.CookieConsent.showPreferences(); } catch (e) { var b = d.querySelector('[data-cc="show-preferencesModal"]'); if (b) b.click(); }
+    });
+    box.querySelector('[data-later]').addEventListener('click', function () { det.open = false; });
+    top.parentNode.insertBefore(box, top.nextSibling);
+  })();
+
   // 4. Tool icons, drawn as lines in the ink colour. WGIcons.draw(root) fills every empty .ph-ico under root.
   var ICO = {
     check: '<path d="M4 12.5l5 5L20 6.5"/>', chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
@@ -89,7 +144,7 @@
   // The ring around "11/30 lessons" on the reading card.
   w.WGRing = function (ring, r) {
     ring.style.setProperty('--pct', r.pct);
-    ring.firstChild.innerHTML = r.n ? r.n + '/' + r.total + '<small>lessons</small>' : '0<small>started</small>';
+    ring.firstChild.innerHTML = r.finished ? '100%<small>done</small>' : r.n ? r.n + '/' + r.total + '<small>lessons</small>' : '0<small>started</small>';
   };
 
   // 3. Reading progress. WGReading.load(reader, key) reads the reader page and her saved place, and gives
@@ -102,15 +157,27 @@
         var doc = new DOMParser().parseFromString(html, 'text/html');
         var ls = [].map.call(doc.querySelectorAll('.rd-lesson'), function (l) {
           var part = l.closest('.rd-part'), h = part && part.querySelector('h2');
-          return { id: l.id, t: l.getAttribute('data-title'), p: h ? h.textContent : '' };
+          return { id: l.id, t: l.getAttribute('data-title'), p: h ? h.textContent : '', min: +l.getAttribute('data-min') || 1 };
         });
         if (!ls.length) return null;
+        var main = doc.querySelector('.rd'), prog = (main && main.getAttribute('data-name')) || 'your program';
+        var me = ''; try { me = (w.WGApp && w.WGApp.name && w.WGApp.name()) || ''; } catch (e) {}
         var n = ls.filter(function (l) { return st.done[l.id]; }).length;
         var from = Math.max(0, ls.map(function (l) { return l.id; }).indexOf(st.last)), next = ls[0];
         for (var i = 0; i < ls.length; i++) { var c = ls[(from + i) % ls.length]; if (!st.done[c.id]) { next = c; break; } }
         var out = { n: n, total: ls.length, pct: 100 * n / ls.length, count: n ? n + ' of ' + ls.length + ' lessons done' : 'Not started yet' };
-        if (n === ls.length) { out.label = 'You have read it all'; out.title = 'Come back to any lesson when you need it.'; out.btn = 'Read it again'; out.href = reader; }
-        else if (n || st.last) { out.label = 'Up next \u00b7 ' + next.p; out.title = next.t; out.btn = 'Continue reading'; out.href = reader + '#' + next.id; }
+        // Finished: her progress at 100%, "You finished <program>, Ada.", and "Read it again".
+        if (n === ls.length) { out.finished = true; out.label = 'Your progress'; out.title = 'You finished ' + prog + (me ? ', ' + me : '') + '.'; out.count = '100% complete'; out.btn = 'Read it again'; out.href = reader; out.name = prog; }
+        else if (n || st.last) {
+          out.label = 'Up next \u00b7 ' + next.p; out.title = next.t; out.btn = 'Continue reading'; out.href = reader + '#' + next.id;
+          // More than 7 days since she last read: say how long it has been, and how long the next lesson takes (counted at build time).
+          var days = st.at ? Math.floor((Date.now() - st.at) / 864e5) : 0;
+          if (days > 7) {
+            out.lapse = days;
+            out.title = (me ? me + ', it' : 'It') + ' has been ' + days + ' days since you last read. You can continue with: ' + next.t + '.';
+            out.mins = next.min === 1 ? 'This lesson takes about 1 minute to read.' : 'This lesson takes about ' + next.min + ' minutes to read.';
+          }
+        }
         else { out.title = ls.length + ' short lessons. Your place is saved on this phone.'; out.btn = 'Start reading'; out.href = reader; }
         out.part = next.p; out.lesson = next.t; out.started = !!(n || st.last) && n < ls.length;
         return out;
@@ -125,6 +192,7 @@
     d.getElementById('phCount').textContent = r.count;
     if (r.label) d.getElementById('phLabel').textContent = r.label;
     d.getElementById('phTitle').textContent = r.title;
+    if (r.mins) { var mp = d.createElement('p'); mp.className = 'muted ph-mins'; mp.textContent = r.mins; d.getElementById('phTitle').parentNode.insertBefore(mp, d.getElementById('phTitle').nextSibling); }
     var go = d.getElementById('phGo'); go.innerHTML = r.btn + ' &rarr;'; go.href = r.href;
   }).catch(function () {});
 })(window, document);

@@ -35,7 +35,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "assets/data/program-homes.json")
 START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
-ASSET_VERSION = "20261011b"
+ASSET_VERSION = "20261012a"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
@@ -151,7 +151,7 @@ def reading(h):
         n, parts = lessons(h["reader"])
         key = "wg_read_" + h["reader"].strip("/").split("/")[1]
         size = f"{n} short lessons in {parts} parts" if parts > 1 else f"{n} short lessons"
-        main = (f'<div class="ph-read" id="phRead" data-reader="{h["reader"]}" data-read-key="{key}">\n'
+        main = (f'<div class="ph-read" id="phRead" data-reader="{h["reader"]}" data-read-key="{key}" data-name="{PROGRAMS[h["program"]][0]}">\n'
                 f'          <p class="ph-label" id="phLabel">Read your {w}</p>\n'
                 f'          <p class="ph-title" id="phTitle">{size}. Your place is saved on this phone.</p>\n'
                 f'          <div class="ph-prog"><div class="ph-ring" id="phRing" aria-hidden="true"><span>0<small>started</small></span></div>'
@@ -345,6 +345,26 @@ def expected_app(m):
     return APP_PAGE, src, new, None
 
 
+TOOLS_JSON = "assets/data/app-tools.json"
+
+
+def expected_tools_json(m):
+    """assets/data/app-tools.json: what pages other than /app/ need to offer "Next in your stage" (idea 10): each stage's tools
+    in order, each tool's name, and the storage key whose entry means she has saved it (the APP_TOOLS rows of app/index.html)."""
+    with open(os.path.join(ROOT, APP_PAGE), encoding="utf-8") as f:
+        src = f.read()
+    rows = json.loads(re.search(r"var APP_TOOLS = (\[.*?\n\]);", src, re.S).group(1))
+    data = {
+        "_about": "Written by scripts/build-program-homes.py from app/index.html (APP_TOOLS) and program-homes.json. Do not edit.",
+        "stages": m["stages"],
+        "names": {p: html.unescape(t["name"]) for p, t in m["tools"].items()},
+        "keys": [[r[0], r[1]] for r in rows],
+    }
+    full = os.path.join(ROOT, TOOLS_JSON)
+    old = open(full, encoding="utf-8").read() if os.path.exists(full) else None
+    return TOOLS_JSON, old, json.dumps(data, ensure_ascii=False, indent=1) + "\n", None
+
+
 def with_assets(src, slug):
     """The page loads the program home CSS and JS exactly once, at the current version, and its own manifest."""
     src = src.replace('<link rel="manifest" href="/manifest.webmanifest">', f'<link rel="manifest" href="/manifests/{slug}.webmanifest">')
@@ -380,7 +400,7 @@ def main(argv):
     check = "--check" in argv
     m = load()
     bad = []
-    for path, old, new, err in ([expected(m, slug) for slug in m["homes"]] + [expected_app(m)]
+    for path, old, new, err in ([expected(m, slug) for slug in m["homes"]] + [expected_app(m), expected_tools_json(m)]
                                 + [expected_manifest(slug) for slug in m["homes"]]):
         if err:
             bad.append(err)

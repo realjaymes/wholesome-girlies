@@ -268,6 +268,8 @@ const GG = '/relationships/tools/girls-girl-quiz';
     ok('install bar: not fired by saving a name on a tool page', (await page.$('.wg-app-bar')) === null);
     await page.evaluate(() => { WGApp.setName('Ada'); }); await wait(1900);
     ok('install bar: not fired by WGApp.setName either', (await page.$('.wg-app-bar')) === null);
+    // The install timing test draws a random group; group "now" is the one that shows the bar after a first saved entry.
+    await page.evaluate(() => localStorage.setItem('wg_install_test_v1', JSON.stringify({ v: 1, g: 'now', s: 'testnow' })));
     await page.evaluate(() => localStorage.setItem('wg_name_shortlist_v1', '{"v":1,"items":[{"n":"Amara"}]}')); await wait(1900);
     ok('install bar: still fires for a real saved entry (wg_name_shortlist_v1 is not the name key)', (await page.$('.wg-app-bar')) !== null);
     await page._ctx.close();
@@ -276,7 +278,7 @@ const GG = '/relationships/tools/girls-girl-quiz';
     await setName(app, NAME);
     await go(app, '/app/');
     ok('activity: a name alone shows no saved tools and no program pick', !(await shown(app, '#appMine')) && !(await shown(app, '#appPick')) && !(await shown(app, '#appMore')));
-    ok('activity: a name alone still shows the five stage cards', await shown(app, '#appStages'));
+    ok('activity: a name alone still shows the stage line', await shown(app, '#appStages'));
     ok('activity: the name key is not read as a saved tool', await app.evaluate(() => WGApp.savedKeys().includes('wg_name_v1') && document.querySelectorAll('#appSaved .ph-tool').length === 0));
     await app._ctx.close();
   }

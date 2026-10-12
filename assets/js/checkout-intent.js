@@ -159,7 +159,7 @@
     var email = document.getElementById('wgbmEmail').value.trim();
     var phone = normPhone(document.getElementById('wgbmPhone').value);
     if (!name || !email) { return; }
-    try { localStorage.setItem(LEAD_KEY, JSON.stringify({ name: name, email: email, phone: phone, ts: Date.now() })); } catch (e) {}
+    try { localStorage.setItem(LEAD_KEY, JSON.stringify({ name: name, email: email, phone: phone, product: pendingProduct, ts: Date.now() })); } catch (e) {}
     // Lead — the owned conversion, fired on form submit BEFORE the Selar redirect (mirrors MIA).
     // event_id dedupes the browser Pixel Lead against the sGTM server CAPI Lead; lead_email/name/phone
     // feed Advanced Matching. GTM (GTM-KW443M88) fires both Lead tags off this single push.

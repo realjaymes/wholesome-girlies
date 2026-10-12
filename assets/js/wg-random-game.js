@@ -5,7 +5,8 @@
 (function (w, d) {
   var path = w.location.pathname.replace(/\/$/, ''), surface = /^\/app/.test(path) ? 'app' : 'tools';
   var LAST = 'wg_random_last', pool = null, busy = false;
-  var COPY = { btn: 'Spin for a game', again: 'Spin again', help: 'Spin, then play it or spin again.', spin: 'Picking your game...', play: 'Play it →' };
+  var COPY = { btn: 'Spin for a game', again: 'Spin again', help: 'Spin, then play it or spin again.', spin: 'Picking your game...', play: 'Play it →',
+    allDone: 'You have played every game here. Pick one to play with a friend.', together: 'Play {GAME} together →' };
 
   function store(k, v) { try { if (v === undefined) return w.localStorage.getItem(k); w.localStorage.setItem(k, v); } catch (e) { return null; } }
   function push(g) {
@@ -14,15 +15,22 @@
   }
   function load(cb) {
     if (pool) return cb();
-    fetch('/assets/data/games.json?v=20261010a').then(function (r) { return r.json(); }).then(function (j) {
+    fetch('/assets/data/games.json?v=20261012a').then(function (r) { return r.json(); }).then(function (j) {
       pool = (j.games || []).filter(function (g) { return g.path.replace(/\/$/, '') !== path; }); cb();
     }).catch(function () { pool = []; cb(); });
   }
+  // She is offered a game she has not finished (wg_played_v1, written on her phone by wg-app.js). When she has finished
+  // every game, she is offered a two-player game to play with a friend. It never repeats the last game it gave her.
+  function played() { try { return JSON.parse(store('wg_played_v1') || '{}') || {}; } catch (e) { return {}; } }
   function pick() {
-    var last = store(LAST), from = pool.filter(function (g) { return g.path !== last; });
-    if (!from.length) from = pool;
+    var last = store(LAST), done = played(), all = false;
+    var from = pool.filter(function (g) { return !done[g.path]; });
+    if (!from.length) { all = true; from = pool.filter(function (g) { return g.pair; }); if (!from.length) from = pool; }
+    var fresh = from.filter(function (g) { return g.path !== last; });
+    if (!fresh.length) fresh = pool.filter(function (g) { return g.path !== last; });
+    if (fresh.length) from = fresh;
     var g = from[Math.floor(Math.random() * from.length)];
-    if (g) store(LAST, g.path);
+    if (g) { store(LAST, g.path); g = { path: g.path, name: g.name, line: all ? COPY.allDone : g.line, go: all ? COPY.together.replace('{GAME}', g.name) : COPY.play }; }
     return g;
   }
 
@@ -46,7 +54,7 @@
     card.querySelector('.tag').textContent = landed ? 'Your game' : 'Spinning';
     card.querySelector('b').textContent = g.name;
     card.querySelector('.rg-line').textContent = landed ? g.line : COPY.spin;
-    if (landed) { var go = d.createElement('span'); go.className = 'rg-go'; go.textContent = COPY.play; card.appendChild(go); }
+    if (landed) { var go = d.createElement('span'); go.className = 'rg-go'; go.textContent = g.go || COPY.play; card.appendChild(go); }
   }
   btn.addEventListener('click', function () {
     if (busy) return; busy = true;

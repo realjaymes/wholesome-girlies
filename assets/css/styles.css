@@ -176,6 +176,26 @@ a.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); text-deco
 .stage-card.soon { opacity: .62; }
 .stage-card.soon .arrow { color: var(--plum-soft); }
 
+/* Stage line: the five stages as stops on one dashed line, in life order (James's pick, option A). The homepage
+   links each stop to its stage page, the app home to the stage's program; /tools/ draws the same line as a filter
+   in wg-stage-picker.js. */
+.stage-line { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 6px; }
+.stage-line::before { content: ""; position: absolute; left: 10%; right: 10%; top: 21px; border-top: 3px dashed var(--ink); opacity: .35; }
+.stage-stop { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; text-align: center; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.stage-dot { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 1.2rem; background: var(--t); border: 2px solid var(--ink); transition: transform .15s, box-shadow .15s, background .15s; }
+.stage-stop:hover .stage-dot, .stage-stop:focus-visible .stage-dot, .stage-stop:active .stage-dot { background: var(--c); box-shadow: var(--sticker-sm); transform: scale(1.08); }
+.stage-stop b { font-size: clamp(.6rem, 2.65vw, .78rem); line-height: 1.2; letter-spacing: -.01em; -webkit-hyphens: auto; hyphens: auto; }
+.stage-stop small { font-size: clamp(.6rem, 2.45vw, .7rem); line-height: 1.2; opacity: .75; }
+.stage-stop[href^="/relationships"], .stage-stop[href*="wife-material"] { --c: var(--rust); --t: var(--rust-t); }
+.stage-stop[href^="/fertility"], .stage-stop[href*="trying-to-conceive"] { --c: var(--olive); --t: var(--olive-t); }
+.stage-stop[href^="/pregnancy"], .stage-stop[href*="first-pregnancy"] { --c: var(--mustard); --t: var(--mustard-t); }
+.stage-stop[href^="/postpartum"], .stage-stop[href*="postpartum-reset"] { --c: var(--peach); --t: var(--peach-t); }
+.stage-stop[href^="/parenting"], .stage-stop[href*="first-baby"] { --c: var(--denim); --t: var(--denim-t); }
+.stage-band .stage-stop[href^="/parenting"] { --t: #fff; }
+@media (max-width: 420px) { .stage-line { margin: 6px -10px 0; } }
+@media (min-width: 760px) { .stage-dot { width: 64px; height: 64px; font-size: 1.7rem; } .stage-line::before { top: 31px; } .stage-stop b { font-size: 1rem; } .stage-stop small { font-size: .85rem; } }
+@media (prefers-reduced-motion: reduce) { .stage-dot { transition: none; } }
+
 /* Tool page layout */
 .tool-hero { background: var(--cream-2); padding: 40px 0 28px; border-bottom: 1px solid var(--line); }
 .tool-hero .wrap:not(.narrow) h1 { max-width: 22ch; }  /* hubs (wide container): cap so the headline doesn't stretch past the lead */

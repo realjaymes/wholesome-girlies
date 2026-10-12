@@ -338,7 +338,7 @@ if os.path.exists("scripts/results.json"):
             if rp not in SRC:
                 fail(page, f"result {rid}: result page {rp} is missing: run python3 scripts/make-result-pages.py")
         # The call can sit in the page or in the game engine it loads (wg-pair.js, wg-chatcard.js, wg-tierlist.js).
-        _engines = [m for m in re.findall(r'src="/assets/js/(wg-[a-z-]+\.js)', SRC[page]) if m not in ("wg-result.js", "wg-app.js")]
+        _engines = [m for m in re.findall(r'src="/assets/js/(wg-[a-z-]+\.js)', SRC[page]) if m not in ("wg-result.js", "wg-app.js", "wg-ideas.js", "wg-weeks.js", "wg-arrows.js")]
         if "wgShowResult" not in SRC[page] and not any("wgShowResult" in read("assets/js/" + e) for e in _engines):
             fail(page, "quiz or checker must call wgShowResult(type) after scoring")
         if 'id="wg-result-share"' not in SRC[page]:
@@ -412,12 +412,40 @@ if "app/index.html" in SRC:
     _wga = read("assets/js/wg-app.js")
     if "    tabBar();\n    appFooter();" not in _wga:
         fail("assets/js/wg-app.js", "every page must end like the installed app in a browser tab too: the tab bar and the short footer")
+    # Stage, checkout and streak cards (wg-ideas.js) and the shared week logic (wg-weeks.js).
+    if not re.search(r"TOOL_KEY\s*=.*stage_check_v1\$.*install_test_v1\$", _wga):
+        fail("assets/js/wg-app.js", "wg_stage_check_v1 and wg_install_test_v1 are not saved tools: keep both out of TOOL_KEY")
+    _appsrc = read("app/index.html")
+    for _c in ("appNotice", "appHandoff", "appWeek", "appFinish", "appStreak"):
+        if f'id="{_c}"' not in _appsrc:
+            fail("app/index.html", f"the app home needs the #{_c} container for wg-ideas.js")
+    if "WGIdeas.appHome()" not in _appsrc or "/assets/js/wg-weeks.js?v=" not in _appsrc:
+        fail("app/index.html", "appRender() must call WGIdeas.appHome(), and the page must load wg-weeks.js with a version")
+    _trk = read("pregnancy/tools/week-by-week-tracker.html")
+    if "/assets/js/wg-weeks.js?v=" not in _trk or "WGWeeks.noteFor(" not in _trk or re.search(r"function noteFor\(w\)\s*\{\s*if", _trk):
+        fail("pregnancy/tools/week-by-week-tracker.html", "the tracker must take its week note from WGWeeks.noteFor (wg-weeks.js), not keep its own copy")
     # One footer for the installed app and a browser tab at every width: no second class, no width exception.
     if "f.classList.add('wg-app-foot-on');" not in _wga or "footer.wg-app-foot-on>:not(.wg-app-foot){display:none !important}" not in _wga or "wg-web-foot" in _wga:
         fail("assets/js/wg-app.js", "the footer must be the same short footer in the installed app and a browser tab, at every width (the full footer stays in the code, hidden)")
+    # The stage line (James's pick, option A): the homepage's five stops open the stage pages, the app home's open the
+    # programs, in life order, with no stage cards left; the app home's closing line has no "every tool" link.
+    _STOPS = re.compile(r'<a class="stage-stop" href="([^"]+)">')
+    for _f, _id, _want in (("index.html", 'id="stages"', ["/relationships/", "/fertility/", "/pregnancy/", "/postpartum/", "/parenting/"]),
+                           ("app/index.html", 'id="appStages"', ["/programs/wife-material-blueprint", "/programs/trying-to-conceive-blueprint", "/programs/first-pregnancy-plan", "/programs/postpartum-reset", "/programs/first-baby-playbook"])):
+        _src = SRC.get(_f) or read(_f)
+        _blk = _src[_src.find(_id):]
+        _blk = _blk[:_blk.find("</section>") if _f == "index.html" else _blk.find('id="appMine"')]
+        if _STOPS.findall(_blk) != _want or "stage-card" in _blk:
+            fail(_f, "the stage block must be the stage line: five stage-stop links in life order to " + ", ".join(_want) + ", and no stage cards")
+    # Her program pick sits straight after "Pick up where you left off", so a recommendation is near the top (James).
+    _o = [_app.find('id="appMine"'), _app.find('id="appPick"'), _app.find('id="appMore"')]
+    if not (0 < _o[0] < _o[1] < _o[2]):
+        fail("app/index.html", 'the program pick (#appPick) must come straight after "Pick up where you left off" (#appMine) and before "More for your stage" (#appMore)')
+    if "See every tool and guide" in _app:
+        fail("app/index.html", 'the app home closing line ends after the stage links, with no "See every tool and guide"')
     # Program sales pages: no tab bar; the installed app gets the round Back button, a browser tab gets nothing.
-    if "if (d.querySelector('.sticky-cta')) {\n      if (!standalone) return;" not in _wga or "bk.id = 'wg-back'" not in _wga:
-        fail("assets/js/wg-app.js", "program sales pages must drop the tab bar: a round Back button in the installed app, no bar in a browser tab")
+    if "if (d.querySelector('.sticky-cta') || /^\\/go\\//.test(path)) {\n      if (!standalone) return;" not in _wga or "bk.id = 'wg-back'" not in _wga:
+        fail("assets/js/wg-app.js", "program sales pages and ad bridges (/go/) must drop the tab bar: a round Back button in the installed app, no bar in a browser tab")
 
 for line in read("llms.txt").splitlines():
     for u in re.findall(r"https://wholesomegirlies\.xyz(/[^\s)>\]]*)", line):
