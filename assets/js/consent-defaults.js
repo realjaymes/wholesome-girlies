@@ -15,6 +15,7 @@
  *      starting `wg_` lives in memory for this page only, so tools keep working but keep nothing.
  *
  * Exposes window.WGConsent for /assets/js/wg-consent.js (the banner) to call apply() on each choice.
+ * In the app (/app/ and the home-screen app) no notice opens on its own and remembering entries defaults to on.
  * QA only: add ?wg_region=consent|us|open to a page address to preview another region (not saved).
  */
 (function (w, d) {
@@ -89,6 +90,16 @@
 
   var saved = readSaved();
   var base = DEFAULTS[region];
+  // The app (/app/, and every page inside the app added to the home screen) behaves like an app: no notice opens on
+  // its own, and remembering her entries on this phone is on by default, because that is what the app is for. She can
+  // turn it off under Privacy choices. Analytics and advertising keep the region's default until she chooses.
+  // QA: ?preview=installed counts as the installed app.
+  var appContext = false;
+  try {
+    appContext = /^\/app\/?$/.test(w.location.pathname) || /[?&]preview=installed\b/.test(w.location.search) ||
+      (w.matchMedia && w.matchMedia('(display-mode: standalone)').matches) || w.navigator.standalone === true;
+  } catch (e) {}
+  if (appContext && !base.remember) base = { analytics: base.analytics, advertising: base.advertising, remember: true };
   var state = saved
     ? { analytics: saved.indexOf('analytics') > -1, advertising: saved.indexOf('advertising') > -1, remember: saved.indexOf('remember') > -1 }
     : { analytics: base.analytics, advertising: base.advertising, remember: base.remember };
@@ -173,6 +184,7 @@
     region: region,
     gpc: gpc,
     hadSavedChoice: !!saved,
+    appContext: appContext,
     defaults: base,
     state: state,
     toolStorageUsed: function () { return toolStorageUsed; },

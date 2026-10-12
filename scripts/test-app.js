@@ -95,6 +95,22 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   ok('phone: no bar on the mind check-in', !(await ph2.$('.wg-app-bar')));
   await ph2.goto(B + '/programs/wife-material-blueprint', { waitUntil: 'load' }); await wait(800);
   ok('phone: no bar on a sales page', !(await ph2.$('.wg-app-bar')));
+  // 7. one footer everywhere, and the sales page Back button (CLAUDE.md section 10)
+  for (const [u, w] of [['/tools/', 390], ['/tools/', 1280], ['/', 1280], ['/tools/?preview=installed', 390], ['/legal/privacy?preview=installed', 1280]]) {
+    const fp = await browser.newPage(); await fp.setViewport({ width: w, height: 844 });
+    await fp.goto(B + u, { waitUntil: 'load' }); await wait(300);
+    const vis = await fp.$eval('footer.site-footer', f => [...f.children].filter(c => getComputedStyle(c).display !== 'none' && c.offsetHeight).map(c => c.className).join(','));
+    ok(`short footer only: ${u} at ${w}px`, vis === 'wg-app-foot', vis);
+    await fp.close();
+  }
+  const sb = await browser.newPage(); await sb.setViewport({ width: 390, height: 844 });
+  await sb.goto(B + '/programs/wife-material-blueprint', { waitUntil: 'load' }); await wait(300);
+  ok('sales page in a browser tab: no tab bar, no Back button', !(await sb.$('#wg-app-nav')) && !(await sb.$('#wg-back')));
+  await sb.goto(B + '/programs/wife-material-blueprint?preview=installed', { waitUntil: 'load' }); await wait(300);
+  ok('sales page in the app: round Back button, no tab bar', !(await sb.$('#wg-app-nav')) && !!(await sb.$('#wg-back')));
+  await sb.goto(B + '/programs/postpartum-reset/thank-you?preview=installed', { waitUntil: 'load' }); await wait(300);
+  ok('program home in the app keeps the tab bar', !!(await sb.$('#wg-app-nav')) && !(await sb.$('#wg-back')));
+  await sb.close();
   ok('no page errors', errs.length === 0, errs.slice(0, 3).join(' | '));
   console.log(out.join('\n'));
   await browser.close();

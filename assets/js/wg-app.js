@@ -70,9 +70,16 @@
       // the open tab sits in a mustard sticker, like the cast line work
       '.wg-app-nav .on svg{background:var(--mustard,#D49A2A);border:2px solid var(--ink,#33322A);border-radius:10px;padding:3px;width:30px;height:30px;box-sizing:border-box;margin:-4px 0}' +
       'body.wg-in-app{padding-bottom:calc(66px + env(safe-area-inset-bottom))}' +
+      '@media (min-width:900px){body.wg-web-tabs .wg-app-nav{display:none}body.wg-web-tabs{padding-bottom:0}}' +
+      'body.wg-in-app .wg-app-bar{bottom:calc(var(--wg-nav-h,66px) + 12px)}' +
+      // a sales page's floating price bar sits above the tab bar, and hides fully behind it when not shown
+      'body.wg-in-app .sticky-cta{bottom:var(--wg-nav-h,calc(66px + env(safe-area-inset-bottom)));transform:translateY(calc(100% + var(--wg-nav-h,calc(66px + env(safe-area-inset-bottom)))))}' +
+      'body.wg-in-app .sticky-cta.is-visible{transform:translateY(0)}' +
       '.wg-app-foot{max-width:640px;margin:0 auto;padding:0 20px;font-size:.8rem;line-height:1.7;color:#B9C3B2;text-align:center}' +
       '.wg-app-foot a{color:var(--blush,#EAE9D2);white-space:nowrap}' +
-      'footer.wg-app-foot-on{padding:16px 0 18px !important}' +
+      'footer.wg-app-foot-on{padding:16px 0 18px !important}footer.wg-app-foot-on>:not(.wg-app-foot){display:none !important}' +
+      '.wg-back{position:fixed;left:12px;top:calc(env(safe-area-inset-top) + 12px);z-index:950;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;color:var(--ink,#33322A);background:#fff;border:2px solid var(--ink,#33322A);box-shadow:var(--sticker-sm,2px 2px 0 #33322A)}' +
+      '.wg-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
       '.wg-app-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:900;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:18px;box-shadow:0 10px 30px rgba(51,50,42,.18);padding:14px 16px;display:flex;gap:12px;align-items:center;max-width:560px;margin:0 auto}' +
       '.wg-app-bar img{width:40px;height:40px;border-radius:10px;flex:none}' +
       '.wg-app-bar p{margin:0;font-size:.95rem;line-height:1.35}' +
@@ -219,7 +226,10 @@
     // 5. Inside Instagram, TikTok or Facebook, a program home sits in that app's own storage, so her program and reading
     //    progress would stay behind. A top card asks her to open the page in her real browser.
     if (inApp && !standalone && /^\/programs\/[^/]+\/thank-you$/.test(path)) inAppCard();
-    if (standalone) { tabBar(); appFooter(); }
+    // Every page ends like the installed app, in a browser tab too: the tab bar and the short footer. The footer is the
+    // same at every width; a browser tab hides only the tab bar on wide screens, where the header does its job.
+    tabBar();
+    appFooter();
     appWords();
   });
   // Copy that must say "site" or "browser" on the website is wrapped as <span data-app-word="app">site</span>.
@@ -279,11 +289,25 @@
     program: '<path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M9 9h6M9 13h6"/>'
   };
   function tabBar() {
-    if (d.getElementById('wg-app-nav')) return;
+    if (d.getElementById('wg-app-nav') || d.getElementById('wg-back')) return;
     style();
-    [].forEach.call(d.querySelectorAll('a[href="/app/"]'), function (a) {
+    if (standalone) [].forEach.call(d.querySelectorAll('a[href="/app/"]'), function (a) {
       if (/get the app/i.test(a.textContent)) (a.closest('li') || a).style.display = 'none';
     });
+    // A program sales page leaves the bottom of the screen to the price bar. In the installed app a round Back
+    // button floats at the top left, below the header until the header scrolls away, and goes to the app home when
+    // there is nothing to go back to. A browser tab gets no bar at all, because the browser has its own back button.
+    if (d.querySelector('.sticky-cta')) {
+      if (!standalone) return;
+      var bk = d.createElement('button'); bk.type = 'button'; bk.id = 'wg-back'; bk.className = 'wg-back'; bk.setAttribute('aria-label', 'Back');
+      bk.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON.back + '</svg>';
+      bk.addEventListener('click', function () { if (w.history.length > 1) w.history.back(); else w.location.href = '/app/'; });
+      d.body.appendChild(bk);
+      var head = d.querySelector('header');
+      var place = function () { bk.style.transform = 'translateY(' + Math.max(0, (head ? head.offsetHeight : 0) - w.scrollY) + 'px)'; };
+      place(); w.addEventListener('scroll', place, { passive: true }); w.addEventListener('resize', place);
+      return;
+    }
     var here = path.replace(/\/$/, '') || '/', progs = myPrograms();
     var items = [['/app/', 'Home', 'home'], ['/tools/', 'Tools', 'tools']];
     // One program opens straight away; two or more open a list of her program homes.
@@ -299,15 +323,20 @@
       el.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON[it[2]] + '</svg><span>' + it[1] + '</span>';
       nav.appendChild(el);
     });
-    d.body.appendChild(nav); d.body.classList.add('wg-in-app');
+    d.body.appendChild(nav); d.body.classList.add('wg-in-app'); if (!standalone) d.body.classList.add('wg-web-tabs');
+    // the tab bar's real height (it grows with the phone's home indicator) is what the floating price bar sits on
+    var navH = function () { d.documentElement.style.setProperty('--wg-nav-h', nav.offsetHeight + 'px'); };
+    navH(); w.addEventListener('resize', navH);
   }
 
-  // Inside the app the footer shrinks to what must stay reachable: the not-medical-advice line, the legal pages and
-  // "Privacy choices" (consent must be changeable at any time).
+  // The footer is the same in the installed app and a browser tab, at every width: the not-medical-advice line, the
+  // legal pages and "Privacy choices" (consent must be changeable at any time). The full footer stays in the page code,
+  // hidden, so search engines still read its links.
   function appFooter() {
     var f = d.querySelector('footer.site-footer');
     if (!f) return;
-    [].forEach.call(f.children, function (c) { c.style.display = 'none'; });
+    if (f.querySelector('.wg-app-foot')) return;
+    style();
     var line = d.createElement('div'); line.className = 'wg-app-foot';
     line.innerHTML = 'Educational, not medical advice. <a href="/legal/disclaimer">Disclaimer</a> &middot; <a href="/legal/privacy">Privacy</a> &middot; ' +
       '<a href="/legal/consumer-health-data">Health data</a> &middot; <a href="#" data-wg-choices>Privacy choices</a>';
@@ -556,11 +585,11 @@
     restoreBackup: function (file) {
       return file.text().then(function (t) { var n = unpack(JSON.parse(t)); push('app_backup_restored'); return n; });
     },
-    // Rebuilds the installed app's tab bar after a program is added, so My program appears.
+    // Rebuilds the tab bar after a program is added, so My program appears.
     refreshTabs: function () {
       var n = d.getElementById('wg-app-nav');
       if (n) n.remove();
-      if (standalone) tabBar();
+      tabBar();
     },
     keep: function () { if (nav.storage && nav.storage.persist) nav.storage.persist().catch(function () {}); }
   };

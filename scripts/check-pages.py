@@ -400,20 +400,28 @@ if "tools/index.html" in SRC:
     elif _sp < _tsrc.find("function doFilter("):
         fail("tools/index.html", "wg-stage-picker.js must load after the inline doFilter search script")
 
-# Get help on the app home (CLAUDE.md section 10): the Telegram group and care@, shown only in the installed app.
+# The end of /app/ (CLAUDE.md section 10) is the same in a browser tab and in the installed app: Add a program,
+# Back up or restore, Get help (the Telegram group and care@). Every page, in a browser tab too, ends on the tab bar and the short app footer.
 if "app/index.html" in SRC:
     _app = SRC["app/index.html"]
-    _help = re.search(r'<details class="[^"]*app-help[^"]*" id="appHelp" hidden>(.*?)</details>', _app, flags=re.S)
+    _help = re.search(r'<details class="[^"]*app-help[^"]*" id="appHelp">(.*?)</details>', _app, flags=re.S)
     if not _help:
-        fail("app/index.html", 'the Get help card (details#appHelp, hidden until the app is installed) is missing')
+        fail("app/index.html", 'the Get help card (details#appHelp, shown in a browser tab and in the installed app) is missing')
     else:
         for _need in ('href="https://t.me/wholesomegirlies"', 'href="mailto:care@wholesomegirlies.xyz'):
             if _need not in _help.group(1):
                 fail("app/index.html", f"the Get help card needs the link {_need}")
         if re.search(r"\bcommunity\b", _help.group(1), flags=re.I):
             fail("app/index.html", 'the Get help card must not call the open Telegram group "the community"')
-    if "$('appHelp').hidden = false" not in _app:
-        fail("app/index.html", "Get help must be shown inside the installed app (WGApp.standalone) only")
+    _wga = read("assets/js/wg-app.js")
+    if "    tabBar();\n    appFooter();" not in _wga:
+        fail("assets/js/wg-app.js", "every page must end like the installed app in a browser tab too: the tab bar and the short footer")
+    # One footer for the installed app and a browser tab at every width: no second class, no width exception.
+    if "f.classList.add('wg-app-foot-on');" not in _wga or "footer.wg-app-foot-on>:not(.wg-app-foot){display:none !important}" not in _wga or "wg-web-foot" in _wga:
+        fail("assets/js/wg-app.js", "the footer must be the same short footer in the installed app and a browser tab, at every width (the full footer stays in the code, hidden)")
+    # Program sales pages: no tab bar; the installed app gets the round Back button, a browser tab gets nothing.
+    if "if (d.querySelector('.sticky-cta')) {\n      if (!standalone) return;" not in _wga or "bk.id = 'wg-back'" not in _wga:
+        fail("assets/js/wg-app.js", "program sales pages must drop the tab bar: a round Back button in the installed app, no bar in a browser tab")
 
 for line in read("llms.txt").splitlines():
     for u in re.findall(r"https://wholesomegirlies\.xyz(/[^\s)>\]]*)", line):

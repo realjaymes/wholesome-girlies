@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="/assets/js/consent-defaults.js?v=20260916a"></script>
+<script src="/assets/js/consent-defaults.js?v=20261012a"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -277,7 +277,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="app-btns"><button type="button" class="btn btn-primary" id="appBackup">Save a backup</button>
         <label class="btn btn-ghost">Restore a backup<input type="file" id="appRestore" accept="application/json,.json" hidden></label></div>
     </details>
-    <details class="app-backup app-backup-next app-help" id="appHelp" hidden>
+    <details class="app-backup app-backup-next app-help" id="appHelp">
       <summary><span class="ab-ico" aria-hidden="true">💬</span><span class="ab-txt">Get help<small>Ask in the group or email us</small></span></summary>
       <p class="muted">Get news about new games and tools, tips, polls and ideas, or choose where to ask for help.</p>
       <div class="app-help-pick">
@@ -590,6 +590,10 @@ document.addEventListener('DOMContentLoaded', function(){
   if (!window.WGApp) return;
   // Installed from a program home: its manifest opens /app/?home=<slug>, which carries the program into the app.
   try {
+  // Get help: each tap is counted as app_help, with the way she chose
+  document.querySelectorAll('#appHelp [data-help]').forEach(function(a){
+    a.addEventListener('click', function(){ (window.dataLayer = window.dataLayer || []).push({ event: 'app_help', help_channel: a.getAttribute('data-help'), app_installed: !!WGApp.standalone }); });
+  });
     var qs = new URLSearchParams(location.search), hm = qs.get('home');
     if (hm !== null) {
       if (/^[a-z0-9-]+$/.test(hm)) appAddHome(hm, false);
@@ -617,11 +621,6 @@ document.addEventListener('DOMContentLoaded', function(){
   var $ = function(id){ return document.getElementById(id); };
   if (WGApp.standalone) {
     WGApp.keep();
-    // Get help shows only in the installed app (James, 2026-10-11); each tap is counted as app_help
-    $('appHelp').hidden = false;
-    document.querySelectorAll('#appHelp [data-help]').forEach(function(a){
-      a.addEventListener('click', function(){ (window.dataLayer = window.dataLayer || []).push({ event: 'app_help', help_channel: a.getAttribute('data-help') }); });
-    });
     var first = false; try { first = !localStorage.getItem('wg_app_welcomed'); localStorage.setItem('wg_app_welcomed', '1'); } catch (e) {}
     APP_TITLE = first ? 'You are set' : 'Welcome back';
     $('appTitle').textContent = APP_TITLE;
@@ -669,10 +668,10 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
-<script defer src="/assets/js/wg-consent.js?v=20261010a"></script>
+<script defer src="/assets/js/wg-consent.js?v=20261012a"></script>
 <script defer src="/assets/js/wg-program-home.js?v=20261011b"></script>
 <script defer src="/assets/js/wg-random-game.js?v=20261011a"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261011b"></script>
+<script defer src="/assets/js/wg-app.js?v=20261012c"></script>
 </body>
 </html>

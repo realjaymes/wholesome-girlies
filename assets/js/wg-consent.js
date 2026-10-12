@@ -43,7 +43,8 @@
 
   CC.run({
     mode: region === 'consent' ? 'opt-in' : 'opt-out',
-    autoShow: region !== 'open' && !onAdLandingPage,
+    // the app never opens the notice on its own; Privacy choices in the footer stays
+    autoShow: region !== 'open' && !onAdLandingPage && !WG.appContext,
     revision: WG.REVISION,
     hideFromBots: true,
     disablePageInteraction: false,
