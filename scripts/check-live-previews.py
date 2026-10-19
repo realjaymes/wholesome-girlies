@@ -62,6 +62,9 @@ def local_paths():
             if os.path.isdir(d):
                 for f in sorted(os.listdir(d)):
                     if f.endswith(".html") and f != "index.html":
+                        # a redirect stub keeps a renamed page's old address working and has no card of its own
+                        if 'http-equiv="refresh"' in open(os.path.join(d, f), encoding="utf-8").read():
+                            continue
                         pages.append((kind, f"/{stage}/{sub}/{f[:-5]}"))
     results = json.load(open(os.path.join(ROOT, "scripts/results.json")))
     for tool, t in results.items():
