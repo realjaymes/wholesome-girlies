@@ -33,7 +33,7 @@
    "/postpartum/tools/recovery-timeline-calculator",
    "/postpartum/tools/recovery-checklist",
    "/postpartum/tools/partner-support-planner",
-   "/postpartum/tools/night-feed-rota",
+   "/postpartum/tools/night-duty-roster",
    "/postpartum/tools/check-up-questions",
    "/postpartum/tools/mind-check-in"
   ],
@@ -75,7 +75,7 @@
   "/postpartum/tools/recovery-timeline-calculator": "Recovery Timeline Calculator",
   "/postpartum/tools/recovery-checklist": "Postpartum Recovery Checklist",
   "/postpartum/tools/partner-support-planner": "Partner Support Planner",
-  "/postpartum/tools/night-feed-rota": "Night Feeding Schedule",
+  "/postpartum/tools/night-duty-roster": "Night Duty Roster",
   "/postpartum/tools/check-up-questions": "Six-Week Check-up Questions",
   "/postpartum/tools/mind-check-in": "Postpartum Mind Check-in",
   "/parenting/tools/milestone-tracker": "Baby Milestone Tracker",
@@ -159,7 +159,7 @@
   ],
   [
    "wg_night_rota_v1",
-   "/postpartum/tools/night-feed-rota"
+   "/postpartum/tools/night-duty-roster"
   ],
   [
    "wg_partner_support_planner_v1",

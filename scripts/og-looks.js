@@ -31,7 +31,7 @@ const STG = {
 // tools with no cast: loss, mental health, The Wait Check-in, warning signs, safety. Cream, still life, no person.
 const CAST_FREE = { "the-wait-check-in": "fertility-still-life-window.jpg", "mind-check-in": "postpartum-still-life-nursery.jpg" };
 const SAMPLE_TOOLS = ["red-flag-radar", "situationship-checker", "ovulation-calculator", "period-tracker", "due-date-calculator",
-  "hospital-bag-checklist", "recovery-checklist", "night-feed-rota", "baby-name-explorer", "milestone-tracker", "the-wait-check-in"];
+  "hospital-bag-checklist", "recovery-checklist", "night-duty-roster", "baby-name-explorer", "milestone-tracker", "the-wait-check-in"];
 const SAMPLE_RESULTS = [["red-flag-radar", "strict"], ["girls-girl-quiz", "pick-me"], ["is-he-husband-material", "showing-it"]];
 
 const b64 = (f, type) => `data:${type};base64,${fs.readFileSync(f).toString("base64")}`;

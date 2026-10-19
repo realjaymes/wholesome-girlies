@@ -46,7 +46,10 @@ def read(p):
 # ---------- page inventory ----------
 
 MOCKUPS = {"branding-options.html", "logo-options.html"}
-PAGES = sorted(p for p in glob.glob("**/*.html", recursive=True) if not p.startswith((".", "node_modules", "_lab", "lab/")))
+_ALL_HTML = sorted(p for p in glob.glob("**/*.html", recursive=True) if not p.startswith((".", "node_modules", "_lab", "lab/")))
+# Redirect stubs keep a renamed page's old address working: a meta refresh plus a canonical link, noindex, no page template.
+REDIRECTS = [p for p in _ALL_HTML if 'http-equiv="refresh"' in open(p, encoding="utf-8").read()]
+PAGES = [p for p in _ALL_HTML if p not in REDIRECTS]
 SRC = {p: read(p) for p in PAGES}
 
 
@@ -203,6 +206,10 @@ for p in PAGES + glob.glob("assets/js/*.js"):
 
 # ---------- 3. SEO ----------
 
+for _r in REDIRECTS:
+    _t = open(_r, encoding="utf-8").read()
+    if 'name="robots" content="noindex' not in _t or 'rel="canonical"' not in _t:
+        fail(_r, "a redirect stub must be noindex and carry a canonical link to the new address")
 sitemap = read("sitemap.xml")
 locs = re.findall(r"<loc>([^<]+)</loc>", sitemap)
 if len(locs) != len(set(locs)):

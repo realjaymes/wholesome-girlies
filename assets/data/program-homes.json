@@ -72,7 +72,7 @@
    "/postpartum/tools/recovery-timeline-calculator",
    "/postpartum/tools/recovery-checklist",
    "/postpartum/tools/partner-support-planner",
-   "/postpartum/tools/night-feed-rota",
+   "/postpartum/tools/night-duty-roster",
    "/postpartum/tools/check-up-questions",
    "/postpartum/tools/mind-check-in"
   ],
@@ -208,9 +208,9 @@
    "line": "Tick what you need help with right now and get a clear note to send your partner or family.",
    "key": "wg_partner_support_planner_v1"
   },
-  "/postpartum/tools/night-feed-rota": {
-   "name": "Night Feeding Schedule",
-   "line": "Agree who does which feed through the night, so it is not all on you.",
+  "/postpartum/tools/night-duty-roster": {
+   "name": "Night Duty Roster",
+   "line": "Agree who is on night duty for the baby, so it is not all on you.",
    "key": "wg_night_rota_v1"
   },
   "/postpartum/tools/check-up-questions": {

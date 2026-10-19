@@ -15,7 +15,7 @@ const TOOLS = [
   "fertility/tools/fertility-appointment-questions",
   "parenting/tools/paediatric-visit-questions",
   "postpartum/tools/check-up-questions",
-  "postpartum/tools/night-feed-rota",
+  "postpartum/tools/night-duty-roster",
   "postpartum/tools/partner-support-planner",
   "pregnancy/tools/antenatal-appointment-questions",
   "pregnancy/tools/baby-essentials-checklist",

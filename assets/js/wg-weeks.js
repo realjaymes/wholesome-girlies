@@ -40,7 +40,7 @@
       guides: [['/pregnancy/guides/nigerian-foods-in-pregnancy', 'Are tiger nut, bitter kola, garden egg, cloves and Lipton safe in pregnancy?']], stage: 'pregnancy' },
     t3: { tools: ['/pregnancy/tools/hospital-bag-checklist', '/pregnancy/tools/birth-plan-builder', '/pregnancy/tools/baby-essentials-checklist'],
       guides: [['/pregnancy/guides/trimester-by-trimester', 'Pregnancy, trimester by trimester']], stage: 'pregnancy' },
-    pp: { tools: ['/postpartum/tools/recovery-checklist', '/postpartum/tools/night-feed-rota', '/postpartum/tools/check-up-questions'],
+    pp: { tools: ['/postpartum/tools/recovery-checklist', '/postpartum/tools/night-duty-roster', '/postpartum/tools/check-up-questions'],
       guides: [['/postpartum/guides/postpartum-recovery-timeline', 'Your postpartum recovery timeline, week by week']], stage: 'postpartum' },
     b1: { tools: ['/parenting/tools/milestone-tracker', '/parenting/tools/vaccination-tracker', '/parenting/tools/feeding-sleep-tracker'],
       guides: [['/parenting/guides/safe-sleep-for-newborns', 'Newborn sleep position and safe sleep'], ['/parenting/guides/when-to-take-your-baby-to-hospital', 'When to take your baby to the hospital']], stage: 'parenting' },

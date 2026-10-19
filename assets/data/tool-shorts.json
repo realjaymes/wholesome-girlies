@@ -57,7 +57,7 @@
      "recovery-timeline-calculator",
      "recovery-timeline-calculator-c-section",
      "recovery-checklist",
-     "night-feed-rota",
+     "night-duty-roster",
      "partner-support-planner",
      "mind-check-in",
      "check-up-questions"
@@ -123,7 +123,7 @@
      "hospital-bag-checklist",
      "birth-plan-builder",
      "recovery-timeline-calculator",
-     "night-feed-rota",
+     "night-duty-roster",
      "mind-check-in",
      "feeding-sleep-tracker",
      "milestone-tracker"
@@ -409,23 +409,23 @@
    "tool_fingerprint": "c4a546010d14a5ae",
    "source_render": "The 6-Week Postpartum Reset/03 - Recovery Checklist 9x16.mp4"
   },
-  "night-feed-rota": {
-   "tool": "/postpartum/tools/night-feed-rota",
-   "title": "Night Feeding Schedule",
+  "night-duty-roster": {
+   "tool": "/postpartum/tools/night-duty-roster",
+   "title": "Night Duty Roster",
    "programs": [
     "postpartum-reset",
     "complete-motherhood-journey"
    ],
    "private": false,
-   "video": "/assets/video/tool-shorts/night-feed-rota.mp4",
-   "poster": "/assets/img/tool-shorts/night-feed-rota.webp",
+   "video": "/assets/video/tool-shorts/night-duty-roster.mp4",
+   "poster": "/assets/img/tool-shorts/night-duty-roster.webp",
    "sales_line": {
-    "home": "Put a name beside every night feed."
+    "home": "Put a name beside every night duty."
    },
-   "brief": "The 6-Week Postpartum Reset/04 - Tool Short - Night Feeding Schedule.md",
-   "captured_at": "2026-10-10",
+   "brief": "The 6-Week Postpartum Reset/04 - Tool Short - Night Duty Roster.md",
+   "captured_at": "2026-10-19",
    "tool_fingerprint": "5b8a44208dfacbbe",
-   "source_render": "The 6-Week Postpartum Reset/04 - Night Feeding Schedule 9x16.mp4"
+   "source_render": "The 6-Week Postpartum Reset/04 - Night Duty Roster 9x16.mp4"
   },
   "partner-support-planner": {
    "tool": "/postpartum/tools/partner-support-planner",
@@ -440,8 +440,8 @@
     "home": "Tick what you need, then send your husband a note."
    },
    "brief": "The 6-Week Postpartum Reset/05 - Tool Short - Partner Support Planner.md",
-   "captured_at": "2026-10-10",
-   "tool_fingerprint": "91f9430490edaae1",
+   "captured_at": "2026-10-19",
+   "tool_fingerprint": "66b81d04ffe92e5c",
    "source_render": "The 6-Week Postpartum Reset/05 - Partner Support Planner 9x16.mp4"
   },
   "mind-check-in": {
@@ -527,8 +527,8 @@
     "home": "Choose your baby's age to see a day of feeds, naps and play."
    },
    "brief": "The First Baby Playbook/03 - Tool Short - Baby Routine Planner.md",
-   "captured_at": "2026-10-10",
-   "tool_fingerprint": "53474fb9864f3932",
+   "captured_at": "2026-10-19",
+   "tool_fingerprint": "6646b08cdef23dcb",
    "source_render": "The First Baby Playbook/03 - Baby Routine Planner 9x16.mp4"
   },
   "vaccination-tracker": {
@@ -886,8 +886,8 @@
     "home": "See the numbers from the feeding and sleep entries you logged over six weeks."
    },
    "brief": "The 6-Week Postpartum Reset/11 - Tool Short - Mum Wrapped.md",
-   "captured_at": "2026-10-10",
-   "tool_fingerprint": "3081454401af8249",
+   "captured_at": "2026-10-19",
+   "tool_fingerprint": "8cde63b35ab1beac",
    "source_render": "The 6-Week Postpartum Reset/11 - Mum Wrapped 9x16.mp4"
   },
   "how-well-do-you-know-me": {
