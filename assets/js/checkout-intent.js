@@ -163,7 +163,8 @@
   function bachsSlug(href) {
     var m = href.match(/selar\.com\/([^/?#]+)/i), slug = m ? m[1].toLowerCase() : '';
     if (!ON_BACHS[slug] || adSource === 'meta') return '';
-    var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    // localhost and the Cloudflare Pages previews (*.wholesome-girlies.pages.dev) can test Bachs with ?pay=bachs before the switch.
+    var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /\.wholesome-girlies\.pages\.dev$/.test(location.hostname);
     return local && /[?&]pay=bachs\b/.test((window.__idq || '') + location.search) ? slug : '';
   }
   function cookie(name) {
