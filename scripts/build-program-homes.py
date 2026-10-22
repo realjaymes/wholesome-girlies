@@ -38,6 +38,10 @@ START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
 ASSET_VERSION = "20261012a"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
+# Programs sold on Bachs. Their homes load wg-order.js, which shows her personal access code once the
+# payment server confirms the payment (Selar to Bachs Migration Plan). It does nothing without ?order=.
+BACHS_HOMES = {"first-baby-playbook", "first-baby-playbook-diaspora"}
+ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261022f"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
@@ -348,6 +352,23 @@ def expected_app(m):
 TOOLS_JSON = "assets/data/app-tools.json"
 
 
+HOMES_JSON = "assets/data/program-flags.json"
+
+
+def expected_homes_json(m):
+    """assets/data/program-flags.json: what /signin needs to put a program on her phone the way its home does: each home's
+    name, label and flag keys, and the hashes of the shared program codes (the same as APP_DATA in app/index.html)."""
+    data = {
+        "_about": "Written by scripts/build-program-homes.py from program-homes.json. Do not edit.",
+        "homes": {slug: {"name": PROGRAMS[h["program"]][0], "label": PROGRAMS[h["program"]][1], "program": h["program"],
+                         "flags": flag_keys(h)} for slug, h in m["homes"].items()},
+        "codes": {code_hash(h["code"]): slug for slug, h in m["homes"].items()},
+    }
+    full = os.path.join(ROOT, HOMES_JSON)
+    old = open(full, encoding="utf-8").read() if os.path.exists(full) else None
+    return HOMES_JSON, old, json.dumps(data, ensure_ascii=False, indent=1) + "\n", None
+
+
 def expected_tools_json(m):
     """assets/data/app-tools.json: what pages other than /app/ need to offer "Next in your stage" (idea 10): each stage's tools
     in order, each tool's name, and the storage key whose entry means she has saved it (the APP_TOOLS rows of app/index.html)."""
@@ -370,10 +391,12 @@ def with_assets(src, slug):
     src = src.replace('<link rel="manifest" href="/manifest.webmanifest">', f'<link rel="manifest" href="/manifests/{slug}.webmanifest">')
     src = re.sub(r'\s*<link rel="stylesheet" href="/assets/css/wg-program-home\.css[^"]*">', "", src)
     src = re.sub(r'\s*<script defer src="/assets/js/wg-program-home\.js[^"]*"></script>', "", src)
+    src = re.sub(r'\s*<script defer src="/assets/js/wg-order\.js[^"]*"></script>', "", src)
     src, n = re.subn(r'(<link rel="stylesheet" href="/assets/css/styles\.css[^"]*">)', lambda x: x.group(1) + "\n" + CSS_TAG, src, count=1)
     if not n:
         raise SystemExit("no styles.css link to hang the program home CSS on")
-    return src.replace("</body>", JS_TAG + "\n</body>", 1)
+    tags = JS_TAG + ("\n" + ORDER_TAG if slug in BACHS_HOMES else "")
+    return src.replace("</body>", tags + "\n</body>", 1)
 
 
 def expected(m, slug):
@@ -400,7 +423,7 @@ def main(argv):
     check = "--check" in argv
     m = load()
     bad = []
-    for path, old, new, err in ([expected(m, slug) for slug in m["homes"]] + [expected_app(m), expected_tools_json(m)]
+    for path, old, new, err in ([expected(m, slug) for slug in m["homes"]] + [expected_app(m), expected_tools_json(m), expected_homes_json(m)]
                                 + [expected_manifest(slug) for slug in m["homes"]]):
         if err:
             bad.append(err)

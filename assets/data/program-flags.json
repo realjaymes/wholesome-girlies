@@ -1,0 +1,121 @@
+{
+ "_about": "Written by scripts/build-program-homes.py from program-homes.json. Do not edit.",
+ "homes": {
+  "wife-material-blueprint": {
+   "name": "The Wife Material Blueprint",
+   "label": "Wife Material home",
+   "program": "wife-material-blueprint",
+   "flags": [
+    "wg_relationships_home"
+   ]
+  },
+  "wife-material-blueprint-diaspora": {
+   "name": "The Wife Material Blueprint",
+   "label": "Wife Material home",
+   "program": "wife-material-blueprint",
+   "flags": [
+    "wg_relationships_home"
+   ]
+  },
+  "trying-to-conceive-blueprint": {
+   "name": "The Trying-to-Conceive Blueprint",
+   "label": "Conception home",
+   "program": "trying-to-conceive-blueprint",
+   "flags": [
+    "wg_fertility_home"
+   ]
+  },
+  "trying-to-conceive-blueprint-diaspora": {
+   "name": "The Trying-to-Conceive Blueprint",
+   "label": "Conception home",
+   "program": "trying-to-conceive-blueprint",
+   "flags": [
+    "wg_fertility_home"
+   ]
+  },
+  "first-pregnancy-plan": {
+   "name": "The First Pregnancy Plan",
+   "label": "Pregnancy home",
+   "program": "first-pregnancy-plan",
+   "flags": [
+    "wg_pregnancy_home"
+   ]
+  },
+  "first-pregnancy-plan-diaspora": {
+   "name": "The First Pregnancy Plan",
+   "label": "Pregnancy home",
+   "program": "first-pregnancy-plan",
+   "flags": [
+    "wg_pregnancy_home"
+   ]
+  },
+  "postpartum-reset": {
+   "name": "The 6-Week Postpartum Reset",
+   "label": "Postpartum home",
+   "program": "postpartum-reset",
+   "flags": [
+    "wg_pp_home"
+   ]
+  },
+  "postpartum-reset-diaspora": {
+   "name": "The 6-Week Postpartum Reset",
+   "label": "Postpartum home",
+   "program": "postpartum-reset",
+   "flags": [
+    "wg_pp_home"
+   ]
+  },
+  "first-baby-playbook": {
+   "name": "The First Baby Playbook",
+   "label": "First Baby home",
+   "program": "first-baby-playbook",
+   "flags": [
+    "wg_parenting_home"
+   ]
+  },
+  "first-baby-playbook-diaspora": {
+   "name": "The First Baby Playbook",
+   "label": "First Baby home",
+   "program": "first-baby-playbook",
+   "flags": [
+    "wg_parenting_home"
+   ]
+  },
+  "complete-motherhood-journey": {
+   "name": "The Complete Motherhood Journey",
+   "label": "Motherhood Journey home",
+   "program": "complete-motherhood-journey",
+   "flags": [
+    "wg_fertility_home",
+    "wg_pregnancy_home",
+    "wg_pp_home",
+    "wg_parenting_home"
+   ]
+  },
+  "complete-motherhood-journey-diaspora": {
+   "name": "The Complete Motherhood Journey",
+   "label": "Motherhood Journey home",
+   "program": "complete-motherhood-journey",
+   "flags": [
+    "wg_fertility_home",
+    "wg_pregnancy_home",
+    "wg_pp_home",
+    "wg_parenting_home"
+   ]
+  }
+ },
+ "codes": {
+  "66cf6f829aef9bbb4cfb8c8f4c000379487a437473c65f1f815b588450ca5949": "wife-material-blueprint",
+  "36871cde78c943bd42f43928f6d355a53865df93025745f234f3b4ba2789ed69": "wife-material-blueprint-diaspora",
+  "912626bffbf5d7b2d7679a3920d8672ae6cc3ebaa059a31cdda1f58186becbdd": "trying-to-conceive-blueprint",
+  "0a6537f96a5e9638d64120243e04ee1a74bbbea5d9b7a0c07bdc3d0ddf408fab": "trying-to-conceive-blueprint-diaspora",
+  "4fc79b96df8fd7b09758fead2fce0f37941da87ee350d79657f50c20448e9f71": "first-pregnancy-plan",
+  "52da4da3e74cc3c0eeff067c6ad9f9175b13d06f0402fdd87bf167b197f2f2ce": "first-pregnancy-plan-diaspora",
+  "b8672f2abf756111b76871292be9765c38ea52872765f57050343c02caa657b6": "postpartum-reset",
+  "9713bb948433703e9860e75a19c2aeac3018089f1d18acc10ec94793a1b1bc31": "postpartum-reset-diaspora",
+  "89dcfe31f302e70bef00db3cdb78b3c7234f7f92eed70d85f0bc759a6578a087": "first-baby-playbook",
+  "7880c46ed8f967169c004c2f8436904428e699cd5ee324a0723dcc08c1850068": "first-baby-playbook-diaspora",
+  "0ca36f7dcceac7526f01e93c6504329b98174998ad5107a741bcce7661968c1e": "complete-motherhood-journey",
+  "cab21624ed782ee2f76e35dbc77da2a7977be067b897a3f3463476e1fd7c178d": "complete-motherhood-journey-diaspora"
+ }
+}

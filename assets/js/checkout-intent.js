@@ -102,8 +102,10 @@
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: event, item_id: product, currency: 'NGN' });
   }
+  // A test on localhost never writes a row to the Checkout Intents sheet or sends a Lead to the ad pixels.
+  var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   function logIntent(d) {
-    if (!INTENT_SHEET || INTENT_SHEET.indexOf('PASTE_') === 0) return; // not configured yet → skip logging, still redirect
+    if (LOCAL || !INTENT_SHEET || INTENT_SHEET.indexOf('PASTE_') === 0) return; // not configured yet → skip logging, still redirect
     try {
       fetch(INTENT_SHEET, {
         method: 'POST', mode: 'no-cors', keepalive: true, // 3 gotchas: no-cors + keepalive + text/plain
@@ -114,6 +116,107 @@
         })
       });
     } catch (e) {}
+  }
+
+  /* ── Bachs: programs that have moved off Selar ─────────────────────────────
+   * A program listed in ON_BACHS pays on Bachs in a window over this page (the overlay), so she
+   * never leaves Wholesome Girlies. The payment server (wg-pay) makes the order and the Bachs
+   * checkout, and the thank-you page waits for the server to confirm the payment before it shows
+   * her code: a message from the Bachs window never unlocks anything. If the Bachs script cannot
+   * load, she goes to the Bachs payment page in this tab instead. If the server cannot make a
+   * checkout, she goes to Selar as before, so no buyer is ever stuck.
+   * Until launch this runs only on localhost with ?pay=bachs (Selar to Bachs Migration Plan, phase 3). */
+  var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
+  var BACHS_JS = 'https://checkout.bachs.io/bachs.js';
+  var ON_BACHS = { firstbabyplaybook: 'first-baby-playbook' };
+  /* Buyers from Meta ads pay on Selar (decision 7 in the Selar to Bachs Migration Plan). Meta blocks every event
+   * from this site as a health site, so a Bachs sale here never reaches Meta, and Meta campaigns optimise on
+   * Selar's Purchase instead. A Meta ad click counts for 7 days (Meta's click window) and the newest ad click
+   * wins, so a later TikTok click sends her to Bachs. The click is read from the landing address (utm_source or
+   * the click ids), and from Meta's own _fbc cookie, which the pixel sets on the /go/ bridge page.
+   * wg_ad_click_v1 = {"s": "meta" | "tiktok", "t": ms}, on this phone only, never sent anywhere. */
+  var AD_KEY = 'wg_ad_click_v1', AD_DAYS = 7, META_SOURCES = /^(meta|facebook|fb|instagram|ig)$/i;
+  function adSourceNow() {
+    var now = Date.now(), rec = null, seen = '';
+    try { rec = JSON.parse(localStorage.getItem(AD_KEY) || 'null'); } catch (e) {}
+    [window.__idq || location.search, (function () { try { var r = new URL(document.referrer); return r.host === location.host ? r.search : ''; } catch (e) { return ''; } })()].some(function (q) {
+      var qp; try { qp = new URLSearchParams(q || ''); } catch (e) { return false; }
+      var src = qp.get('utm_source') || '';
+      if (META_SOURCES.test(src) || qp.get('fbclid')) seen = 'meta';
+      else if (/^tiktok$/i.test(src) || qp.get('ttclid')) seen = 'tiktok';
+      return !!seen;
+    });
+    if (seen) { rec = { s: seen, t: now }; try { localStorage.setItem(AD_KEY, JSON.stringify(rec)); } catch (e) {} }
+    var fbc = /^fb\.\d+\.(\d{13})\./.exec(cookie('_fbc'));
+    if (fbc && (!rec || Number(fbc[1]) > rec.t)) rec = { s: 'meta', t: Number(fbc[1]) };
+    return rec && now - rec.t < AD_DAYS * 864e5 ? rec.s : '';
+  }
+  var adSource = adSourceNow();
+  function bachsSlug(href) {
+    var m = href.match(/selar\.com\/([^/?#]+)/i), slug = m ? m[1].toLowerCase() : '';
+    if (!ON_BACHS[slug] || adSource === 'meta') return '';
+    var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    return local && /[?&]pay=bachs\b/.test((window.__idq || '') + location.search) ? slug : '';
+  }
+  function cookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+  function utmObject() {
+    var out = {}; try { new URLSearchParams(utm).forEach(function (v, k) { out[k] = v; }); } catch (e) {}
+    return out;
+  }
+  var bachsLoading;
+  function loadBachs() {
+    if (window.Bachs && window.Bachs.Checkout) return Promise.resolve();
+    if (!bachsLoading) {
+      bachsLoading = new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = BACHS_JS; s.async = true;
+        s.onload = function () { window.Bachs && window.Bachs.Checkout ? resolve() : reject(); };
+        s.onerror = reject;
+        setTimeout(reject, 8000); // a slow network gets the payment page instead of a long wait
+        document.head.appendChild(s);
+      });
+      bachsLoading.catch(function () { bachsLoading = null; });
+    }
+    return bachsLoading;
+  }
+  function payOnBachs(slug, href, d) {
+    var u; try { u = new URL(href); } catch (e) { u = null; }
+    var qp; try { qp = new URLSearchParams((window.__idq || '') || location.search); } catch (e) { qp = null; }
+    var body = {
+      product: ON_BACHS[slug],
+      market: u && u.searchParams.get('currency') === 'USD' ? 'diaspora' : 'ng',
+      name: d.name, email: d.email, phone: d.phone ? '+' + d.phone : '',
+      coupon: (u && u.searchParams.get('coupon')) || '',
+      utm: utmObject(), fbp: cookie('_fbp'), fbc: cookie('_fbc'), ttclid: (qp && qp.get('ttclid')) || ''
+    };
+    setBusy(true);
+    fetch(PAY_API + '/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.checkout_url || !j.thank_you_url) throw j; return j; }); })
+      .then(function (j) {
+        return loadBachs().then(function () {
+          // A sandbox checkout lives on sandbox-checkout.bachs.io, so the overlay takes its origin from the link.
+          window.Bachs.Initialize({ baseUrl: new URL(j.checkout_url).origin, onEvent: function (ev) {
+            var t = ev && ev.type;
+            if (t === 'checkout.completed') location.href = j.thank_you_url; // the page waits for the server to confirm
+            if (t === 'checkout.error') openCheckout(j.checkout_url); // the overlay could not open, so use the Bachs page
+          } });
+          close();
+          window.Bachs.Checkout.open({ checkoutUrl: j.checkout_url });
+          setBusy(false);
+          // GTM sends this to TikTok as its checkout-started event. The order id lets the paid event match it later.
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'bachs_checkout_open', item_id: body.product, value: Number(j.amount), currency: j.currency, transaction_id: j.order_id });
+        }, function () { openCheckout(j.checkout_url); });
+      })
+      .catch(function () { setBusy(false); openCheckout(selarUrl(href, d.name, d.email, d.phone)); close(); });
+  }
+  function setBusy(on) {
+    var b = modal && modal.querySelector('.wgbm-go');
+    if (!b) return;
+    b.disabled = on; b.textContent = on ? 'Opening payment…' : 'Proceed to payment →';
   }
 
   /* ── modal (built once, in JS — no per-page HTML needed) ────────────────── */
@@ -178,6 +281,7 @@
       if (k.email) eEl.value = k.email;
       if (k.phone) pEl.value = k.phone.indexOf('234') === 0 ? '0' + k.phone.substring(3) : k.phone;
       document.getElementById('wgbmNotYou').style.display = k.src === 'saved' ? '' : 'none';
+      modal.querySelector('.wgbm-note').textContent = bachsSlug(pendingHref) ? 'Secure payment by card or bank transfer' : 'Secure payment via Selar · Paystack · Bank Transfer';
       var first = !nEl.value ? nEl : (!eEl.value ? eEl : null); // focus the first empty required field; a filled form keeps the keyboard closed
       if (first) setTimeout(function () { try { first.focus(); } catch (e) {} }, 60);
     } catch (e) {}
@@ -228,7 +332,7 @@
     // can't catch reliably. event_id/eventID lets a future server-side Lead dedupe against this
     // browser event; email/phone feed advanced matching. sendBeacon under the hood survives the
     // redirect. RULE: keep Lead in ONE layer only — do not also add a GTM Lead tag on generate_lead.
-    try {
+    if (!LOCAL) try {
       if (window.ttq) {
         ttq.identify({ email: email, phone_number: phone ? '+' + phone : undefined });
         ttq.track('SubmitForm', { content_id: pendingProduct, content_type: 'product', currency: 'NGN' }, { event_id: leadId });
@@ -239,6 +343,8 @@
     } catch (e) {}
     fireEvent(pendingProduct, 'begin_checkout');
     logIntent({ name: name, email: email, phone: phone, product: pendingProduct });
+    var slug = bachsSlug(pendingHref);
+    if (slug) { payOnBachs(slug, pendingHref, { name: name, email: email, phone: phone }); return; }
     openCheckout(selarUrl(pendingHref, name, email, phone));
     close();
   }
@@ -253,6 +359,8 @@
     if (k.email && k.src === 'url') { // details from their own recovery/WhatsApp link → skip the form, straight to Selar prefilled (same tab)
       fireEvent(product, 'begin_checkout');
       logIntent({ name: k.name, email: k.email, phone: k.phone, product: product });
+      // Bachs takes several seconds to open, so she sees her filled-in form with "Opening payment…" meanwhile.
+      if (bachsSlug(href)) { pendingHref = href; pendingProduct = product; open(k); payOnBachs(bachsSlug(href), href, k); return; }
       openCheckout(selarUrl(href, k.name, k.email, k.phone));
       return;
     }

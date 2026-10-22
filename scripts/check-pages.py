@@ -80,7 +80,7 @@ def kind(p):
         return "ABOUT"
     if p == "index.html":
         return "HOME"
-    if p in ("app/index.html", "offline.html"):
+    if p in ("app/index.html", "offline.html", "signin/index.html"):  # /signin is part of the app: noindex, no cards
         return "APP"
     return "HUB"
 
@@ -958,6 +958,31 @@ for p in PAGES:
         _opts = len(re.findall(r'type="radio"', _app)) + len(re.findall(r'<button[^>]*class="[^"]*\b(?:opt|choice)\b', _app))
         if _opts > 6 and not _stepped:
             fail(p, f"{_opts} option buttons or radios in one long list: show a few at a time (stepper, paging or one-by-one)")
+
+# Cloudflare Pages Functions (functions/): the gate on the paid program pages and /api/pass (CLAUDE.md section 4).
+# GitHub Pages ignores the folder and Cloudflare Pages runs it. The files must parse, _routes.json must send the
+# program pages and /api/ to them, and every program home must be a slug the gate can look up in program-flags.json.
+if os.path.isdir("functions"):
+    fns = sorted(glob.glob("functions/**/*.js", recursive=True))
+    for need in ("functions/programs/_middleware.js", "functions/api/pass.js", "functions/_lib/pass.js"):
+        if need not in fns:
+            fail(need, "missing: the gate on the paid program pages needs it")
+    if shutil.which("node"):
+        for f in fns:
+            r = subprocess.run(["node", "--check", f], capture_output=True, text=True)
+            if r.returncode:
+                fail(f, "does not parse: " + (r.stderr.strip().splitlines() or ["?"])[-1])
+    try:
+        routes = json.load(open("_routes.json"))
+        if "/programs/*/*" not in routes.get("include", []) or "/api/*" not in routes.get("include", []):
+            fail("_routes.json", 'include must list "/programs/*/*" and "/api/*", or the gate never runs')
+    except (OSError, ValueError):
+        fail("_routes.json", "missing or not valid JSON: Cloudflare Pages needs it to run the gate")
+    _flag_homes = json.load(open("assets/data/program-flags.json")).get("homes", {})
+    for p in PAGES:
+        m = re.match(r"programs/([^/]+)/(thank-you|read)\.html$", p)
+        if m and m.group(1) not in _flag_homes:
+            fail(p, f"{m.group(1)} is not in assets/data/program-flags.json: the gate cannot match a pass to it (run scripts/build-program-homes.py)")
 
 now = ratchet_counts()
 if "--update-baseline" in sys.argv:

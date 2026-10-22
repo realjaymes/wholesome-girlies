@@ -6,7 +6,12 @@
 // /assets/ files those pages load, so a tool she has never opened still works offline. Pages load from the
 // network first and fall back to the saved copy; versioned /assets/ files load from the cache first.
 // Bump VERSION when this file's logic changes; the old cache is deleted on activate.
-const VERSION = "wg-20261011a";
+// Paid program pages (phase 8): the site checks her sign-in before it serves them, and pages load from the network
+// first, so a phone with no pass is sent to /signin/ whenever it is online. The saved copy is used only when the
+// network fails, which is what keeps a program she already opened readable offline. A page that was redirected
+// (to /signin/) is never saved under the program's address. Bump VERSION again in the deploy that turns the gate on,
+// so pages saved before the gate are cleared.
+const VERSION = "wg-20261022a";
 const CORE = ["/app/", "/offline", "/tools/", "/manifest.webmanifest"];
 const SKIP = /^\/go\/|^\/lab\/|^\/programs\/[^/]+$|^\/assets\/video\//; // ad bridges, the private lab, sales pages and video clips always come from the network
 const LATER = /^\/assets\/img\/tool-shorts\//; // reel posters are cached when she scrolls to them, so installing costs less data
@@ -56,7 +61,7 @@ self.addEventListener("fetch", (event) => {
       const key = url.pathname; // pages are stored without their query string
       try {
         const res = await fetch(req);
-        if (res.ok && res.type === "basic") cache.put(key, res.clone());
+        if (res.ok && res.type === "basic" && !res.redirected) cache.put(key, res.clone());
         return res;
       } catch (e) {
         return (await cache.match(key)) || (await cache.match(key.replace(/\/$/, "") || "/")) || (await cache.match("/offline"));

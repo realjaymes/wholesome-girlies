@@ -1,3 +1,4 @@
 .DS_Store
 serve.py
 __pycache__/
+.wrangler/

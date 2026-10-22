@@ -605,9 +605,21 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('appCodeForm').addEventListener('submit', function(e){
     e.preventDefault();
     var box = document.getElementById('appCode');
+    var nomatch = 'That code did not match. Check it on your program home page or in your purchase email, and try again.';
+    // A shared program code (BABY-K7P3) is checked here. A personal code from a purchase email (FBP-XGM6-Y9YF)
+    // goes to the payment server through WGAccess (wg-access.js), which saves the program the same way.
     appCodeHash(box.value).then(function(hash){
       var slug = hash && APP_DATA.codes[hash];
-      if (!slug || !appAddHome(slug, true)) { appSay('That code did not match. Check it on your program home page and try again.'); return; }
+      if (slug && !(window.WGAccess && WGAccess.PHASE8)) return appAddHome(slug, true) ? slug : ''; // from phase 8 a shared code opens nothing
+      if (!window.WGAccess || box.value.replace(/[^A-Za-z0-9]/g, '').length !== 11) return '';
+      return WGAccess.addCode(box.value).then(function(j){
+        if (j.ok) return j.programs.length ? j.programs[0].slug : '';
+        if (j.reason === 'revoked') nomatch = 'This code is no longer active. Reply to your purchase email if you think this is a mistake.';
+        if (j.reason === 'device_limit') nomatch = 'This code is already open on ' + (j.device_limit || 3) + ' devices. Reply to your purchase email and we will help.';
+        return '';
+      }, function(){ nomatch = 'We could not check that code. Check your internet connection and try again.'; return ''; });
+    }).then(function(slug){
+      if (!slug || !APP_DATA.homes[slug]) { appSay(nomatch); return; }
       box.value = '';
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({event: 'app_program_added', app_program: APP_DATA.homes[slug].name});
@@ -679,5 +691,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
 <script defer src="/assets/js/wg-app.js?v=20261012g"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
+<script defer src="/assets/js/wg-access.js?v=20261022d"></script>
+<script defer src="/assets/js/wg-signin-entry.js?v=20261022b"></script>
 </body>
 </html>
