@@ -53,6 +53,41 @@
     if (p.indexOf('0') === 0) p = p.substring(1);
     return p ? '234' + p : '';
   }
+  /* Ad that brought her: the /go/ bridge page carries the UTMs and the program page does not, so read them from
+   * this page's own query or the bridge page's address in document.referrer (same site, so the query survives),
+   * and keep them for the tab's session. They ride on the logged Page URL, so every sheet row names its ad. */
+  var UTM_KEY = 'wg_utm', UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  function captureUtm() {
+    var found = '';
+    [window.__idq || location.search, (function () { try { var r = new URL(document.referrer); return r.host === location.host ? r.search : ''; } catch (e) { return ''; } })()].some(function (q) {
+      var qp; try { qp = new URLSearchParams(q || ''); } catch (e) { return false; }
+      var out = new URLSearchParams();
+      UTM_FIELDS.forEach(function (k) { if (qp.get(k)) out.set(k, qp.get(k)); });
+      found = out.toString(); return !!found;
+    });
+    try { if (found) sessionStorage.setItem(UTM_KEY, found); else found = sessionStorage.getItem(UTM_KEY) || ''; } catch (e) {}
+    return found;
+  }
+  var utm = captureUtm();
+  function loggedPageUrl() { return location.origin + location.pathname + (utm ? '?' + utm : ''); }
+
+  /* Validation. The form used to accept anything typed, and on 21 Oct half the checkouts carried no real email
+   * ("e.g.b", a bare username), which Selar cannot take payment against. */
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+  function emailError(v) {
+    if (!v) return 'Enter your email address.';
+    if (/^e\.g\b/i.test(v)) return 'Type your own email address, for example adaeze@gmail.com.';
+    if (!EMAIL_RE.test(v)) return 'Enter your full email address, for example adaeze@gmail.com.';
+    return '';
+  }
+  function phoneError(raw) { // optional; when given, a Nigerian number must have 10 digits after the 0 or 234
+    var p = (raw || '').replace(/\D/g, '');
+    if (!p) return '';
+    var ng = /^(\+?234|0)/.test((raw || '').trim()) ? p.replace(/^234/, '').replace(/^0/, '') : null;
+    if (ng !== null && ng.length !== 10) return 'Check your phone number. It should look like 08012345678.';
+    if (p.length < 7 || p.length > 15) return 'Check your phone number. It should look like 08012345678.';
+    return '';
+  }
   function selarUrl(base, name, email, phone) { // fill Selar prefill params, keep add_to_cart/coupon
     var url; try { url = new URL(base); } catch (e) { return base; }
     if (email) url.searchParams.set('email', email);
@@ -75,7 +110,7 @@
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({
           name: d.name || '', email: d.email || '', phone: d.phone || '',
-          product: d.product || '', pageUrl: location.href, source: SOURCE, event: 'clicked_buy'
+          product: d.product || '', pageUrl: loggedPageUrl(), source: SOURCE, event: 'clicked_buy'
         })
       });
     } catch (e) {}
@@ -101,6 +136,8 @@
       '#wgBuyModal .wgbm-note{margin:12px 0 0;font-size:.78rem;color:var(--plum-soft,#66645A);text-align:center;}',
       '#wgBuyModal .wgbm-notyou{margin:0 0 12px;font-size:.85rem;color:var(--plum-soft,#66645A);}',
       '#wgBuyModal .wgbm-notyou a{color:inherit;text-decoration:underline;}',
+      '#wgBuyModal .wgbm-err{display:block;margin-top:5px;font-weight:700;font-size:.8rem;color:#B3261E;}',
+      '#wgBuyModal input[aria-invalid="true"]{border-color:#B3261E;}',
       '#wgBuyModal .wgbm-close{position:absolute;top:8px;right:14px;background:none;border:0;font-size:1.6rem;line-height:1;color:var(--plum-soft,#66645A);cursor:pointer;}'
     ].join('');
     document.head.appendChild(s);
@@ -118,9 +155,9 @@
         '<p class="wgbm-sub">Enter your details and you\'ll be taken straight to checkout with everything prefilled.</p>' +
         '<form id="wgBuyForm" novalidate>' +
           '<p class="wgbm-notyou" id="wgbmNotYou" style="display:none">Not you? <a href="#">Use different details</a></p>' +
-          '<label>Full name <span class="wgbm-req">*</span><input type="text" id="wgbmName" autocomplete="name" placeholder="e.g. Adaeze Okonkwo" required></label>' +
-          '<label>Email address <span class="wgbm-req">*</span><input type="email" id="wgbmEmail" autocomplete="email" placeholder="e.g. adaeze@gmail.com" required></label>' +
-          '<label>Phone (WhatsApp) <span class="wgbm-opt">· optional</span><input type="tel" id="wgbmPhone" autocomplete="tel" placeholder="e.g. 08012345678"></label>' +
+          '<label>Full name <span class="wgbm-req">*</span><input type="text" id="wgbmName" autocomplete="name" placeholder="Your first and last name" required><span class="wgbm-err" id="wgbmNameErr" role="alert" hidden></span></label>' +
+          '<label>Email address <span class="wgbm-req">*</span><input type="email" id="wgbmEmail" autocomplete="email" placeholder="you@gmail.com" inputmode="email" autocapitalize="off" spellcheck="false" required><span class="wgbm-err" id="wgbmEmailErr" role="alert" hidden></span></label>' +
+          '<label>Phone (WhatsApp) <span class="wgbm-opt">· optional</span><input type="tel" id="wgbmPhone" autocomplete="tel" placeholder="08012345678"><span class="wgbm-err" id="wgbmPhoneErr" role="alert" hidden></span></label>' +
           '<button type="submit" class="wgbm-go">Proceed to payment →</button>' +
           '<p class="wgbm-note">Secure payment via Selar · Paystack · Bank Transfer</p>' +
         '</form>' +
@@ -135,7 +172,7 @@
     buildModal(); modal.classList.add('open'); document.body.style.overflow = 'hidden';
     k = k || {};
     try {
-      document.getElementById('wgBuyForm').reset();
+      document.getElementById('wgBuyForm').reset(); clearErrors();
       var nEl = document.getElementById('wgbmName'), eEl = document.getElementById('wgbmEmail'), pEl = document.getElementById('wgbmPhone');
       if (k.name)  nEl.value = k.name;   // details saved on this device (30-day expiry)
       if (k.email) eEl.value = k.email;
@@ -148,17 +185,33 @@
   function notYou(ev) { // shared device: clear the saved details and start fresh
     ev.preventDefault();
     try { localStorage.removeItem(LEAD_KEY); } catch (e) {}
-    document.getElementById('wgBuyForm').reset();
+    document.getElementById('wgBuyForm').reset(); clearErrors();
     document.getElementById('wgbmNotYou').style.display = 'none';
     try { document.getElementById('wgbmName').focus(); } catch (e) {}
   }
+  function showError(id, msg) {
+    var el = document.getElementById(id), err = document.getElementById(id + 'Err');
+    if (!el || !err) return !!msg;
+    err.textContent = msg; err.hidden = !msg;
+    if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+    return !!msg;
+  }
+  function clearErrors() { ['wgbmName', 'wgbmEmail', 'wgbmPhone'].forEach(function (id) { showError(id, ''); }); }
   function close() { if (modal) { modal.classList.remove('open'); document.body.style.overflow = ''; } pendingHref = ''; }
   function submit(ev) {
     ev.preventDefault();
     var name = document.getElementById('wgbmName').value.trim();
     var email = document.getElementById('wgbmEmail').value.trim();
-    var phone = normPhone(document.getElementById('wgbmPhone').value);
-    if (!name || !email) { return; }
+    var rawPhone = document.getElementById('wgbmPhone').value;
+    clearErrors();
+    var bad = [
+      ['wgbmName', name.length < 2 ? 'Enter your name.' : ''],
+      ['wgbmEmail', emailError(email)],
+      ['wgbmPhone', phoneError(rawPhone)]
+    ].filter(function (f) { return showError(f[0], f[1]); });
+    if (bad.length) { try { document.getElementById(bad[0][0]).focus(); } catch (e) {} return; }
+    email = email.toLowerCase();
+    var phone = normPhone(rawPhone);
     try { localStorage.setItem(LEAD_KEY, JSON.stringify({ name: name, email: email, phone: phone, product: pendingProduct, ts: Date.now() })); } catch (e) {}
     // Lead — the owned conversion, fired on form submit BEFORE the Selar redirect (mirrors MIA).
     // event_id dedupes the browser Pixel Lead against the sGTM server CAPI Lead; lead_email/name/phone
