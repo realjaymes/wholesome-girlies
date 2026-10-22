@@ -128,7 +128,15 @@
    * Until launch this runs only on localhost with ?pay=bachs (Selar to Bachs Migration Plan, phase 3). */
   var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
   var BACHS_JS = 'https://checkout.bachs.io/bachs.js';
-  var ON_BACHS = { firstbabyplaybook: 'first-baby-playbook' };
+  /* All six programs pay on Bachs, in both markets (James, 22 October 2026). Selar slug -> server catalog key. */
+  var ON_BACHS = {
+    tryingtoconceiveblueprint: 'trying-to-conceive-blueprint',
+    firstpregnancyplan:        'first-pregnancy-plan',
+    postpartumreset:           'postpartum-reset',
+    firstbabyplaybook:         'first-baby-playbook',
+    wifematerialblueprint:     'wife-material-blueprint',
+    completemotherhoodjourney: 'complete-motherhood-journey'
+  };
   /* Buyers from Meta ads pay on Selar (decision 7 in the Selar to Bachs Migration Plan). Meta blocks every event
    * from this site as a health site, so a Bachs sale here never reaches Meta, and Meta campaigns optimise on
    * Selar's Purchase instead. A Meta ad click counts for 7 days (Meta's click window) and the newest ad click

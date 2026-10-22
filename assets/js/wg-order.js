@@ -95,10 +95,12 @@
   }
 
   var tries = 0;
+  // Each program's personal code starts with its own three letters (wg-pay src/catalog.ts), which the lab shows.
+  var DEMO_PREFIX = { 'trying-to-conceive-blueprint': 'TTC', 'first-pregnancy-plan': 'FPP', 'postpartum-reset': 'PPR', 'first-baby-playbook': 'FBP', 'wife-material-blueprint': 'WMB', 'complete-motherhood-journey': 'CMJ' };
   function demoOrder() { // the server's answer for each lab state; paid arrives on the third check, as a real payment does
-    var paid = tries >= 3;
-    if (demo === 'paid') return paid ? { status: 'paid', access: { code: 'FBP-7K2M-Q9XP' } } : { status: 'pending' };
-    if (demo === 'refunded') return { status: 'paid', access: { code: 'FBP-7K2M-Q9XP', revoked: true } };
+    var paid = tries >= 3, code = (DEMO_PREFIX[slug.replace(/-diaspora$/, '')] || 'FBP') + '-7K2M-Q9XP';
+    if (demo === 'paid') return paid ? { status: 'paid', access: { code: code } } : { status: 'pending' };
+    if (demo === 'refunded') return { status: 'paid', access: { code: code, revoked: true } };
     return { status: demo };
   }
   function check() {

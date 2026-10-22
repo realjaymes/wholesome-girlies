@@ -107,7 +107,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 // Mark this device as a member of this stage's home, so the tools swap their
 // "buy the program" CTA for a "back to your home" CTA (see /assets/js/member-cta.js).
 // The Complete Motherhood Journey covers this stage too, so once she owns it this page leaves the stage to the bundle home.
-try { var c = JSON.parse(localStorage.getItem('wg_pp_home') || 'null'); if (!(c && /^\/programs\/complete-motherhood-journey/.test(c.u))) localStorage.setItem('wg_pp_home', JSON.stringify({u: location.pathname, l: 'Postpartum home'})); } catch(e){}
+// Arriving from Bachs (?order=), wg-order.js saves the program only after the payment server confirms the payment.
+if (!/[?&]order=/.test(location.search)) try { var c = JSON.parse(localStorage.getItem('wg_pp_home') || 'null'); if (!(c && /^\/programs\/complete-motherhood-journey/.test(c.u))) localStorage.setItem('wg_pp_home', JSON.stringify({u: location.pathname, l: 'Postpartum home'})); } catch(e){}
 </script>
 <script src="/assets/petals.js"></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
@@ -117,5 +118,6 @@ try { var c = JSON.parse(localStorage.getItem('wg_pp_home') || 'null'); if (!(c 
 <script defer src="/assets/js/wg-app.js?v=20261012g"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
 <script defer src="/assets/js/wg-program-home.js?v=20261012a"></script>
+<script defer src="/assets/js/wg-order.js?v=20261022g"></script>
 </body>
 </html>
