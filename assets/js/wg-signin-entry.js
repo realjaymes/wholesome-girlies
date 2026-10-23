@@ -1,12 +1,6 @@
 /* "Add a program you bought" on the app home opens the sign-in screen, where she can use her email or a
-   program code. Until phase 8 this is a preview on localhost (?signin=b). With PHASE8 on (wg-access.js) it is
-   the real row for everyone. */
+   program code. It is the real row for everyone from the Bachs launch. */
 (function () {
-  var phase8 = !!(window.WGAccess && WGAccess.PHASE8);
-  if (!phase8) {
-    if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
-    if (new URLSearchParams(location.search).get("signin") !== "b") return;
-  }
   var add = document.getElementById("appAdd");
   if (!add) return;
   var row = document.createElement("a");

@@ -125,7 +125,7 @@
    * her code: a message from the Bachs window never unlocks anything. If the Bachs script cannot
    * load, she goes to the Bachs payment page in this tab instead. If the server cannot make a
    * checkout, she goes to Selar as before, so no buyer is ever stuck.
-   * Until launch this runs only on localhost with ?pay=bachs (Selar to Bachs Migration Plan, phase 3). */
+   * This is the live route for every buyer except a Meta ad click (Selar to Bachs Migration Plan, phase 6). */
   var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
   var BACHS_JS = 'https://checkout.bachs.io/bachs.js';
   /* All six programs pay on Bachs, in both markets (James, 22 October 2026). Selar slug -> server catalog key. */
@@ -163,9 +163,7 @@
   function bachsSlug(href) {
     var m = href.match(/selar\.com\/([^/?#]+)/i), slug = m ? m[1].toLowerCase() : '';
     if (!ON_BACHS[slug] || adSource === 'meta') return '';
-    // localhost and the Cloudflare Pages previews (*.wholesome-girlies.pages.dev) can test Bachs with ?pay=bachs before the switch.
-    var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /\.wholesome-girlies\.pages\.dev$/.test(location.hostname);
-    return local && /[?&]pay=bachs\b/.test((window.__idq || '') + location.search) ? slug : '';
+    return slug;
   }
   function cookie(name) {
     var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));

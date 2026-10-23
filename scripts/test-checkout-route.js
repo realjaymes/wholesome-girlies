@@ -1,5 +1,5 @@
 // Run with the site on :8001: NODE_PATH=/tmp/wgog/node_modules node scripts/test-checkout-route.js
-// Which checkout does a buy button pick? Each case opens a sales page with ?pay=bachs, buys, and reports whether the page
+// Which checkout does a buy button pick? Each case opens a sales page (the ?pay=bachs parameter is now optional), buys, and reports whether the page
 // went to Selar (blocked here, never loaded) or asked wg-pay for a Bachs checkout (also blocked, so no order is made),
 // along with what it asked for. Analytics and pixels are blocked, the sheet call is stubbed.
 //   Part 1: the Playbook under every ad history (Meta clicks stay on Selar for 7 days).

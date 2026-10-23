@@ -10,8 +10,9 @@
   var params = new URLSearchParams(location.search);
   // Phase 8 (the program pages are closed): one screen, Option B, no preview bar. The switch is PHASE8 in wg-access.js.
   var PHASE8 = !!(window.WGAccess && WGAccess.PHASE8);
-  var option = PHASE8 ? "b" : /^[abc]$/.test(params.get("option") || "") ? params.get("option") : "a";
   var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  // Everywhere but localhost the screen is Option B. Options A and C stay viewable on localhost with ?option=a or ?option=c.
+  var option = PHASE8 || !local ? "b" : /^[abc]$/.test(params.get("option") || "") ? params.get("option") : "b";
   var live = (!local || params.get("live") === "1") && !!window.WGAccess;
   main.setAttribute("data-option", option);
 
