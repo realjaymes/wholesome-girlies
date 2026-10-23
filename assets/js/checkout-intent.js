@@ -173,7 +173,7 @@
     var out = {}; try { new URLSearchParams(utm).forEach(function (v, k) { out[k] = v; }); } catch (e) {}
     return out;
   }
-  var bachsLoading;
+  var bachsLoading, bachsFrameListener, bachsPoll;
   function loadBachs() {
     if (window.Bachs && window.Bachs.Checkout) return Promise.resolve();
     if (!bachsLoading) {
@@ -210,6 +210,25 @@
             if (t === 'checkout.completed') location.href = j.thank_you_url; // the page waits for the server to confirm
             if (t === 'checkout.error') openCheckout(j.checkout_url); // the overlay could not open, so use the Bachs page
           } });
+          // Bachs sends its window on to the thank-you address after a payment, and that page then loads inside the window.
+          // It tells this page (wg-frame-guard.js), and this page leaves for the thank-you address with her private token.
+          // The message only moves the page: the thank-you page still waits for the server to confirm the payment.
+          if (bachsFrameListener) window.removeEventListener('message', bachsFrameListener);
+          bachsFrameListener = function (e) {
+            var m = e.data;
+            if (e.origin === location.origin && m && m.wg === 'order-in-frame' && (!m.order || m.order === j.order_id)) location.href = j.thank_you_url;
+          };
+          window.addEventListener('message', bachsFrameListener);
+          // Bachs does not always send "completed" to this page before it redirects its own window, so this page also asks
+          // the payment server about the order while the window is open, and leaves once the server says it is paid.
+          clearInterval(bachsPoll);
+          var polls = 0, tq = (/[?&]t=([^&]+)/.exec(j.thank_you_url) || [])[1] || '';
+          bachsPoll = setInterval(function () {
+            if (++polls > 400 || !(window.Bachs.Checkout.isOpen && window.Bachs.Checkout.isOpen())) { clearInterval(bachsPoll); return; }
+            fetch(PAY_API + '/order/' + j.order_id + '?t=' + tq).then(function (r) { return r.ok ? r.json() : null; }).then(function (o) {
+              if (o && o.status === 'paid') { clearInterval(bachsPoll); location.href = j.thank_you_url; }
+            }).catch(function () {});
+          }, 3000);
           close();
           window.Bachs.Checkout.open({ checkoutUrl: j.checkout_url });
           setBusy(false);

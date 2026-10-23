@@ -15,6 +15,8 @@
 (function () {
   'use strict';
   var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
+  // Inside a frame (the Bachs window) this page shows nothing and asks for nothing: wg-frame-guard.js moves the top page here.
+  try { if (window.top !== window.self) return; } catch (e) { return; }
   var qp = new URLSearchParams(location.search);
   var order = qp.get('order') || '', t = qp.get('t') || '';
   var demo = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && order === 'demo' ? (qp.get('state') || 'paid') : '';

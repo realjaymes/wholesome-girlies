@@ -41,7 +41,7 @@ JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"><
 # Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows her
 # personal access code once the payment server confirms the payment (Selar to Bachs Migration Plan).
 # It does nothing without ?order=.
-ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261022g"></script>'
+ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261024a"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
