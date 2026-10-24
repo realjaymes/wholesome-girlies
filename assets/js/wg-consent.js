@@ -78,7 +78,7 @@
             acceptAllBtn: 'Accept',
             acceptNecessaryBtn: 'Reject',
             showPreferencesBtn: 'Choose what runs',
-            footer: 'You can change your choice anytime under Privacy choices. <a href="' + PRIVACY + '">Privacy policy</a>'
+            footer: 'Wholesome Girlies Media Limited. You can change your choice anytime under Privacy choices. <a href="' + PRIVACY + '">Privacy policy</a>'
           },
           preferencesModal: {
             title: 'Choose what runs',
