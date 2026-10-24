@@ -23,8 +23,8 @@
   var PRIVACY = '/legal/privacy';
 
   var description = region === 'us'
-    ? 'We use <b>Google Analytics</b> and <b>Microsoft Clarity</b> to see how Wholesome Girlies is used, and this device to remember your tool entries. <b>Meta</b> and <b>TikTok</b>, which measure our ads, only run if you accept.'
-    : 'We use <b>Google Analytics</b> and <b>Microsoft Clarity</b> to see how Wholesome Girlies is used, <b>Meta</b> and <b>TikTok</b> to measure our ads, and this device to remember your tool entries. None of it runs until you choose.';
+    ? 'We use cookies to see how the site is used, measure our ads and remember your tool entries on this device. The ad cookies only run if you accept.'
+    : 'We use cookies to see how the site is used, measure our ads and remember your tool entries on this device. None of these run until you choose.';
 
   var advertisingDescription = 'Meta and TikTok measure whether our ads led you here.' +
     (WG.gpc ? ' <b>Global Privacy Control is on, so advertising stays off.</b>' : '');
@@ -78,7 +78,7 @@
             acceptAllBtn: 'Accept',
             acceptNecessaryBtn: 'Reject',
             showPreferencesBtn: 'Choose what runs',
-            footer: 'Change your mind anytime in Privacy choices at the bottom of every page. Wholesome Girlies Media Limited. <a href="' + PRIVACY + '">Privacy policy</a>'
+            footer: 'You can change your choice anytime under Privacy choices. <a href="' + PRIVACY + '">Privacy policy</a>'
           },
           preferencesModal: {
             title: 'Choose what runs',
