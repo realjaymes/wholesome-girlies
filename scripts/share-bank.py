@@ -74,6 +74,9 @@ D = [
 ("TTC checklist", "tool", "/fertility/tools/ttc-checklist",
  ("Planning a baby starts a few months before you start trying.", "If you're thinking about trying for a baby, this checklist covers the practical steps that prepare your body and your life, and saves your progress as you tick.", "gentle cost of inaction", ""),
  ("Thinking about a baby next year? The best time to prepare is now.", "For women planning a pregnancy, this checklist lists the simple steps, from folic acid to a check-up, to tick off at your own pace.", "genuine question", "")),
+("Folic acid benefits", "guide", "/fertility/guides/folic-acid-benefits",
+ ("Folic acid works before the pregnancy test, not after.", "If you're thinking about a baby, this guide covers what folic acid protects against, when to start, who needs the higher dose, and the cautions.", "curiosity gap", ""),
+ ("Three months before you try is the advice for folic acid. Most of us hear about it at the first antenatal visit.", "For anyone planning a pregnancy, this guide covers what folic acid does, what it does not do, and what to ask a doctor first.", "Nigerian texture", "")),
 ]),
 ("Pregnancy", [
 ("Chemical miscarriage", "guide", "/pregnancy/guides/chemical-miscarriage",
@@ -106,6 +109,9 @@ D = [
 ("Week by week tracker", "tool", "/pregnancy/tools/week-by-week-tracker",
  ("Pregnancy is counted in weeks, and nobody explains the counting.", "If you're pregnant, this tracker shows how many weeks along you are, your trimester, and what is often happening around now, from one date.", "curiosity gap", ""),
  ("What is often happening with the baby this week?", "For pregnant women, this week-by-week tracker gives your weeks, trimester and a short note on what's often happening now. Your scan gives the most accurate dates.", "genuine question", "")),
+("Pregnancy test at home", "guide", "/pregnancy/guides/pregnancy-test-at-home",
+ ("A faint line on a pregnancy test still counts.", "If you're waiting on a missed period, this guide covers when to test, how to read the strip, and what to do after a negative or a positive result.", "myth-busting", ""),
+ ("A negative test taken too early can be wrong.", "For anyone about to test, this guide covers first morning urine, faint lines, false results and when to see a doctor.", "genuine question", "")),
 ]),
 ("Postpartum", [
 ("Omugwo", "guide", "/postpartum/guides/omugwo",
