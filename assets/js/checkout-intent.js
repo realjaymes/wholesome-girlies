@@ -140,23 +140,23 @@
   /* Buyers from Meta ads pay on Selar (decision 7 in the Selar to Bachs Migration Plan). Meta blocks every event
    * from this site as a health site, so a Bachs sale here never reaches Meta, and Meta campaigns optimise on
    * Selar's Purchase instead. A Meta ad click counts for 7 days (Meta's click window) and the newest ad click
-   * wins, so a later TikTok click sends her to Bachs. The click is read from the landing address (utm_source or
-   * the click ids), and from Meta's own _fbc cookie, which the pixel sets on the /go/ bridge page.
-   * wg_ad_click_v1 = {"s": "meta" | "tiktok", "t": ms}, on this phone only, never sent anywhere. */
-  var AD_KEY = 'wg_ad_click_v1', AD_DAYS = 7, META_SOURCES = /^(meta|facebook|fb|instagram|ig)$/i;
+   * wins, so a later TikTok click sends her to Bachs. The click is read from the landing address, or from the
+   * /go/ bridge she came through: a Meta source with a paid medium (every Meta ad link carries
+   * utm_source=meta&utm_medium=paid_social). fbclid and Meta's _fbc cookie never count on their own, because
+   * Instagram and Facebook add fbclid to every link they open, organic bio and post links included.
+   * wg_ad_click_v2 = {"s": "meta" | "tiktok", "t": ms}, on this phone only, never sent anywhere. */
+  var AD_KEY = 'wg_ad_click_v2', AD_DAYS = 7, META_SOURCES = /^(meta|facebook|fb|instagram|ig)$/i, PAID = /^(paid|paid_social|paidsocial|cpc|ppc)$/i;
   function adSourceNow() {
     var now = Date.now(), rec = null, seen = '';
     try { rec = JSON.parse(localStorage.getItem(AD_KEY) || 'null'); } catch (e) {}
     [window.__idq || location.search, (function () { try { var r = new URL(document.referrer); return r.host === location.host ? r.search : ''; } catch (e) { return ''; } })()].some(function (q) {
       var qp; try { qp = new URLSearchParams(q || ''); } catch (e) { return false; }
-      var src = qp.get('utm_source') || '';
-      if (META_SOURCES.test(src) || qp.get('fbclid')) seen = 'meta';
-      else if (/^tiktok$/i.test(src) || qp.get('ttclid')) seen = 'tiktok';
+      var src = qp.get('utm_source') || '', paid = PAID.test(qp.get('utm_medium') || '');
+      if (META_SOURCES.test(src) && paid) seen = 'meta';
+      else if ((/^tiktok$/i.test(src) && paid) || qp.get('ttclid')) seen = 'tiktok';
       return !!seen;
     });
     if (seen) { rec = { s: seen, t: now }; try { localStorage.setItem(AD_KEY, JSON.stringify(rec)); } catch (e) {} }
-    var fbc = /^fb\.\d+\.(\d{13})\./.exec(cookie('_fbc'));
-    if (fbc && (!rec || Number(fbc[1]) > rec.t)) rec = { s: 'meta', t: Number(fbc[1]) };
     return rec && now - rec.t < AD_DAYS * 864e5 ? rec.s : '';
   }
   var adSource = adSourceNow();

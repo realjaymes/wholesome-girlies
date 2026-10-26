@@ -19,11 +19,12 @@ const PROGRAMS = [
 // [label, landing visits, expected route]
 const adCases = [
   ['no ad', [''], 'Bachs'],
-  ['Meta ad', ['utm_source=meta&utm_medium=paid'], 'Selar'],
-  ['TikTok ad', ['utm_source=tiktok'], 'Bachs'],
-  ['Meta click id only', ['fbclid=abc123'], 'Selar'],
-  ['Meta, then TikTok later', ['utm_source=meta', 'utm_source=tiktok'], 'Bachs'],
-  ['TikTok, then Meta later', ['utm_source=tiktok', 'utm_source=meta'], 'Selar'],
+  ['Meta ad', ['utm_source=meta&utm_medium=paid_social'], 'Selar'],
+  ['TikTok ad', ['utm_source=tiktok&utm_medium=paid_social'], 'Bachs'],
+  ['Instagram or Facebook link, fbclid only', ['fbclid=abc123'], 'Bachs'],
+  ['Instagram bio link, organic tags', ['utm_source=instagram&utm_medium=social&fbclid=abc123'], 'Bachs'],
+  ['Meta, then TikTok later', ['utm_source=meta&utm_medium=paid_social', 'utm_source=tiktok&utm_medium=paid_social'], 'Bachs'],
+  ['TikTok, then Meta later', ['utm_source=tiktok&utm_medium=paid_social', 'utm_source=meta&utm_medium=paid_social'], 'Selar'],
   ['Meta 8 days ago', ['old-meta'], 'Bachs'],
 ];
 let failed = 0;
@@ -56,7 +57,7 @@ const check = (label, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PAS
     for (const v of visits) {
       if (v === 'old-meta') {
         await page.goto('http://localhost:8001/', { waitUntil: 'domcontentloaded' });
-        await page.evaluate(() => localStorage.setItem('wg_ad_click_v1', JSON.stringify({ s: 'meta', t: Date.now() - 8 * 864e5 })));
+        await page.evaluate(() => localStorage.setItem('wg_ad_click_v2', JSON.stringify({ s: 'meta', t: Date.now() - 8 * 864e5 })));
         continue;
       }
       await page.goto(BASE + slug + '?pay=bachs' + (v ? '&' + v : ''), { waitUntil: 'domcontentloaded' });
@@ -89,7 +90,7 @@ const check = (label, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PAS
       const r = await buy(page, selar, ['']);
       const ok = r.went === 'Bachs' && r.sent && r.sent.product === slug && r.sent.market === (diaspora ? 'diaspora' : 'ng') && !r.sent.coupon;
       check(page, ok, '-> ' + r.went + (r.sent ? ' | product ' + r.sent.product + ', market ' + r.sent.market + ', coupon "' + r.sent.coupon + '"' : ''));
-      const m = await buy(page, selar, ['utm_source=meta']);
+      const m = await buy(page, selar, ['utm_source=meta&utm_medium=paid_social']);
       check(page + ' (Meta click)', m.went === 'Selar', '-> ' + m.went);
     }
   }
