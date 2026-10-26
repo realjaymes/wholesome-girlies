@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261012b">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261026a">
 <link rel="stylesheet" href="/assets/css/wg-arrows.css?v=20261010b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -75,6 +75,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="eyebrow">🌱 Fertility &amp; conception</p>
     <h1>Trying to conceive? Start with your cycle.</h1>
     <p class="lead muted" style="max-width:56ch;">Whether you started trying this month or have been trying for two years, these tools help you track your cycle, find your fertile window and plan what to ask at the clinic. Fertility takes two people, so there is a checklist for him too.</p>
+    <div class="hub-ctas">
+      <a href="/programs/trying-to-conceive-blueprint" class="btn btn-primary">See the Blueprint &rarr;</a>
+      <a href="#tools" class="btn btn-ghost">Try the tools &darr;</a>
+    </div>
+    <script>(function(){var v;try{v=JSON.parse(localStorage.getItem('wg_fertility_home')||'null');}catch(e){}if(!v||!v.u||!/^\/programs\/[a-z0-9-]+\/thank-you(\.html)?$/.test(v.u))return;document.documentElement.classList.add('wg-owns');var a=document.querySelector('.hub-ctas .btn-primary');if(a){a.href=v.u.replace(/\.html$/,'');a.innerHTML='Open my program &rarr;';}})();</script>
   </div>
   <img class="hero-guide" src="/assets/img/cast/guides/amaka.webp?v=20261009g" width="255" height="569" alt="Illustration of Amaka" decoding="async">
 </section>
@@ -86,7 +91,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<section>
+<section id="tools">
   <div class="wrap">
     <div class="section-head"><p class="eyebrow">Tools</p><h2>Fertility tools</h2></div>
     <div class="grid grid-3">
@@ -108,6 +113,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p>Tick the healthy steps to take before and while you try to conceive.</p>
         <span class="arrow">Open tool →</span>
       </a>
+      <div class="hub-program" data-hub-sell>
+        <div>
+          <p class="eyebrow">When you want the full plan</p>
+          <h3>The Trying-to-Conceive Blueprint</h3>
+          <p class="muted">A five-part plan that covers your cycle, preparing your body, bringing your partner in and what to ask your doctor, plus a private community of women who are trying too. You pay once.</p>
+        </div>
+        <a href="/programs/trying-to-conceive-blueprint" class="btn btn-primary">See the program</a>
+      </div>
       <a class="card" href="/fertility/tools/his-fertility-checklist">
         <span class="tag">Checklist</span>
         <h3>His Fertility Checklist</h3>
@@ -167,7 +180,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </section>
-<section>
+<section data-hub-sell>
   <div class="wrap narrow center">
     <p class="eyebrow">Go deeper</p>
     <h2>The Trying-to-Conceive Blueprint</h2>

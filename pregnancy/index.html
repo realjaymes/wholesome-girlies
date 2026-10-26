@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261012b">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261026a">
 <link rel="stylesheet" href="/assets/css/wg-arrows.css?v=20261010b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -75,6 +75,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="eyebrow">🤰🏾 Pregnancy</p>
     <h1>From your first test to your hospital bag</h1>
     <p class="lead muted" style="max-width:56ch;">Tools and guides for every trimester: what is happening this week, what to ask at your antenatal booking, what to pack, and when to call the hospital.</p>
+    <div class="hub-ctas">
+      <a href="/programs/first-pregnancy-plan" class="btn btn-primary">See the Plan &rarr;</a>
+      <a href="#tools" class="btn btn-ghost">Try the tools &darr;</a>
+    </div>
+    <script>(function(){var v;try{v=JSON.parse(localStorage.getItem('wg_pregnancy_home')||'null');}catch(e){}if(!v||!v.u||!/^\/programs\/[a-z0-9-]+\/thank-you(\.html)?$/.test(v.u))return;document.documentElement.classList.add('wg-owns');var a=document.querySelector('.hub-ctas .btn-primary');if(a){a.href=v.u.replace(/\.html$/,'');a.innerHTML='Open my program &rarr;';}})();</script>
   </div>
   <img class="hero-guide" src="/assets/img/cast/guides/zainab.webp?v=20261009g" width="289" height="563" alt="Illustration of Zainab" decoding="async">
 </section>
@@ -85,7 +90,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<section>
+<section id="tools">
   <div class="wrap">
     <div class="section-head"><p class="eyebrow">Tools</p><h2>Pregnancy tools</h2></div>
     <div class="grid grid-3">
@@ -107,6 +112,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p>Rank eighteen Nigerian cravings from S to Never, make a tier list picture on your phone and send it to the group chat.</p>
         <span class="arrow">Play →</span>
       </a>
+      <div class="hub-program" data-hub-sell>
+        <div>
+          <p class="eyebrow">When you want the full plan</p>
+          <h3>The First Pregnancy Plan</h3>
+          <p class="muted">A week-by-week plan from your positive test to delivery day, a community of women at your stage and a resource library you keep. You pay once.</p>
+        </div>
+        <a href="/programs/first-pregnancy-plan" class="btn btn-primary">See the program</a>
+      </div>
       <a class="card" href="/pregnancy/tools/what-kind-of-mum">
         <span class="tag">Quiz</span>
         <h3>What Kind of Mum Will You Be?</h3>
@@ -196,7 +209,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </section>
-<section>
+<section data-hub-sell>
   <div class="wrap narrow center">
     <p class="eyebrow">Go deeper</p>
     <h2>The First Pregnancy Plan</h2>

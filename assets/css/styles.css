@@ -412,3 +412,14 @@ html[data-stage="parenting"] { --s: var(--denim); --st: var(--denim-t); }
 .guide-lineup { display: flex; justify-content: center; align-items: flex-end; margin: 26px -10px -40px; height: 190px; overflow: hidden; }
 .guide-lineup img { height: 180px; width: auto; margin: 0 -14px; }
 .guide-lineup img:nth-child(2), .guide-lineup img:nth-child(3) { height: 170px; }
+
+/* Stage hub program buttons and card (hero buttons, then a full-width card after the first three tools).
+   A buyer who owns the stage's program (her wg_<stage>_home flag) gets "Open my program" and no sales card. */
+.hub-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 108px 4px 0; }
+.hub-ctas .btn { padding: 12px 22px; }
+.hub-program { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 18px; text-align: left; background: var(--white); border: 2px solid var(--ink); box-shadow: var(--sticker); border-radius: var(--radius); padding: 22px 24px; }
+.hub-program h3 { margin: 2px 0 6px; }
+.hub-program p { margin: 0; max-width: 52ch; }
+.hub-program .btn { flex: none; }
+@media (max-width: 720px) { .hub-program { flex-direction: column; align-items: flex-start; } }
+html.wg-owns [data-hub-sell] { display: none !important; }
