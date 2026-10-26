@@ -119,15 +119,15 @@
   }
 
   /* ── Bachs: programs that have moved off Selar ─────────────────────────────
-   * A program listed in ON_BACHS pays on Bachs in a window over this page (the overlay), so she
-   * never leaves Wholesome Girlies. The payment server (wg-pay) makes the order and the Bachs
-   * checkout, and the thank-you page waits for the server to confirm the payment before it shows
-   * her code: a message from the Bachs window never unlocks anything. If the Bachs script cannot
-   * load, she goes to the Bachs payment page in this tab instead. If the server cannot make a
-   * checkout, she goes to Selar as before, so no buyer is ever stuck.
+   * A program listed in ON_BACHS pays on the Bachs payment page, opened in this tab. The payment server
+   * (wg-pay) makes the order and the Bachs checkout, and Bachs sends her back to the thank-you page, which
+   * waits for the server to confirm the payment before it shows her code. Bachs's own window over this page
+   * (bachs.js, the overlay) is not used: card payments stall inside it, because the bank's verification page
+   * never opens after the card PIN, on iPhone and desktop alike, while the same card pays on the Bachs page
+   * (James, 26 October 2026). If the server cannot make a checkout, she goes to Selar as before, so no buyer
+   * is ever stuck.
    * This is the live route for every buyer except a Meta ad click (Selar to Bachs Migration Plan, phase 6). */
   var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
-  var BACHS_JS = 'https://checkout.bachs.io/bachs.js';
   /* All six programs pay on Bachs, in both markets (James, 22 October 2026). Selar slug -> server catalog key. */
   var ON_BACHS = {
     tryingtoconceiveblueprint: 'trying-to-conceive-blueprint',
@@ -173,22 +173,6 @@
     var out = {}; try { new URLSearchParams(utm).forEach(function (v, k) { out[k] = v; }); } catch (e) {}
     return out;
   }
-  var bachsLoading, bachsFrameListener, bachsPoll;
-  function loadBachs() {
-    if (window.Bachs && window.Bachs.Checkout) return Promise.resolve();
-    if (!bachsLoading) {
-      bachsLoading = new Promise(function (resolve, reject) {
-        var s = document.createElement('script');
-        s.src = BACHS_JS; s.async = true;
-        s.onload = function () { window.Bachs && window.Bachs.Checkout ? resolve() : reject(); };
-        s.onerror = reject;
-        setTimeout(reject, 8000); // a slow network gets the payment page instead of a long wait
-        document.head.appendChild(s);
-      });
-      bachsLoading.catch(function () { bachsLoading = null; });
-    }
-    return bachsLoading;
-  }
   function payOnBachs(slug, href, d) {
     var u; try { u = new URL(href); } catch (e) { u = null; }
     var qp; try { qp = new URLSearchParams((window.__idq || '') || location.search); } catch (e) { qp = null; }
@@ -203,39 +187,12 @@
     fetch(PAY_API + '/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.checkout_url || !j.thank_you_url) throw j; return j; }); })
       .then(function (j) {
-        return loadBachs().then(function () {
-          // A sandbox checkout lives on sandbox-checkout.bachs.io, so the overlay takes its origin from the link.
-          window.Bachs.Initialize({ baseUrl: new URL(j.checkout_url).origin, onEvent: function (ev) {
-            var t = ev && ev.type;
-            if (t === 'checkout.completed') location.href = j.thank_you_url; // the page waits for the server to confirm
-            if (t === 'checkout.error') openCheckout(j.checkout_url); // the overlay could not open, so use the Bachs page
-          } });
-          // Bachs sends its window on to the thank-you address after a payment, and that page then loads inside the window.
-          // It tells this page (wg-frame-guard.js), and this page leaves for the thank-you address with her private token.
-          // The message only moves the page: the thank-you page still waits for the server to confirm the payment.
-          if (bachsFrameListener) window.removeEventListener('message', bachsFrameListener);
-          bachsFrameListener = function (e) {
-            var m = e.data;
-            if (e.origin === location.origin && m && m.wg === 'order-in-frame' && (!m.order || m.order === j.order_id)) location.href = j.thank_you_url;
-          };
-          window.addEventListener('message', bachsFrameListener);
-          // Bachs does not always send "completed" to this page before it redirects its own window, so this page also asks
-          // the payment server about the order while the window is open, and leaves once the server says it is paid.
-          clearInterval(bachsPoll);
-          var polls = 0, tq = (/[?&]t=([^&]+)/.exec(j.thank_you_url) || [])[1] || '';
-          bachsPoll = setInterval(function () {
-            if (++polls > 400 || !(window.Bachs.Checkout.isOpen && window.Bachs.Checkout.isOpen())) { clearInterval(bachsPoll); return; }
-            fetch(PAY_API + '/order/' + j.order_id + '?t=' + tq).then(function (r) { return r.ok ? r.json() : null; }).then(function (o) {
-              if (o && o.status === 'paid') { clearInterval(bachsPoll); location.href = j.thank_you_url; }
-            }).catch(function () {});
-          }, 3000);
-          close();
-          window.Bachs.Checkout.open({ checkoutUrl: j.checkout_url });
-          setBusy(false);
-          // GTM sends this to TikTok as its checkout-started event. The order id lets the paid event match it later.
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: 'bachs_checkout_open', item_id: body.product, value: Number(j.amount), currency: j.currency, transaction_id: j.order_id });
-        }, function () { openCheckout(j.checkout_url); });
+        // GTM sends this to TikTok as its checkout-started event. The order id lets the paid event match it later.
+        // The page leaves once GTM has handled it, or after a second and a half if GTM is slow or blocked.
+        var left = false, go = function () { if (!left) { left = true; openCheckout(j.checkout_url); } };
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'bachs_checkout_open', item_id: body.product, value: Number(j.amount), currency: j.currency, transaction_id: j.order_id, eventCallback: go, eventTimeout: 1500 });
+        setTimeout(go, 1500);
       })
       .catch(function () { setBusy(false); openCheckout(selarUrl(href, d.name, d.email, d.phone)); close(); });
   }

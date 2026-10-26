@@ -5,6 +5,8 @@
 //   Part 1: the Playbook under every ad history (Meta clicks stay on Selar for 7 days).
 //   Part 2: all six programs in both markets reach Bachs with the right product and market, and a Meta click still goes to Selar.
 //   Part 3: the bundle sends the MOTHER coupon only to a member, and no single program ever sends it.
+//   Part 4: with a made-up checkout from wg-pay, the page sends the checkout-started event and then opens the Bachs
+//   payment page in the same tab (never Bachs's overlay window, where card payments stall at the bank's verification step).
 // Exits 1 when any case differs from what it expects.
 const puppeteer = require('puppeteer-core');
 const BASE = 'http://localhost:8001/programs/';
@@ -108,6 +110,51 @@ const check = (label, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PAS
   }
   const single = await buy('first-pregnancy-plan', 'firstpregnancyplan', [''], 'coupon=MOTHER');
   check('a single program never sends MOTHER', single.went === 'Bachs' && single.sent && !single.sent.coupon, '-> coupon "' + (single.sent && single.sent.coupon) + '"');
+
+  console.log('\nPart 4: the hand-off to the Bachs payment page');
+  {
+    const ctx = await browser.createBrowserContext();
+    const page = await ctx.newPage();
+    const FAKE = 'https://checkout.bachs.io/c/routeTestOnly';
+    let landed = '', overlayJs = false;
+    await page.setRequestInterception(true);
+    page.on('request', (r) => {
+      const u = r.url();
+      if (/bachs\.js/.test(u)) { overlayJs = true; return r.abort(); }
+      if (u.startsWith(FAKE)) { landed = u; return r.abort(); }
+      if (!/^http:\/\/localhost/.test(u) && /googletagmanager|google-analytics|analytics\.google|facebook|tiktok|clarity|selar\.com/.test(u)) return r.abort();
+      if (/wg-pay.*\/checkout/.test(u)) {
+        if (r.method() === 'OPTIONS') return r.respond({ status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': 'POST' } });
+        return r.respond({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({
+          order_id: 'ord_000000000000000000000000', checkout_url: FAKE, amount: '5700.00', currency: 'NGN',
+          thank_you_url: 'http://localhost:8001/programs/first-pregnancy-plan/thank-you?order=ord_000000000000000000000000&t=x' }) });
+      }
+      r.continue();
+    });
+    await page.evaluateOnNewDocument(() => {
+      const real = window.fetch;
+      window.fetch = (u, o) => (String(u).includes('script.google.com') ? Promise.resolve(new Response('ok')) : real(u, o));
+      window.__events = [];
+      Object.defineProperty(window, 'dataLayer', { configurable: true, get() { return this.__dl; }, set(v) {
+        if (!v.__wrapped) { const push = v.push.bind(v); v.push = (e) => { window.__events.push(e && e.event); return push(e); }; v.__wrapped = true; } this.__dl = v; } });
+    });
+    await page.goto(BASE + 'first-pregnancy-plan', { waitUntil: 'networkidle2' });
+    await page.click('a[href*="selar.com/firstpregnancyplan"]');
+    await page.waitForSelector('#wgBuyModal.open');
+    await page.evaluate(() => {
+      const set = (id, v) => { const el = document.getElementById(id); el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); };
+      set('wgbmName', 'Route Test'); set('wgbmEmail', 'route-test@example.com');
+    });
+    let events = [];
+    await page.click('.wgbm-go');
+    for (let i = 0; i < 40 && !landed; i++) {
+      try { events = await page.evaluate(() => window.__events.slice()); } catch (e) {}
+      await new Promise((r) => setTimeout(r, 100));
+    }
+    check('opens the Bachs payment page in the same tab', landed === FAKE && !overlayJs, '-> ' + (landed || 'nothing') + (overlayJs ? ' | loaded bachs.js' : ''));
+    check('sends bachs_checkout_open before leaving', events.includes('bachs_checkout_open'), '-> ' + events.filter(Boolean).join(', '));
+    await ctx.close();
+  }
 
   await browser.close();
   console.log(failed ? '\n' + failed + ' FAILED' : '\nAll route checks passed');
