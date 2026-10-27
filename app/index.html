@@ -602,7 +602,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   } catch (e) {}
   appRender();
-  document.getElementById('appCodeForm').addEventListener('submit', function(e){
+  // The sign-in panel (wg-signin-entry.js) can replace the code form, so attach only when it exists.
+  var appCodeFormEl = document.getElementById('appCodeForm');
+  if (appCodeFormEl) appCodeFormEl.addEventListener('submit', function(e){
     e.preventDefault();
     var box = document.getElementById('appCode');
     var nomatch = 'That code did not match. Check it on your program home page or in your purchase email, and try again.';
