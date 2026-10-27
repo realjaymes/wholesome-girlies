@@ -26,7 +26,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "scripts", "compare-data")
 SITE = "https://wholesomegirlies.xyz"
-CSS_VERSION = "20261027a"
+CSS_VERSION = "20261027b"
 OG_VERSION = "20261027a"
 # One published guide per stage supplies the page shell (fertility) and the stage's program card.
 SHELL = "fertility/guides/fertile-window-explained.html"
@@ -135,13 +135,11 @@ def table(cols, rows, kind):
            + "".join(f'<th scope="col" role="columnheader">{e(c)}</th>' for c in cols) + "</tr></thead><tbody>"]
     for r in rows:
         if kind == "h2h":
-            ahead = '<span class="cmp-ahead">%s ahead</span>' % e(cols[1]) if r["kind"] == "other" else ""
             win = r["kind"] == "win"
             cells = [(r["wg"], win), (r["other"], False)]
         else:
-            ahead = ""
             cells = [(t, i in r["win"]) for i, t in enumerate(r["cells"])]
-        out.append(f'<tr role="row"><th scope="row" role="rowheader">{e(r["label"])}{ahead}</th>')
+        out.append(f'<tr role="row"><th scope="row" role="rowheader">{e(r["label"])}</th>')
         for (t, w), c in zip(cells, cols):
             tick = '<span class="cmp-tick" role="img" aria-label="Ahead">✓</span>' if w else ""
             cls = ' class="win"' if w else ""
