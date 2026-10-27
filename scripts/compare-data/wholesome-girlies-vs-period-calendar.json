@@ -1,0 +1,81 @@
+{
+  "type": "head-to-head",
+  "stage": "fertility",
+  "slug": "wholesome-girlies-vs-period-calendar",
+  "updated": "October 2026",
+  "updated_iso": "2026-10-27",
+  "other": "Period Calendar",
+  "title": "Wholesome Girlies vs Period Calendar: Fertile Window Tools",
+  "description": "Wholesome Girlies and Period Calendar compared for finding your fertile window: account, ads, price in Nigeria, where your dates go, and where it is ahead.",
+  "share": "Using a period calendar app? This compares Wholesome Girlies and Period Calendar on ads, price in Nigeria, where your dates go and what each does best.",
+  "eyebrow": "Compare",
+  "h1": "Wholesome Girlies vs Period Calendar",
+  "crumb": "Wholesome Girlies vs Period Calendar",
+  "kicker": "Which tools help you find your fertile window?",
+  "answer": "Use Period Calendar if you want reminders, daily logs of symptoms and moods, and records of basal body temperature (BBT), cervical mucus and tests. Use Wholesome Girlies for period and ovulation tools that need no account, show no ads and keep your dates only on your phone, with a plan and clinic questions beside them. We do not claim our calculator predicts better. It adds your cycle length to your last period and counts back 14 days, and this page shows the sum.",
+  "image": {"src": "/assets/img/cast/fertility-amaka-calendar.jpg", "alt": "Illustration of Amaka looking at a calendar and her cycle app"},
+  "disclaimer": {"strong": "This page compares apps. It cannot tell you when you will conceive.", "rest": "A calendar predicts and does not detect. It is educational, not medical advice, and no clinician has reviewed it yet."},
+  "doctor": "See a doctor after twelve months of trying, or six months if you are over 35. See one sooner if your cycles are very irregular, shorter than 21 days or longer than 35, or have stopped. Take your last three or four period dates with you.",
+  "cols": ["Wholesome Girlies", "Period Calendar"],
+  "table_title": "The comparison",
+  "legend": "A tick marks something we can show in our own code or a cited source. Period Calendar facts come from its Nigerian store listings and its developer's own pages.",
+  "rows": [
+    {"label": "Account to use the tools", "wg": "None. The Period Tracker and Ovulation Calculator open on the date field.", "other": "None to log. Its App Store listing says you can use the app without an account. Backing up uses a Google account or an email, by its Google Play listing and privacy policy.", "kind": "even"},
+    {"label": "Card and price", "wg": "The tools need no card. The Trying-to-Conceive Blueprint is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).", "other": "In-app purchases on the Nigerian App Store run from ₦500 (about $0.40) for 7 days of Premium to ₦69,900 (about $52) for Pro: Period Calendar. Removing the ads alone is ₦4,900 (about $4). Premium adds cycle predictions for each month, fertility analysis of each day, all self-care content, Kegel exercises, unlimited themes and pets, and no ads.", "kind": "even"},
+    {"label": "Ads", "wg": "The Period Tracker and Ovulation Calculator show no ads.", "other": "Google Play marks it as containing ads, and its privacy policy names AdMob by Google. In our sample of 2,583 low-rated reviews, ads were the top complaint at 17%.", "kind": "win"},
+    {"label": "Where your dates go", "wg": "Only on your phone. The tools say: Saved only on this phone. Nothing is sent to us. A forget button clears them.", "other": "Its privacy policy says: \"We NEVER share the information You are tracking in Our app (eg. your health information) with any third party.\" Its Google Play data safety page says \"No data shared with third parties\" and lists the data collected as app interactions, installed apps (optional), device or other IDs, crash logs, diagnostics, health info (optional), name (optional) and email address (optional). Both are quoted as written, and we take no side.", "kind": "even"},
+    {"label": "Your own cycle average", "wg": "After three logged period starts, the tracker uses your own average from your last six gaps. It skips any gap under 18 days or over 60 days as a missed log.", "other": "Its listing says it helps you \"calculate your most fertile days and analyze your fertility window based on your unique cycle\". Fertility analysis of each day is listed under Premium.", "kind": "even"},
+    {"label": "Backup and restore", "wg": "Save a backup file in the Girlies app and restore it on a new phone.", "other": "Google Play says you can \"Backup and restore your period data to phone or email\".", "kind": "even"},
+    {"label": "How the fertile window is worked out", "wg": "The calculator adds your cycle length to your last period, then counts back 14 days to estimate ovulation. The window starts five days before and ends one day after.", "other": "Its listing says you can \"Track daily chance of getting pregnant with BBT, cervical mucus, ovulation & pregnancy test records\".", "kind": "other"},
+    {"label": "A plan and clinic questions", "wg": "The Trying-to-Conceive Blueprint has five parts. Fertility Appointment Questions are printable, His Fertility Checklist is for your partner, and a Conception community is open for life to buyers.", "other": "A health report with charts that you can export for yourself or your doctor.", "kind": "win"},
+    {"label": "Reminders and daily logging", "wg": "Not in our tools. They record period start dates only, and they send no reminders.", "other": "It sends period and fertility reminders and a pill reminder, and it logs 58 symptoms and 67 moods.", "kind": "other"},
+    {"label": "History and wide use", "wg": "Six fertility tools and the guides on Wholesome Girlies.", "other": "100M+ downloads on Google Play, a 4.8 rating from 11,439 ratings on the Nigerian App Store, and a PIN, Face ID or fingerprint lock. It says 300 million women use it, by its own count.", "kind": "other"}
+  ],
+  "wins_title": "Where Wholesome Girlies is ahead",
+  "wins": [
+    {"h": "No account and no card", "b": "Open the Ovulation Calculator, type the first day of your last period and pick your cycle length. Your fertile window shows on the same screen. There is no sign-in and no payment step."},
+    {"h": "No ads in the tools", "b": "The Period Tracker and Ovulation Calculator carry no ad network. The Blueprint is the only paid item, and it is never pushed at you as a pop-up."},
+    {"h": "Your dates stay on your phone", "b": "Logged period dates sit in storage on your phone. The page says: Saved only on this phone. Nothing is sent to us. A forget button clears them."},
+    {"h": "Your own average, after three periods", "b": "Log the first day of each period. After three, the tracker replaces the cycle length you typed with your own average, using up to your last six gaps and skipping any gap under 18 days or over 60 days as a missed log."},
+    {"h": "The method is on the page", "b": "The calculator adds your cycle length to your last period, then counts back 14 days to estimate ovulation. That is the whole sum, and it is shown below."},
+    {"h": "A plan and clinic questions", "b": "The Trying-to-Conceive Blueprint walks you through your cycle, preparing, your partner, your tests and the wait. Fertility Appointment Questions lets you tick, add and print, and His Fertility Checklist is for your partner to tick himself."}
+  ],
+  "other_ahead_title": "Where Period Calendar is ahead",
+  "other_ahead": [
+    {"h": "Reminders and daily logging", "b": "Period Calendar sends period, fertility and pill reminders and logs 58 symptoms and 67 moods. Our tools record period start dates and nothing else."},
+    {"h": "A deeper fertility method", "b": "It lets you record basal body temperature, cervical mucus, ovulation tests and pregnancy tests. Our calculator uses only your last period and cycle length."},
+    {"h": "Years of history and wide use", "b": "It has 100M+ downloads on Google Play, a 4.8 rating from 11,439 ratings on the Nigerian App Store, a health report you can export and a PIN, Face ID or fingerprint lock."}
+  ],
+  "reviews": ["pc"],
+  "reviews_title": "What women say about Period Calendar",
+  "picks_title": "Which should you use?",
+  "picks": [
+    {"h": "Pick Period Calendar", "b": "if you want reminders, daily symptom and mood logs, BBT and test records, or your history already sits there."},
+    {"h": "Pick the Wholesome Girlies tools", "b": "if you want a calendar with no account, no ads and dates only on your phone."},
+    {"h": "Pick the Blueprint", "b": "if you want a plan, questions for the clinic, a checklist for your partner and a community."},
+    {"h": "Use both", "b": "if you log in Period Calendar and follow the Blueprint."}
+  ],
+  "how": {
+    "title": "How the Wholesome Girlies calculator works",
+    "paras": [
+      "The <a href=\"/fertility/tools/ovulation-calculator\">Ovulation and Fertile Window Calculator</a> uses two numbers: the first day of your last period and your usual cycle length. It adds the cycle length to that date to find your next period, then counts back 14 days to estimate the day you ovulate. The fertile window it shows starts five days before that day and ends one day after it.",
+      "On a 28-day cycle, day 1 is the first day of your period. Your next period is due on day 29, ovulation is estimated on day 15, and the window runs from day 10 to day 16. The <a href=\"/fertility/tools/period-tracker\">Period Tracker</a> then replaces the cycle length you typed with your own average once you have logged three period starts.",
+      "A calendar estimates and does not detect. A <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC5725625/\" rel=\"noopener\" target=\"_blank\">Journal of Medical Internet Research analysis of 7,043 tracked cycles</a> found that ovulation does not sit reliably at the midpoint of a cycle, and the <a href=\"https://www.nhs.uk/conditions/periods/fertility-in-the-menstrual-cycle/\" rel=\"noopener\" target=\"_blank\">National Health Service</a> says it usually happens 10 to 16 days before your next period. Period Calendar's temperature, mucus and test records add signals ours does not use, so we do not claim ours predicts better."
+    ]
+  },
+  "faq": [
+    {"q": "What does Period Calendar cost in Nigeria?", "a": "On the Nigerian App Store, in-app purchases run from ₦500 (about $0.40) for 7 days of Premium to ₦69,900 (about $52) for Pro: Period Calendar. Removing the ads alone is ₦4,900 (about $4). Google Play marks the app as containing ads and in-app purchases."},
+    {"q": "Does Period Calendar need an account?", "a": "Not to log. Its App Store listing says you can use the app without creating an account. Backing up and restoring on a new phone uses a Google account or an email."},
+    {"q": "Does the Wholesome Girlies calculator predict better than Period Calendar?", "a": "We do not claim that. It sets ovulation 14 days before your next period and the window from five days before to one day after. Period Calendar describes a method that also uses temperature, mucus and test records. A calendar predicts. It does not detect. Take your last three or four period dates to a clinician."},
+    {"q": "Where do my dates go?", "a": "In the Wholesome Girlies tools they stay on your phone, and a forget button clears them. Period Calendar's privacy policy and its Google Play data safety page each describe what it collects, and we quote both on this page."},
+    {"q": "Can I use both?", "a": "Yes. Log in Period Calendar if you like its reminders and daily logs, and use the Wholesome Girlies tools and the Blueprint for the plan, the clinic questions and the checklist for your partner."},
+    {"q": "Is this medical advice?", "a": "No. It is educational, not medical advice. See a doctor if you have been trying for a year, or six months if you are over 35."}
+  ],
+  "sources": ["jmir", "nhs", "pc_apple", "pc_play", "pc_datasafety", "pc_privacy", "fx"],
+  "related": [
+    {"tag": "Tool", "h": "Ovulation Calculator", "p": "Estimate your window from your dates.", "href": "/fertility/tools/ovulation-calculator", "cta": "Open"},
+    {"tag": "Tool", "h": "Period Tracker", "p": "Find your own average cycle length.", "href": "/fertility/tools/period-tracker", "cta": "Open"},
+    {"tag": "Compare", "h": "Wholesome Girlies vs Flo", "p": "Head to head, with the rows where Flo is ahead.", "href": "/fertility/compare/wholesome-girlies-vs-flo", "cta": "Read"},
+    {"tag": "Compare", "h": "Best period and ovulation tracker apps in Nigeria", "p": "Four apps side by side in one table.", "href": "/fertility/compare/best-period-tracker-apps-nigeria", "cta": "Read"}
+  ]
+}

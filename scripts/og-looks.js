@@ -252,6 +252,11 @@ const PAGE_CARDS = [
   { name: "postpartum-reset", look: "c", stage: "postpartum", chip: "Postpartum", title: "The 6-Week Postpartum Reset", bubble: "See what is inside.", guides: ["funmi"] },
   { name: "first-baby-playbook", look: "a", stage: "parenting", chip: "Parenting", title: "The First Baby Playbook", pill: "See the program", guides: ["funmi"] },
   { name: "complete-motherhood-journey", look: "c", stage: "parenting", chip: "All four stages", title: "The Complete Motherhood Journey", bubble: "Four programs in one.", guides: FOUR },
+  { name: "wholesome-girlies-vs-flo", look: "c", stage: "fertility", chip: "Compare", title: "Wholesome Girlies vs Flo", bubble: "Which do you need to conceive?", guides: ["amaka"], scene: "fertility-amaka-calendar.jpg" },
+  { name: "flo-alternatives-nigeria", look: "a", stage: "fertility", chip: "Compare", title: "Flo alternatives in Nigeria", pill: "Four trackers compared", guides: ["amaka"], scene: "fertility-amaka-planner.jpg" },
+  { name: "best-period-tracker-apps-nigeria", look: "c", stage: "fertility", chip: "Compare", title: "Best period and ovulation tracker apps in Nigeria", bubble: "Four apps, one table.", guides: ["amaka"], scene: "fertility-amaka-window.jpg" },
+  { name: "wholesome-girlies-vs-period-calendar", look: "a", stage: "fertility", chip: "Compare", title: "Wholesome Girlies vs Period Calendar", pill: "Find your fertile window", guides: ["amaka"], scene: "fertility-amaka-calendar.jpg" },
+  { name: "wholesome-girlies-vs-babymigo", look: "c", stage: "pregnancy", chip: "Compare", title: "Wholesome Girlies vs Babymigo", bubble: "For a first pregnancy in Nigeria.", guides: ["zainab"], scene: "pregnancy-zainab-chart.jpg" },
 ];
 
 function guideRow(names, gh, right, overlap = 46) {

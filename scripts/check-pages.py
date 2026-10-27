@@ -567,6 +567,20 @@ for p in PAGES:
     if 'class="hero-guide"' in SRC[p] and look.QUIET.search(p):
         fail(p, "no cast on loss pages, the mental-health check-ins or the warning signs guide")
 
+# Comparison pages are written by scripts/build-compare-pages.py from scripts/compare-data/*.json. Edit the data, never the HTML.
+_spec = importlib.util.spec_from_file_location("build_compare_pages", os.path.join(ROOT, "scripts/build-compare-pages.py"))
+cmp_pages = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(cmp_pages)
+_cmp_common, _cmp_list = cmp_pages.load()
+for _issue in cmp_pages.lint(_cmp_common, _cmp_list):
+    fail("scripts/compare-data", "compare copy: " + _issue)
+for _cp in _cmp_list:
+    _path = cmp_pages.out_path(_cp)
+    if _path not in SRC:
+        fail(_path, "comparison page missing: run python3 scripts/build-compare-pages.py")
+    elif SRC[_path] != cmp_pages.render(_cmp_common, _cp):
+        fail(_path, "comparison page is stale against scripts/compare-data: run python3 scripts/build-compare-pages.py")
+
 # The program homes are written by scripts/build-program-homes.py from assets/data/program-homes.json.
 _spec = importlib.util.spec_from_file_location("build_program_homes", os.path.join(ROOT, "scripts/build-program-homes.py"))
 homes = importlib.util.module_from_spec(_spec)

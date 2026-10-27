@@ -1,0 +1,316 @@
+{
+  "author": {
+    "name": "Cynthia Obinatu",
+    "role": "community and editorial lead",
+    "url": "/about/cynthia-obinatu"
+  },
+  "fx": {
+    "naira_per_dollar": 1333,
+    "line": "Dollar amounts use the official rate of about ₦1,333 to the dollar."
+  },
+  "disclosure": "We make Wholesome Girlies. Every claim about it comes from our own tools and prices, and every claim about another app comes from that app's own pages and its Nigerian store listing.",
+  "review_footer": "Quotes are exact, apart from collapsed spaces. Reviews show what women said. They do not show whether it is true, and none of them is medical advice. We pulled them from the public App Store and Google Play listings.",
+  "listings": {
+    "flo": "https://apps.apple.com/ng/app/flo-period-cycle-health/id1038369065",
+    "clue": "https://apps.apple.com/app/id657189652",
+    "pc": "https://apps.apple.com/app/id896501514"
+  },
+  "sources": {
+    "jmir": {
+      "title": "Relationship between the menstrual cycle and timing of ovulation revealed by new protocols: analysis of 7,043 women's tracked cycles",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5725625/",
+      "publisher": "Journal of Medical Internet Research, via PubMed Central"
+    },
+    "nhs": {
+      "title": "Periods and fertility in the menstrual cycle",
+      "url": "https://www.nhs.uk/conditions/periods/fertility-in-the-menstrual-cycle/",
+      "publisher": "National Health Service"
+    },
+    "flo_pass": {
+      "title": "Pass It On Project",
+      "url": "https://flo.health/pass-it-on-project",
+      "publisher": "Flo Health"
+    },
+    "flo_pass_press": {
+      "title": "Press release on Flo Premium and the Pass It On Project",
+      "url": "https://flo.health/newsroom/pass-it-on-project",
+      "publisher": "Flo Health"
+    },
+    "flo_anon": {
+      "title": "Anonymous Mode",
+      "url": "https://flo.health/product-tour/anonymous-mode",
+      "publisher": "Flo Health"
+    },
+    "flo_privacy": {
+      "title": "Privacy FAQs",
+      "url": "https://flo.health/flo-privacy-faqs",
+      "publisher": "Flo Health"
+    },
+    "flo_partners": {
+      "title": "Flo for Partners",
+      "url": "https://flo.health/product-tour/flo-for-partners",
+      "publisher": "Flo Health"
+    },
+    "flo_chats": {
+      "title": "Secret Chats",
+      "url": "https://flo.health/product-tour/secret-chats",
+      "publisher": "Flo Health"
+    },
+    "flo_apple": {
+      "title": "Flo on the Nigerian App Store (prices in naira)",
+      "url": "https://apps.apple.com/ng/app/flo-period-cycle-health/id1038369065",
+      "publisher": "Apple App Store"
+    },
+    "flo_play": {
+      "title": "Flo on Google Play in Nigeria",
+      "url": "https://play.google.com/store/apps/details?id=org.iggymedia.periodtracker&hl=en&gl=NG",
+      "publisher": "Google Play"
+    },
+    "clue_apple": {
+      "title": "Clue on the Nigerian App Store (prices in naira)",
+      "url": "https://apps.apple.com/ng/app/clue-period-cycle-tracker/id657189652",
+      "publisher": "Apple App Store"
+    },
+    "clue_privacy": {
+      "title": "Clue privacy policy",
+      "url": "https://helloclue.com/privacy",
+      "publisher": "Clue"
+    },
+    "pc_apple": {
+      "title": "Period Calendar on the Nigerian App Store (prices in naira)",
+      "url": "https://apps.apple.com/ng/app/period-cycle-tracker/id896501514",
+      "publisher": "Apple App Store"
+    },
+    "pc_play": {
+      "title": "Period Calendar on Google Play in Nigeria",
+      "url": "https://play.google.com/store/apps/details?id=com.popularapp.periodcalendar&hl=en&gl=NG",
+      "publisher": "Google Play"
+    },
+    "ovia_apple": {
+      "title": "Ovia on the Nigerian App Store",
+      "url": "https://apps.apple.com/ng/app/ovia-cycle-pregnancy-tracker/id570244389",
+      "publisher": "Apple App Store"
+    },
+    "ovia_play": {
+      "title": "Ovia on Google Play in Nigeria",
+      "url": "https://play.google.com/store/apps/details?id=com.ovuline.fertility&hl=en&gl=NG",
+      "publisher": "Google Play"
+    },
+    "fx": {
+      "title": "Official naira rate, about ₦1,333 to the dollar",
+      "url": "https://techeconomy.ng/dollar-to-naira-exchange-rate-today-october-21-2026",
+      "publisher": "Techeconomy"
+    },
+    "bm_home": {
+      "title": "Babymigo home page",
+      "url": "https://babymigo.com",
+      "publisher": "Babymigo"
+    },
+    "bm_preggclass": {
+      "title": "PreggClass: online antenatal classes",
+      "url": "https://babymigo.com/preggclass",
+      "publisher": "Babymigo"
+    },
+    "bm_lactation": {
+      "title": "Lactation consultants directory",
+      "url": "https://babymigo.com/lactation-consultants",
+      "publisher": "Babymigo"
+    },
+    "bm_hospitals": {
+      "title": "Maternity hospitals directory",
+      "url": "https://babymigo.com/maternity-hospitals",
+      "publisher": "Babymigo"
+    },
+    "bm_daycare": {
+      "title": "Day care and creche directory",
+      "url": "https://babymigo.com/daycare-creche",
+      "publisher": "Babymigo"
+    },
+    "bm_rules": {
+      "title": "Help Center regulations",
+      "url": "https://babymigo.com/help/regulations",
+      "publisher": "Babymigo"
+    },
+    "bm_privacy": {
+      "title": "Privacy policy",
+      "url": "https://babymigo.com/privacy",
+      "publisher": "Babymigo"
+    },
+    "pc_privacy": {
+      "title": "Period Calendar privacy policy",
+      "url": "https://pc.abishkking.com/privacypolicy.html",
+      "publisher": "ABISHKKING LIMITED"
+    },
+    "pc_datasafety": {
+      "title": "Period Calendar data safety page on Google Play",
+      "url": "https://play.google.com/store/apps/datasafety?id=com.popularapp.periodcalendar&hl=en&gl=NG",
+      "publisher": "Google Play"
+    }
+  },
+  "faq": {
+    "flo_price": {
+      "q": "What does Flo cost in Nigeria?",
+      "a": "On Android in Nigeria, Flo's Pass It On Project gives Premium at no charge for one year from the upgrade date, and Google Play's Nigerian listing says Premium costs nothing in your country. On iPhone, the Nigerian App Store sells Premium purchases from ₦3,900 (about $3) to ₦29,900 (about $22)."
+    }
+  },
+  "reviews": {
+    "flo": {
+      "name": "Flo",
+      "listing": "https://apps.apple.com/ng/app/flo-period-cycle-health/id1038369065",
+      "listing_label": "Flo on the Nigerian App Store",
+      "share": "Of 3,521 one to three star Flo reviews we sampled, about half (51%) mention paying and 18% say features moved behind premium. In the Nigerian App Store sample, 7 of 22 mention paying. The samples are small and counted by keyword.",
+      "complaints": [
+        {
+          "t": "Too many subscriptions just want a tracking app for dates and symptoms without an extra charge",
+          "store": "App Store",
+          "country": "United States",
+          "stars": 1,
+          "month": "October",
+          "year": 2026
+        },
+        {
+          "t": "this would be a really good app except that every time you click on it there are a million pop ups trying to get you to subscribe to the paid version",
+          "store": "App Store",
+          "country": "United Kingdom",
+          "stars": 2,
+          "month": "October",
+          "year": 2026
+        },
+        {
+          "t": "Why do we have to pay it’s an app for our cycle for girls ladies or women",
+          "store": "App Store",
+          "country": "Nigeria",
+          "stars": 2,
+          "month": "October",
+          "year": 2026
+        }
+      ],
+      "praise": [
+        {
+          "t": "gives pretty accurate predictions and lots of helpful information",
+          "store": "App Store",
+          "country": "Australia",
+          "stars": 5,
+          "month": "October",
+          "year": 2026
+        },
+        {
+          "t": "Flo helps me stay organised with my cycles; it’s awesome and super educational:) very reliable",
+          "store": "App Store",
+          "country": "Australia",
+          "stars": 5,
+          "month": "July",
+          "year": 2026
+        }
+      ],
+      "note": "The Nigerian review is one woman's words. Flo's Pass It On Project gives Premium at no charge on Android in Nigeria for one year, and the Nigerian App Store sells Premium purchases from ₦3,900 (about $3) to ₦29,900 (about $22)."
+    },
+    "clue": {
+      "name": "Clue",
+      "listing": "https://apps.apple.com/app/id657189652",
+      "listing_label": "Clue on the App Store",
+      "share": "Of 3,500 one to three star Clue reviews we sampled, about half (49%) mention paying and 28% mention ads, mostly upgrade pop-ups.",
+      "complaints": [
+        {
+          "t": "It constantly (multiple times per session) pops up trying to get you to buy the subscription.",
+          "cut": true,
+          "store": "App Store",
+          "country": "United States",
+          "stars": 1,
+          "month": "October",
+          "year": 2026
+        },
+        {
+          "t": "Can’t use the app without ads for subscription upgrade",
+          "store": "App Store",
+          "country": "United Kingdom",
+          "stars": 2,
+          "month": "October",
+          "year": 2026
+        }
+      ],
+      "praise": [
+        {
+          "t": "I’ve been using this app for years now and having my periods recorded in one clear place to refer back to really makes a difference.",
+          "cut": true,
+          "store": "App Store",
+          "country": "United Kingdom",
+          "stars": 5,
+          "month": "October",
+          "year": 2026
+        }
+      ],
+      "note": ""
+    },
+    "pc": {
+      "name": "Period Calendar",
+      "listing": "https://apps.apple.com/app/id896501514",
+      "listing_label": "Period Calendar on the App Store",
+      "share": "In the 2,583 one to three star Period Calendar reviews we sampled, ads were the top theme at 17%. App bugs came next at 11%, then paying at 6%, and 56% matched none of our themes.",
+      "complaints": [
+        {
+          "t": "Good app, but confusing features and ads. Why are there ads in a period app?",
+          "store": "App Store",
+          "country": "Canada",
+          "stars": 3,
+          "month": "March",
+          "year": 2026
+        },
+        {
+          "t": "The banner ads at the bottom are fine but having a full-screen ad every time I open the app is incredibly annoying :/",
+          "cut": true,
+          "store": "Google Play",
+          "country": null,
+          "stars": 2,
+          "month": "February",
+          "year": 2026,
+          "url": "https://play.google.com/store/apps/details?id=com.popularapp.periodcalendar&hl=en&gl=NG",
+          "listing_label": "Period Calendar on Google Play"
+        },
+        {
+          "t": "This is a great app for beginners and I enjoyed the info you can place in the app , wish there was no ads though",
+          "store": "App Store",
+          "country": "United States",
+          "stars": 3,
+          "month": "October",
+          "year": 2026
+        },
+        {
+          "t": "I can’t seem to log back in with my email for syncing it’s frustrating pls fix it, I honestly don’t like this!😒",
+          "store": "App Store",
+          "country": "Nigeria",
+          "stars": 2,
+          "month": "August",
+          "year": 2025
+        }
+      ],
+      "praise": [
+        {
+          "t": "I love that this app reminds me of my upcoming period and helps me keep track of my cycle.  Although some features are to be unlocked by paying but the much I can access is quite useful and the app is amazing.",
+          "store": "App Store",
+          "country": "Nigeria",
+          "stars": 5,
+          "month": "October",
+          "year": 2025
+        },
+        {
+          "t": "I’ve been using this app since 2020, and the experience only gets better",
+          "store": "App Store",
+          "country": "Nigeria",
+          "stars": 5,
+          "month": "July",
+          "year": 2026
+        },
+        {
+          "t": "Excellent tracking app, great tips, useful notifications. I completely love love this app",
+          "store": "App Store",
+          "country": "Nigeria",
+          "stars": 5,
+          "month": "March",
+          "year": 2026
+        }
+      ],
+      "note": ""
+    }
+  }
+}

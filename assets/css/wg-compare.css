@@ -1,0 +1,69 @@
+/* Comparison pages (head-to-head, alternatives, best-of), written by scripts/build-compare-pages.py.
+   Sticker look, same tokens as styles.css. The page's stage colour comes from html[data-stage]. */
+
+.cmp-lead { font-weight: 800; color: var(--terracotta-dark); margin: 0 0 12px; }
+.cmp-answer { font-size: 1.05rem; line-height: 1.6; }
+.cmp-note { font-size: .86rem; color: var(--plum-soft); margin: 10px 0 0; }
+.cmp h2 { margin-top: 0; }
+.cmp section { padding: 34px 0; }
+.cmp section.stage-band h2:first-child { margin-top: 0; }
+
+.cmp-ahead { display: inline-block; background: var(--mustard); color: var(--ink); font-weight: 800; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 999px; padding: 2px 9px; margin-left: 6px; vertical-align: middle; }
+.cmp-tick { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--olive); color: #fff; font-weight: 800; font-size: .8rem; border: 2px solid var(--ink); margin-right: 6px; flex: none; vertical-align: middle; }
+.cmp-pill { display: inline-block; background: var(--mustard-t); border: 2px solid var(--ink); border-radius: 999px; padding: 3px 11px; font-weight: 800; font-size: .82rem; }
+
+/* comparison table: real table markup (with ARIA roles, because the rows are laid out as grids). Each row is a
+   label bar over the cells, side by side. On phones the column header hides and each cell names its column. */
+.cmp-table-wrap { border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--sticker-sm); background: #fff; overflow: hidden; }
+.cmp-table, .cmp-table thead, .cmp-table tbody { display: block; width: 100%; }
+.cmp-table tr { display: grid; grid-template-columns: repeat(var(--n, 2), 1fr); }
+.cmp-table thead th { background: var(--ink); color: #fff; font-weight: 800; font-size: .85rem; text-align: left; padding: 10px 12px; }
+.cmp-table tbody th[scope="row"] { grid-column: 1 / -1; background: var(--st); font-weight: 800; font-size: .86rem; text-align: left; padding: 8px 12px; border-top: 2px solid var(--ink); }
+.cmp-table td { padding: 10px 12px; font-size: .9rem; line-height: 1.4; border-top: 1px dashed var(--line); vertical-align: top; }
+.cmp-table td + td { border-left: 1px dashed var(--line); }
+.cmp-table td.win { background: var(--olive-t); }
+.cmp-table td::before { content: attr(data-label); display: none; font-weight: 800; font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--plum-soft); margin-bottom: 3px; }
+@media (max-width: 759px) {
+  .cmp-table thead { display: none; }
+  .cmp-table.n4 tr { grid-template-columns: 1fr 1fr; }
+  .cmp-table td::before { display: block; }
+  .cmp-table.n4 td:nth-child(4) { border-left: 0; }
+}
+
+.cmp-legend { font-size: .82rem; color: var(--plum-soft); margin: 10px 2px 0; }
+
+/* cards */
+.cmp-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .cmp-grid { grid-template-columns: 1fr 1fr; } }
+.cmp-card { background: #fff; border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--sticker-sm); padding: 16px 18px; }
+.cmp-card h3 { margin: 0 0 6px; font-size: 1.1rem; line-height: 1.25; }
+.cmp-card p { margin: 0; }
+.cmp-card.ahead { background: var(--mustard-t); }
+
+/* ranked pick cards */
+.cmp-rank { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--mustard); border: 2px solid var(--ink); font-family: var(--serif); font-size: 1.1rem; margin-right: 10px; flex: none; }
+.cmp-pick { border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--sticker-sm); background: #fff; padding: 16px 16px 12px; margin: 0 0 14px; }
+.cmp-pick.first { background: var(--olive-t); box-shadow: var(--sticker); }
+.cmp-pick .top { display: flex; align-items: center; margin-bottom: 8px; }
+.cmp-pick .top h3 { margin: 0 0 4px; font-size: 1.15rem; }
+.cmp-pick dl { margin: 0; font-size: .92rem; line-height: 1.42; }
+.cmp-pick dt { font-weight: 800; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--plum-soft); margin-top: 8px; }
+.cmp-pick dd { margin: 0; }
+.cmp-pick p { margin: 0 0 8px; }
+.cmp-pick .meta { font-size: .92rem; }
+
+/* reviews: a quote is a figure.voice, so the guide pages' quote style carries over */
+.cmp-rv .share { font-size: .92rem; margin: 0 0 12px; }
+.cmp-rv h3 { margin: 22px 0 6px; }
+.cmp-rv h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; margin: 16px 0 4px; }
+.cmp-rv .voice { margin: 10px 0; }
+.cmp-rv .voice.good { background: var(--olive-t); border-left-color: var(--olive); }
+.cmp-rv .voice figcaption a { text-decoration: underline; }
+.cmp-rv .rvnote { font-size: .84rem; color: var(--plum-soft); margin: 10px 0 0; }
+
+.cmp ul.plain { margin: 0 0 10px; padding-left: 20px; }
+.cmp ul.plain li { margin: 0 0 6px; }
+.cmp .sources { font-size: .9rem; }
+.cmp .foot { font-size: .84rem; color: var(--plum-soft); }
+.cmp img.cmp-img { width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow); display: block; margin: 22px auto 0; }
+@media print { .cmp details > :not(summary) { display: block; } }

@@ -1,0 +1,246 @@
+{
+  "type": "head-to-head",
+  "stage": "fertility",
+  "slug": "wholesome-girlies-vs-flo",
+  "updated": "October 2026",
+  "updated_iso": "2026-10-27",
+  "other": "Flo",
+  "title": "Wholesome Girlies vs Flo: Which Do You Need to Conceive?",
+  "description": "Wholesome Girlies and Flo compared for trying to conceive: price in Nigeria, where your dates are kept, what each does best and where Flo is ahead.",
+  "share": "Choosing a period tracker? This compares Wholesome Girlies and Flo on price in Nigeria, where your dates are kept and what each one does best.",
+  "eyebrow": "Compare",
+  "h1": "Wholesome Girlies vs Flo",
+  "crumb": "Wholesome Girlies vs Flo",
+  "kicker": "A comparison for a woman trying to conceive",
+  "answer": "Use Flo for daily logging with symptoms, reminders and sync across your devices. Use Wholesome Girlies for a period and ovulation calendar that opens with no account and no card, keeps your dates only on your phone, and sits beside a paid plan for the wait, questions for the clinic and a checklist for your partner. We do not claim our calculator predicts better than Flo. It is plain arithmetic, and the page shows the sum.",
+  "image": {
+    "src": "/assets/img/cast/fertility-amaka-calendar.jpg",
+    "alt": "Illustration of Amaka looking at a calendar and her cycle app"
+  },
+  "cols": [
+    "Wholesome Girlies",
+    "Flo"
+  ],
+  "table_title": "The comparison",
+  "legend": "A tick marks something we can show in our own code or a cited source. Flo facts come from Flo's own pages and its Nigerian store listings.",
+  "rows": [
+    {
+      "label": "Account to use the tools",
+      "wg": "None. The Period Tracker and Ovulation Calculator open on the date field.",
+      "other": "Optional. Flo's Anonymous Mode opens the app without a name or email. A Flo account syncs across your devices.",
+      "kind": "win"
+    },
+    {
+      "label": "Card and price",
+      "wg": "The tools need no card. The Trying-to-Conceive Blueprint is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
+      "other": "On Android in Nigeria, Premium has no charge for one year from the upgrade date under Flo's Pass It On Project, and Nigeria is on its list. On the Nigerian App Store, Premium purchases are between ₦3,900 (about $3) and ₦29,900 (about $22).",
+      "kind": "even"
+    },
+    {
+      "label": "Where your dates are kept",
+      "wg": "Only on your phone. The page says: Saved only on this phone. Nothing is sent to us. A forget button clears them.",
+      "other": "On Flo's servers, encrypted. Flo says it has never sold user data and earns money from subscriptions only.",
+      "kind": "win"
+    },
+    {
+      "label": "Your own cycle average",
+      "wg": "After three logged period starts, the tracker uses your own average from your last six gaps. It skips any gap under 18 days or over 60 days as a missed log.",
+      "other": "Flo says it predicts from the cycle dates you log plus its own algorithm, and that predictions improve the more you log.",
+      "kind": "even"
+    },
+    {
+      "label": "Backup and restore",
+      "wg": "Save a backup file in the Girlies app and restore it on a new phone. The tools also work with no data once the app is installed.",
+      "other": "Syncs across your devices with a Flo account.",
+      "kind": "win"
+    },
+    {
+      "label": "Nigerian and diaspora context",
+      "wg": "Written for Nigerian and diaspora women, with prices in naira and dollars and clinic advice for Nigeria, such as taking your last three or four period dates with you.",
+      "other": "Written for a global audience. Nigeria is one of the countries in its Pass It On Project.",
+      "kind": "win"
+    },
+    {
+      "label": "A plan for the wait",
+      "wg": "The Trying-to-Conceive Blueprint has five parts: your body and cycle, preparing, It Takes Two, your numbers and when to get help, and the mind and the marriage while you wait.",
+      "other": "A large library of articles.",
+      "kind": "win"
+    },
+    {
+      "label": "Questions for the clinic",
+      "wg": "Fertility Appointment Questions lets you tick what you want to ask, add your own, print it and take it along.",
+      "other": "A Symptom Checker and a Health Library to read before your visit.",
+      "kind": "win"
+    },
+    {
+      "label": "A checklist for your partner",
+      "wg": "His Fertility Checklist. Send it to him and he ticks the steps himself.",
+      "other": "Flo for Partners shares medical insights and tips with your partner.",
+      "kind": "even"
+    },
+    {
+      "label": "Community",
+      "wg": "A protected Conception community for Blueprint buyers, open for life.",
+      "other": "Secret Chats, a moderated chat space in the app. Flo says 7 million members chat there each month.",
+      "kind": "other"
+    },
+    {
+      "label": "Symptoms and reminders",
+      "wg": "Not in our tools. They record period start dates only, and they send no reminders.",
+      "other": "Flo logs symptoms and sends reminders.",
+      "kind": "other"
+    },
+    {
+      "label": "Library and history",
+      "wg": "Six fertility tools and the guides on Wholesome Girlies.",
+      "other": "A very large content library, about 70 million monthly users by Flo's own count, and every log you have entered over the years.",
+      "kind": "other"
+    }
+  ],
+  "wins_title": "Where Wholesome Girlies is ahead",
+  "wins": [
+    {
+      "h": "No account and no card",
+      "b": "Open the Ovulation Calculator, type the first day of your last period and pick your cycle length. Your fertile window shows on the same screen. There is no sign-in and no payment step."
+    },
+    {
+      "h": "Your dates stay on your phone",
+      "b": "Logged period dates sit in storage on your phone. The page says: Saved only on this phone. Nothing is sent to us. A forget button clears them."
+    },
+    {
+      "h": "Your own average, after three periods",
+      "b": "Log the first day of each period. After three, the tracker replaces the cycle length you typed with your own average. It uses up to your last six gaps and skips any gap under 18 days or over 60 days as a missed log."
+    },
+    {
+      "h": "New phone, same dates",
+      "b": "The Girlies app has Save a backup and Restore a backup. Your saved entries go into one file you keep. Once the app is installed, the tools also work with no data."
+    },
+    {
+      "h": "Written for Nigeria and the diaspora",
+      "b": "Prices show in naira for Nigerian buyers and in dollars for buyers abroad. The advice fits a clinic visit here: take your last three or four period dates, because a clinician finds them more useful than one calculator result."
+    },
+    {
+      "h": "A plan for the wait",
+      "b": "The Trying-to-Conceive Blueprint is one payment of ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad. It walks you through your cycle, preparing, your partner, your tests and the wait. You also get lifetime access to a protected Conception community and an assistant that teaches and sends you to a doctor for anything clinical."
+    },
+    {
+      "h": "Clinic questions to print, and his own checklist",
+      "b": "Fertility Appointment Questions lets you tick, add and print. His Fertility Checklist is for your partner to tick himself. Fertility involves both of you."
+    }
+  ],
+  "other_ahead_title": "Where Flo is ahead",
+  "other_ahead": [
+    {
+      "h": "A bigger community",
+      "b": "Flo's Secret Chats is a moderated chat space inside the app, and Flo says 7 million members chat there each month. Our Conception community is limited to Blueprint buyers."
+    },
+    {
+      "h": "Daily logging",
+      "b": "Flo records symptoms, sends reminders and syncs across your devices. Our tools record period start dates and nothing else. If you want a log you add to every day, Flo does that better."
+    },
+    {
+      "h": "A bigger library and a longer history",
+      "b": "Flo has a very large content library and about 70 million monthly users by its own count. If you already have years of logs there, that history stays with Flo, and starting here means starting from zero."
+    }
+  ],
+  "reviews": [
+    "flo"
+  ],
+  "reviews_title": "What women say about Flo",
+  "picks_title": "Which should you use?",
+  "picks": [
+    {
+      "h": "Pick Flo",
+      "b": "if you want daily symptom logs, reminders and sync, or your years of history already sit there."
+    },
+    {
+      "h": "Pick the Wholesome Girlies tools",
+      "b": "if you want a calendar with no account and dates only on your phone."
+    },
+    {
+      "h": "Pick the Blueprint",
+      "b": "if you want a plan, questions for the clinic, a checklist for your partner and a community."
+    },
+    {
+      "h": "Use both",
+      "b": "if you log in Flo and follow the Blueprint."
+    }
+  ],
+  "how": {
+    "title": "How the Wholesome Girlies calculator works",
+    "paras": [
+      "The <a href=\"/fertility/tools/ovulation-calculator\">Ovulation Calculator</a> uses two numbers: the first day of your last period and your usual cycle length. It adds the cycle length to that date to find your next period, then counts back 14 days to estimate the day you ovulate. The fertile window it shows starts five days before that day and ends one day after it.",
+      "On a 28-day cycle, day 1 is the first day of your period. Your next period is due on day 29, ovulation is estimated on day 15, and the window runs from day 10 to day 16. That is the whole sum.",
+      "A calendar estimates and does not detect. A <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC5725625/\" rel=\"noopener\" target=\"_blank\">Journal of Medical Internet Research analysis of 7,043 tracked cycles</a> found that ovulation does not sit reliably at the midpoint of a cycle, and the <a href=\"https://www.nhs.uk/conditions/periods/fertility-in-the-menstrual-cycle/\" rel=\"noopener\" target=\"_blank\">National Health Service</a> says it usually happens 10 to 16 days before your next period. That limit applies to any calendar method, so we do not claim ours predicts better than Flo's."
+    ]
+  },
+  "faq": [
+    {
+      "ref": "flo_price"
+    },
+    {
+      "q": "Does the Wholesome Girlies calculator predict better than Flo?",
+      "a": "We do not claim that. It sets ovulation 14 days before your next period and the window from five days before to one day after. A Journal of Medical Internet Research analysis of 7,043 tracked cycles found ovulation does not sit reliably at the midpoint. A calendar predicts. It does not detect. Take your last three or four period dates to a clinician."
+    },
+    {
+      "q": "Where do my dates go?",
+      "a": "They stay on your phone. The tools say: Saved only on this phone. Nothing is sent to us. A forget button clears them, and a backup file moves them to a new phone."
+    },
+    {
+      "q": "Can I use both?",
+      "a": "Yes. Log in Flo if you like its symptoms and reminders, and use the Wholesome Girlies tools and the Blueprint for the plan, the clinic questions and the checklist for your partner."
+    },
+    {
+      "q": "Is this medical advice?",
+      "a": "No. It is educational, not medical advice. See a doctor if you have been trying for a year, or six months if you are over 35."
+    }
+  ],
+  "sources": [
+    "jmir",
+    "nhs",
+    "flo_pass",
+    "flo_pass_press",
+    "flo_anon",
+    "flo_privacy",
+    "flo_partners",
+    "flo_chats",
+    "flo_apple",
+    "flo_play",
+    "fx"
+  ],
+  "related": [
+    {
+      "tag": "Tool",
+      "h": "Ovulation Calculator",
+      "p": "Estimate your window from your dates.",
+      "href": "/fertility/tools/ovulation-calculator",
+      "cta": "Open"
+    },
+    {
+      "tag": "Tool",
+      "h": "Period Tracker",
+      "p": "Find your own average cycle length.",
+      "href": "/fertility/tools/period-tracker",
+      "cta": "Open"
+    },
+    {
+      "tag": "Compare",
+      "h": "Flo alternatives in Nigeria",
+      "p": "Four apps, with who each one suits.",
+      "href": "/fertility/compare/flo-alternatives-nigeria",
+      "cta": "Read"
+    },
+    {
+      "tag": "Compare",
+      "h": "Best period and ovulation tracker apps in Nigeria",
+      "p": "Four apps side by side in one table.",
+      "href": "/fertility/compare/best-period-tracker-apps-nigeria",
+      "cta": "Read"
+    }
+  ],
+  "doctor": "See a doctor after twelve months of trying, or six months if you are over 35. See one sooner if your cycles are very irregular, shorter than 21 days or longer than 35, or have stopped. Take your last three or four period dates with you.",
+  "disclaimer": {
+    "strong": "This page compares apps. It cannot tell you when you will conceive.",
+    "rest": "A calendar predicts and does not detect. It is educational, not medical advice, and no clinician has reviewed it yet."
+  }
+}
