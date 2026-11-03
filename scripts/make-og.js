@@ -23,7 +23,7 @@ const BASE = "http://localhost:8001";
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const OUT = path.join(ROOT, "assets/img/og");
 const SQUARE_OUT = process.env.WG_SQUARE_DIR || path.join(require("os").homedir(), "Downloads/Wholesome Girlies/Social Posts");
-const OG_VERSION = "20261027a";
+const OG_VERSION = "20261103a";
 const STAGES = { relationships: "Relationships", fertility: "Trying to conceive", pregnancy: "Pregnancy", postpartum: "Postpartum", parenting: "Parenting" };
 // sensitive guides: a single heart reaction, never the playful ones
 const GENTLE = new Set(["chemical-miscarriage", "postpartum-warning-signs", "when-to-take-your-baby-to-hospital"]);
@@ -190,7 +190,7 @@ function defaultCard(sq = false) {
 async function screenshot(page, p) {
   await page.bringToFront(); // Chrome throttles a background tab, and the card tab opens after this one
   await page.goto(BASE + p.url, { waitUntil: "networkidle0" });
-  await page.addStyleTag({ content: "#cc-main,.site-header,header,.read-progress,.wg-share-top,.wg-share,.toc-rail{display:none!important}" });
+  await page.addStyleTag({ content: "#cc-main,.site-header,header,.read-progress,.wg-share-top,.wg-share,.toc-rail,#wg-app-nav,#wg-back{display:none!important}" });
   // tick a few checklist items so a checklist looks in use, and give calculators
   // a sample date (8 weeks ago, or a birth date 10 weeks ago) so the card shows a result
   await page.evaluate(() => {
@@ -209,8 +209,16 @@ async function screenshot(page, p) {
   await new Promise((r) => setTimeout(r, 400));
   const el = await page.$(".tool-app");
   if (!el) throw new Error("no .tool-app on " + p.url);
-  const box = await el.boundingBox();
-  const shot = await page.screenshot({ clip: { x: box.x, y: box.y, width: box.width, height: Math.min(box.height, box.width * 1.15) }, encoding: "base64" });
+  // a tool with a visual result (the cycle calendar or the pregnancy ring, wg-cycle-cal.js) is captured from its result,
+  // so the card shows the calendar or ring and not just the form above it
+  // measured in page coordinates after scrolling to the top, because a calculator scrolls its result into view
+  const r = await page.evaluate(() => {
+    window.scrollTo(0, 0);
+    const a = document.querySelector(".tool-app").getBoundingClientRect(), res = document.querySelector(".tool-app #res");
+    const top = document.querySelector(".tool-app .wgc") && res ? Math.max(a.top, res.getBoundingClientRect().top - 12) : a.top;
+    return { x: a.left, y: top + window.scrollY, w: a.width, bottom: a.bottom + window.scrollY };
+  });
+  const shot = await page.screenshot({ clip: { x: r.x, y: r.y, width: r.w, height: Math.min(r.bottom - r.y, r.w * 1.15) }, captureBeyondViewport: true, encoding: "base64" });
   return shot;
 }
 
