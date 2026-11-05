@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
-  var PHASE8 = false; // true once the program pages are closed: Option B only, shared codes retired
+  var PHASE8 = true; // true once the program pages are closed: Option B only, shared codes retired
   var CODES_KEY = 'wg_codes_v1', DEVICE_KEY = 'wg_device_v1';
   var data = null;
 
