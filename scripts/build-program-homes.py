@@ -34,14 +34,14 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "assets/data/program-homes.json")
 START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
-ASSET_VERSION = "20261012a"
+ASSET_VERSION = "20261107c"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 # Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows the
 # "Payment received" card until the payment server confirms the payment (Selar to Bachs Migration Plan).
 # It does nothing without ?order=.
-ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261106b"></script>'
-ACCESS_TAG = '<script defer src="/assets/js/wg-access.js?v=20261106b"></script>'
+ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261107c"></script>'
+ACCESS_TAG = '<script defer src="/assets/js/wg-access.js?v=20261107c"></script>'
 STEP_TAG = '<script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')

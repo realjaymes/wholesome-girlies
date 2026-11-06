@@ -18,9 +18,9 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-APP_JS_VERSION = "20261107c"
+APP_JS_VERSION = "20261107d"
 IDEAS_JS_VERSION = "20261012a"
-STREAK_JS_VERSION = "20261106b"  # wg-streak.js and wg-capture.js
+STREAK_JS_VERSION = "20261107d"  # wg-streak.js and wg-capture.js
 HEAD = ('<link rel="manifest" href="/manifest.webmanifest">\n'
         '<meta name="theme-color" content="#6E7A3F">\n'
         '<meta name="apple-mobile-web-app-title" content="Girlies">')
