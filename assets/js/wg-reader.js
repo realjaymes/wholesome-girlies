@@ -28,6 +28,8 @@
       var nx = upNext(), n = ids.filter(function (id) { return st.done[id]; }).length;
       st.at = Date.now(); st.total = ids.length; st.n = n; st.next = n < ids.length ? title(nx) : ''; st.nextId = n < ids.length ? nx : '';
       w.localStorage.setItem(KEY, JSON.stringify(st));
+      // The First 1,000 'first lesson' step listens for this (wg-member-step.js); it carries nothing.
+      if (n > 0) d.dispatchEvent(new CustomEvent('wg:finish'));
     } catch (e) {}
   }
 

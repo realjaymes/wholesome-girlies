@@ -1,0 +1,17 @@
+/* Her account in the app: the account sheet, the "Make the app yours" sheet and the iPhone sign-in card (assets/js/wg-account.js). */
+.wg-acct-sheet{position:fixed;inset:0;z-index:960;background:rgba(51,50,42,.45);display:flex;align-items:flex-end;justify-content:center}
+.wg-acct-sheet .in{background:#FBF8EF;border:2px solid var(--ink,#33322A);border-radius:22px 22px 0 0;padding:22px 20px 28px;width:100%;max-width:560px;max-height:90vh;overflow:auto}
+.wg-acct-sheet h3{margin:0 0 8px;font-size:1.4rem}
+.wg-acct-sheet p{margin:0 0 12px;line-height:1.5}
+.wg-acct-sheet label{display:block;font-weight:800;margin:12px 0 6px}
+.wg-acct-sheet input[type=text],.wg-acct-sheet input[type=email]{width:100%;box-sizing:border-box;font:inherit;font-size:1.05rem;padding:13px 14px;border:2px solid var(--ink,#33322A);border-radius:14px;background:#fff}
+.wg-acct-sheet .otp{letter-spacing:.4em;text-align:center;font-weight:800;font-size:1.4rem}
+.wg-acct-sheet .btn{display:block;width:100%;margin-top:12px;text-align:center;cursor:pointer}
+.wg-acct-sheet .err{color:#A4402B;font-weight:700;font-size:.95rem;margin:8px 0 0}
+.wg-acct-sheet .small{font-size:.86rem;opacity:.8}
+.wg-acct-sheet .link{background:none;border:0;padding:0;font:inherit;font-weight:800;color:var(--terracotta,#6E7A3F);text-decoration:underline;cursor:pointer}
+.wg-acct-sheet .center{text-align:center}
+.wg-acct-sheet .who{font-weight:800;word-break:break-all}
+.app-signin-card{margin-top:16px;padding:16px}
+.app-signin-card h2{font-size:1.2rem;margin:0 0 6px}
+.app-signin-card p{margin:0 0 12px}

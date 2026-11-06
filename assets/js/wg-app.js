@@ -130,6 +130,8 @@
   var POSTER = '/assets/img/app/install-iphone-safari.webp?v=20261008a';
   var TITLE = '<h3 id="wg-app-sheet-t">Add Wholesome Girlies to your home screen</h3>';
   var DONE = '<p class="note">Girlies then sits on your home screen and opens full screen, like an app.</p>';
+  // iPhone keeps the installed app apart from Safari, so a program she signed in to in Safari is not open inside the app yet.
+  var DONE_IOS = DONE + '<p class="note">Open the app, then sign in once with your email, so your program opens there too.</p>';
   function install(surface) {
     push('app_install_click', surface);
     // The browser's own install box only on Android: a computer gets the QR code for her phone instead.
@@ -147,13 +149,13 @@
     if (ios && iosBrowser === 'safari') {
       sheet(TITLE + '<video class="clip" src="' + CLIP + '" poster="' + POSTER + '" width="432" height="934" autoplay muted loop playsinline aria-label="Screen recording of the steps on an iPhone"></video>' +
         '<ol><li>Tap <b>&bull;&bull;&bull;</b> next to the address bar, then <b>Share</b>.</li><li>Tap <b>View More</b>, then <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>' +
-        '<p class="note">On an older iPhone, the Share button ' + SHARE_ICON + ' sits in the bar at the bottom of the screen.</p>' + DONE);
+        '<p class="note">On an older iPhone, the Share button ' + SHARE_ICON + ' sits in the bar at the bottom of the screen.</p>' + DONE_IOS);
       return;
     }
     if (ios) {
       sheet(TITLE + (iosBrowser === 'chrome'
         ? '<ol><li>Tap the Share button ' + SHARE_ICON + ' at the top right, next to the address bar.</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>'
-        : '<ol><li>Tap the menu button, then <b>Share</b>.</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>') + DONE);
+        : '<ol><li>Tap the menu button, then <b>Share</b>.</li><li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>') + DONE_IOS);
       return;
     }
     if (android) {
@@ -198,7 +200,9 @@
   // wg_name_v1 (her name) is not a saved entry either.
   // Keys that are not her entries never count: the spin button's last game, the hidden resume pill, location and
   // first-visit markers, consent, her name, finished games, the answer to "Is this still right?" and the install test's group.
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$)(?!.*_home$)/;
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$|session_v1$|account_v1$|acct_|f1k_|pay_api$|sync_at$|home_hint$)(?!.*_home$)/;
+  // wg_session_v1 (the sign-in token), wg_account_v1 (a copy of her account), wg_acct_* and wg_f1k_* (the plain account and First 1,000
+  // markers) are not saved entries either, and none of them ever goes into a backup.
   // The install timing test (wg_install_test_v1, {v, g, s}): a random group per device, drawn the first time the bar could show.
   // Group "now" sees the bar after her first saved tool, as always. Group "later" sees it after a second saved tool or on a
   // later visit (a visit is one browser session). With remembering off the group cannot be kept, so each page draws again.
@@ -396,7 +400,7 @@
   function hookResult() {
     if (typeof w.wgShowResult !== 'function' || w.wgShowResult.wgHooked) return;
     var orig = w.wgShowResult;
-    w.wgShowResult = function (type) { if (type) w.wgPlayed(); return orig.apply(this, arguments); };
+    w.wgShowResult = function (type) { if (type) { w.wgPlayed(); d.dispatchEvent(new CustomEvent('wg:finish')); } return orig.apply(this, arguments); };
     w.wgShowResult.wgHooked = true;
   }
   hookResult(); d.addEventListener('DOMContentLoaded', hookResult);
@@ -430,16 +434,19 @@
     try { for (var i = 0; i < w.localStorage.length; i++) { var k = w.localStorage.key(i); if (/^wg_/.test(k) && !/^wg_app_/.test(k)) out.push(k); } } catch (e) {}
     return out;
   }
+  // A backup holds her entries and her place, never her sign-in or what she owns: restoring a file can never open a program.
+  // The session token, the account copy, the program flags and the old code-era keys stay out of the file and out of a restore.
+  var NOT_IN_BACKUP = /^wg_(session_v1|account_v1|codes_v1|device_v1|pay_api|acct_.*|f1k_.*)$|_home$/;
   function pack() {
     var entries = {};
-    savedKeys().forEach(function (k) { entries[k] = w.localStorage.getItem(k); });
+    savedKeys().forEach(function (k) { if (!NOT_IN_BACKUP.test(k)) entries[k] = w.localStorage.getItem(k); });
     return { app: 'wholesome-girlies', v: 1, saved: new Date().toISOString(), entries: entries };
   }
   function unpack(data) {
     if (!data || data.app !== 'wholesome-girlies' || typeof data.entries !== 'object') throw new Error('not a backup');
     var n = 0;
     Object.keys(data.entries).forEach(function (k) {
-      if (/^wg_/.test(k) && !/^wg_app_/.test(k) && typeof data.entries[k] === 'string') { w.localStorage.setItem(k, data.entries[k]); n++; }
+      if (/^wg_/.test(k) && !/^wg_app_/.test(k) && !NOT_IN_BACKUP.test(k) && typeof data.entries[k] === 'string') { w.localStorage.setItem(k, data.entries[k]); n++; }
     });
     return n;
   }
@@ -611,7 +618,10 @@
     nameState: nameState,
     programs: myPrograms,
     quiet: function () { return QUIET.indexOf(path.replace(/\/$/, '')) > -1 || NAME_QUIET.test(path); },
-    setName: function (raw) { var n = cleanName(raw); return n ? nameWrite(n) : false; },
+    // A signed-in woman's name lives in her account too, so changing it here changes it there (wg-access.js).
+    setName: function (raw) { var n = cleanName(raw), ok = n ? nameWrite(n) : false; if (ok && w.WGAccess && w.WGAccess.signedIn()) w.WGAccess.setName(n); return ok; },
+    toolKey: TOOL_KEY,
+    signedIn: function () { try { return !!w.localStorage.getItem('wg_session_v1'); } catch (e) { return false; } },
     skipName: function () { return nameWrite(nameState().name); },
     removeName: function () { return nameWrite(''); },
     remembering: function () { return !w.WGConsent || !w.WGConsent.state || !!w.WGConsent.state.remember; },
