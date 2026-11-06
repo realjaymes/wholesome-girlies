@@ -119,7 +119,7 @@
       s = pretendLeft(s);
       if (run !== seq || holdsProgram() || (WGAccess.signedIn() && !WGAccess.account())) return;
       if (!s || !s.open || s.left <= 0) return;
-      var card = el('section', 'card f1k-app'); card.appendChild(el('h2', '', 'Get a program free'));
+      var card = el('section', 'card f1k-app f1k-offer'); card.appendChild(el('h2', '', 'Get a program free'));
       card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + fmtN(s.left) + (s.left === 1 ? ' place is' : ' places are') + ' left.'));
       var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first-1000'; card.appendChild(a);
       var si = el('p', 'muted'); si.appendChild(d.createTextNode('Already bought? ')); var sl = el('a', '', 'Sign in'); sl.href = '/signin/'; si.appendChild(sl); card.appendChild(si);

@@ -79,6 +79,9 @@
   /* ---------- the counter ---------- */
   function counter() {
     WA.first1000.status().then(function (s) {
+      // On localhost ?f1kleft=N pretends N places are left, to preview the bar before the first claim (never on the live site).
+      var q = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(location.search) : null;
+      if (q) s = { ok: true, taken: 1000 - +q[1], left: +q[1], open: +q[1] > 0 };
       if (!s) return;
       var left = s.left, taken = s.taken, open = s.open && left > 0;
       var total = (taken + left) || 1000;
