@@ -42,28 +42,24 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   // 4. backup round trip
   const rt = await page.evaluate(async () => { const file = new File([JSON.stringify({ app: "wholesome-girlies", v: 1, entries: { wg_hospitalbag_v1: localStorage.getItem('wg_hospitalbag_v1') } })], 'backup.json'); localStorage.removeItem('wg_hospitalbag_v1'); const n = await WGApp.restoreBackup(file); return { n, back: localStorage.getItem('wg_hospitalbag_v1') }; });
   ok('backup file restores entries', rt.back === JSON.stringify({ a: 1 }), JSON.stringify(rt));
-  // 4b. program code (journey F): a valid code adds the program, a wrong one does not
+  // 4b. email sign-in (no program codes): the row at the end of the app opens /signin/, and nothing grants a program without sign-in
   const codeCtx = await browser.createBrowserContext();
   const cp = await codeCtx.newPage(); cp.on('pageerror', e => errs.push(e.message));
   await cp.goto(B + '/app/?preview=installed', { waitUntil: 'load' });
   const flags = () => cp.evaluate(() => ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].filter(k => localStorage.getItem(k)));
-  const addCode = async (c) => { await cp.$eval('#appAdd', d => d.open = true); await cp.$eval('#appCode', e => e.value = ''); await cp.type('#appCode', c); await cp.click('#appCodeForm button'); await wait(500); };
-  await addCode('WRONG-ABCD');
-  await cp.waitForFunction(() => /did not match/.test(document.getElementById('appMsg').textContent), { timeout: 3000 }).catch(() => {});
-  ok('wrong program code adds nothing', (await flags()).length === 0 && /did not match/.test(await cp.$eval('#appMsg', e => e.textContent)));
-  const wife = HOMES['wife-material-blueprint'].code;
-  await addCode(' ' + wife.toLowerCase().replace('-', ' ') + ' ');
-  const f1 = await cp.evaluate(() => JSON.parse(localStorage.getItem('wg_relationships_home')));
-  ok('valid code (any case, spaces) adds the program', f1 && f1.u === '/programs/wife-material-blueprint/thank-you' && !(await cp.$eval('#appProgram', e => e.hidden)), JSON.stringify(f1));
-  ok('My program tab appears after adding', !!(await cp.$('#wg-app-nav a[href="/programs/wife-material-blueprint/thank-you"]')));
-  ok('app_program_added carries the program name only', await cp.evaluate(() => dataLayer.some(e => e.event === 'app_program_added' && e.app_program === 'The Wife Material Blueprint' && Object.keys(e).filter(k => !k.startsWith('gtm.')).sort().join() ==='app_program,event')));
-  await addCode(HOMES['complete-motherhood-journey'].code);
-  ok('bundle code adds all four motherhood flags', (await flags()).length === 5, (await flags()).join(','));
-  // install from a program home (journey C): /app/?home=<slug> adds the program once, then drops the parameter
+  ok('no program code form on the app home', !(await cp.$('#appCode')) && !(await cp.$('#appCodeForm')));
+  const row = await cp.$eval('#appAdd', e => ({ href: e.getAttribute('href'), t: e.textContent }));
+  ok('sign-in row opens /signin/', row.href === '/signin/' && /Sign in to your programs/.test(row.t) && /email you paid or signed up with/.test(row.t), JSON.stringify(row));
+  ok('a signed-out phone holds no program', (await flags()).length === 0);
+  // a signed-in phone: the row says who she is and the name ask is hidden
+  await cp.evaluate(() => { localStorage.setItem('wg_session_v1', 'tok'); localStorage.setItem('wg_account_v1', JSON.stringify({ v: 1, account: { email: 'ada@example.com', name: 'Ada', programs: [] }, at: Date.now() })); });
+  await cp.goto(B + '/app/?preview=installed', { waitUntil: 'load' });
+  ok('signed-in row shows her email', /Signed in as ada@example.com/.test(await cp.$eval('#appAdd', e => e.textContent)));
+  // install from a program home: /app/?home=<slug> only leaves a hint and drops the parameter; it grants nothing
   const hp = await (await browser.createBrowserContext()).newPage(); hp.on('pageerror', e => errs.push(e.message));
   await hp.goto(B + '/app/?home=first-pregnancy-plan&preview=installed', { waitUntil: 'load' });
-  const hv = await hp.evaluate(() => ({ f: JSON.parse(localStorage.getItem('wg_pregnancy_home') || 'null'), q: location.search }));
-  ok('?home= adds the program and is removed from the address', hv.f && hv.f.u === '/programs/first-pregnancy-plan/thank-you' && hv.q === '?preview=installed', JSON.stringify(hv));
+  const hv = await hp.evaluate(() => ({ f: localStorage.getItem('wg_pregnancy_home'), q: location.search }));
+  ok('?home= grants no program and is removed from the address', hv.f === null && hv.q === '?preview=installed', JSON.stringify(hv));
   await hp.goto(B + '/app/?home=nope', { waitUntil: 'load' });
   ok('?home= with an unknown slug adds nothing', (await hp.evaluate(() => localStorage.getItem('wg_pp_home'))) === null);
   // the program home inside Instagram or TikTok asks her to open her real browser
