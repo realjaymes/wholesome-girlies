@@ -26,7 +26,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "scripts", "compare-data")
 SITE = "https://wholesomegirlies.xyz"
-CSS_VERSION = "20261027b"
+CSS_VERSION = "20261106a"
 OG_VERSION = "20261027a"
 # One published guide per stage supplies the page shell (fertility) and the stage's program card.
 SHELL = "fertility/guides/fertile-window-explained.html"
@@ -128,30 +128,10 @@ def faq_pairs(common, items):
     return [(common["faq"][i["ref"]]["q"], common["faq"][i["ref"]]["a"]) if "ref" in i else (i["q"], i["a"]) for i in items]
 
 
-def table(cols, rows, kind):
-    """kind 'h2h': rows carry wg, other and kind (win, even, other). kind 'multi': rows carry cells and win (indices)."""
-    n = len(cols)
-    out = [f'<div class="cmp-table-wrap"><table class="cmp-table n{n}" role="table" style="--n:{n}"><thead><tr role="row">'
-           + "".join(f'<th scope="col" role="columnheader">{e(c)}</th>' for c in cols) + "</tr></thead><tbody>"]
-    for r in rows:
-        if kind == "h2h":
-            win = r["kind"] == "win"
-            cells = [(r["wg"], win), (r["other"], False)]
-        else:
-            cells = [(t, i in r["win"]) for i, t in enumerate(r["cells"])]
-        out.append(f'<tr role="row"><th scope="row" role="rowheader">{e(r["label"])}</th>')
-        for (t, w), c in zip(cells, cols):
-            tick = '<span class="cmp-tick" role="img" aria-label="Ahead">✓</span>' if w else ""
-            cls = ' class="win"' if w else ""
-            out.append(f'<td role="cell"{cls} data-label="{ea(c)}">{tick}{e(t)}</td>')
-        out.append("</tr>")
-    out.append("</tbody></table></div>")
-    return "".join(out)
 
-
-# ---------------------------------------------------------------- table options (localhost only, ?table=a|b|c)
-# TABLE_OPTIONS on: the page carries the current table plus options A, B and C, and ?table= picks one on localhost.
-TABLE_OPTIONS = os.environ.get("CMP_TABLE_OPTIONS") == "1"
+# ---------------------------------------------------------------- the comparison table (James's pick, look B)
+# One line per question with each app's short answer, a tick on the app that is ahead and "=" where they are about
+# the same. Tapping the line opens the full answers. Rows carry wg_short/other_short (head-to-head) or cells_short.
 
 
 def _cells(cols, r, kind):
@@ -168,16 +148,7 @@ MARK = {"ahead": '<span class="tv-mark ahead" role="img" aria-label="Ahead">✓<
         "same": '<span class="tv-mark same" role="img" aria-label="About the same">=</span>', "none": ""}
 
 
-def table_a(cols, rows, kind):
-    out = ['<div class="tv tv-a">']
-    for r in rows:
-        cells = "".join(f'<div class="tv-cell {s}"><span class="tv-col">{e(c)}</span><p class="tv-short">{MARK[s]}{e(sh)}</p>'
-                        f'<p class="tv-full">{e(t)}</p></div>' for c, t, sh, s in _cells(cols, r, kind))
-        out.append(f'<div class="tv-q"><h3>{e(r["label"])}</h3><div class="tv-row n{len(cols)}">{cells}</div></div>')
-    return "".join(out) + "</div>"
-
-
-def table_b(cols, rows, kind):
+def table(cols, rows, kind):
     n = len(cols)
     head = '<div class="tv-bhead" aria-hidden="true"><span></span>' + "".join(f"<span>{e(c)}</span>" for c in cols) + "</div>"
     out = [f'<div class="tv tv-b n{n}">{head}']
@@ -188,44 +159,6 @@ def table_b(cols, rows, kind):
         out.append(f'<details class="tv-line"><summary><span class="tv-qq">{e(r["label"])}</span>{shorts}<span class="tv-more">More</span></summary>'
                    f'<div class="tv-detail">{full}</div></details>')
     return "".join(out) + "</div>"
-
-
-def table_c(cols, rows, kind):
-    if kind != "h2h":
-        # one card per app, each question's short answer inside
-        out = ['<div class="tv tv-c tv-apps">']
-        for i, c in enumerate(cols):
-            items = "".join(f'<li class="{_cells(cols, r, kind)[i][3]}"><span class="tv-qq">{e(r["label"])}</span>'
-                            f'<b>{MARK[_cells(cols, r, kind)[i][3]]}{e(_cells(cols, r, kind)[i][2])}</b></li>' for r in rows)
-            out.append(f'<div class="tv-app"><h3>{e(c)}</h3><ul>{items}</ul></div>')
-        return "".join(out) + "</div>"
-    groups = [("win", f"Where {cols[0]} is ahead"), ("even", "About the same"), ("other", f"Where {cols[1]} is ahead")]
-    out = ['<div class="tv tv-c">']
-    for k, title in groups:
-        rs = [r for r in rows if r["kind"] == k]
-        if not rs:
-            continue
-        lines = ""
-        for r in rs:
-            cs = _cells(cols, r, kind)
-            lines += (f'<details class="tv-line"><summary><span class="tv-qq">{e(r["label"])}</span>'
-                      + "".join(f'<span class="tv-cell {s}"><span class="tv-col">{e(c)}</span>{e(sh)}</span>' for c, t, sh, s in cs)
-                      + '<span class="tv-more">More</span></summary><div class="tv-detail">'
-                      + "".join(f'<p><b>{e(c)}:</b> {e(t)}</p>' for c, t, sh, s in cs) + "</div></details>")
-        out.append(f'<div class="tv-group g-{k}"><h3>{e(title)} <span class="tv-count">{len(rs)}</span></h3>{lines}</div>')
-    return "".join(out) + "</div>"
-
-
-TV_SCRIPT = ('<script>(function(){var m=location.search.match(/[?&]table=([abc])/);'
-             'document.documentElement.setAttribute("data-tv",m?m[1]:"now");})();</script>')
-
-
-def table_block(cols, rows, kind):
-    now = table(cols, rows, kind)
-    if not TABLE_OPTIONS:
-        return now
-    return (TV_SCRIPT + f'<div class="tv-pick tv-now">{now}</div><div class="tv-pick tv-pa">{table_a(cols, rows, kind)}</div>'
-            f'<div class="tv-pick tv-pb">{table_b(cols, rows, kind)}</div><div class="tv-pick tv-pc">{table_c(cols, rows, kind)}</div>')
 
 
 def cards(items, ahead=False):
@@ -286,7 +219,7 @@ def intro(common, p):
 
 def body_head_to_head(common, p, S):
     S.add(intro(common, p))
-    S.add(f'<h2>{e(p["table_title"])}</h2>' + table_block(p["cols"], p["rows"], "h2h") + f'<p class="cmp-legend">{e(p["legend"])}</p>')
+    S.add(f'<h2>{e(p["table_title"])}</h2>' + table(p["cols"], p["rows"], "h2h") + f'<p class="cmp-legend">{e(p["legend"])}</p>')
     S.add(f'<h2>{e(p["wins_title"])}</h2>' + cards(p["wins"]))
     S.add(f'<h2>{e(p["other_ahead_title"])}</h2>' + cards(p["other_ahead"], True))
     if p.get("statements"):
@@ -308,7 +241,7 @@ def body_alternatives(common, p, S):
     S.add(intro(common, p))
     S.add(f'<h2>{e(p["picks_title"])}</h2>' + "".join(pick_card(x) for x in p["picks"]))
     rows = [{"label": p["glance_labels"][k], "cells": [x[k] for x in p["picks"]], "win": []} for k in p["glance_rows"]]
-    S.add(f'<h2>{e(p["glance_title"])}</h2>' + table_block([x["name"] for x in p["picks"]], rows, "multi"))
+    S.add(f'<h2>{e(p["glance_title"])}</h2>' + table([x["name"] for x in p["picks"]], rows, "multi"))
     for r in p["reviews"]:
         S.add(reviews(common, r["key"], r.get("title") or "What women say about " + common["reviews"][r["key"]]["name"]))
     S.add(f'<h2>{e(p["why_title"])}</h2><p>{e(p["why"])}</p><h3 style="margin-top:16px">{e(p["criteria_title"])}</h3><ul class="plain">'
@@ -318,7 +251,7 @@ def body_alternatives(common, p, S):
 def body_best_of(common, p, S):
     S.add(intro(common, p))
     S.add(f'<h2>{e(p["method_title"])}</h2><ul class="plain">' + "".join(f"<li>{e(m)}</li>" for m in p["method"]) + "</ul>")
-    S.add(f'<h2>{e(p["table_title"])}</h2>' + table_block(p["cols"], p["rows"], "multi"))
+    S.add(f'<h2>{e(p["table_title"])}</h2>' + table(p["cols"], p["rows"], "multi"))
     for a in p["apps"]:
         rv = reviews(common, a["key"], "What women say about " + common["reviews"][a["key"]]["name"], "h3") if a["key"] in common["reviews"] else ""
         S.add(f'<h2>{a["rank"]}. {e(a["name"])}</h2><p>{e(a["body"])}</p><p><b>Best for:</b> {e(a["best"])}</p><p><b>Watch for:</b> {e(a["watch"])}</p>{rv}')
