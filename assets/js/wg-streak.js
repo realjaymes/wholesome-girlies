@@ -422,16 +422,32 @@
     return totalOf(pick.prog, st).then(function (total) { return total ? prefix + n + ' of ' + total + ' lessons' : ''; });
   }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  // Localhost only: ?f1kleft=N pretends N places are left of 1,000, ?f1kround=R&f1kroundtaken=M pretends round R has M of its 100 places taken.
+  function preview(j) {
+    if (!/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) return j;
+    var r = /[?&]f1kround=(\d{1,2})/.exec(w.location.search), l = /[?&]f1kleft=(\d{1,4})/.exec(w.location.search), taken, round, rt;
+    if (r) {
+      round = Math.min(10, Math.max(1, +r[1])); var m = /[?&]f1kroundtaken=(\d{1,3})/.exec(w.location.search);
+      rt = Math.min(100, m ? +m[1] : 0); taken = (round - 1) * 100 + rt;
+    } else if (l) {
+      taken = Math.max(0, 1000 - +l[1]); round = Math.min(10, Math.floor(taken / 100) + 1); rt = Math.min(100, taken - (round - 1) * 100);
+    } else return j;
+    var left = 1000 - taken, ro = rt < 100 && left > 0;
+    return { ok: true, taken: taken, left: left, open: ro, round: round, round_size: 100, round_taken: rt, round_left: ro ? 100 - rt : 0, round_open: ro };
+  }
   // A free woman at 7 and 30 days: a First 1,000 place while places are left, her stage's program once they are gone.
   function freeNudge(pl, slot, ov) {
     if (!w.fetch) return;
     w.fetch(PAY + '/first1000/status').then(function (r) { return r.json(); }).then(function (j) {
-      var q = /^(localhost|127\.0\.0\.1)$/.test(w.location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(w.location.search) : null; // localhost only: ?f1kleft=N pretends N places are left
-      if (q) j = { ok: true, left: +q[1], open: +q[1] > 0 };
+      j = preview(j);
       if (!j || !j.ok || !ov.isConnected) return;
-      var a = mk('a', 'btn btn-primary'), left = +j.left || 0, stage = pl.stage;
-      if (j.open && left > 0) {
-        slot.appendChild(mk('p', 'wgs-src', 'You could get a program free as one of the first 1,000 women. ' + fmt(left) + (left === 1 ? ' place is' : ' places are') + ' left.'));
+      var a = mk('a', 'btn btn-primary'), left = +j.left || 0, stage = pl.stage, rd = typeof j.round === 'number';
+      if (rd && left > 0 && !j.round_open) {
+        slot.appendChild(mk('p', 'wgs-src', 'Round ' + j.round + ' is full. The next round opens soon.'));
+        a.href = '/first-1000' + (stage ? '?stage=' + stage : ''); a.appendChild(d.createTextNode('Tell me when it opens →'));
+      } else if (j.open && left > 0) {
+        var rl = rd ? +j.round_left : left;
+        slot.appendChild(mk('p', 'wgs-src', 'You could get a program free as one of the first 1,000 women. ' + (rd ? 'Round ' + j.round + ' is open: ' + fmt(rl) + ' of ' + fmt(+j.round_size) + (rl === 1 ? ' places is' : ' places are') + ' left.' : fmt(left) + (left === 1 ? ' place is' : ' places are') + ' left.')));
         a.href = '/first-1000' + (stage ? '?stage=' + stage : ''); a.appendChild(d.createTextNode('Claim my place →'));
       } else {
         slot.appendChild(mk('p', 'wgs-src', stage ? 'The program for your stage goes further.' : 'Every stage has a program that goes further.'));

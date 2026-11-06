@@ -36,7 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<link rel="stylesheet" href="/assets/css/wg-first1000-landing.css?v=20261107f">
+<link rel="stylesheet" href="/assets/css/wg-first1000-landing.css?v=20261109a">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -61,6 +61,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="fx-taken fx-cta-fine" data-taken-meter hidden>
           <div class="fx-taken-track" role="img" aria-label="Places taken"><i data-taken-fill></i></div>
           <p class="fx-taken-line" data-taken-line></p>
+        </div>
+        <div class="fx-wait" data-wait hidden>
+          <p class="fx-wait-line" data-wait-line></p>
+          <div data-wait-host></div>
         </div>
         <noscript><p class="fine">Turn on JavaScript to claim your place, or write to care@wholesomegirlies.xyz.</p></noscript>
       </div>
@@ -211,7 +215,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <details><summary>How do I earn more free months?</summary><p>Use the app. You earn months when you add the app to your phone, finish your first lesson, join our Telegram group, use the app 3, 7 and 30 days in a row, and tell us what you think on day 7. You also earn months for each friend who joins. You can see the full list above.</p></details>
       <details><summary>What happens when my free months are over?</summary><p>You can buy your program if you want to keep reading it, but you don&#x27;t have to. You can still use all our tools, and anything you saved in them stays on your phone.</p></details>
       <details><summary>Can you see what I type into the tools?</summary><p>No. What you type into a tool stays on your phone and never comes to us. We keep the details you give us when you claim your place: your name, email, WhatsApp number and stage. We also keep your progress, like your streak and which lessons you have read.</p></details>
-      <details><summary>Why is it only for 1,000 women?</summary><p>We are starting with a small group so we can learn from you and make the programs better. When the 1,000 places are taken, this offer closes. The number of places left on this page is real.</p></details>
+      <details><summary>Why is it only for 1,000 women?</summary><p>We are starting with a small group so we can learn from you and make the programs better. The 1,000 places open 100 at a time, in rounds. When a round is full, the next one opens soon, and you can ask us to tell you when. When all 1,000 places are taken, this offer closes. The numbers on this page are real.</p></details>
       <details><summary>Can I share this with a friend?</summary><p>Yes. Send her your invite link from the app. She gets her own free place. You get 2 extra months for each friend who joins and adds the app to her phone, up to 3 friends.</p></details>
     </div>
   </section>
@@ -220,11 +224,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wrap">
       <h2>Claim your place</h2>
       <p data-final-line>One place per woman. No payment and no card.</p>
-      <div class="fx-meter" data-meter hidden>
-        <p class="fx-meter-line"><b data-f1k-left></b><span data-f1k-text></span></p>
-        <div class="fx-bar-track" aria-hidden="true"><i data-f1k-bar></i></div>
+      <div class="fx-final-col">
+        <button type="button" class="btn btn-primary btn-lg" data-claim>Claim my place &rarr;</button>
+        <div class="fx-taken" data-taken-meter hidden>
+          <div class="fx-taken-track" role="img" aria-label="Places taken"><i data-taken-fill></i></div>
+          <p class="fx-taken-line" data-taken-line></p>
+        </div>
+        <div class="fx-wait" data-wait hidden>
+          <div data-wait-host></div>
+        </div>
       </div>
-      <button type="button" class="btn btn-primary btn-lg" data-claim>Claim my place &rarr;</button>
     </div>
   </section>
 </main>
@@ -242,8 +251,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </dialog>
 
-<script src="/assets/js/wg-access.js?v=20261107d"></script>
-<script defer src="/assets/js/wg-first1000-form.js?v=20261108d"></script>
+<script src="/assets/js/wg-access.js?v=20261109a"></script>
+<script defer src="/assets/js/wg-first1000-form.js?v=20261109a"></script>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -311,7 +320,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
 <script defer src="/assets/js/wg-app.js?v=20261107d"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
-<script defer src="/assets/js/wg-streak.js?v=20261108a"></script>
-<script defer src="/assets/js/wg-capture.js?v=20261108a"></script>
+<script defer src="/assets/js/wg-streak.js?v=20261109a"></script>
+<script defer src="/assets/js/wg-capture.js?v=20261109a"></script>
 </body>
 </html>

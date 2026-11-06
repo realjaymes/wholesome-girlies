@@ -41,6 +41,19 @@
   }
 
   // ── network ──
+  // The localhost-only status previews (see first1000.status).
+  function previewStatus(j) {
+    if (!/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) return j;
+    var r = /[?&]f1kround=(\d{1,2})/.exec(w.location.search), l = /[?&]f1kleft=(\d{1,4})/.exec(w.location.search), taken, round, rt;
+    if (r) {
+      round = Math.min(10, Math.max(1, +r[1])); var m = /[?&]f1kroundtaken=(\d{1,3})/.exec(w.location.search);
+      rt = Math.min(100, m ? +m[1] : 0); taken = (round - 1) * 100 + rt;
+    } else if (l) {
+      taken = Math.max(0, 1000 - +l[1]); round = Math.min(10, Math.floor(taken / 100) + 1); rt = Math.min(100, taken - (round - 1) * 100);
+    } else return j;
+    var left = 1000 - taken, ro = rt < 100 && left > 0;
+    return { ok: true, taken: taken, left: left, open: ro, round: round, round_size: 100, round_taken: rt, round_left: ro ? 100 - rt : 0, round_open: ro };
+  }
   function request(method, path, body, tok) {
     var h = {}; if (body !== undefined) h['content-type'] = 'application/json';
     if (tok) h.authorization = 'Bearer ' + tok;
@@ -247,7 +260,11 @@
     refresh: function () { return sync(true); },
     // ── the First 1,000 ──
     first1000: {
-      status: function () { return request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); },
+      // { ok, taken, left, open, round, round_size, round_taken, round_left, round_open }. taken and left count all 1,000 places;
+      // the round fields count the open round (100 places). open is true only when a claim would succeed now.
+      // On localhost, ?f1kleft=N pretends N places are left of 1,000, and ?f1kround=R&f1kroundtaken=M pretends round R (1 to 10) has
+      // M of its 100 places taken (M=100 is a full round). A check only, never on the live site.
+      status: function () { return request('GET', '/first1000/status').then(function (j) { return j.ok ? previewStatus(j) : null; }, function () { return null; }); },
       claim: function (body) {
         return request('POST', '/first1000/claim', body).then(function (j) {
           if (!j.ok) return j;

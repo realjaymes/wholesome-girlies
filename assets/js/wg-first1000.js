@@ -65,11 +65,7 @@
   }
 
   // ── app home ──
-  // On localhost ?f1kleft=N pretends N places are left (a check only, never on the live site).
-  function pretendLeft(s) {
-    var q = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(location.search) : null;
-    return q ? { ok: true, taken: 1000 - +q[1], left: +q[1], open: +q[1] > 0 } : s;
-  }
+  // On localhost the status answer can be previewed (?f1kleft=N, or ?f1kround=R&f1kroundtaken=M): see wg-access.js.
   var seq = 0;
   // Any program flag on this phone (the bundle writes all four motherhood keys), or any program in her account.
   function holdsProgram() {
@@ -116,11 +112,19 @@
     // card carries a sign-in link, and the claim route refuses an email that already owns a program and sends her to sign in.
     if (holdsProgram()) return;
     WGAccess.first1000.status().then(function (s) {
-      s = pretendLeft(s);
       if (run !== seq || holdsProgram() || (WGAccess.signedIn() && !WGAccess.account())) return;
-      if (!s || !s.open || s.left <= 0) return;
+      if (!s || !(s.left > 0)) return; // all 1,000 places are gone: no offer
       var card = el('section', 'card f1k-app f1k-offer'); card.appendChild(el('h2', '', 'Get a program free'));
-      card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + fmtN(s.left) + (s.left === 1 ? ' place is' : ' places are') + ' left.'));
+      var round = typeof s.round === 'number', roundFull = round && !s.round_open;
+      if (roundFull) {
+        // The open round is full: say so and point to the waiting list on the First 1,000 page.
+        card.appendChild(el('p', '', 'Round ' + s.round + ' is full. The next round opens soon.'));
+        var wl = el('a', 'btn btn-primary', 'Tell me when it opens →'); wl.href = '/first-1000'; card.appendChild(wl);
+        host.appendChild(card); host.hidden = false; return;
+      }
+      if (!s.open) return;
+      var rl = round ? s.round_left : s.left, rs = round ? s.round_size : 1000;
+      card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + (round ? 'Round ' + s.round + ' is open: ' + fmtN(rl) + ' of ' + fmtN(rs) + (rl === 1 ? ' places is' : ' places are') + ' left.' : fmtN(s.left) + (s.left === 1 ? ' place is' : ' places are') + ' left.')));
       var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first-1000'; card.appendChild(a);
       var si = el('p', 'muted'); si.appendChild(d.createTextNode('Already bought? ')); var sl = el('a', '', 'Sign in'); sl.href = '/signin/'; si.appendChild(sl); card.appendChild(si);
       host.appendChild(card); host.hidden = false;

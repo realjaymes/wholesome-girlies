@@ -7,6 +7,7 @@
  *   game_result                                                                                              list games
  *   desktop_card                                                                                             list app_link
  *   streak_reminder                                                                                          list streak_reminder (or Web Push)
+ *   f1k_round_full                                                                                           list f1k_next_round (the waiting list on /first-1000 and in the claim sheet when the open round is full; built by wg-first1000-form.js through WGCapture.form)
  * No date, week or entry ever goes in a request. A stage form sends the stage word only, and carries the consent line
  * (stage is health data). The analytics event is capture_submit with capture_point and nothing else.
  * wg_capture_v1 = {"v":1,"lists":["stage_weekly:pregnancy","games"],"bar":<ms>} holds list names and the time the guide bar was
@@ -329,5 +330,5 @@
   function boot() { resultCards(); guideBar(); gameCapture(); desktopCard(); pushSeen(); }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', boot); else boot();
 
-  w.WGCapture = { ics: ics, enablePush: enablePush, pushOK: pushOK, reminderSheet: reminderSheet, joined: joined };
+  w.WGCapture = { form: form, ics: ics, enablePush: enablePush, pushOK: pushOK, reminderSheet: reminderSheet, joined: joined };
 })(window, document);

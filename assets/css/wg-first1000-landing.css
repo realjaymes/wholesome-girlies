@@ -20,12 +20,6 @@
 .fx-st[data-stage="parenting"] { --c: var(--denim); --t: var(--denim-t); --c-on: #fff; }
 
 /* the counter */
-.fx-meter { margin: 16px 0 0; }
-.fx-meter[hidden] { display: none; }
-.fx-meter-line { margin: 0 0 6px; font-weight: 800; }
-.fx-meter-line b { font-family: var(--serif); font-size: 1.6em; font-weight: 400; margin-right: 2px; }
-.fx-bar-track { height: 14px; border: 2px solid var(--ink); border-radius: 999px; background: #fff; overflow: hidden; }
-.fx-bar-track i { display: block; height: 100%; width: 0; background: var(--s); transition: width .7s ease; }
 
 main.fx ~ footer.site-footer { margin-top: 0; }
 
@@ -42,7 +36,9 @@ main.fx ~ footer.site-footer { margin-top: 0; }
 .fx-taken[hidden] { display: none; }
 .fx-taken h2 { font-size: 1.5rem; }
 html.fx-full [data-claim], html.fx-full .fx-cta-fine, html.fx-full .fx-floatbar, html.fx-full .fx-sheet { display: none !important; }
-html.fx-full .fx-final, html.fx-full .fx-meter { display: none !important; }
+html.fx-full .fx-final { display: none !important; }
+/* A full round (not all 1,000): the claim buttons give way to the waiting list. */
+html.fx-round-full [data-claim], html.fx-round-full .fx-cta-fine, html.fx-round-full [data-taken-meter], html.fx-round-full .fx-floatbar, html.fx-round-full .fx-sheet:not([open]) { display: none !important; }
 
 /* her program in the hero */
 .fx-fan { position: relative; display: flex; justify-content: center; padding: 6px 0 4px; }
@@ -172,7 +168,6 @@ html.fx-full .fx-final, html.fx-full .fx-meter { display: none !important; }
 /* the closing claim */
 .fx-final { background: var(--st); border-top: 2px solid var(--ink); text-align: center; }
 .fx-final h2 { margin-bottom: 8px; }
-.fx-final .fx-meter { max-width: 420px; margin: 14px auto 18px; }
 
 /* the sheet and the floating bar */
 .fx-sheet { padding: 0; border: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; margin: 0; overflow: auto; }
@@ -197,8 +192,6 @@ html.fx-sheet-open { overflow: hidden; }
 .fx-hero-in { padding-top: 30px; padding-bottom: 54px; gap: 8px; }
 .fx-copy h1 { font-size: clamp(2.2rem, 9.5vw, 3.7rem); line-height: 1.04; max-width: 22ch; margin-top: 16px; text-wrap: balance; }
 .fx-copy .lead { font-size: 1.15rem; max-width: 52ch; margin-top: 10px; line-height: 1.5; }
-.fx-meter { display: inline-block; margin-top: 18px; padding: 10px 16px; background: #fff; border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--sticker-sm); min-width: 250px; }
-.fx-meter[hidden] { display: none; }
 .fx-cta { margin-top: 20px; width: 100%; }
 .fx-cta-fine { margin-top: 10px; font-weight: 700; }
 .fx-visual { margin-top: 18px; }
@@ -267,9 +260,7 @@ html.fx-sheet-open { overflow: hidden; }
 .fx-earnsec .fx-h { text-align: center; }
 .fx-final { background: var(--s); color: var(--s-on); }
 .fx-final h2 { color: var(--s-on); font-size: clamp(2rem, 6vw, 3.4rem); }
-.fx-final .fx-meter-line { color: var(--ink); }
 .fx-final .btn { background: #fff; color: var(--ink); }
-.fx-final .fx-meter { text-align: left; background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 10px 14px; box-shadow: var(--sticker-sm); }
 main { padding-bottom: 76px; }
 @media (min-width: 900px) { main { padding-bottom: 0; } }
 
@@ -288,3 +279,20 @@ main { padding-bottom: 76px; }
   .fx-copy .lead { max-width: 44ch; }
   .fx-fan { padding-left: 24px; }
 }
+
+/* the closing claim: one centred column, the same pattern as the hero (button, thin bar, count line), the bar as wide as the button */
+.fx-final-col { display: grid; justify-items: stretch; width: max-content; max-width: 100%; margin: 18px auto 0; }
+.fx-final-col .btn { margin: 0; }
+.fx-final-col .fx-taken[data-taken-meter] { margin-top: 12px; max-width: none; contain: inline-size; text-align: center; }
+.fx-final-col .fx-taken-line { text-align: center; }
+.fx-final-col .fx-wait { width: min(420px, calc(100vw - 32px)); }
+
+/* the waiting list shown when the open round is full */
+.fx-wait[hidden] { display: none; }
+.fx-wait-line { margin: 18px 0 0; font-weight: 800; font-size: 1.1rem; }
+.fx-wait .wgc-form { margin-top: 12px; max-width: 420px; }
+.fx-wait .wgc-form .btn { justify-self: stretch; }
+.fx-wait-note { margin: 8px 0 0; font-size: .85rem; font-weight: 700; }
+.fx-final .fx-wait .wgc-form .btn { background: #fff; color: var(--ink); }
+.fx-sheet .fx-wait { margin-top: 6px; }
+.fx-sheet .fx-wait-line { margin-top: 0; font-size: 1.25rem; }

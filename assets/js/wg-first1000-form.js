@@ -77,30 +77,64 @@
   }
 
   /* ---------- the counter ---------- */
-  function counter() {
-    WA.first1000.status().then(function (s) {
-      // On localhost ?f1kleft=N pretends N places are left, to preview the bar at any count (never on the live site).
-      var q = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(location.search) : null;
-      if (q) s = { ok: true, taken: 1000 - +q[1], left: +q[1], open: +q[1] > 0 };
-      if (!s) return;
-      var left = s.left, taken = s.taken, open = s.open && left > 0;
-      var total = (taken + left) || 1000;
-      // The hero bar under the Claim button: the server's number, filled once. It shows from 0 taken (James, 2026-11-06). It stays hidden, and the old line stays, when status() gives nothing.
-      var tm = $('[data-taken-meter]');
-      if (tm && open && typeof taken === 'number' && taken >= 0) {
-        var tf = $('[data-taken-fill]', tm), fine = $('[data-fine]');
-        $('[data-taken-line]', tm).textContent = taken.toLocaleString('en-US') + ' of 1,000 places taken';
-        tm.hidden = false; if (fine) fine.hidden = true;
-        tf.style.width = '0%';
-        (w.requestAnimationFrame || setTimeout)(function () { (w.requestAnimationFrame || setTimeout)(function () { tf.style.width = Math.min(100, Math.max(taken > 0 ? 2 : 0, taken / 10)) + '%'; }); });
-      }
-      $$('[data-meter]').forEach(function (m) { m.hidden = false; });
-      $$('[data-f1k-bar]').forEach(function (b) { b.style.width = Math.min(100, Math.round(taken / total * 100)) + '%'; });
-      $$('[data-f1k-left]').forEach(function (b) { b.textContent = open ? left.toLocaleString('en-US') : ''; });
-      $$('[data-f1k-text]').forEach(function (t) { t.textContent = open ? ' places left of 1,000' : 'All 1,000 places are taken.'; });
-      if (!open) { full = true; html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; closeSheet(); }
+  // The 1,000 places open in rounds of 100. The bars and lines show the open round; when it is full (and the next is not open) the
+  // claim buttons give way to a waiting list. The status answer also has taken, left and open for all 1,000 places.
+  var lastStatus = null;
+  function roundWord(s) { return typeof s.round === 'number' ? 'Round ' + s.round : ''; }
+  function applyStatus(s, keepSheet) {
+    if (!s) return;
+    lastStatus = s;
+    var hasRound = typeof s.round === 'number', left = s.left, taken = s.taken;
+    var allGone = !(left > 0);
+    var roundFull = hasRound && !allGone && !s.round_open;
+    var open = !allGone && !roundFull && s.open !== false;
+    var size = hasRound ? s.round_size : 1000, rtaken = hasRound ? s.round_taken : taken;
+    html.classList.remove('fx-full', 'fx-round-full');
+    $$('[data-taken-meter]').forEach(function (tm) {
+      if (!open || typeof rtaken !== 'number' || rtaken < 0) { tm.hidden = true; return; }
+      // The bar shows from 0 taken. In the hero it replaces the "No payment and no card" line; the final section keeps its own line above.
+      var tf = $('[data-taken-fill]', tm), fine = $('[data-fine]');
+      $('[data-taken-line]', tm).textContent = (hasRound ? roundWord(s) + ': ' : '') + rtaken.toLocaleString('en-US') + ' of ' + size.toLocaleString('en-US') + ' places taken';
+      tm.hidden = false; if (fine && tm.closest('.fx-hero')) fine.hidden = true;
+      tf.style.width = '0%';
+      var pct = Math.min(100, Math.max(rtaken > 0 ? 2 : 0, rtaken / size * 100));
+      (w.requestAnimationFrame || setTimeout)(function () { (w.requestAnimationFrame || setTimeout)(function () { tf.style.width = pct + '%'; }); });
     });
+    if (open) { full = false; $$('[data-wait]').forEach(function (x) { x.hidden = true; }); var fl = $('[data-final-line]'); if (fl) fl.textContent = FINAL_LINE; return; }
+    full = true; if (!keepSheet) closeSheet();
+    if (allGone) { html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; return; }
+    html.classList.add('fx-round-full');
+    var msg = roundWord(s) + ' is full. The next round opens soon.';
+    $$('[data-wait]').forEach(function (x) {
+      x.hidden = false;
+      var line = $('[data-wait-line]', x); if (line) line.textContent = msg;
+      fillWait($('[data-wait-host]', x));
+    });
+    var fl2 = $('[data-final-line]'); if (fl2) fl2.textContent = msg;
   }
+  var FINAL_LINE = 'One place per woman. No payment and no card.';
+
+  // The waiting list: the capture form (list f1k_next_round, source f1k_round_full). Its event is capture_submit with that capture_point only.
+  // The stage is not sent: the server does not keep it for this list, and a stage is health data.
+  function waitNode() {
+    var box = el('div', 'fx-wait-box'), C = w.WGCapture;
+    if (!C || !C.form) return null;
+    if (C.joined && C.joined('f1k_next_round')) { box.appendChild(el('p', 'fx-wait-note', 'You are on the list. We will email you when the next round opens.')); return box; }
+    box.appendChild(C.form({ list: 'f1k_next_round', source: 'f1k_round_full', token: 'f1k_next_round', button: 'Tell me when it opens', done: 'Thank you. We will email you when the next round opens.' }));
+    box.appendChild(el('p', 'fx-wait-note', 'One email, when the next round opens.'));
+    return box;
+  }
+  function fillWait(host, email) {
+    if (!host) return;
+    var n = waitNode();
+    if (!n) { // wg-capture.js loads after this file: try again once the page has loaded
+      if (!fillWait.later) { fillWait.later = true; w.addEventListener('load', function () { fillWait.later = false; $$('[data-wait-host]').forEach(function (h) { if (!h.firstChild) fillWait(h); }); }); }
+      return;
+    }
+    host.textContent = ''; host.appendChild(n);
+    var inp = $('input[type=email]', n); if (inp && email) inp.value = email;
+  }
+  function counter() { WA.first1000.status().then(applyStatus); }
 
   /* ---------- the flow ---------- */
   var flow = null;   // { root, host, step, steps }
@@ -313,6 +347,7 @@
       if (j.ok) { try { WA.push('account_created', { account_surface: 'first_1000' }); } catch (e) {} btn.textContent = 'Done. Opening your program...'; location.href = '/first-1000/welcome'; return; }
       done();
       var r = j.error || j.reason || '';
+      if (r === 'round_full') return roundFullInSheet();
       if (r === 'full' || r === 'closed') { full = true; html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; closeSheet(); return; }
       if (r === 'already_claimed' || r === 'exists') { gotoStep('email'); return showErr('This email already has a place. Sign in with it to open your program.', '#fxEmail', signInLink('Sign in')); }
       if (r === 'sign_in_first') { gotoStep('email'); return showErr('This email already has an account. Sign in with it, then claim your place.', '#fxEmail', signInLink('Sign in to claim')); }
@@ -322,6 +357,21 @@
       showErr('We could not save your place. Try again in a moment.');
     }).catch(function () {
       done(); showErr('We could not reach Wholesome Girlies. Check your internet connection and try again.');
+    });
+  }
+
+  // The round filled while she was filling the form: say so inside the sheet and offer the waiting list, with her email filled in.
+  function roundFullInSheet() {
+    WA.first1000.status().then(function (s) {
+      var host = $('[data-flow-host="sheet"]');
+      if (!s || typeof s.round !== 'number') s = lastStatus && typeof lastStatus.round === 'number' ? lastStatus : { ok: true, taken: 0, left: 1, open: false, round: 1, round_size: 100, round_taken: 100, round_left: 0, round_open: false };
+      if (s.round_open) { applyStatus(s); return showErr('A new round just opened. Press the button to claim your place.'); }
+      applyStatus(s, true);
+      if (!host) return;
+      var box = el('div', 'fx-wait'), line = el('p', 'fx-wait-line', roundWord(s) + ' is full. The next round opens soon.'); line.tabIndex = -1;
+      var wh = el('div'); box.appendChild(line); box.appendChild(wh); host.textContent = ''; host.appendChild(box);
+      flow = null; fillWait(wh, S.email);
+      try { line.focus(); } catch (e) {}
     });
   }
 

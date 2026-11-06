@@ -24,13 +24,13 @@ function signed(programs, member) {
   const account = { email: 'ada@example.com', name: '', programs: programs.map((x) => ({ slug: x.slug, home: homeUrl(x.slug), ends: x.ends })), member: member || undefined };
   const seed = { wg_session_v1: JSON.stringify({ token: 'tok123' }), wg_account_v1: { v: 1, at: Date.now(), account, saved: [] } };
   programs.forEach((x) => Object.assign(seed, flagsFor(x.slug)));
-  return { seed, route: { '/account': { ok: true, account, state: {} }, '/first1000/status': { ok: true, taken: 8, left: 992, open: true } } };
+  return { seed, route: { '/account': { ok: true, account, state: {} }, '/first1000/status': { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } } };
 }
 const memberOf = (stage) => ({ stage, ends: plus(200) + 'T00:00:00Z', steps: {}, invite: 'ABC' });
 const UI = (o) => ({ wg_streak_ui_v1: Object.assign({ v: 1, rule: plus(-3), first: plus(-3), days: [] }, o) });
 const READ = (slug, n, ago) => ({ ['wg_read_' + slug]: { done: {}, n, at: Date.now() - (ago || 0) } });
 const totalOf = async (slug) => +(/data-total="(\d+)"/.exec(await (await fetch(T.B + '/programs/' + slug + '/read')).text())[1]);
-const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true } };
+const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } };
 
 (async () => {
   try {
@@ -208,10 +208,10 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true 
   ok('free: no lesson line', !/lesson/i.test(rule) && !(await has(t.page, '#appToday [data-wgs="lesson"]')));
   await t.close();
   let r7 = await sheetAt7({}, OPEN);
-  ok('free: day 7 points to a First 1,000 place while places are left', /get a program free as one of the first 1,000 women\. 992 places are left\./.test(r7.tx) && r7.links.some((h) => /^\/first-1000/.test(h)), r7.tx);
+  ok('free: day 7 points to a First 1,000 place while places are left', /get a program free as one of the first 1,000 women\. Round 1 is open: 92 of 100 places are left\./.test(r7.tx) && r7.links.some((h) => /^\/first-1000/.test(h)), r7.tx);
   ok('free: the badge ladder stays', /3 days/.test(r7.tx) && /14 days/.test(r7.tx) && /30 days/.test(r7.tx));
   ok('free: no lesson progress and no member line', !/lessons/.test(r7.tx) && !/First 1,000 member/.test(r7.tx));
-  r7 = await sheetAt7(UI({ toast: plus(0), stage: 'pregnancy' }), { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false } });
+  r7 = await sheetAt7(UI({ toast: plus(0), stage: 'pregnancy' }), { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false, round: 10, round_size: 100, round_taken: 100, round_left: 0, round_open: false } });
   ok('free: with the places gone, day 7 points to her stage’s program', /The program for your stage goes further\./.test(r7.tx) && r7.links.indexOf('/programs/first-pregnancy-plan') > -1 && !/first-1000/.test(r7.links.join()), r7.tx + r7.links.join());
   r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 29, best: 29, last_day: plus(-1), rest_used_week: null, milestones: [3, 7, 14] } }, OPEN);
   ok('free: day 30 points to a place too', /30 days in a row/.test(r7.tx) && /first 1,000 women/.test(r7.tx), r7.tx);
@@ -363,19 +363,19 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true 
   const offer = async (seed, route, wt) => { const x = await open(seed, '/app/', { route: route || OPEN, wait: wt || 1800 }); const tx = await text(x.page, '#appFirst'); return { x, tx }; };
   let o = await offer({});
   ok('signed out, no program: the offer shows with a sign-in link', /Get a program free/.test(o.tx) && /Already bought\? Sign in/.test(o.tx) && (await o.x.page.$eval('#appFirst a[href="/signin/"]', (e) => e.textContent)) === 'Sign in', o.tx);
-  ok('the count line reads "992 places are left"', /first 1,000 women\. 992 places are left\./.test(o.tx), o.tx);
+  ok('the count line reads "Round 1 is open: 92 of 100 places are left."', /first 1,000 women\. Round 1 is open: 92 of 100 places are left\./.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true } });
-  ok('1,000 has its separator: "1,000 places are left"', /1,000 places are left\./.test(o.tx) && !/1000/.test(o.tx), o.tx);
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true, round: 1, round_size: 100, round_taken: 0, round_left: 100, round_open: true } });
+  ok('a fresh round reads "Round 1 is open: 100 of 100 places are left." with no bare 1000', /Round 1 is open: 100 of 100 places are left\./.test(o.tx) && !/\b1000\b/.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 999, left: 1, open: true } });
-  ok('one place left: "1 place is left"', /1 place is left\./.test(o.tx), o.tx);
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 999, left: 1, open: true, round: 10, round_size: 100, round_taken: 99, round_left: 1, round_open: true } });
+  ok('one place left: "1 of 100 places is left"', /Round 10 is open: 1 of 100 places is left\./.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false } });
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false, round: 10, round_size: 100, round_taken: 100, round_left: 0, round_open: false } });
   ok('no places left: no offer', o.tx === '');
   await o.x.close();
   // nothing renders until her status is known
-  t = await open({}, '/app/', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true } } }, wait: 900 });
+  t = await open({}, '/app/', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } } }, wait: 900 });
   ok('the offer waits for the server: nothing renders before it answers', (await text(t.page, '#appFirst')) === '' && await t.page.evaluate(() => document.getElementById('appFirst').hidden));
   await t.page.waitForSelector('#appFirst .card', { timeout: 12000 }).catch(() => {});
   ok('the offer shows once the server has answered', /Get a program free/.test(await text(t.page, '#appFirst')));
@@ -404,9 +404,9 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true 
   // the tool pages carry the same check
   const toolOffer = async (seed, route, wt) => { const x = await open(seed, '/pregnancy/tools/hospital-bag-checklist', { route: route || OPEN, wait: wt || 1500 }); const tx = await text(x.page, '.program-cta'); await x.close(); return tx; };
   let tc = await toolOffer({});
-  ok('tool page, signed out with no program: the offer, with a sign-in link and a thousands count', /free/.test(tc) && /992 places left/.test(tc) && /Already bought\? Sign in/.test(tc), tc);
-  tc = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true } });
-  ok('tool page: 1,000 places left, with the separator', /1,000 places left/.test(tc), tc);
+  ok('tool page, signed out with no program: the offer, with a sign-in link and a thousands count', /free/.test(tc) && /Round 1 is open: 92 of 100 places are left/.test(tc) && /Already bought\? Sign in/.test(tc), tc);
+  tc = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true, round: 1, round_size: 100, round_taken: 0, round_left: 100, round_open: true } });
+  ok('tool page: a fresh round reads 100 of 100 places', /Round 1 is open: 100 of 100 places are left/.test(tc), tc);
   tc = await toolOffer(owns('wife-material-blueprint'));
   ok('tool page: a buyer of another program never sees the offer', !/ free|Claim my place/.test(tc), tc);
   tc = await toolOffer(owns('complete-motherhood-journey'));
@@ -417,7 +417,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true 
   ok('tool page: a member is not offered a place', !/Claim my place/.test(tc), tc);
   tc = await toolOffer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
   ok('tool page: a buyer whose account lists a program is not offered a place', !/Claim my place/.test(tc), tc);
-  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true } } }, wait: 900 });
+  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } } }, wait: 900 });
   ok('tool page: no offer before the server answers', !/Claim my place/.test(await text(t.page, '.program-cta')));
   await t.page.waitForFunction(() => /Claim my place/.test((document.querySelector('.program-cta') || {}).innerText || ''), { timeout: 12000 }).catch(() => {});
   ok('tool page: the offer shows once the server has answered', /Claim my place/.test(await text(t.page, '.program-cta')));
