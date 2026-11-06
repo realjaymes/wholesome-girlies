@@ -114,10 +114,11 @@
     WGAccess.first1000.status().then(function (s) {
       if (run !== seq || holdsProgram() || (WGAccess.signedIn() && !WGAccess.account())) return;
       if (!s || typeof s.cap !== 'number') return; // no count: no offer
-      var card = el('section', 'card f1k-app f1k-offer'); card.appendChild(el('h2', '', 'Get a program free'));
-      if (!(s.open && s.left > 0)) {
+      var full = !(s.open && s.left > 0);
+      var card = el('section', 'card f1k-app f1k-offer'); card.appendChild(el('h2', '', full ? 'The free places are taken for now' : 'Get a program free'));
+      if (full) {
         // The cap is full and paused: say so and point to the waiting list on the First 1,000 page.
-        card.appendChild(el('p', '', 'All ' + fmtN(s.cap) + ' places are taken.'));
+        card.appendChild(el('p', '', 'All ' + fmtN(s.cap) + ' places are taken. We can email you if one opens.'));
         var wl = el('a', 'btn btn-primary', 'Tell me if a place opens →'); wl.href = '/first'; card.appendChild(wl);
         host.appendChild(card); host.hidden = false; return;
       }

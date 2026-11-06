@@ -298,3 +298,15 @@ main { padding-bottom: 76px; }
 .fx-taken .wgc-form { text-align: left; }
 .fx-taken-programs { margin: 14px 0 0; font-weight: 800; }
 .fx-taken .wgc-form .btn { justify-self: stretch; }
+/* Full state: the waiting list sits under the hero words as one plain row, not a separate card. */
+html.fx-full .fx-hero .fx-taken[data-taken] { background: none; border: 0; box-shadow: none; border-radius: 0; padding: 0; margin: 6px 0 0; text-align: left; max-width: 480px; }
+html.fx-full .fx-hero .fx-taken[data-taken] > h2, html.fx-full .fx-hero .fx-taken[data-taken] > h2 + p { display: none; }
+html.fx-full .fx-hero .fx-taken .fx-wait-box { margin: 0; max-width: none; }
+html.fx-full .fx-hero .fx-taken .wgc-form { margin: 0; }
+html.fx-full .fx-hero .fx-taken .fx-wait-note { margin: 10px 0 0; text-align: left; }
+html.fx-full .fx-hero .fx-taken-programs { margin: 14px 0 0; text-align: left; }
+@media (min-width: 560px) {
+  html.fx-full .fx-hero .fx-taken .wgc-form { grid-template-columns: 1fr auto; align-items: center; }
+  html.fx-full .fx-hero .fx-taken .wgc-form > :not(input):not(.btn) { grid-column: 1 / -1; }
+  html.fx-full .fx-hero .fx-taken .wgc-form .btn { justify-self: start; white-space: nowrap; }
+}

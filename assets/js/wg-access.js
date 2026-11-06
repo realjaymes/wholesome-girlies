@@ -257,8 +257,8 @@
     // ── the First 1,000 ──
     first1000: {
       // { ok, taken, cap, left, open }. cap is the public number ("the first N women"), left is cap minus taken, and open is true only
-      // when a claim would succeed now. On localhost, ?f1kcap=C&f1ktaken=T (or ?f1kleft=N) pretends that count: see previewStatus.
-      status: function () { return request('GET', '/first1000/status').then(function (j) { return j.ok ? previewStatus(j) : null; }, function () { return null; }); },
+      // when a claim would succeed now. On localhost, ?f1kcap=C&f1ktaken=T (or ?f1kleft=N) stands in for the server, with no request: see previewStatus.
+      status: function () { var pre = previewStatus(null); if (pre) return Promise.resolve(pre); return request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); },
       claim: function (body) {
         return request('POST', '/first1000/claim', body).then(function (j) {
           if (!j.ok) return j;

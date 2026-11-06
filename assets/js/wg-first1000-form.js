@@ -119,6 +119,11 @@
     full = true; if (!keepSheet) closeSheet();
     html.classList.add('fx-full');
     var t = $('[data-taken]'); if (t) { t.hidden = false; var h = $('[data-full-title]', t); if (h) h.textContent = 'All ' + fmtN(s.cap) + ' places are taken'; fillWait($('[data-wait-host]', t)); }
+    // The hero says it in its own words, and the waiting list sits under it in the same column.
+    var h1 = $('.fx-hero h1'), lead = $('.fx-hero .lead'), copy = $('.fx-hero .fx-copy');
+    if (h1) h1.textContent = 'The free places are taken for now';
+    if (lead) lead.textContent = 'All ' + fmtN(s.cap) + ' places for the first ' + fmtN(s.cap) + ' women are taken. Leave your email and we will tell you if a place opens.';
+    if (t && copy && t.parentNode !== copy) copy.appendChild(t);
   }
 
   // The waiting list: the capture form (list f1k_waitlist, source f1k_full). Its event is capture_submit with that capture_point only.

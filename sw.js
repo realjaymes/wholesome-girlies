@@ -11,7 +11,7 @@
 // network fails, which is what keeps a program she already opened readable offline. A page that was redirected
 // (to /signin/) is never saved under the program's address. Bump VERSION again in the deploy that turns the gate on,
 // so pages saved before the gate are cleared.
-const VERSION = "wg-20261109b";
+const VERSION = "wg-20261109c";
 const CORE = ["/app/", "/offline", "/tools/", "/manifest.webmanifest"];
 const SKIP = /^\/go\/|^\/lab\/|^\/programs\/[^/]+$|^\/assets\/video\//; // ad bridges, the private lab, sales pages and video clips always come from the network
 const LATER = /^\/assets\/img\/tool-shorts\//; // reel posters are cached when she scrolls to them, so installing costs less data

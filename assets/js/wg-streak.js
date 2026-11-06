@@ -135,7 +135,7 @@
       '.wgs-dot.done{background:var(--olive,#6E7A3F);color:#fff}.wgs-dot.rest{background:repeating-linear-gradient(45deg,#fff 0 4px,var(--peach,#F0C9A8) 4px 8px)}' +
       '.wgs-dot.today{box-shadow:0 0 0 3px var(--mustard,#D49A2A)}.wgs-count{font-weight:800}' +
       '.wgs-src a,.wgs-rule li a{font-weight:800;text-decoration:underline}.wgs-more:empty{display:none}' +
-      '.wgs-rule ul{margin:8px 0 10px;padding-left:20px}.wgs-pick{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.wgs-pick button{margin:0}';
+      '.wgs-rule ul{margin:8px 0 10px;padding-left:20px}.wgs-pick{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:14px 0 4px}.wgs-pick::before{content:"";position:absolute;left:10%;right:10%;top:21px;border-top:3px dashed var(--ink);opacity:.35}.wgs-stop{position:relative;background:none;border:0;padding:0;font:inherit;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0;-webkit-tap-highlight-color:transparent}.wgs-dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;background:var(--t);border:2px solid var(--ink);transition:transform .15s}.wgs-stop:hover .wgs-dot,.wgs-stop:focus-visible .wgs-dot{background:var(--c);box-shadow:var(--sticker-sm);transform:scale(1.08)}.wgs-stop b{font-size:clamp(.6rem,2.65vw,.78rem);line-height:1.2;letter-spacing:-.01em}.wgs-stop small{font-size:clamp(.6rem,2.45vw,.7rem);line-height:1.2;opacity:.75}';
     d.head.appendChild(s);
   }
   function toast(n) {
@@ -536,8 +536,11 @@
     if (res && res.need) { c.appendChild(mk('p', '', res.need.text)); var a = mk('a', 'btn btn-primary'); a.href = res.need.p; a.appendChild(d.createTextNode(res.need.l + ' →')); c.appendChild(a); b.appendChild(c); return; }
     c.appendChild(mk('h3', '', 'Which stage are you in?')); c.appendChild(mk('p', 'muted', 'Pick one to see today’s card.'));
     var row = mk('div', 'wgs-pick');
-    [['relationships', 'Relationships'], ['fertility', 'Fertility'], ['pregnancy', 'Pregnancy'], ['postpartum', 'Postpartum'], ['parenting', 'Parenting']].forEach(function (x) {
-      var bt = mk('button', 'btn btn-ghost', x[1]); bt.type = 'button';
+    // The same stops, emoji and plain words as the stage picker on /tools/.
+    [['relationships', 'Relationships', '💛', 'Dating or in love', 'rust'], ['fertility', 'Fertility', '🌱', 'Trying for a baby', 'olive'], ['pregnancy', 'Pregnancy', '🤰🏾', 'I am pregnant', 'mustard'], ['postpartum', 'Postpartum', '🤱🏾', 'I just gave birth', 'peach'], ['parenting', 'Parenting', '👶🏾', 'I am raising children', 'denim']].forEach(function (x) {
+      var bt = mk('button', 'wgs-stop'); bt.type = 'button';
+      bt.style.setProperty('--c', 'var(--' + x[4] + ')'); bt.style.setProperty('--t', 'var(--' + x[4] + '-t)');
+      var dot = mk('span', 'wgs-dot', x[2]); dot.setAttribute('aria-hidden', 'true'); bt.appendChild(dot); bt.appendChild(mk('b', '', x[1])); bt.appendChild(mk('small', '', x[3]));
       bt.addEventListener('click', function () { var u = readU(); u.stage = x[0]; writeU(u); renderApp(); }); row.appendChild(bt);
     });
     c.appendChild(row); b.appendChild(c);

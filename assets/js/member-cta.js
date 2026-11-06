@@ -64,18 +64,18 @@
     try { if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) { var o = localStorage.getItem('wg_pay_api'); if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(o || '')) api = o; } } catch (e) {}
     var name = (cta.querySelector('h3') || {}).textContent || '';
     if (!name) return;
-    fetch(api + '/first1000/status').then(function (r) { return r.json(); }).then(function (j) {
-      j = preview(j);
+    var pre = preview(null);
+    (pre ? Promise.resolve(pre) : fetch(api + '/first1000/status').then(function (r) { return r.json(); })).then(function (j) {
       if (!j || !j.ok || typeof j.cap !== 'number' || holds() !== 'no') return;
       if (!j.open || !(j.left > 0)) {
         // The cap is full and paused: say so, point to the waiting list, and keep the way to buy the program.
         var buy = cta.querySelector('a'), href = buy ? buy.getAttribute('href') : '';
         cta.innerHTML =
           '<p class="eyebrow">Go further</p>' +
-          '<h3>Get ' + esc(name) + ' free</h3>' +
-          '<p class="muted">All ' + fmtN(+j.cap) + ' places are taken.</p>' +
+          '<h3>The free places are taken for now</h3>' +
+          '<p class="muted">All ' + fmtN(+j.cap) + ' places are taken. We can email you if one opens.</p>' +
           '<a href="/first?stage=' + stage + '" class="btn btn-primary" data-first1000="tool_card_wait">Tell me if a place opens &rarr;</a>' +
-          (href ? '<p class="muted">Or <a href="' + esc(href) + '">get the program now</a></p>' : '');
+          (href ? '<p class="muted" style="margin:14px auto 0;font-size:.92rem">Or <a href="' + esc(href) + '">get the program now</a></p>' : '');
         return;
       }
       var n = +j.left;
@@ -84,7 +84,7 @@
         '<h3>Get ' + esc(name) + ' free</h3>' +
         '<p class="muted">For the first ' + fmtN(+j.cap) + ' women. ' + fmtN(n) + ' of ' + fmtN(+j.cap) + (n === 1 ? ' places is' : ' places are') + ' left.</p>' +
         '<a href="/first?stage=' + stage + '" class="btn btn-primary" data-first1000="tool_card">Claim my place &rarr;</a>' +
-        '<p class="muted">Already bought? <a href="/signin/">Sign in</a></p>';
+        '<p class="muted" style="margin:14px auto 0;font-size:.92rem">Already bought? <a href="/signin/">Sign in</a></p>';
     }).catch(function () {});
   }
   var m = location.pathname.match(/^\/(fertility|pregnancy|postpartum|parenting|relationships)\//);
