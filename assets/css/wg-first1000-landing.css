@@ -281,11 +281,11 @@ main { padding-bottom: 76px; }
 }
 
 /* the closing claim: one centred column, the same pattern as the hero (button, thin bar, count line), the bar as wide as the button */
-.fx-final-col { display: grid; justify-items: stretch; width: max-content; max-width: 100%; margin: 18px auto 0; }
-.fx-final-col .btn { margin: 0; }
-.fx-final-col .fx-taken[data-taken-meter] { margin-top: 12px; max-width: none; contain: inline-size; text-align: center; }
-.fx-final-col .fx-taken-line { text-align: center; }
-.fx-final-col .fx-wait { width: min(420px, calc(100vw - 32px)); }
+.fx-final-cta { display: grid; justify-items: stretch; width: max-content; max-width: 100%; margin: 18px auto 0; }
+.fx-final-cta .btn { margin: 0; }
+.fx-final-cta .fx-taken[data-taken-meter] { margin-top: 12px; max-width: none; contain: inline-size; text-align: center; }
+.fx-final-cta .fx-taken-line { text-align: center; }
+.fx-final-cta .fx-wait { width: min(420px, calc(100vw - 32px)); }
 
 /* the waiting list shown when the open round is full */
 .fx-wait[hidden] { display: none; }
@@ -296,3 +296,5 @@ main { padding-bottom: 76px; }
 .fx-final .fx-wait .wgc-form .btn { background: #fff; color: var(--ink); }
 .fx-sheet .fx-wait { margin-top: 6px; }
 .fx-sheet .fx-wait-line { margin-top: 0; font-size: 1.25rem; }
+
+.fx-final .fx-taken-track i { background: var(--ink); }

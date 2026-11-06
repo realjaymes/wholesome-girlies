@@ -40,7 +40,7 @@ const fillPct = async (page, sel) => page.$eval(sel, (f) => { const t = f.parent
       t = await open({}, '/first-1000/', { route: S(1, 23), wait: 1800 });
       await t.page.setViewport({ width: W, height: 900, deviceScaleFactor: 1, isMobile: W < 600, hasTouch: W < 600 });
       await wait(900);
-      const b = await rect(t.page, '.fx-final-col > [data-claim]'), tr = await rect(t.page, '.fx-final .fx-taken-track'), ln = await rect(t.page, '.fx-final [data-taken-line]');
+      const b = await rect(t.page, '.fx-final-cta > [data-claim]'), tr = await rect(t.page, '.fx-final .fx-taken-track'), ln = await rect(t.page, '.fx-final [data-taken-line]');
       const h2 = await rect(t.page, '.fx-final h2'), p = await rect(t.page, '.fx-final [data-final-line]');
       ok(`${W}px: heading, line, button, bar and count line stack in that order`, h2.b <= p.y + 1 && p.b <= b.y + 1 && b.b <= tr.y + 1 && tr.b <= ln.y + 1, JSON.stringify({ h2, p, b, tr, ln }));
       ok(`${W}px: the bar is as wide as the button`, Math.abs(tr.w - b.w) <= 1.5, `bar ${tr.w} button ${b.w}`);
