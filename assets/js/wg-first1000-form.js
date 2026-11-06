@@ -79,15 +79,15 @@
   /* ---------- the counter ---------- */
   function counter() {
     WA.first1000.status().then(function (s) {
-      // On localhost ?f1kleft=N pretends N places are left, to preview the bar before the first claim (never on the live site).
+      // On localhost ?f1kleft=N pretends N places are left, to preview the bar at any count (never on the live site).
       var q = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(location.search) : null;
       if (q) s = { ok: true, taken: 1000 - +q[1], left: +q[1], open: +q[1] > 0 };
       if (!s) return;
       var left = s.left, taken = s.taken, open = s.open && left > 0;
       var total = (taken + left) || 1000;
-      // The hero bar under the Claim button: the server's number, filled once. It stays hidden (and the old line stays) until the first place is taken, and when status() gives nothing.
+      // The hero bar under the Claim button: the server's number, filled once. It shows from 0 taken (James, 2026-11-06). It stays hidden, and the old line stays, when status() gives nothing.
       var tm = $('[data-taken-meter]');
-      if (tm && open && typeof taken === 'number' && taken > 0) {
+      if (tm && open && typeof taken === 'number' && taken >= 0) {
         var tf = $('[data-taken-fill]', tm), fine = $('[data-fine]');
         $('[data-taken-line]', tm).textContent = taken.toLocaleString('en-US') + ' of 1,000 places taken';
         tm.hidden = false; if (fine) fine.hidden = true;
