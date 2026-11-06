@@ -164,6 +164,23 @@ const DATE_LIKE = /\d{4}-\d{2}-\d{2}/;
   ok('Turn it on switches remembering back on', await t.page.evaluate(() => WGApp.remembering()));
   await t.close();
 
+
+  // the lab scenarios (James loads them with a button)
+  for (const [id, rx, what] of [['streak6', /week 22[\s\S]*6 days in a row/i, 'day 6'], ['streakrest', /rest day[\s\S]*10-day streak is safe/, 'the rest day used'], ['streakended', /Your last streak was 12 days\. That is your best, and it stays\./, 'a streak ended'], ['streak1', /Start your streak/, 'day 1']]) {
+    t = await open({}, '/lab/', { wait: 500 });
+    await Promise.all([t.page.waitForNavigation({ waitUntil: 'load' }), t.page.$eval('button[data-run="' + id + '"][data-t="0"]', (e) => e.click())]);
+    await wait(1500);
+    const lt = await text(t.page, '#appToday');
+    ok('lab scenario ' + id + ': ' + what, rx.test(lt), lt.slice(0, 160));
+    await t.close();
+  }
+  // a 7-day milestone from the lab
+  t = await open({}, '/lab/', { wait: 500 });
+  await Promise.all([t.page.waitForNavigation({ waitUntil: 'load' }), t.page.$eval('button[data-run="streak7"][data-t="0"]', (e) => e.click())]);
+  await wait(900);
+  await t.page.evaluate(() => document.dispatchEvent(new CustomEvent('wg:saved'))); await wait(4600);
+  ok('lab scenario streak7: the 7 day sheet', /7 days in a row/.test(await text(t.page, '.wgs-sheet')));
+  await t.close();
   } catch (e) { T.out.push('FAIL  test crashed  (' + e.message + ')'); }
   console.log(T.out.join('\n'));
   if (T.errs.length) console.log('PAGE ERRORS:\n' + T.errs.join('\n'));

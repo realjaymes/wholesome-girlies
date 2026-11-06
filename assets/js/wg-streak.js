@@ -135,7 +135,7 @@
     var el = mk('div', 'wgs-toast', 'Day ' + n + ' done. See you tomorrow.'); el.setAttribute('role', 'status');
     d.body.appendChild(el); setTimeout(function () { el.remove(); }, 3000);
   }
-  var MCOPY = { 3: ['Three days is when a habit starts to hold.', 1], 7: ['You showed up for yourself every day this week.', 1], 14: ['Two weeks in a row. That is a habit now.', 0], 30: ['A full month. You kept coming back.', 1] };
+  var MCOPY = { 3: ['You came back three days in a row.', 1], 7: ['You showed up for yourself every day this week.', 1], 14: ['You came back for two weeks.', 0], 30: ['A full month. You kept coming back.', 1] };
   var MONTHS = { 3: 1, 7: 1, 30: 2 };
   function maybeSheet() {
     var u = readU();
@@ -153,7 +153,7 @@
     var lad = mk('div', 'wgs-ladder'); MILES.forEach(function (m) { lad.appendChild(mk('span', m <= n ? 'on' : '', m + ' days')); }); box.appendChild(lad);
     if (MONTHS[n] && u.steps && u.steps[n] && u.ends) {
       var dt = parse(u.ends.slice(0, 10)), when = dt ? dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }) : '';
-      box.appendChild(mk('p', 'wgs-src', 'First 1,000 member: ' + (MONTHS[n] > 1 ? MONTHS[n] + ' months' : '1 month') + ' added.' + (when ? ' Your access now runs to ' + when + '.' : '')));
+      box.appendChild(mk('p', 'wgs-src', 'First 1,000 member: we added ' + (MONTHS[n] > 1 ? MONTHS[n] + ' months' : '1 month') + '.' + (when ? ' Your access now runs to ' + when + '.' : '')));
     }
     var close = function () { ov.remove(); d.removeEventListener('keydown', esc); try { d.dispatchEvent(new CustomEvent('wg:streak-sheet-closed', { detail: { days: n } })); } catch (e) {} };
     var esc = function (e) { if (e.key === 'Escape') close(); };
@@ -385,7 +385,7 @@
   function pickOrNeed(b, res) {
     var c = mk('div', 'card wgs-today'); c.setAttribute('data-wgs', res && res.need ? 'need' : 'pick');
     if (res && res.need) { c.appendChild(mk('p', '', res.need.text)); var a = mk('a', 'btn btn-primary'); a.href = res.need.p; a.appendChild(d.createTextNode(res.need.l + ' →')); c.appendChild(a); b.appendChild(c); return; }
-    c.appendChild(mk('h3', '', 'Which stage are you in?')); c.appendChild(mk('p', 'muted', 'Pick one and today’s card follows it.'));
+    c.appendChild(mk('h3', '', 'Which stage are you in?')); c.appendChild(mk('p', 'muted', 'Pick one to see today’s card.'));
     var row = mk('div', 'wgs-pick');
     [['relationships', 'Relationships'], ['fertility', 'Fertility'], ['pregnancy', 'Pregnancy'], ['postpartum', 'Postpartum'], ['parenting', 'Parenting']].forEach(function (x) {
       var bt = mk('button', 'btn btn-ghost', x[1]); bt.type = 'button';
