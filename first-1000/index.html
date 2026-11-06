@@ -36,7 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<link rel="stylesheet" href="/assets/css/wg-first1000.css?v=20261106a">
+<link rel="stylesheet" href="/assets/css/wg-first1000-landing.css?v=20261107a">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -66,89 +66,201 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
-<main class="f1k" id="f1k">
-  <div class="f1k-hero">
-    <div>
-      <span class="eyebrow">The First 1,000</span>
-      <h1>Get a Wholesome Girlies program free</h1>
-      <p class="lead">The first 1,000 women get the program for their stage free for a month. Use it, and you can earn up to 12 months.</p>
-      <div class="f1k-meter" id="f1kMeter" hidden><div class="bar"><i id="f1kBar"></i></div><p id="f1kCount"></p></div>
-      <ol class="f1k-how">
-        <li><span class="n">1</span><span>Claim with your email. You are signed in straight away.</span></li>
-        <li><span class="n">2</span><span>Your program is free for a month. Read it on your phone.</span></li>
-        <li><span class="n">3</span><span>Use it, and earn more months, up to 12.</span></li>
-      </ol>
-    </div>
-    <div class="f1k-card" id="f1kClaim">
-      <div id="f1kPick">
-        <h2>Your stage</h2>
-        <div class="f1k-stages" id="f1kStages" role="radiogroup" aria-label="Your stage">
-          <label><input type="radio" name="stage" value="relationships"><span>Dating or in love<small>The Wife Material Blueprint</small></span></label>
-          <label><input type="radio" name="stage" value="fertility"><span>Trying for a baby<small>The Trying-to-Conceive Blueprint</small></span></label>
-          <label><input type="radio" name="stage" value="pregnancy"><span>I am pregnant<small>The First Pregnancy Plan</small></span></label>
-          <label><input type="radio" name="stage" value="postpartum"><span>I just gave birth<small>The 6-Week Postpartum Reset</small></span></label>
-          <label><input type="radio" name="stage" value="parenting"><span>I am raising children<small>The First Baby Playbook</small></span></label>
+<main class="fx" id="fx">
+
+  <section class="fx-hero" id="top">
+    <div class="wrap fx-hero-in">
+      <div class="fx-copy">
+        <span class="eyebrow">The First 1,000</span>
+        <h1>Get a Wholesome Girlies program free</h1>
+        <p class="lead">The first 1,000 women get the program for their stage free for a month. Use it, and you can earn up to 12 months.</p>
+        <div class="fx-meter" data-meter hidden>
+          <p class="fx-meter-line"><b data-f1k-left></b><span data-f1k-text></span></p>
+          <div class="fx-bar-track" aria-hidden="true"><i data-f1k-bar></i></div>
         </div>
-        <p class="f1k-your" id="f1kYour" hidden></p>
-        <button type="button" class="btn btn-primary" id="f1kGo">Pick your stage</button>
-        <p class="fine">No payment and no card. One place per woman.</p>
+        <button type="button" class="btn btn-primary btn-lg fx-cta" data-claim>Claim my place &rarr;</button>
+        <p class="fine fx-cta-fine">No payment and no card. One place per woman.</p>
+        <noscript><p class="fine">Turn on JavaScript to claim your place, or write to care@wholesomegirlies.xyz.</p></noscript>
       </div>
-      <form class="f1k-form" id="f1kForm" hidden novalidate>
-        <h2>Claim your place</h2>
-        <p class="f1k-your" id="f1kYour2"></p>
-        <label for="f1kName">Your name</label><input type="text" id="f1kName" autocomplete="given-name" maxlength="30">
-        <label for="f1kEmail">Your email</label><input type="email" id="f1kEmail" autocomplete="email" inputmode="email">
-        <label for="f1kWa">WhatsApp number</label><input type="tel" id="f1kWa" autocomplete="tel" inputmode="tel" placeholder="0812 000 0000">
-        <label class="consent"><input type="checkbox" id="f1kConsent"><span>I agree that Wholesome Girlies keeps my stage and the steps I finish, to give me my program and send me emails about it. What I type into tools stays on my phone. <a href="/legal/consumer-health-data">Health data</a></span></label>
-        <p class="f1k-err" id="f1kErr" role="alert" hidden></p>
-        <button type="submit" class="btn btn-primary" id="f1kSubmit">Claim my place</button>
-        <p class="fine">One place per email and per phone number.</p>
-        <p class="fine"><button type="button" class="link" id="f1kBack" style="background:none;border:0;padding:0;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer">Change my stage</button></p>
-      </form>
-      <div class="f1k-taken" id="f1kTaken" hidden>
+
+      <div class="fx-visual" aria-hidden="false">
+        <div class="fx-fan" data-fan>
+          <img src="/assets/img/products/wife-material-cover.webp" width="480" height="600" alt="The Wife Material Blueprint book cover" loading="lazy">
+          <img src="/assets/img/products/trying-to-conceive-blueprint-cover.webp" width="480" height="600" alt="The Trying-to-Conceive Blueprint book cover" loading="lazy">
+          <img src="/assets/img/products/first-pregnancy-plan-cover.webp" width="480" height="600" alt="The First Pregnancy Plan book cover" loading="lazy">
+          <img src="/assets/img/products/postpartum-reset-cover.webp" width="480" height="600" alt="The 6-Week Postpartum Reset book cover" loading="lazy">
+          <img src="/assets/img/products/first-baby-playbook-cover.webp" width="480" height="600" alt="The First Baby Playbook book cover" loading="lazy">
+        </div>
+        <div class="fx-her" data-her hidden>
+          <img class="fx-her-cover" data-her-cover width="480" height="600" alt="" loading="lazy">
+          <div class="fx-her-guide">
+            <img data-her-guide width="289" height="563" alt="" loading="lazy">
+            <p class="fx-bubble" data-her-bubble></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-taken" data-taken hidden>
         <h2>All 1,000 places are taken</h2>
         <p>Thank you to everyone who joined. You can still get a program for your stage.</p>
         <a class="btn btn-primary" href="/programs/">See the programs &rarr;</a>
       </div>
     </div>
-  </div>
+  </section>
 
-  <section class="f1k-sec">
-    <h2>What you get</h2>
-    <div class="f1k-get">
-      <div class="card"><h3>Your stage program</h3><p>Read it on your phone, one short lesson at a time.</p></div>
-      <div class="card"><h3>The Girlies app</h3><p>55 tools and games, today&#x27;s card for your week, and your streak.</p></div>
-      <div class="card"><h3>Our Telegram group</h3><p>Tips, polls and news with other women.</p></div>
-      <div class="card"><h3>First look at new tools</h3><p>And a vote on what we build next.</p></div>
+  <section class="fx-sec fx-get" id="get">
+    <div class="wrap">
+      <h2 class="fx-h">What you get</h2>
+      <div class="fx-get-grid">
+        <div class="fx-tile" data-t="1"><span class="ico" aria-hidden="true">&#128214;</span><h3>Your stage program</h3><p>Read it on your phone, one short lesson at a time.</p></div>
+        <div class="fx-tile" data-t="2"><span class="ico" aria-hidden="true">&#128241;</span><h3>The Girlies app</h3><p>55 tools and games, and a home on your phone for your program.</p></div>
+        <div class="fx-tile" data-t="3"><span class="ico" aria-hidden="true">&#128172;</span><h3>Our Telegram group</h3><p>Get tips, polls and news with other women.</p></div>
+        <div class="fx-tile" data-t="4"><span class="ico" aria-hidden="true">&#10024;</span><h3>First look at new tools</h3><p>And a vote on what we build next.</p></div>
+      </div>
     </div>
   </section>
 
-  <section class="f1k-sec">
-    <h2>How you earn more months</h2>
-    <table class="f1k-earn"><tbody>
-      <tr><td>Claim your place</td><td>1 month</td></tr>
-      <tr><td>Add the app to your phone</td><td>+1 month</td></tr>
-      <tr><td>Finish your first lesson</td><td>+1 month</td></tr>
-      <tr><td>Join our Telegram group</td><td>+1 month</td></tr>
-      <tr><td>Use the app 3, 7 and 30 days in a row</td><td>+4 months</td></tr>
-      <tr><td>Tell us what you think on day 7</td><td>+2 months</td></tr>
-      <tr><td>Each friend who joins, up to 3</td><td>+2 each</td></tr>
-    </tbody></table>
-    <p class="fine">Up to 12 months in total.</p>
+  <section class="fx-sec fx-brand" id="brand">
+    <div class="wrap">
+      <div class="fx-intro">
+        <span class="eyebrow">Meet Wholesome Girlies</span>
+        <h2>Tools, guides and programs, from dating to the baby years.</h2>
+        <p>Wholesome Girlies is for African women, at home and in the diaspora. We answer the health and relationship questions of each stage in plain words, from the talking stage to your baby&#x27;s first year.</p>
+        <p>Every health page is built on published guidance, and each page lists its sources. Our tools help you understand and plan. They are educational, not medical advice, and we tell you when something needs a real doctor.</p>
+      </div>
+      <ol class="fx-journey">
+        <li class="fx-stop fx-st" data-stage="relationships">
+          <div class="fig"><img class="sc" src="/assets/img/cast/relationships-tolu-journal.jpg" width="1100" height="618" alt="Illustration of Tolu writing in her journal" loading="lazy"><img class="g" src="/assets/img/cast/guides/tolu.webp?v=20261009g" width="392" height="620" alt="Illustration of Tolu" loading="lazy"></div>
+          <div class="tx"><span class="n">1</span><h3>Relationships</h3><p class="who">Dating or in love</p><p>Play Are You a Girl&#x27;s Girl? and Red Flag Radar, and read guides on dating on purpose.</p></div>
+        </li>
+        <li class="fx-stop fx-st" data-stage="fertility">
+          <div class="fig"><img class="sc" src="/assets/img/cast/fertility-amaka-planner.jpg" width="1100" height="618" alt="Illustration of Amaka with her planner" loading="lazy"><img class="g" src="/assets/img/cast/guides/amaka.webp?v=20261009g" width="255" height="569" alt="Illustration of Amaka" loading="lazy"></div>
+          <div class="tx"><span class="n">2</span><h3>Fertility</h3><p class="who">Trying for a baby</p><p>Use the Ovulation Calculator, and read guides on your fertile window and preparing to conceive.</p></div>
+        </li>
+        <li class="fx-stop fx-st" data-stage="pregnancy">
+          <div class="fig"><img class="sc" src="/assets/img/cast/pregnancy-zainab-checklist.jpg" width="1100" height="618" alt="Illustration of Zainab ticking off a checklist" loading="lazy"><img class="g" src="/assets/img/cast/guides/zainab.webp?v=20261009g" width="289" height="563" alt="Illustration of Zainab" loading="lazy"></div>
+          <div class="tx"><span class="n">3</span><h3>Pregnancy</h3><p class="who">I am pregnant</p><p>Use the Hospital Bag Checklist, and read guides on what is safe to eat.</p></div>
+        </li>
+        <li class="fx-stop fx-st" data-stage="postpartum">
+          <div class="fig"><img class="sc" src="/assets/img/cast/postpartum-funmi-planner.jpg" width="1100" height="618" alt="Illustration of Funmi with her planner" loading="lazy"><img class="g" src="/assets/img/cast/guides/funmi.webp?v=20261009g" width="293" height="569" alt="Illustration of Funmi" loading="lazy"></div>
+          <div class="tx"><span class="n">4</span><h3>Postpartum</h3><p class="who">I just gave birth</p><p>Use the Night Duty Roster, and read a guide to your recovery timeline.</p></div>
+        </li>
+        <li class="fx-stop fx-st" data-stage="parenting">
+          <div class="fig"><img class="sc" src="/assets/img/cast/parenting-funmi-reading.jpg" width="1100" height="618" alt="Illustration of Funmi reading" loading="lazy"><img class="g" src="/assets/img/cast/guides/funmi.webp?v=20261009g" width="293" height="569" alt="Illustration of Funmi" loading="lazy"></div>
+          <div class="tx"><span class="n">5</span><h3>Parenting</h3><p class="who">I am raising children</p><p>Search names in the Baby Name Explorer, and read a guide to starting solids.</p></div>
+        </li>
+      </ol>
+    </div>
   </section>
 
-  <section class="f1k-sec f1k-faq">
-    <h2>Questions</h2>
-    <details open><summary>Is it really free?</summary><p>Yes. No payment and no card. You get one month for claiming, and more months for using it.</p></details>
-    <details><summary>What happens when my months end?</summary><p>We offer you the paid program. Your tools and your saved entries stay either way.</p></details>
-    <details><summary>Do you see what I type into the tools?</summary><p>No. What you type into tools stays on your phone. We keep only your stage and the steps you finish.</p></details>
-    <details><summary>Why only 1,000?</summary><p>1,000 is the size of this first group. The counter is real, and nothing here runs on a timer.</p></details>
-    <details><summary>Can I send this to a friend?</summary><p>Yes. Your friend gets her own place, and you both earn months.</p></details>
+  <section class="fx-sec fx-app" id="app">
+    <div class="wrap fx-app-in">
+      <div class="fx-phones">
+        <figure class="fx-phone"><img src="/assets/img/app/app-iphone.webp?v=20261106a" width="432" height="883" alt="The Girlies app on a phone, showing a quiz question" loading="lazy"></figure>
+        <figure class="fx-phone fx-phone-2"><img src="/assets/img/app/install-iphone-safari.webp?v=20261106a" width="432" height="934" alt="The steps to add Girlies to an iPhone home screen" loading="lazy"><figcaption>How to add it on iPhone</figcaption></figure>
+      </div>
+      <div class="fx-app-copy">
+        <span class="eyebrow">The Girlies app</span>
+        <h2>Wholesome Girlies, on your home screen</h2>
+        <p>Girlies is our app. It opens full screen from your home screen, and there is nothing to download from a store.</p>
+        <ul class="fx-ticks">
+          <li><b>55 tools and games.</b> 23 of them are games and quizzes you can send to the group chat.</li>
+          <li><b>A This week card</b> for your pregnancy, once you save your due date.</li>
+          <li><b>A streak</b> that counts the days you play the daily game.</li>
+          <li><b>Your saved results</b> stay on your phone, and every tool works without data after your first visit.</li>
+        </ul>
+        <p class="fx-private"><b>Private.</b> What you type into a tool stays on your phone. We never see it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fx-sec fx-programs" id="programs">
+    <div class="wrap">
+      <div class="fx-intro">
+        <span class="eyebrow">The programs</span>
+        <h2>A plan for your stage, in short lessons</h2>
+        <p>A program is a plan for one stage of your life. You read it on your phone, one short lesson at a time. Normally you pay once and keep it. As one of the first 1,000, you get yours free for a month and can earn up to 12.</p>
+      </div>
+      <div class="fx-progs" data-progs>
+        <article class="fx-prog fx-st" data-stage="relationships">
+          <img src="/assets/img/products/wife-material-cover.webp" width="480" height="600" alt="The Wife Material Blueprint book cover" loading="lazy">
+          <div class="tx"><span class="here" hidden>Your program</span><p class="who">Dating or in love</p><h3>The Wife Material Blueprint</h3><p>A plan from talking stage toward marriage: heal, read men early, and be ready when it is real.</p></div>
+        </article>
+        <article class="fx-prog fx-st" data-stage="fertility">
+          <img src="/assets/img/products/trying-to-conceive-blueprint-cover.webp" width="480" height="600" alt="The Trying-to-Conceive Blueprint book cover" loading="lazy">
+          <div class="tx"><span class="here" hidden>Your program</span><p class="who">Trying for a baby</p><h3>The Trying-to-Conceive Blueprint</h3><p>Understand your cycle, prepare your body, bring your partner in, and know what to ask your doctor.</p></div>
+        </article>
+        <article class="fx-prog fx-st" data-stage="pregnancy">
+          <img src="/assets/img/products/first-pregnancy-plan-cover.webp" width="480" height="600" alt="The First Pregnancy Plan book cover" loading="lazy">
+          <div class="tx"><span class="here" hidden>Your program</span><p class="who">I am pregnant</p><h3>The First Pregnancy Plan</h3><p>A week-by-week plan for your first pregnancy: what is normal, what you can safely eat, what your scans mean, and when to call the doctor.</p></div>
+        </article>
+        <article class="fx-prog fx-st" data-stage="postpartum">
+          <img src="/assets/img/products/postpartum-reset-cover.webp" width="480" height="600" alt="The 6-Week Postpartum Reset book cover" loading="lazy">
+          <div class="tx"><span class="here" hidden>Your program</span><p class="who">I just gave birth</p><h3>The 6-Week Postpartum Reset</h3><p>Six weeks to recover your body, reconnect with your partner, and find your way back to yourself.</p></div>
+        </article>
+        <article class="fx-prog fx-st" data-stage="parenting">
+          <img src="/assets/img/products/first-baby-playbook-cover.webp" width="480" height="600" alt="The First Baby Playbook book cover" loading="lazy">
+          <div class="tx"><span class="here" hidden>Your program</span><p class="who">I am raising children</p><h3>The First Baby Playbook</h3><p>A month-by-month plan for your first baby: what is normal, and what to watch for with sleep and feeding.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fx-sec fx-earnsec" id="earn">
+    <div class="wrap">
+      <h2 class="fx-h">How you earn more months</h2>
+      <ol class="fx-earn">
+        <li><span class="lbl">Claim your place</span><span class="mo">1 month</span></li>
+        <li><span class="lbl">Add the app to your phone</span><span class="mo">+1 month</span></li>
+        <li><span class="lbl">Finish your first lesson</span><span class="mo">+1 month</span></li>
+        <li><span class="lbl">Join our Telegram group</span><span class="mo">+1 month</span></li>
+        <li><span class="lbl">Use the app 3, 7 and 30 days in a row</span><span class="mo">+4 months</span></li>
+        <li><span class="lbl">Tell us what you think on day 7</span><span class="mo">+2 months</span></li>
+        <li><span class="lbl">Each friend who joins, up to 3</span><span class="mo">+2 each</span></li>
+      </ol>
+      <p class="fine">Up to 12 months in total.</p>
+    </div>
+  </section>
+
+  <section class="fx-sec fx-faq" id="faq">
+    <div class="wrap narrow">
+      <h2 class="fx-h">Questions</h2>
+      <details open><summary>Is it really free?</summary><p>Yes. No payment and no card. You get one month for claiming, and more months for using it.</p></details>
+      <details><summary>What happens when my months end?</summary><p>We offer you the paid program. Your tools and your saved entries stay either way.</p></details>
+      <details><summary>Do you see what I type into the tools?</summary><p>No. What you type into tools stays on your phone. We keep only your stage and the steps you finish.</p></details>
+      <details><summary>Why only 1,000?</summary><p>1,000 is the size of this first group. The counter is real, and nothing here runs on a timer.</p></details>
+      <details><summary>Can I send this to a friend?</summary><p>Yes. Your friend gets her own place, and you both earn months.</p></details>
+    </div>
+  </section>
+
+  <section class="fx-sec fx-final" id="final">
+    <div class="wrap">
+      <h2>Claim your place</h2>
+      <p data-final-line>One place per woman. No payment and no card.</p>
+      <div class="fx-meter" data-meter hidden>
+        <p class="fx-meter-line"><b data-f1k-left></b><span data-f1k-text></span></p>
+        <div class="fx-bar-track" aria-hidden="true"><i data-f1k-bar></i></div>
+      </div>
+      <button type="button" class="btn btn-primary btn-lg" data-claim>Claim my place &rarr;</button>
+    </div>
   </section>
 </main>
 
+<div class="fx-floatbar" data-floatbar hidden>
+  <span data-float-text>Free for a month</span>
+  <button type="button" class="btn btn-primary" data-claim>Claim my place &rarr;</button>
+</div>
+
+<dialog class="fx-sheet" id="fxSheet" aria-labelledby="fxSheetTitle">
+  <div class="fx-sheet-in">
+    <button type="button" class="fx-x" data-sheet-close aria-label="Close">&times;</button>
+    <p class="fx-sheet-title" id="fxSheetTitle">Claim your place</p>
+    <div class="fx-flow-host" data-flow-host="sheet"></div>
+  </div>
+</dialog>
+
 <script src="/assets/js/wg-access.js?v=20261106b"></script>
-<script defer src="/assets/js/wg-first1000.js?v=20261106a"></script>
+<script defer src="/assets/js/wg-first1000-form.js?v=20261107a"></script>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -214,7 +326,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script defer src="/assets/js/wg-consent.js?v=20261024c"></script>
 <script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261106a"></script>
+<script defer src="/assets/js/wg-app.js?v=20261106b"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
 </body>
 </html>

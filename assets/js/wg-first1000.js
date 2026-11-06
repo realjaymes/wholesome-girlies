@@ -1,11 +1,10 @@
-/* Wholesome Girlies: The First 1,000. Three jobs, one file, each only on its own page.
- *   /first-1000          the landing page: the live counter (GET /first1000/status), the stage picker (?stage= preselects),
- *                        and the claim form (POST /first1000/claim, which signs her in). ?invite= goes to the claim.
+/* Wholesome Girlies: The First 1,000. Two jobs, one file, each only on its own page. The landing page and its claim form
+ * are wg-first1000-form.js.
  *   /first-1000/welcome  the thank-you page: her end date, her program and the two steps she can finish now.
  *   /app/                #appFirst: the "Your First 1,000 steps" card for a member, or a one-line offer for a visitor
  *                        who holds no program, while places are left.
- * Everything is written with textContent or .value. Her stage and steps go to the payment server (the consent line on the
- * form says so) and never to the dataLayer: events carry no stage, date or entry. Events: first1000_claim and account_created.
+ * Everything is written with textContent or .value. Her stage and steps go to the payment server and never to the dataLayer:
+ * events carry no stage, date or entry.
  */
 (function (w, d) {
   'use strict';
@@ -37,55 +36,6 @@
   function inviteLink(m) {
     var v = m && m.invite ? String(m.invite) : ''; if (!v) return '';
     return /^https?:\/\//.test(v) ? v : 'https://wholesomegirlies.xyz/first-1000?invite=' + encodeURIComponent(v);
-  }
-
-  // ── landing ──
-  function landing() {
-    var qp = new URLSearchParams(location.search), stage = qp.get('stage') || '', invite = qp.get('invite') || '';
-    var radios = d.querySelectorAll('#f1kStages input'), go = $('f1kGo'), your = $('f1kYour'), form = $('f1kForm'), pick = $('f1kPick'), taken = $('f1kTaken');
-    if (!PROGRAMS[stage]) stage = '';
-    function sync() {
-      Array.prototype.forEach.call(radios, function (r) { r.checked = r.value === stage; });
-      if (stage) { your.hidden = false; your.textContent = 'Your program: ' + PROGRAMS[stage][0]; go.textContent = 'Claim my place →'; }
-      else { your.hidden = true; go.textContent = 'Pick your stage'; }
-    }
-    sync();
-    Array.prototype.forEach.call(radios, function (r) { r.addEventListener('change', function () { stage = r.value; sync(); }); });
-    var left = null;
-    go.addEventListener('click', function () {
-      if (!stage) { $('f1kStages').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
-      $('f1kYour2').textContent = 'Your program: ' + PROGRAMS[stage][0];
-      pick.hidden = true; form.hidden = false; $('f1kName').focus();
-    });
-    $('f1kBack').addEventListener('click', function () { form.hidden = true; pick.hidden = false; });
-    // The counter. If the status call fails the page still works and the server decides at the claim.
-    WGAccess.first1000.status().then(function (s) {
-      if (!s) return;
-      left = s.left; var meter = $('f1kMeter'); meter.hidden = false;
-      $('f1kBar').style.width = Math.min(100, Math.round((s.taken / (s.taken + s.left || 1000)) * 100)) + '%';
-      $('f1kCount').textContent = s.open && s.left > 0 ? s.taken + ' of 1,000 places taken. ' + s.left + ' left.' : 'All 1,000 places are taken.';
-      if (!s.open || s.left <= 0) { pick.hidden = true; form.hidden = true; taken.hidden = false; }
-    });
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var err = $('f1kErr'), email = $('f1kEmail').value.trim(), name = $('f1kName').value.trim(), wa = $('f1kWa').value.trim();
-      function bad(t) { err.textContent = t; err.hidden = false; }
-      if (!name) return bad('Type your first name.');
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return bad('Please enter your full email address and try again.');
-      if (wa.replace(/\D/g, '').length < 7) return bad('Type your WhatsApp number.');
-      if (!$('f1kConsent').checked) return bad('Tick the box to say you agree, and we will save your place.');
-      err.hidden = true; var btn = $('f1kSubmit'); btn.disabled = true; btn.textContent = 'Saving your place...';
-      var body = { name: name, email: email, whatsapp: wa, stage: stage, consent: true }; if (invite) body.invite = invite;
-      WGAccess.first1000.claim(body).then(function (j) {
-        btn.disabled = false; btn.textContent = 'Claim my place';
-        if (j && j.ok) { WGAccess.push('account_created', { account_surface: 'first_1000' }); location.href = '/first-1000/welcome'; return; }
-        var r = j && j.reason;
-        if (r === 'full' || r === 'closed') { form.hidden = true; taken.hidden = false; return; }
-        if (r === 'exists' || r === 'duplicate') return bad('This email or number already has a place. Sign in with your email to open it.');
-        if (j && j.status === 429) return bad('We need to wait 15 minutes before saving another place. Please try again then.');
-        bad('We could not save your place. Check your details and try again.');
-      }).catch(function () { btn.disabled = false; btn.textContent = 'Claim my place'; bad('We could not save your place. Check your internet connection and try again.'); });
-    });
   }
 
   // ── welcome ──
@@ -139,8 +89,7 @@
   }
 
   d.addEventListener('DOMContentLoaded', function () {
-    if ($('f1k')) landing();
-    else if ($('f1kWelcome')) welcome();
+    if ($('f1kWelcome')) welcome();
     appCard();
     d.addEventListener('wg:account', appCard);
   });

@@ -1,4 +1,5 @@
-/* Wholesome Girlies: the First 1,000 landing page. The claim form, one step per screen, plus the page's live counter and "her program" details.
+/* Wholesome Girlies: the First 1,000 landing page. The claim form, one step per screen in a sheet (full screen on a phone, a modal on a
+ * computer), plus the page's live counter and "her program" details.
  *
  * It calls only WGAccess.first1000.status() (the counter) and WGAccess.first1000.claim(body) (the claim, which signs her in).
  * The server calls, the token and the first1000_claim event stay in wg-access.js. This file adds the account_created event the
@@ -6,17 +7,11 @@
  *
  * Her name, email and number live in this file's memory while she fills the form. They are never put in the URL, never saved to
  * localStorage or sessionStorage, and never sent to the dataLayer. All text is written with textContent or .value.
- *
- * Three looks share this flow (?look=a|b|c on the page, set on <html data-look>):
- *   a  the form sits in the hero card
- *   b  the form opens in a full-screen sheet on a phone and a modal on a computer, from every claim button
- *   c  the page opens on "Which stage are you in?"; her pick shows her program, then the steps
  */
 (function (w, d) {
   'use strict';
   var WA = w.WGAccess;
   var html = d.documentElement;
-  var LOOK = html.getAttribute('data-look') || 'b';
 
   var STAGES = [
     { key: 'relationships', who: 'Dating or in love', prog: 'The Wife Material Blueprint', cover: 'wife-material-cover', guide: 'tolu', gw: 392, gh: 620, name: 'Tolu', topic: 'dating' },
@@ -28,7 +23,7 @@
   var BY = {}; STAGES.forEach(function (s) { BY[s.key] = s; });
   var COUNTRIES = [
     ['Nigeria', '234'], ['United Kingdom', '44'], ['United States', '1'], ['Canada', '1'], ['Ghana', '233'], ['South Africa', '27'],
-    ['Kenya', '254'], ['Ireland', '353'], ['United Arab Emirates', '971'], ['Germany', '49'], ['France', '33'], ['Netherlands', '31'], ['Australia', '61']
+    ['Kenya', '254'], ['Ireland', '353'], ['UAE', '971'], ['Germany', '49'], ['France', '33'], ['Netherlands', '31'], ['Australia', '61']
   ];
   var CONSENT = 'I agree that Wholesome Girlies keeps my stage and the steps I finish, to give me my program and send me emails about it. What I type into tools stays on my phone.';
 
@@ -70,28 +65,10 @@
         $('.here', c).hidden = !mine;
         box.appendChild(c);
       });
-      syncTabs();
+      box.scrollLeft = 0;
     }
     var line = $('[data-float-text]');
     if (line) line.textContent = st ? st.prog + ', free for a month' : 'Free for a month';
-  }
-
-  /* ---------- the programs tabs (look c) ---------- */
-  var tabShown = '';
-  function buildTabs() {
-    var tabs = $('[data-tabs]'); if (!tabs) return;
-    STAGES.forEach(function (s) {
-      var b = el('button', 'fx-tab fx-st', s.who); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('data-stage', s.key);
-      b.addEventListener('click', function () { tabShown = s.key; syncTabs(); });
-      tabs.appendChild(b);
-    });
-    tabs.hidden = false;
-  }
-  function syncTabs() {
-    var tabs = $('[data-tabs]'); if (!tabs || tabs.hidden) return;
-    var on = tabShown || S.stage || STAGES[0].key;
-    $$('.fx-tab', tabs).forEach(function (b) { var s = b.getAttribute('data-stage') === on; b.setAttribute('aria-selected', s ? 'true' : 'false'); b.classList.toggle('on', s); });
-    $$('.fx-prog').forEach(function (c) { c.classList.toggle('tab-on', c.getAttribute('data-stage') === on); });
   }
 
   /* ---------- the counter ---------- */
@@ -102,8 +79,8 @@
       var total = (taken + left) || 1000;
       $$('[data-meter]').forEach(function (m) { m.hidden = false; });
       $$('[data-f1k-bar]').forEach(function (b) { b.style.width = Math.min(100, Math.round(taken / total * 100)) + '%'; });
-      $$('[data-f1k-left]').forEach(function (b) { b.textContent = open ? String(left) : ''; });
-      $$('[data-f1k-text]').forEach(function (t) { t.textContent = open ? ' of 1,000 places left. ' + taken + ' taken.' : 'All 1,000 places are taken.'; });
+      $$('[data-f1k-left]').forEach(function (b) { b.textContent = open ? left.toLocaleString('en-US') : ''; });
+      $$('[data-f1k-text]').forEach(function (t) { t.textContent = open ? ' places left of 1,000' : 'All 1,000 places are taken.'; });
       if (!open) { full = true; html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; closeSheet(); }
     });
   }
@@ -132,7 +109,7 @@
     var next = el('button', 'btn btn-primary ff-next', 'Continue'); next.type = 'submit';
     var fine = el('p', 'fine ff-fine');
     root.appendChild(top); root.appendChild(body); root.appendChild(err); root.appendChild(next); root.appendChild(fine);
-    var f = { root: root, top: top, back: back, prog: prog, bar: bar, count: count, body: body, err: err, next: next, fine: fine, step: 0, reveal: false, host: null };
+    var f = { root: root, top: top, back: back, prog: prog, bar: bar, count: count, body: body, err: err, next: next, fine: fine, step: 0, host: null };
     back.addEventListener('click', function () { goBack(); });
     root.addEventListener('submit', function (e) { e.preventDefault(); advance(); });
     return f;
@@ -145,17 +122,15 @@
     f.err.textContent = ''; f.err.hidden = true;
     f.body.textContent = '';
     f.root.setAttribute('data-step', id);
-    f.root.classList.toggle('is-reveal', f.reveal);
-    f.count.textContent = f.reveal ? 'Your program' : 'Step ' + n + ' of ' + steps.length;
+    f.count.textContent = 'Step ' + n + ' of ' + steps.length;
     f.prog.setAttribute('aria-valuemax', String(steps.length)); f.prog.setAttribute('aria-valuenow', String(n));
     f.prog.setAttribute('aria-valuetext', 'Step ' + n + ' of ' + steps.length);
-    f.bar.style.width = (f.reveal ? 8 : Math.round(n / steps.length * 100)) + '%';
-    f.back.hidden = f.step === 0 && !f.reveal && LOOK !== 'c';
+    f.bar.style.width = Math.round(n / steps.length * 100) + '%';
+    f.back.hidden = f.step === 0;
     f.next.hidden = false; f.next.disabled = false;
     f.fine.textContent = 'No payment and no card. One place per email and per phone number.';
     var heading;
-    if (f.reveal) heading = drawReveal(f);
-    else if (id === 'stage') heading = drawStage(f);
+    if (id === 'stage') heading = drawStage(f);
     else if (id === 'name') heading = drawName(f);
     else if (id === 'email') heading = drawEmail(f);
     else heading = drawPhone(f);
@@ -163,7 +138,7 @@
       var tgt = $('[data-focus]', f.body) || heading;
       if (tgt) { try { tgt.focus({ preventScroll: false }); } catch (e) { tgt.focus(); } }
     }
-    if (focus !== false) sendStep(f.reveal ? 1 : n);
+    if (focus !== false) sendStep(n);
   }
 
   function heading(f, text, sub) {
@@ -178,7 +153,7 @@
     var im = el('img'); im.src = guide(st); im.width = st.gw; im.height = st.gh; im.alt = 'Illustration of ' + st.name; row.appendChild(im);
     var tx = el('p'); tx.appendChild(el('small', '', 'Your program')); tx.appendChild(el('b', '', st.prog)); row.appendChild(tx);
     var ch = el('button', 'ff-change', 'Change'); ch.type = 'button';
-    ch.addEventListener('click', function () { S.stageFixed = false; f.step = 0; f.reveal = false; render(); });
+    ch.addEventListener('click', function () { S.stageFixed = false; f.step = 0; render(); });
     row.appendChild(ch);
     f.body.appendChild(row);
   }
@@ -203,25 +178,7 @@
 
   function pickStage(key) {
     S.stage = key; applyStage();
-    if (LOOK === 'c') { flow.reveal = true; setTimeout(function () { render(); }, 160); return; }
     setTimeout(function () { flow.step = 1; render(); }, 160);
-  }
-
-  function drawReveal(f) {
-    var st = BY[S.stage]; f.back.hidden = false;
-    var wrap = el('div', 'ff-reveal fx-st'); wrap.setAttribute('data-stage', st.key);
-    var im = el('img', 'cv'); im.src = cover(st); im.width = 480; im.height = 600; im.alt = st.prog + ' book cover';
-    var tx = el('div', 'tx');
-    var h = el('h2', 'ff-q', st.prog); h.tabIndex = -1;
-    tx.appendChild(el('p', 'who', 'Your program'));
-    tx.appendChild(h);
-    tx.appendChild(el('p', 'ff-sub', 'Free for a month, and you can earn up to 12 months by using it.'));
-    var g = el('div', 'gd'); var gi = el('img'); gi.src = guide(st); gi.width = st.gw; gi.height = st.gh; gi.alt = 'Illustration of ' + st.name; g.appendChild(gi);
-    g.appendChild(el('p', 'fx-bubble', 'Hi, I am ' + st.name + '. I will be your guide for ' + st.topic + '.'));
-    wrap.appendChild(im); wrap.appendChild(tx); wrap.appendChild(g);
-    f.body.appendChild(wrap);
-    f.next.textContent = 'Claim my place →';
-    return h;
   }
 
   function field(f, id, label, type, attrs, hint) {
@@ -283,7 +240,7 @@
     var t = where && $(where, f.body);
     if (t) { t.setAttribute('aria-invalid', 'true'); try { t.focus(); } catch (e) {} }
   }
-  function signInLink(text) { var a = el('a', 'ff-link', text || 'Sign in'); a.href = '/signin/?next=' + encodeURIComponent('/first-1000/'); return a; }
+  function signInLink(text) { var a = el('a', 'ff-link', text || 'Sign in'); a.href = '/signin/?next=' + encodeURIComponent('/first-1000' + (S.stage ? '?stage=' + S.stage : '')); return a; }
 
   function nationalDigits() {
     var c = COUNTRIES[S.country], cc = c[1], n = S.phone.replace(/\D/g, '');
@@ -312,7 +269,6 @@
   function advance() {
     if (busy) return;
     var f = flow;
-    if (f.reveal) { f.reveal = false; f.step = stepsList().indexOf('name'); render(); return; }
     var id = stepsList()[f.step], m = check(id);
     if (m) { var w2 = WHERE[id]; if (id === 'phone' && !phoneOk()) w2 = '#fxPhone'; else if (id === 'phone') w2 = '#fxConsent'; return showErr(m, w2); }
     if (id !== 'phone') { f.step++; render(); return; }
@@ -320,16 +276,13 @@
   }
   function goBack() {
     var f = flow; if (busy) return;
-    if (!f.reveal && f.step === 0 && LOOK === 'c') { f.reveal = true; render(); return; }
-    if (f.reveal) { f.reveal = false; f.step = 0; S.stageFixed = false; render(); return; }
     if (f.step > 0) {
       f.step--;
-      if (LOOK === 'c' && stepsList()[f.step] === 'stage') { f.reveal = true; }
       render();
     }
   }
 
-  function gotoStep(id) { flow.reveal = false; flow.step = Math.max(0, stepsList().indexOf(id)); render(false); }
+  function gotoStep(id) { flow.step = Math.max(0, stepsList().indexOf(id)); render(false); }
 
   function submit() {
     var f = flow, btn = f.next;
@@ -344,9 +297,9 @@
       done();
       var r = j.error || j.reason || '';
       if (r === 'full' || r === 'closed') { full = true; html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; closeSheet(); return; }
-      if (r === 'already_claimed' || r === 'exists' || r === 'duplicate') { gotoStep('email'); return showErr('This email already has a place. Sign in with it to open your program.', '#fxEmail', signInLink('Sign in')); }
-      if (r === 'sign_in_first') { gotoStep('email'); return showErr('This email already has an account. Sign in with it first, then claim your place.', '#fxEmail', signInLink('Sign in first')); }
-      if (r === 'phone_used') { gotoStep('phone'); return showErr('This number already has a place. Use another WhatsApp number, or sign in with the email you used.', '#fxPhone', signInLink('Sign in')); }
+      if (r === 'already_claimed' || r === 'exists') { gotoStep('email'); return showErr('This email already has a place. Sign in with it to open your program.', '#fxEmail', signInLink('Sign in')); }
+      if (r === 'sign_in_first') { gotoStep('email'); return showErr('This email already has an account. Sign in with it, then claim your place.', '#fxEmail', signInLink('Sign in to claim')); }
+      if (r === 'phone_used' || r === 'duplicate') { gotoStep('phone'); return showErr('This number already has a place. Use another WhatsApp number, or sign in with the email you used.', '#fxPhone', signInLink('Sign in')); }
       if (r === 'slow_down' || j.status === 429) return showErr('Too many tries from this connection. Wait a few minutes, then try again.');
       if (r === 'invalid') return showErr('Something in your details did not save. Go back, check each answer, and try again.');
       showErr('We could not save your place. Try again in a moment.');
@@ -355,7 +308,7 @@
     });
   }
 
-  /* ---------- the sheet (look b) and the claim buttons ---------- */
+  /* ---------- the sheet and the claim buttons ---------- */
   var sheet = null;
   function openSheet() {
     if (full || !sheet) return;
@@ -371,16 +324,12 @@
 
   function claimClick() {
     if (full) return;
-    if (LOOK === 'b') { openSheet(); return; }
-    var host = $('[data-flow-host="inline"]');
-    host.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    var t = $('[data-focus], .ff-stage input, .ff-next', host);
-    setTimeout(function () { try { (t || host).focus({ preventScroll: true }); } catch (e) {} }, 350);
+    openSheet();
   }
 
-  /* ---------- the floating claim bar (look b, phones) ---------- */
+  /* ---------- the floating claim bar (phones) ---------- */
   function floatBar() {
-    var bar = $('[data-floatbar]'); if (!bar || LOOK !== 'b' || !('IntersectionObserver' in w)) return;
+    var bar = $('[data-floatbar]'); if (!bar || !('IntersectionObserver' in w)) return;
     var seen = { cta: true, foot: false, final: false };
     function sync() { bar.hidden = full || seen.cta || seen.foot || seen.final || html.classList.contains('fx-sheet-open'); }
     function watch(el2, k) { if (!el2) return; new IntersectionObserver(function (es) { seen[k] = es[0].isIntersecting; sync(); }).observe(el2); }
@@ -393,17 +342,11 @@
     if (!WA) { return; }
     sheet = $('#fxSheet');
     applyStage();
-    if (LOOK === 'c') buildTabs();
     $$('[data-claim]').forEach(function (b) { b.addEventListener('click', claimClick); });
     $$('[data-sheet-close]').forEach(function (b) { b.addEventListener('click', closeSheet); });
     if (sheet) {
       sheet.addEventListener('close', function () { html.classList.remove('fx-sheet-open'); });
       sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
-    }
-    if (LOOK !== 'b') {
-      mount($('[data-flow-host="inline"]'));
-      if (LOOK === 'c' && S.stage) flow.reveal = true;
-      render(false);
     }
     floatBar();
     counter();
