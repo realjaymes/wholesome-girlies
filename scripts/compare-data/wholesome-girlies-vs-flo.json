@@ -34,9 +34,9 @@
     },
     {
       "label": "What does it cost me?",
-      "wg": "The tools need no card. The Trying-to-Conceive Blueprint is our five-part paid plan for women trying for their first baby. It is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
+      "wg": "The tools need no card. The Trying-to-Conceive Blueprint, our five-part plan for women trying for their first baby, is one payment of ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad. There is no subscription and nothing to cancel.",
       "other": "Through the Pass It On Project, Flo gives Android users in Nigeria Premium at no charge for one year. Premium is Flo's paid version. On iPhone, it costs ₦3,900 (about $3) to ₦29,900 (about $22).",
-      "wg_short": "Tools need no card",
+      "wg_short": "One payment, no subscription",
       "other_short": "One year on Android",
       "kind": "even"
     },
@@ -66,7 +66,7 @@
     },
     {
       "label": "Does it speak to Nigerian women?",
-      "wg": "Yes. You see naira and dollar prices and advice for a Nigerian clinic visit.",
+      "wg": "Yes. Prices are in naira and dollars, and the guides answer questions women here ask, like whether goron tula helps fertility. The advice fits a clinic visit in Nigeria.",
       "other": "Flo writes for women worldwide. Nigeria is included in its Pass It On Project.",
       "wg_short": "Written for Nigerians",
       "other_short": "Written for everyone",
@@ -74,9 +74,9 @@
     },
     {
       "label": "Does it guide me while I try?",
-      "wg": "The Trying-to-Conceive Blueprint has five parts. It covers your cycle, preparing, your partner, tests and the wait.",
+      "wg": "Yes. The Blueprint walks you through your cycle, getting your body ready, bringing your husband in, your tests and the wait. It explains tests like AMH, FSH, LH, progesterone and semen analysis in plain words, and tells you when to see a specialist. A bonus part covers PCOS, endometriosis, pregnancy loss and IVF.",
       "other": "You can read a large collection of articles.",
-      "wg_short": "Five-part Blueprint",
+      "wg_short": "Full plan, tests explained",
       "other_short": "Large article collection",
       "kind": "win"
     },
@@ -98,7 +98,7 @@
     },
     {
       "label": "Can I talk to other women?",
-      "wg": "Anyone can join our open Telegram group for tips, polls and app help. Blueprint buyers also get the private Conception community on Telegram for life.",
+      "wg": "Anyone can join our open Telegram group for tips, polls and app help. Blueprint buyers also get the Conception community for life, kept apart from bump-and-baby talk, and an assistant that answers cycle questions at any hour.",
       "other": "Flo's Secret Chats is a moderated chat space inside Flo. Flo says 7 million members use it each month.",
       "wg_short": "Open group, plus buyers' community",
       "other_short": "7 million monthly members",
@@ -145,15 +145,27 @@
     },
     {
       "h": "Written for Nigeria and the diaspora",
-      "b": "Prices show in naira for Nigerian buyers and in dollars for buyers abroad. The advice fits a clinic visit here: take your last three or four period dates, because a clinician finds them more useful than one calculator result."
+      "b": "Prices show in naira for Nigerian buyers and in dollars for buyers abroad. Our guides answer the questions women here ask, like whether goron tula helps fertility. The clinic advice fits a visit in Nigeria: take your last three or four period dates, because a clinician finds them more useful than one calculator result."
     },
     {
-      "h": "You know what to do next",
-      "b": "Pay ₦5,700 early-bird (₦13,700 standard) once, or $12 early-bird ($27 standard) abroad. The Blueprint covers your cycle, preparing, your partner, tests and the wait. Buyers join the private Conception community on Telegram for life. The Blueprint assistant explains lessons and tells you when to see a doctor."
+      "h": "A full plan, paid once",
+      "b": "The Trying-to-Conceive Blueprint is one payment of ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad, with no subscription and nothing to cancel. It walks you through your cycle, getting your body ready, your husband's part, your tests and the wait. It explains AMH, FSH, LH, progesterone and semen analysis in plain words, and a bonus part covers PCOS, endometriosis, pregnancy loss and IVF. Put it to use, and if it is still not right for you, you can ask for a full refund within 30 days."
+    },
+    {
+      "h": "Women who are trying too, and answers at any hour",
+      "b": "Blueprint buyers join the Conception community for life. It is only for women trying to conceive, kept apart from bump-and-baby talk. The Blueprint's assistant answers your cycle and tracking questions at any hour, and tells you when something needs a doctor."
     },
     {
       "h": "Clinic questions to print, and his own checklist",
       "b": "Fertility Appointment Questions lets you tick, add and print. His Fertility Checklist is for your partner to tick himself. Fertility involves both of you."
+    },
+    {
+      "h": "Help with the wait, one week at a time",
+      "b": "The TTC Checklist gives you steps to prepare your body and life, and you tick them off as you go. The Wait Check-in lets you write one line about how the week has been, and it stays on your phone."
+    },
+    {
+      "h": "It stays with you after you conceive",
+      "b": "Wholesome Girlies covers trying to conceive, pregnancy, the weeks after the birth and raising your child. When you get pregnant, the same Girlies app has the Due Date Calculator, a week-by-week tracker and questions to print for your antenatal visits."
     }
   ],
   "other_ahead_title": "Where Flo is ahead",
@@ -168,7 +180,7 @@
     },
     {
       "h": "A bigger library and a longer history",
-      "b": "Flo has many articles and about 70 million monthly users by its own count. If you already entered years of dates there, Flo keeps that history. You would start again with our tools."
+      "b": "Flo has many articles and about 70 million monthly users by its own count. If you already have years of dates in Flo, that history stays there."
     }
   ],
   "reviews": [
@@ -183,11 +195,11 @@
     },
     {
       "h": "Pick the Wholesome Girlies tools",
-      "b": "if you want a calendar with no account, dates only on your phone and reminders in your own phone calendar."
+      "b": "if you want to see your fertile days with no account, keep your dates on your phone, get reminders in your own phone calendar and have one app for pregnancy and after the birth too."
     },
     {
       "h": "Pick the Blueprint",
-      "b": "if you want a plan, questions for the clinic, a checklist for your partner and a community."
+      "b": "if you want a full plan paid once, your tests explained, questions for the clinic, a checklist for your husband and women who are trying too."
     },
     {
       "h": "Use both",

@@ -39,9 +39,9 @@
     },
     {
       "label": "What does it cost me?",
-      "wg": "The tools need no card. The Trying-to-Conceive Blueprint is our five-part paid plan for women trying for their first baby. It costs ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad.",
+      "wg": "The tools need no card. The Trying-to-Conceive Blueprint, our five-part plan for women trying for their first baby, is one payment of ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad. There is no subscription and nothing to cancel.",
       "other": "Purchases cost ₦500 (about $0.40) to ₦69,900 (about $52). Removing ads costs ₦4,900 (about $4). Period Calendar Premium, its paid version, adds predictions, daily fertility details, self-care content, Kegel exercises, themes, pets and no ads.",
-      "wg_short": "Tools need no card",
+      "wg_short": "One payment, no subscription",
       "other_short": "₦500 ($0.40) to ₦69,900 ($52)",
       "kind": "even"
     },
@@ -103,9 +103,9 @@
     },
     {
       "label": "How widely is it used?",
-      "wg": "We are newer and smaller. You get more than 50 tools, games and checklists and more than 20 guides, across five stages from relationships to raising your child. Six of the tools are for trying to conceive.",
+      "wg": "You get more than 50 tools, games and checklists and more than 20 guides, across five stages from relationships to raising your child. Six of the tools are for trying to conceive, and the Girlies app shows a short card each day for your cycle day.",
       "other": "It has 100M+ Google Play downloads and 11,439 Nigerian App Store ratings at 4.8. It says 300 million women use it. You can lock it with a PIN, Face ID or fingerprint.",
-      "wg_short": "Newer, with 50+ tools",
+      "wg_short": "50+ tools, 20+ guides",
       "other_short": "100M+ downloads",
       "kind": "other"
     }
@@ -133,12 +133,28 @@
       "b": "The calculator adds your cycle length to your last period, then counts back 14 days to estimate ovulation. That is the whole sum, and it is shown below."
     },
     {
-      "h": "A plan and clinic questions",
-      "b": "The Trying-to-Conceive Blueprint walks you through your cycle, preparing, your partner, your tests and the wait. Fertility Appointment Questions lets you tick, add and print, and His Fertility Checklist is for your partner to tick himself."
+      "h": "A full plan, paid once",
+      "b": "The Trying-to-Conceive Blueprint is one payment of ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad, with no subscription and nothing to cancel. It walks you through your cycle, getting your body ready, your husband's part, your tests and the wait. It explains AMH, FSH, LH, progesterone and semen analysis in plain words, and a bonus part covers PCOS, endometriosis, pregnancy loss and IVF. Put it to use, and if it is still not right for you, you can ask for a full refund within 30 days."
+    },
+    {
+      "h": "Clinic questions and your husband's checklist",
+      "b": "Fertility Appointment Questions lets you tick the questions you want, add your own and print the list for your clinic visit. His Fertility Checklist goes to your husband, with what he can do for his sperm health and what to ask about a sperm test. He ticks the steps himself."
+    },
+    {
+      "h": "Women who are trying too, and answers at any hour",
+      "b": "Blueprint buyers join the Conception community for life. It is only for women trying to conceive, kept apart from bump-and-baby talk. The Blueprint's assistant answers your cycle and tracking questions at any hour, and tells you when something needs a doctor."
     },
     {
       "h": "Something short for your cycle day",
       "b": "Today's card is a short note on the Girlies app home for your cycle day. It links to the tool or guide behind it. Read it, use a tool or finish a game, and your streak goes up by one day. Under your result, you can ask for a weekly fertility email."
+    },
+    {
+      "h": "Help with the wait, one week at a time",
+      "b": "The TTC Checklist gives you steps to prepare your body and life, and you tick them off as you go. The Wait Check-in lets you write one line about how the week has been, and it stays on your phone."
+    },
+    {
+      "h": "It stays with you after you conceive",
+      "b": "Wholesome Girlies covers trying to conceive, pregnancy, the weeks after the birth and raising your child. When you get pregnant, the same Girlies app has the Due Date Calculator, a week-by-week tracker and questions to print for your antenatal visits."
     }
   ],
   "other_ahead_title": "Where Period Calendar is ahead",
@@ -168,11 +184,11 @@
     },
     {
       "h": "Pick the Wholesome Girlies tools",
-      "b": "if you want a calendar with no account, no ads, dates only on your phone and reminders in your own phone calendar."
+      "b": "if you want to see your fertile days with no account, keep your dates on your phone, get reminders in your own phone calendar and have one app for pregnancy and after the birth too. No ads either."
     },
     {
       "h": "Pick the Blueprint",
-      "b": "if you want a plan, questions for the clinic, a checklist for your partner and a community."
+      "b": "if you want a full plan paid once, your tests explained, questions for the clinic, a checklist for your husband and women who are trying too."
     },
     {
       "h": "Use both",

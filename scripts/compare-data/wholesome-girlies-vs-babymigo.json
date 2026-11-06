@@ -39,7 +39,7 @@
     },
     {
       "label": "Will it guide me week by week?",
-      "wg": "Yes. Five parts cover each week, common concerns, food, scans and tests, then preparing for birth.",
+      "wg": "Yes. The First Pregnancy Plan shows what is happening to you and your baby each week, which symptoms need a call, what you can eat, what your scans and tests mean, and how to get ready for birth and the first days.",
       "other": "You can use its week-by-week page, articles, forum discussions and classes.",
       "wg_short": "Five-part pregnancy plan",
       "other_short": "Week-by-week page",
@@ -47,9 +47,9 @@
     },
     {
       "label": "What does it cost me?",
-      "wg": "The tools need no card. The First Pregnancy Plan is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
+      "wg": "The tools need no card. The First Pregnancy Plan is one payment of ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad. There is no subscription and nothing to cancel.",
       "other": "The forum, articles, tools and directory show no price. PreggClass costs ₦10,000 (about $7.50) a class, beside ₦20,500 (about $15) struck through.",
-      "wg_short": "Tools need no card",
+      "wg_short": "One payment, no subscription",
       "other_short": "₦10,000 ($7.50) per class",
       "kind": "even"
     },
@@ -79,9 +79,9 @@
     },
     {
       "label": "Does it cover life in Nigeria?",
-      "wg": "Yes. It is written for Nigerian women at home and abroad. Prices appear in naira and dollars.",
+      "wg": "Yes. It covers the Nigerian foods you actually eat, like jollof, suya, local fish and zobo, and our guides answer questions like whether tiger nut, bitter kola and cloves are safe in pregnancy. Prices are in naira and dollars.",
       "other": "It lists providers in Lagos, Abuja, Ibadan, Port Harcourt, Kano, Calabar and Kaduna. Ghana and Kenya also appear in its header.",
-      "wg_short": "Written for Nigerians",
+      "wg_short": "Nigerian foods and questions",
       "other_short": "Nigerian provider listings",
       "kind": "even"
     },
@@ -114,11 +114,15 @@
   "wins": [
     {
       "h": "You know what to do each week",
-      "b": "The First Pregnancy Plan takes you from your first week to preparing for birth in five parts. Buyers also get the private community. Add the Girlies app to your phone's home screen, with no app store download. Its tools work with no data."
+      "b": "The First Pregnancy Plan takes you from your first weeks to the first days at home with your baby. It tells you which symptoms are common, which need a call and which mean you go in. It explains your scans and tests, covers labour, the hospital bag and your birth plan, and you join a moderated community of women at your stage for life. Put it to use, and if it is still not right for you, you can ask for a full refund within 30 days."
     },
     {
       "h": "One payment",
-      "b": "The Plan is ₦5,700 early-bird (₦13,700 standard), paid once, or $12 early-bird ($27 standard) for buyers abroad. Nothing recurs."
+      "b": "The Plan is ₦5,700 early-bird (₦13,700 standard), paid once, or $12 early-bird ($27 standard) abroad. There is no subscription and nothing to cancel."
+    },
+    {
+      "h": "Food advice for what you actually eat",
+      "b": "The Plan covers jollof, suya, local fish, zobo and herbal mixtures. The Safe Foods Checklist covers moi moi, ugu and beans, and our guide answers whether tiger nut, bitter kola and cloves are safe in pregnancy."
     },
     {
       "h": "The tools need no account and no card",
@@ -139,6 +143,10 @@
     {
       "h": "Something short for your pregnancy week",
       "b": "Today's card is a one or two sentence note on the Girlies app home for your pregnancy week. It links to the tool or guide behind it. Under your due date result, you can ask for a weekly pregnancy email."
+    },
+    {
+      "h": "It stays with you after the birth",
+      "b": "Wholesome Girlies also covers the weeks after the birth and raising your child, so the same Girlies app keeps working for you once your baby arrives."
     }
   ],
   "other_ahead_title": "Where Babymigo is ahead",
