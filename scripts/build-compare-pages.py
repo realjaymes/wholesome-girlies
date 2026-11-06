@@ -26,7 +26,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "scripts", "compare-data")
 SITE = "https://wholesomegirlies.xyz"
-CSS_VERSION = "20261106c"
+CSS_VERSION = "20261107a"
 OG_VERSION = "20261027a"
 # One published guide per stage supplies the page shell (fertility) and the stage's program card.
 SHELL = "fertility/guides/fertile-window-explained.html"
@@ -170,8 +170,7 @@ def cards(items, ahead=False):
 
 # ---------------------------------------------------------------- pick cards (alternatives picks and best-of apps)
 # Each card: rank, name, a "best for" label, the rating line, "Choose it if", what you can do (ticks), what it cannot do
-# (crosses) and the price. CARD_OPTIONS=1 writes looks A, B and C for ?card=a|b|c on localhost; only the chosen look ships.
-CARD_OPTIONS = os.environ.get("CMP_CARD_OPTIONS") == "1"
+# (crosses) and the price, all visible (James's pick, look A).
 
 
 def _li(items, ok):
@@ -193,31 +192,8 @@ def card_a(x):
             f'<p class="pk-price"><b>What it costs in Nigeria</b> {e(x["price"])}</p></div>')
 
 
-def card_b(x):
-    return (f'<div class="pk pk-b{" first" if x["rank"] == 1 else ""}">{_head(x)}'
-            f'<p class="pk-suits"><b>Choose it if</b> {e(x["suits"])}</p>'
-            f'<details><summary>What it can and cannot do, and the price<span class="tv-more">Open</span></summary>'
-            f'<div class="pk-body"><h4>What you can do</h4>{_li(x["can"], True)}<h4>What it cannot do</h4>{_li(x["cannot"], False)}'
-            f'<p class="pk-price"><b>What it costs in Nigeria</b> {e(x["price"])}</p></div></details></div>')
-
-
-def card_c(x):
-    first = x["rank"] == 1
-    return (f'<div class="pk pk-c{" first" if first else ""}">{_head(x)}'
-            f'<p class="pk-suits">{e(x["suits"])}</p>{_li(x["can"], True)}{_li(x["cannot"], False)}'
-            f'<p class="pk-price">{e(x["price"])}</p></div>')
-
-
-CARD_SCRIPT = ('<script>(function(){var m=location.search.match(/[?&]card=([abc])/);'
-               'document.documentElement.setAttribute("data-card",m?m[1]:"a");})();</script>')
-
-
 def pick_cards(items):
-    if not CARD_OPTIONS:
-        return "".join(card_a(x) for x in items)
-    return (CARD_SCRIPT + '<div class="pk-pick pk-pa">' + "".join(card_a(x) for x in items) + "</div>"
-            + '<div class="pk-pick pk-pb">' + "".join(card_b(x) for x in items) + "</div>"
-            + '<div class="pk-pick pk-pc"><div class="pk-grid">' + "".join(card_c(x) for x in items) + "</div></div>")
+    return "".join(card_a(x) for x in items)
 
 
 def related(items):
