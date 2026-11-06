@@ -198,7 +198,7 @@
   // wg_name_v1 (her name) is not a saved entry either.
   // Keys that are not her entries never count: the spin button's last game, the hidden resume pill, location and
   // first-visit markers, consent, her name, finished games, the answer to "Is this still right?" and the install test's group.
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$)(?!.*_home$)/;
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|streak_|capture_|push_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$)(?!.*_home$)/;
   // The install timing test (wg_install_test_v1, {v, g, s}): a random group per device, drawn the first time the bar could show.
   // Group "now" sees the bar after her first saved tool, as always. Group "later" sees it after a second saved tool or on a
   // later visit (a visit is one browser session). With remembering off the group cannot be kept, so each page draws again.
