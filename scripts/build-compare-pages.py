@@ -80,7 +80,7 @@ def shell(stage):
     tail_css = ref[ref.index('<link rel="stylesheet" href="/assets/vendor/cookieconsent'): ref.index("</head>")]
     tail_css = tail_css.rstrip("\n") + f'\n<link rel="stylesheet" href="/assets/css/wg-compare.css?v={CSS_VERSION}">\n'
     body_pre = ref[ref.index("</head>"): ref.index("<main>")]
-    foot = ref[ref.index("</main>"):].replace("/assets/js/member-cta.js\"", "/assets/js/member-cta.js?v=20261008a\"")
+    foot = ref[ref.index("</main>"):]
     head_open = re.sub(r'<html lang="en"[^>]*>', f'<html lang="en" data-stage="{stage}">', head_open)
     sg = read(STAGE_GUIDE[stage])
     m = re.search(r'<div class="card program-cta">.*?</div>', sg, re.S)

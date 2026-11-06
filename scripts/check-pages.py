@@ -80,7 +80,7 @@ def kind(p):
         return "ABOUT"
     if p == "index.html":
         return "HOME"
-    if p in ("app/index.html", "offline.html", "signin/index.html"):  # /signin is part of the app: noindex, no cards
+    if p in ("app/index.html", "offline.html", "signin/index.html", "payment-received/index.html", "first-1000/welcome/index.html"):  # sign-in, payment received and the welcome page are part of the app: noindex, no cards
         return "APP"
     return "HUB"
 
@@ -88,6 +88,10 @@ def kind(p):
 KIND = {p: kind(p) for p in PAGES}
 NOINDEX_KINDS = {"GO", "TY", "READER", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
+# Built on a branch and not live yet: sitemap.xml is edited only by wg_release.py on release day, so these skip the sitemap rule.
+NOT_YET_RELEASED = {"first-1000/index.html"}
+# "Free" is allowed on the First 1,000 pages only (the offer is free for a month).
+FREE_OK = {"first-1000/index.html", "first-1000/welcome/index.html"}
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
 
 
@@ -239,7 +243,7 @@ for p in PAGES:
     m = re.search(r'<link rel="canonical" href="([^"]+)"', s)
     if not m or m.group(1) != u:
         fail(p, f"canonical must be its own clean URL ({u})")
-    if u not in locs:
+    if u not in locs and p not in NOT_YET_RELEASED:
         fail(p, "indexable page missing from sitemap.xml (wg_release.py adds pages on release day)")
     for prop in ["og:type", "og:site_name", "og:title", "og:description", "og:url", "og:image"]:
         if f'property="{prop}"' not in s:
@@ -597,26 +601,13 @@ if err:
     fail(_path, err)
 elif _new != _old:
     fail(_path, "app home tool data (APP_DATA) is stale: run python3 scripts/build-program-homes.py")
-# Program codes (journey F) and per-program manifests (journey C).
-_seen_codes = {}
+# Per-program manifests (journey C). Programs open by email sign-in, so no program code may appear on any page.
 for slug, h in HOMES["homes"].items():
-    code = h.get("code")
-    if not code:
-        fail("assets/data/program-homes.json", f"{slug} has no program code")
-        continue
-    if re.search(r"[01OIL]", code.split("-", 1)[-1]) or not homes.CODE_RE.match(code):
-        fail("assets/data/program-homes.json", f"{slug} code {code} must be PREFIX-XXXX with no 0, O, 1, I or L")
-    if code in _seen_codes:
-        fail("assets/data/program-homes.json", f"{slug} and {_seen_codes[code]} share the code {code}")
-    _seen_codes[code] = slug
+    if "code" in h:
+        fail("assets/data/program-homes.json", f"{slug} still carries a program code; programs open by email sign-in")
     mpath, mold, mnew, _e = homes.expected_manifest(slug)
     if mold != mnew:
         fail(mpath, "per-program manifest is missing or stale: run python3 scripts/build-program-homes.py")
-if os.path.exists("app/index.html"):
-    _app = read("app/index.html")
-    for code in _seen_codes:
-        if code in _app or code.replace("-", "") in _app:
-            fail("app/index.html", "a plaintext program code is in the app home; APP_DATA holds only hashes")
 for p in PAGES:
     if KIND[p] == "TY" and p[len("programs/"):-len("/thank-you.html")] not in HOMES["homes"]:
         fail(p, "program home is missing from assets/data/program-homes.json")
@@ -924,7 +915,7 @@ def ratchet_counts():
         if k == "MOCKUP":
             continue
         text = visible(s)
-        if k != "LEGAL":
+        if k != "LEGAL" and p not in FREE_OK:
             add("free: never call the tools or content free", p, len(re.findall(r"(?<!-)(?<!set you )\bfree\b(?! of| yourself)", text, flags=re.I)))
         add("dashes: no em or en dashes in copy", p, len(re.findall(r"[—–]", text)))
         d = re.search(r'<meta name="description" content="([^"]*)"', s)
