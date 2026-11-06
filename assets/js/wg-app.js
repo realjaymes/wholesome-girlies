@@ -374,6 +374,10 @@
   function appFooter() {
     var f = d.querySelector('footer.site-footer');
     if (!f) return;
+    // TEMPORARY review switch (local host only): ?foot=full keeps the full site footer so it can be compared with the two-line one.
+    if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname) && /[?&]foot=full\b/.test(w.location.search)) {
+      f.style.paddingBottom = 'calc(var(--wg-nav-h, 64px) + 24px)'; return;
+    }
     if (f.querySelector('.wg-app-foot')) return;
     style();
     var line = d.createElement('div'); line.className = 'wg-app-foot';

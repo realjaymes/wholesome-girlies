@@ -23,7 +23,7 @@
     var t = host.querySelector('.ab-title'), s = host.querySelector('.ab-sub');
     if (WGAccess.signedIn()) {
       t.textContent = 'Signed in as ' + (WGAccess.email() || 'your account');
-      s.textContent = 'Your programs, name and progress · Sign out';
+      s.textContent = 'View your programs, name and progress, or sign out';
       host.setAttribute('href', '#account');
     } else {
       t.textContent = 'Sign in to your programs';
@@ -76,7 +76,7 @@
       function s1() {
         inn.textContent = '';
         inn.appendChild(el('h3', '', 'Make the app yours'));
-        inn.appendChild(el('p', '', 'Save your streak, saved tools and reading place to an account, so they come back if you lose or change your phone.'));
+        inn.appendChild(el('p', '', 'Save your streak, tools and reading place to your account. They will come back when you sign in on a new phone.'));
         var f = el('form'); f.noValidate = true;
         var l1 = el('label', '', 'Your first name'); l1.setAttribute('for', 'wgMyName');
         var n = el('input'); n.type = 'text'; n.id = 'wgMyName'; n.maxLength = 30; n.autocomplete = 'given-name'; n.placeholder = 'e.g. Ada';
@@ -132,7 +132,7 @@
       function s3() {
         inn.textContent = '';
         inn.appendChild(el('h3', '', 'You are in'));
-        inn.appendChild(el('p', '', 'Your name, streak, saved tools and reading place are saved to your account now. They follow you to any phone you sign in on.'));
+        inn.appendChild(el('p', '', 'Your account now has your name, streak, saved tools and reading place. They will appear on any phone you sign in on.'));
         var done = el('button', 'btn btn-primary', 'Back to the app'); done.type = 'button'; done.addEventListener('click', function () { location.reload(); }); inn.appendChild(done);
       }
       s1();

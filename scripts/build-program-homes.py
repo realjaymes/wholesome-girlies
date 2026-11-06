@@ -40,7 +40,7 @@ JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"><
 # Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows the
 # "Payment received" card until the payment server confirms the payment (Selar to Bachs Migration Plan).
 # It does nothing without ?order=.
-ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261106a"></script>'
+ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261106b"></script>'
 ACCESS_TAG = '<script defer src="/assets/js/wg-access.js?v=20261106b"></script>'
 STEP_TAG = '<script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'

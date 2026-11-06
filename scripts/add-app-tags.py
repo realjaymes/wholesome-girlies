@@ -18,7 +18,7 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-APP_JS_VERSION = "20261106a"
+APP_JS_VERSION = "20261106b"
 IDEAS_JS_VERSION = "20261012a"
 HEAD = ('<link rel="manifest" href="/manifest.webmanifest">\n'
         '<meta name="theme-color" content="#6E7A3F">\n'

@@ -149,7 +149,7 @@
       a.appendChild(img); a.appendChild(document.createTextNode(p.name)); li.appendChild(a); ul.appendChild(li);
     });
     var plain = !list.length;
-    document.getElementById("doneLead").textContent = plain ? "Your name, your streak, your saved tools and the games you finished are saved to your account, and they follow you to any phone."
+    document.getElementById("doneLead").textContent = plain ? "Your account saves your name, streak, saved tools and finished games. They follow you to any phone you sign in on."
       : "This phone now has your programs. You stay signed in while you keep using it.";
     document.getElementById("doneNote").hidden = plain;
     document.getElementById("doneApp").hidden = !plain;
@@ -159,11 +159,11 @@
     var m = acct && acct.member, over = m && m.ends && Date.parse(m.ends) < Date.now();
     var h = programInfo, name = h ? h.name : "Your program";
     document.getElementById("endedName").textContent = name;
-    document.getElementById("endedTitle").textContent = over ? "Your free months have ended" : "Not active on this account";
+    document.getElementById("endedTitle").textContent = over ? "Your First 1,000 months have ended" : "Not active on this account";
     if (h) document.getElementById("endedImg").src = coverOf(h.program);
     var who = acct && acct.name ? ", " + acct.name : "";
     document.getElementById("endedLead").textContent = over
-      ? "Thank you for being one of the first 1,000" + who + ". Keep the program, and your place in it, by getting it today. Your tools, games and saved entries are all still here."
+      ? "Thank you for being one of the first 1,000" + who + ". Get the program today to keep it and your place in it. Your tools, games and saved entries are still here."
       : "This program is no longer active for " + (acct && acct.email ? acct.email : "this account") + ". Your tools, games and saved entries are all still here.";
     document.getElementById("endedBuy").textContent = "Get " + (h ? h.name.replace(/^The /, "the ") : "the program") + " →";
     document.getElementById("endedBuy").href = "/programs/" + (h ? h.program : slug.replace(/-diaspora$/, ""));

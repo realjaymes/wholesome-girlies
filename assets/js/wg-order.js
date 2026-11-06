@@ -155,7 +155,7 @@
       return wrap;
     }
     function render() {
-      say('Payment received', ['We are setting up your program. This usually takes a few minutes. Keep this page open and it opens by itself.',
+      say('Payment received', ['We are setting up your program. This usually takes a few minutes. Keep this page open. Your program will open by itself.',
         email ? 'We will also email ' + email + ' the moment it is ready, so you can close this page if you need to.' : 'We will also email you the moment it is ready, so you can close this page if you need to.'], 1, null, other());
     }
     function ready(j) {

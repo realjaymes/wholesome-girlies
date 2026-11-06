@@ -109,13 +109,13 @@
     if (m) {
       var card = el('section', 'card f1k-app'); card.setAttribute('aria-label', 'Your First 1,000 steps');
       card.appendChild(el('h2', '', 'Your First 1,000 steps'));
-      var meta = el('div', 'meta'); meta.appendChild(el('span', '', m.ends ? 'Free until ' + fmtDate(m.ends) : 'Free for a month')); meta.appendChild(el('span', '', months(m) + ' of 12 months earned')); card.appendChild(meta);
+      var meta = el('div', 'meta'); meta.appendChild(el('span', '', m.ends ? 'Your free month runs until ' + fmtDate(m.ends) : 'You have one free month')); meta.appendChild(el('span', '', 'You have earned ' + months(m) + ' of 12 months')); card.appendChild(meta);
       var ul = el('ul'); var first = el('li', 'done'); first.appendChild(el('span', '', 'Claim your place')); first.appendChild(el('b', '', '1')); ul.appendChild(first);
       STEPS.forEach(function (s) { var li = el('li', isDone(m, s[0]) ? 'done' : ''); li.appendChild(el('span', '', s[1])); li.appendChild(el('b', '', '+' + s[2])); ul.appendChild(li); });
       card.appendChild(ul);
       var link = inviteLink(m);
       if (link) {
-        card.appendChild(el('p', '', 'Invite a friend, +2 months each (up to 3)'));
+        card.appendChild(el('p', '', 'You earn 2 months for each friend who joins, up to 3 friends.'));
         var row = el('div', 'row');
         var wa = el('a', 'btn btn-primary', 'Send on WhatsApp'); wa.target = '_blank'; wa.rel = 'noopener';
         wa.href = 'https://wa.me/?text=' + encodeURIComponent('I am getting a Wholesome Girlies program free as one of the first 1,000 women. You can too: ' + link);
@@ -132,7 +132,7 @@
     WGAccess.first1000.status().then(function (s) {
       if (!s || !s.open || s.left <= 0) return;
       var card = el('section', 'card f1k-app'); card.appendChild(el('h2', '', 'Get a program free'));
-      card.appendChild(el('p', '', 'For the first 1,000 women. ' + s.left + ' places left.'));
+      card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + s.left + ' places are left.'));
       var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first-1000'; card.appendChild(a);
       host.appendChild(card); host.hidden = false;
     });
