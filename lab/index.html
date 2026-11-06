@@ -103,6 +103,7 @@ button.big{background:var(--rust);text-align:center}
   var GROUP_UI = function(s){ s.wg_streak_ui_v1 = JSON.stringify({v: 1, first: day(-6), days: [1, 2, 3, 4, 5, 6].map(function(n){ return day(-n); }), rule: day(-6), toast: '', stage: ''}); };
   function streak6(s){ s.wg_streak_v1 = JSON.stringify({v: 1, count: 6, best: 6, last_day: day(-1), rest_used_week: null, milestones: [3]}); GROUP_UI(s); }
   function reading(s, slug, n, minsAgo){ s['wg_read_' + slug] = JSON.stringify({done: {}, n: n, at: Date.now() - (minsAgo || 0) * 60000}); }
+  // The free woman reads the place count from the local payment server on 8787, because the live server refuses localhost.
   // A signed-in phone from its cached account. wg_pay_api points at a dead local port so the app cannot reach a server and drop the fake session.
   function signedIn(s, programs, member){
     var acct = {email: 'lab@example.com', name: '', programs: programs.map(function(p){ return {slug: p[0], home: 'https://wholesomegirlies.xyz/programs/' + p[0] + '/thank-you', ends: p[1] || undefined}; }), member: member || undefined};
@@ -110,7 +111,7 @@ button.big{background:var(--rust);text-align:center}
   }
   var APPH = '/app/?preview=installed', BAG = '/pregnancy/tools/hospital-bag-checklist';
   var GROUPS = [
-    {id: 'sgfree', title: 'Streak group: a free woman (day 6, pregnant)', set: function(s){ streak6(s); s.wg_stage_pregnancy_v1 = JSON.stringify({v: 1, due: day(120)}); s.wg_stage_check_v1 = JSON.stringify({v: 1, due: day(120)}); },
+    {id: 'sgfree', title: 'Streak group: a free woman (day 6, pregnant)', set: function(s){ streak6(s); s.wg_pay_api = 'http://localhost:8787'; s.wg_stage_pregnancy_v1 = JSON.stringify({v: 1, due: day(120)}); s.wg_stage_check_v1 = JSON.stringify({v: 1, due: day(120)}); },
       expect: 'The card has no lesson line. Tick an item on the Hospital Bag Checklist: the 7 days sheet says you could get a program free as one of the first 1,000 women, with Claim my place. The app home offer carries an Already bought? Sign in link. The buttons with a number pretend only 3 places are left, or none (the sheet then points to the pregnancy program).',
       go: [['App home', APPH], ['Hospital Bag Checklist, then the 7 day sheet', BAG], ['App home, 3 places left', APPH + '&f1kleft=3'], ['Checklist, 7 day sheet with 3 places left', BAG + '?f1kleft=3'], ['Checklist, 7 day sheet with no places left', BAG + '?f1kleft=0']]},
     {id: 'sgmember', title: 'Streak group: a First 1,000 member (day 6)', set: function(s){ streak6(s); signedIn(s, [['first-pregnancy-plan', day(200) + 'T00:00:00Z']], {stage: 'pregnancy', ends: day(200) + 'T00:00:00Z', steps: {claim: day(-3) + 'T00:00:00Z'}, invite: 'LAB'}); flag(s, HOMES.preg); },
