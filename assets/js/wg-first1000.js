@@ -36,6 +36,14 @@
     if (isDone(m, 'interview')) n += 3;
     return Math.min(12, n);
   }
+  // Day 7 after her claim opens the feedback step. On localhost ?f1kday=N pretends today is day N (a check only, never on the live site).
+  function dayOf(m) {
+    var c = m && m.steps && !Array.isArray(m.steps) ? Date.parse(m.steps.claim) : NaN;
+    if (isNaN(c)) return 0;
+    var q = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? /[?&]f1kday=(\d{1,3})/.exec(location.search) : null;
+    if (q) return +q[1];
+    return Math.floor((Date.now() - c) / 86400000) + 1;
+  }
   function inviteLink(m) {
     var v = m && m.invite ? String(m.invite) : ''; if (!v) return '';
     return /^https?:\/\//.test(v) ? v : 'https://wholesomegirlies.xyz/first-1000?invite=' + encodeURIComponent(v);
@@ -64,7 +72,15 @@
       card.appendChild(el('h2', '', 'Your First 1,000 steps'));
       var meta = el('div', 'meta'); meta.appendChild(el('span', '', m.ends ? 'Your free month runs until ' + fmtDate(m.ends) : 'You have one free month')); meta.appendChild(el('span', '', 'You have earned ' + months(m) + ' of 12 months')); card.appendChild(meta);
       var ul = el('ul'); var first = el('li', 'done'); first.appendChild(el('span', '', 'Claim your place')); first.appendChild(el('b', '', '1')); ul.appendChild(first);
-      STEPS.forEach(function (s) { var li = el('li', isDone(m, s[0]) ? 'done' : ''); li.appendChild(el('span', '', s[1])); li.appendChild(el('b', '', '+' + s[2])); ul.appendChild(li); });
+      STEPS.forEach(function (s) {
+        var done = isDone(m, s[0]), li = el('li', done ? 'done' : '');
+        if (s[0] === 'feedback_d7' && !done) {
+          li.setAttribute('data-f1k-step', 'feedback_d7');
+          if (dayOf(m) >= 7) { var fa = el('a', '', s[1]); fa.href = '/first-1000/feedback'; li.appendChild(fa); }
+          else { var sp = el('span', '', s[1]); sp.appendChild(el('small', '', 'Opens on day 7')); li.appendChild(sp); }
+        } else li.appendChild(el('span', '', s[1]));
+        li.appendChild(el('b', '', '+' + s[2])); ul.appendChild(li);
+      });
       card.appendChild(ul);
       var link = inviteLink(m);
       if (link) {

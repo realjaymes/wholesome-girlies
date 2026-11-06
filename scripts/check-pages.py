@@ -80,7 +80,7 @@ def kind(p):
         return "ABOUT"
     if p == "index.html":
         return "HOME"
-    if p in ("app/index.html", "offline.html", "signin/index.html", "payment-received/index.html", "first-1000/welcome/index.html"):  # sign-in, payment received and the welcome page are part of the app: noindex, no cards
+    if p in ("app/index.html", "offline.html", "signin/index.html", "payment-received/index.html", "first-1000/welcome/index.html", "first-1000/feedback/index.html"):  # sign-in, payment received and the welcome page are part of the app: noindex, no cards
         return "APP"
     return "HUB"
 
@@ -91,7 +91,7 @@ INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 # Built on a branch and not live yet: sitemap.xml is edited only by wg_release.py on release day, so these skip the sitemap rule.
 NOT_YET_RELEASED = {"first-1000/index.html"}
 # "Free" is allowed on the First 1,000 pages only (the offer is free for a month).
-FREE_OK = {"first-1000/index.html", "first-1000/welcome/index.html"}
+FREE_OK = {"first-1000/index.html", "first-1000/welcome/index.html", "first-1000/feedback/index.html"}
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
 
 

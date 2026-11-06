@@ -255,6 +255,15 @@
           return adopt(j).then(function (a) { a.ok = true; return a; });
         });
       },
+      // The day 7 feedback form. The server keeps her first answers only and adds the feedback step (2 months) once, while her access
+      // is active. On success her account is read again, so the new end date and the step show at once. The event carries no answers.
+      feedback: function (answers) {
+        return authed('POST', '/member/feedback', { answers: answers }).then(function (j) {
+          if (!j.ok) return j;
+          push('member_feedback');
+          return sync(true).then(function () { return j; });
+        });
+      },
       // Each step counts once on the server; the answer carries the new end date and the steps she has finished.
       step: function (step) {
         return authed('POST', '/member/step', { step: step }).then(function (j) {

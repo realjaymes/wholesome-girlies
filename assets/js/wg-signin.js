@@ -14,7 +14,7 @@
   // A locked program page sends ?program=<slug> (and ?next=<the page she asked for>), and the screen then names that program.
   var locked = /^[a-z0-9-]+$/.test(params.get("program") || "");
   var slug = locked ? params.get("program") : "";
-  var next = /^\/programs\/[a-z0-9-]+\/(thank-you|read)$/.test(params.get("next") || "") ? params.get("next") : "";
+  var next = /^(\/programs\/[a-z0-9-]+\/(thank-you|read)|\/first-1000\/(welcome|feedback))$/.test(params.get("next") || "") ? params.get("next") : "";
   var banner = main.querySelector(".signin-card > .signin-program");
   var bannerReady = false; // the banner waits for the program's name, so it never flashes the wrong program
   var programInfo = null;
@@ -134,6 +134,8 @@
     if (live || demo) WGAccess && WGAccess.push && WGAccess.push("app_program_added", {});
     var want = next && list.filter(function (p) { return next.indexOf("/programs/" + p.slug + "/") === 0; })[0];
     if (want) return location.replace(next);
+    // The First 1,000 pages (the welcome page and the day 7 feedback form) are for a signed-in account, not for a program.
+    if (next && /^\/first-1000\//.test(next) && j.token && !demo) return location.replace(next);
     if (locked) { var one = list.filter(function (p) { return p.slug === slug; })[0]; if (one) return location.replace(one.url); }
     if (list.length === 1 && !demo) return location.replace(list[0].url);
     done(list, acct);

@@ -17,3 +17,6 @@
 .f1k-app li b{white-space:nowrap}
 .f1k-app .row{display:flex;gap:8px;flex-wrap:wrap}
 .f1k-app .row .btn{flex:1 1 140px;text-align:center}
+
+.f1k-app li small{display:block;font-weight:700;opacity:.75;font-size:.8rem}
+.f1k-app li a{font-weight:800;text-decoration:underline}
