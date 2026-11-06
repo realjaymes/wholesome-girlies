@@ -85,3 +85,26 @@ self.addEventListener("fetch", (event) => {
     })());
   }
 });
+
+// Web Push (the streak reminder). The server sends {title, body, url}; the text is only ever a reminder to open the app.
+self.addEventListener("push", (event) => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (e) {}
+  const title = data.title || "Girlies";
+  event.waitUntil(self.registration.showNotification(title, {
+    body: data.body || "Today’s card is ready.",
+    icon: "/assets/img/icon-192.png",
+    badge: "/assets/img/icon-192.png",
+    data: { url: data.url || "/app/" },
+  }));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "/app/";
+  event.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of all) { if ("focus" in c) { try { await c.navigate(url); } catch (e) {} return c.focus(); } }
+    return self.clients.openWindow(url);
+  })());
+});

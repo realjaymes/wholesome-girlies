@@ -200,7 +200,7 @@
   // wg_name_v1 (her name) is not a saved entry either.
   // Keys that are not her entries never count: the spin button's last game, the hidden resume pill, location and
   // first-visit markers, consent, her name, finished games, the answer to "Is this still right?" and the install test's group.
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$|session_v1$|account_v1$|acct_|f1k_|pay_api$|sync_at$|home_hint$)(?!.*_home$)/;
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|streak_|capture_|push_|session_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$|session_v1$|account_v1$|acct_|f1k_|pay_api$|sync_at$|home_hint$)(?!.*_home$)/;
   // wg_session_v1 (the sign-in token), wg_account_v1 (a copy of her account), wg_acct_* and wg_f1k_* (the plain account and First 1,000
   // markers) are not saved entries either, and none of them ever goes into a backup.
   // The install timing test (wg_install_test_v1, {v, g, s}): a random group per device, drawn the first time the bar could show.

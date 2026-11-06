@@ -87,6 +87,18 @@ button.big{background:var(--rust);text-align:center}
   var GIRLS = '/relationships/tools/girls-girl-quiz', HUSBAND = '/relationships/tools/is-he-husband-material',
       MUM = '/pregnancy/tools/what-kind-of-mum', PARENT = '/parenting/tools/which-nigerian-parent';
 
+  // ---- streaks: a pregnant woman at week 22, with the streak she has built (count, days since her last day) ----
+  function streakSet(count, last, restWeek){
+    return function(s){
+      var days = [], i;
+      for (i = 1; i <= Math.min(count, 6); i++) days.push(day(last - i + 1));
+      s.wg_streak_v1 = JSON.stringify({v: 1, count: count, best: count, last_day: day(last), rest_used_week: null, milestones: count >= 3 ? [3] : []});
+      s.wg_streak_ui_v1 = JSON.stringify({v: 1, first: day(-count), days: days, rule: day(-count), toast: '', stage: ''});
+      s.wg_stage_pregnancy_v1 = JSON.stringify({v: 1, due: day(120)});
+      s.wg_stage_check_v1 = JSON.stringify({v: 1, due: day(120)});
+    };
+  }
+
   var SCENARIOS = [
     {id: 'new', title: 'New visitor, nothing saved', set: function(s){},
       expect: 'The five stage cards under Wherever you are, start here. No program picks. A What should we call you? card under the greeting, with Save and Not now (once only).',
@@ -142,6 +154,28 @@ button.big{background:var(--rust);text-align:center}
     {id: 'nameskip', title: 'Name skipped', set: function(s){ s.wg_name_v1 = JSON.stringify({v: 1, name: '', asked: true}); },
       expect: 'The app home shows no What should we call you? card and no name in the greeting. Under Back up or restore she can still add a name, and Remove my name is not shown.',
       go: [['Open the app home, as the installed app', '/app/?preview=installed']]}
+    ,
+    {id: 'streak1', title: 'Streak day 1: the first open', set: function(s){},
+      expect: 'The app home, as the installed app, shows a Start your streak card with the four things that count and Miss one day a week and your streak is safe, then a card asking which stage you are in. Pick Pregnancy and add a due date in the Due Date Calculator to get a card for your week.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed']]},
+    {id: 'streak6', title: 'Streak day 6, pregnant (week 22)', set: streakSet(6, -1, 0),
+      expect: 'Today first: Today, week 22, the card text, Read today\'s card, then seven circles with six ticked, then 6 days in a row. Read today\'s card to make it 7. Best: 6. Press Read today\'s card and the count becomes 7. Open the Hospital Bag Checklist instead and tick an item: Day 7 done. See you tomorrow. shows for three seconds, then the 7 day sheet.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed'], ['Open the Hospital Bag Checklist', '/pregnancy/tools/hospital-bag-checklist']]},
+    {id: 'streakrest', title: 'Streak: the rest day was used', set: streakSet(10, -2, 0),
+      expect: 'The app home says You missed yesterday\'s weekday, so we used this week\'s rest day. Your 10-day streak is safe. One circle in the strip is striped. Do one thing and it becomes 11.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed']]},
+    {id: 'streakended', title: 'Streak ended after 12 days', set: streakSet(12, -4, 0),
+      expect: 'No guilt: Your last streak was 12 days. That is your best, and it stays. Read today\'s card to start a new one. Reading the card starts a new streak at 1 and the best stays 12.',
+      go: [['Open the app home, as the installed app', '/app/?preview=installed']]},
+    {id: 'streak7', title: 'Streak: the 7-day milestone', set: streakSet(6, -1, 0),
+      expect: 'Open the Hospital Bag Checklist, tick an item and wait: the toast, then the 7 days sheet with the ladder (3, 7, 14, 30) and Share my 7 days. The share card says 7 days in a row with Wholesome Girlies and nothing about your stage.',
+      go: [['Open the Hospital Bag Checklist', '/pregnancy/tools/hospital-bag-checklist'], ['Open the app home, as the installed app', '/app/?preview=installed']]},
+    {id: 'streak3', title: 'Streak: day 3 and the reminder', set: streakSet(2, -1, 0),
+      expect: 'Tick an item on the Hospital Bag Checklist. After the 3 days sheet, press Keep going and the reminder sheet opens: Keep your 3-day streak, an email field and Email me reminders. The phone notification button shows only in the installed app on a phone, once the push key is set.',
+      go: [['Open the Hospital Bag Checklist', '/pregnancy/tools/hospital-bag-checklist']]},
+    {id: 'capture', title: 'Capture points', set: function(s){ s.wg_stage_fertility_v1 = JSON.stringify({v: 1, lmp: day(-10), cycle: 28, starts: []}); },
+      expect: 'Period Tracker: under the result an Add to my calendar button, then Trying for a baby, one email a week with a tick box. Due Date Calculator: type a date and press the button for Your pregnancy, one email a week. The guide link waits 2 seconds, then scroll past half: a bottom bar Get one pregnancy email a week. On a computer, /app/ and the homepage show Email me the link.',
+      go: [['Open the Period Tracker', '/fertility/tools/period-tracker'], ['Open the Due Date Calculator', '/pregnancy/tools/due-date-calculator'], ['Open a guide, bar after 2 seconds', '/pregnancy/guides/trimester-by-trimester?wg_bar=1'], ['Open a game, then finish it', '/relationships/tools/girls-girl-quiz']]}
   ];
 
   // ---- storage helpers (every call wrapped) ----
