@@ -12,7 +12,7 @@
   "h1": "Flo alternatives in Nigeria",
   "crumb": "Flo alternatives in Nigeria",
   "kicker": "For Nigerian women who want another option beside Flo",
-  "answer": "If you want to see fertile days without signing up, choose Wholesome Girlies. If you want reminders and years of saved entries, choose Period Calendar. Clue gives you expert-written guides, while Ovia can stay with you through pregnancy and postpartum. No app here can tell you the exact day you ovulate from dates alone.",
+  "answer": "If you are trying to conceive and want to see your fertile days without signing up, choose Wholesome Girlies. If you want reminders and years of period dates in one app, choose Period Calendar. If you like reading expert-written guides beside your tracker, choose Clue. If you want one app that stays with you through pregnancy and after the birth, choose Ovia. No app here can tell you the exact day you ovulate from dates alone.",
   "image": {
     "src": "/assets/img/cast/fertility-amaka-planner.jpg",
     "alt": "Illustration of Amaka reading a planner at the kitchen table"
@@ -22,42 +22,72 @@
     {
       "rank": 1,
       "name": "Wholesome Girlies",
-      "label": "Start without signing up",
-      "suits": "Choose it if you want your dates on your phone, questions to print for the clinic and a checklist to send your partner.",
-      "does": "Open six fertility tools, including the Period Tracker and Ovulation Calculator. You can also buy The Trying-to-Conceive Blueprint.",
-      "watch": "You cannot note symptoms. Reminders go into your own phone calendar when you tap Add to my calendar. The calculator counts 14 days back from your next period and cannot detect ovulation.",
-      "price": "The tools need no card. The Blueprint is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
-      "rating": "Not in the app stores. Open it here, or add the Girlies app to your home screen."
+      "label": "Best if you are trying to conceive and want a plan",
+      "suits": "You want to see your fertile days without signing up, keep your dates on your phone, and go to the clinic with your questions ready.",
+      "price": "The tools need no card. The Blueprint is ₦5,700 early-bird (₦13,700 standard), paid once. Abroad it is $12 early-bird ($27 standard).",
+      "rating": "Not in the app stores",
+      "can": [
+        "Type the day your last period started and see your fertile days on the same screen.",
+        "Log the first day of each period. After three, it works out your own cycle length.",
+        "Print a list of questions for your fertility doctor.",
+        "Send your husband a checklist of what he can do for his sperm health.",
+        "Tap Add to my calendar to put your next periods and fertile days in your phone calendar, with a reminder 2 days before.",
+        "For a full plan, buy The Trying-to-Conceive Blueprint. It takes you through your cycle, getting your body ready, his part, tests and the wait."
+      ],
+      "cannot": [
+        "You cannot note symptoms or moods.",
+        "It cannot detect ovulation. It counts 14 days back from your next expected period, so we make no accuracy claim.",
+        "It is not in the app stores. You add the Girlies app to your home screen from our page."
+      ]
     },
     {
       "rank": 2,
       "name": "Clue",
-      "label": "Read expert-written guides",
-      "suits": "Choose it if you want expert-written guides and do not mind advice that was not written for Nigeria.",
-      "does": "Track your cycle with an app from Berlin. Clue says it does not sell your data to advertisers.",
-      "watch": "Forecasts need the Plus tier. Clue ranks 46 in the Nigerian App Store Health and Fitness chart.",
-      "price": "Clue Plus on the Nigerian App Store runs from ₦1,500 (about $1) to ₦12,900 (about $10).",
-      "rating": "4.4 from 3.1k ratings"
+      "label": "Best if you like reading guides beside your tracker",
+      "suits": "You want a cycle tracker with expert-written guides, and you do not mind advice that was not written for Nigeria.",
+      "price": "Clue Plus costs ₦1,500 (about $1) to ₦12,900 (about $10) on the Nigerian App Store.",
+      "rating": "4.4 from 3.1k ratings",
+      "can": [
+        "Track your cycle in an app made in Berlin.",
+        "Read expert-written guides about your cycle.",
+        "Clue says it does not sell your data to advertisers."
+      ],
+      "cannot": [
+        "Forecasts of your next dates need Clue Plus, its paid version.",
+        "Its guides are not written for Nigeria. It ranks 46 in the Nigerian App Store Health and Fitness chart."
+      ]
     },
     {
       "rank": 3,
       "name": "Period Calendar",
-      "label": "Get reminders and keep years",
-      "suits": "Choose it if you want reminders and want to keep years of period entries in one app.",
-      "does": "Track your cycle and get reminders. It ranks 2 in the Nigerian App Store Health and Fitness chart and first in Nigerian Google Play search for period tracker.",
-      "watch": "Google Play marks it as containing ads, and reviews mention ads and upgrade pop-ups.",
-      "price": "In-app purchases on the Nigerian App Store run from ₦500 (about $0.40) for 7 days of Premium to ₦69,900 (about $52) for Pro: Period Calendar.",
-      "rating": "4.8 from 11k ratings"
+      "label": "Best for reminders and years of history",
+      "suits": "You want reminders before your period and want to keep years of period dates in one app.",
+      "price": "Its paid versions cost ₦500 (about $0.40) for 7 days of Premium, up to ₦69,900 (about $52) for Pro, on the Nigerian App Store.",
+      "rating": "4.8 from 11k ratings",
+      "can": [
+        "Get reminders before your period.",
+        "Keep years of period dates in one calendar.",
+        "It ranks 2 in the Nigerian App Store Health and Fitness chart and first in Nigerian Google Play search for period tracker."
+      ],
+      "cannot": [
+        "It shows ads. Google Play marks it as containing ads, and reviews mention ads and upgrade pop-ups."
+      ]
     },
     {
       "rank": 4,
       "name": "Ovia",
-      "label": "Keep one app for later",
-      "suits": "Choose it if you want the same app for fertility, pregnancy and postpartum.",
-      "does": "See a daily fertility score and switch to pregnancy, postpartum or menopause mode. Its listing also says it has over 2,000 articles.",
-      "watch": "It has in-app purchases on both stores. Ovuline makes it, and the company is now Ovia Health by Labcorp.",
+      "label": "Best for one app through pregnancy and after the birth",
+      "suits": "You want the same app while you try, while you are pregnant and after your baby comes.",
       "price": "Google Play Nigeria lists purchases inside the app from ₦4,270 (about $3) to ₦29,000 (about $22).",
-      "rating": "4.5 from 856 ratings"
+      "rating": "4.5 from 856 ratings",
+      "can": [
+        "See a daily fertility score.",
+        "Switch to pregnancy, postpartum or menopause mode.",
+        "Read from over 2,000 articles, its listing says."
+      ],
+      "cannot": [
+        "Some features are paid purchases inside the app, on both stores."
+      ]
     }
   ],
   "glance_title": "At a glance",
@@ -96,7 +126,7 @@
   "faq": [
     {
       "q": "Is there a Flo alternative that needs no account?",
-      "a": "The Wholesome Girlies Period Tracker and Ovulation Calculator open with no sign-in. Period Calendar's App Store listing says you can use it without an account, Flo has an Anonymous Mode that needs no name or email, and Clue offers an account at no cost."
+      "a": "The Wholesome Girlies Period Tracker and Ovulation Calculator open with no sign-in. Period Calendar's App Store listing says you can use it without an account. Flo's Anonymous Mode lets you use Flo without giving your name or email. Clue offers an account at no cost."
     },
     {
       "ref": "flo_price"

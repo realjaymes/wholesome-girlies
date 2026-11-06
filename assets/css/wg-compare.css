@@ -78,3 +78,47 @@ details[open] > summary .tv-more { visibility: hidden; }
   .tv-b .tv-more { grid-column: 1 / -1; text-align: left; }
 }
 
+
+/* pick cards (alternatives picks, best-of apps). Looks A, B and C on localhost via ?card=; only the chosen look ships */
+.pk-pick { display: none; }
+html:not([data-card]) .pk-pa, html[data-card="a"] .pk-pa, html[data-card="b"] .pk-pb, html[data-card="c"] .pk-pc { display: block; }
+.pk { background: #fff; border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--sticker-sm); margin: 0 0 16px; overflow: hidden; }
+.pk.first { box-shadow: var(--sticker); }
+.pk-top { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--st); border-bottom: 2px solid var(--ink); }
+.pk.first .pk-top { background: var(--olive-t); }
+.pk-top .cmp-rank { margin-right: 0; }
+.pk-name { flex: 1; min-width: 0; }
+.pk-name h3 { margin: 0 0 4px; font-size: 1.18rem; }
+.pk-rate { font-size: .78rem; font-weight: 700; color: var(--plum-soft); text-align: right; max-width: 34%; line-height: 1.3; }
+.pk-suits { margin: 0; padding: 14px 16px 4px; font-size: 1rem; line-height: 1.45; }
+.pk-suits b { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--plum-soft); margin-bottom: 2px; }
+.pk ul { list-style: none; margin: 0; padding: 0; }
+.pk li { display: flex; gap: 8px; align-items: flex-start; font-size: .92rem; line-height: 1.42; margin: 0 0 8px; }
+.pk-i { display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--ink); font-size: .7rem; font-weight: 800; margin-top: 1px; }
+.pk-i.ok { background: var(--olive); color: #fff; }
+.pk-i.no { background: #F3D9CF; color: var(--ink); }
+.pk h4 { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--plum-soft); margin: 0 0 8px; }
+.pk-price { margin: 0; padding: 12px 16px; border-top: 1px dashed var(--line); font-size: .9rem; line-height: 1.45; }
+.pk-price b { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--plum-soft); margin-bottom: 2px; }
+@media (max-width: 559px) { .pk-rate { display: none; } }
+
+/* A: everything visible, can and cannot side by side */
+.pk-cols { display: grid; grid-template-columns: 1fr; gap: 6px 18px; padding: 12px 16px 6px; }
+@media (min-width: 640px) { .pk-cols { grid-template-columns: 1.4fr 1fr; } }
+
+/* B: the choose-it-if line, the rest opens on tap */
+.pk-b details summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; padding: 12px 16px; font-weight: 800; font-size: .9rem; color: var(--terracotta-dark); }
+.pk-b details summary::-webkit-details-marker { display: none; }
+.pk-b .pk-body { padding: 4px 16px 0; background: var(--st); border-top: 1px dashed var(--line); }
+.pk-b .pk-body h4 { margin-top: 12px; }
+.pk-b .pk-body .pk-price { padding: 12px 0; }
+
+/* C: a two-by-two grid of short cards, our pick across the top */
+.pk-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .pk-grid { grid-template-columns: 1fr 1fr; } .pk-grid .pk.first { grid-column: 1 / -1; } }
+.pk-c { margin: 0; }
+.pk-c .pk-suits { font-weight: 700; }
+.pk-c ul { padding: 10px 16px 2px; }
+.pk-c ul + ul { padding-top: 0; }
+.pk-c .cmp-pill { border-radius: 10px; line-height: 1.3; }
+.pk-c .pk-rate { display: none; }

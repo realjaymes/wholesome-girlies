@@ -12,7 +12,7 @@
   "h1": "Wholesome Girlies vs Babymigo",
   "crumb": "Wholesome Girlies vs Babymigo",
   "kicker": "For women preparing for their first pregnancy in Nigeria",
-  "answer": "If you want a live antenatal class or need to find a hospital, use Babymigo. If you want a week-by-week plan and questions to print for each antenatal visit, use Wholesome Girlies. You can use both because PreggClass is a class and The First Pregnancy Plan guides you over time. Neither one replaces advice from your doctor, and we do not claim our medical guidance is better.",
+  "answer": "If you want to find a hospital or a lactation consultant near you, ask other mothers and doctors a question, or join a live online antenatal class, use Babymigo. If you want a week-by-week plan for your first pregnancy, use Wholesome Girlies. Our First Pregnancy Plan explains what is normal each week, what you can eat, what your scans mean and when to call the doctor. You can also print a list of questions to take to each antenatal visit. You can use both, and we do not claim our advice is better than Babymigo's.",
   "image": {
     "src": "/assets/img/cast/pregnancy-zainab-chart.jpg",
     "alt": "Illustration of Zainab, pregnant, looking at a week-by-week chart"
@@ -31,8 +31,8 @@
   "rows": [
     {
       "label": "What can I use it for?",
-      "wg": "Use the tools and guides as you need them. The First Pregnancy Plan takes you through your first pregnancy.",
-      "other": "Ask questions, read articles, use tools, find Nigerian providers or join PreggClass online.",
+      "wg": "Use the pregnancy tools and guides as you need them. The First Pregnancy Plan guides you week by week.",
+      "other": "Ask questions in Babymigo's forum, read articles, use tools, find Nigerian providers or join PreggClass online.",
       "wg_short": "Plan and practical tools",
       "other_short": "Forum, directory and class",
       "kind": "even"
@@ -55,7 +55,7 @@
     },
     {
       "label": "Do I have to sign up?",
-      "wg": "No. Open the due date calculator, weekly tracker, antenatal questions or food checklist and start.",
+      "wg": "No. The Due Date Calculator works out your due date. The Week-by-Week Tracker shows your pregnancy week. Antenatal Appointment Questions gives you a list to tick, add to and print. The Safe Foods Checklist covers Nigerian foods that are generally safe in pregnancy, including moi moi, ugu and beans.",
       "other": "No sign-in to read or search the directory. Sign in with Gmail to post. You can also use Facebook or email. You can ask anonymously.",
       "wg_short": "No sign-up for tools",
       "other_short": "Sign in to post",
@@ -71,7 +71,7 @@
     },
     {
       "label": "Can I prepare questions for my doctor?",
-      "wg": "Tick questions, add your own, print the list and take it to your antenatal visit.",
+      "wg": "Use Antenatal Appointment Questions to tick questions, add your own and print the list for your visit.",
       "other": "Ask on the forum and read replies from other women and doctors.",
       "wg_short": "Print your questions",
       "other_short": "Ask on the forum",
@@ -114,7 +114,7 @@
   "wins": [
     {
       "h": "You know what to do each week",
-      "b": "The First Pregnancy Plan takes you from your first week to preparing for birth in five parts. You also get the community and Girlies app, and you keep access."
+      "b": "The First Pregnancy Plan takes you from your first week to preparing for birth in five parts. Buyers also get the private community. Add the Girlies app to your phone's home screen, with no app store download. Its tools work with no data."
     },
     {
       "h": "One payment",
@@ -122,7 +122,7 @@
     },
     {
       "h": "The tools need no account and no card",
-      "b": "The due date calculator, week by week tracker, antenatal appointment questions, safe foods checklist, birth plan builder, hospital bag checklist and newborn essentials checklist open with no sign-in and have no payment step. The Plan opens with the email you paid with."
+      "b": "The pregnancy tools open with no sign-in and no payment step. The Birth Plan Builder makes a one-page birth plan for your midwife or doctor. The Hospital Bag Checklist covers your hospital bag. The Newborn Essentials Checklist lists baby essentials. The Plan opens with the email you paid with."
     },
     {
       "h": "Your dates stay on your phone",
@@ -134,11 +134,11 @@
     },
     {
       "h": "A new phone, and no data needed",
-      "b": "The Girlies app has Save a backup and Restore a backup, so your saved entries move to a new phone in one file. Sign in with your email and your programs and streak come with you. Once the app is installed, the tools work even when you have no data."
+      "b": "Save a backup puts your saved entries in one file. Restore a backup moves that file to a new phone. Email sign-in moves your programs and streak, the count of days you use Wholesome Girlies in a row. It never moves your dates."
     },
     {
       "h": "Something short for your pregnancy week",
-      "b": "Open the Girlies app and today's card matches your pregnancy week, in one or two sentences with a link to the tool or guide behind it. Under your due date result, you can also ask for a weekly email for your stage."
+      "b": "Today's card is a one or two sentence note on the Girlies app home for your pregnancy week. It links to the tool or guide behind it. Under your due date result, you can ask for a weekly pregnancy email."
     }
   ],
   "other_ahead_title": "Where Babymigo is ahead",

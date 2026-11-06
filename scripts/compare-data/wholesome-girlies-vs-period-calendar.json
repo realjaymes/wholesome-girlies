@@ -12,7 +12,7 @@
   "h1": "Wholesome Girlies vs Period Calendar",
   "crumb": "Wholesome Girlies vs Period Calendar",
   "kicker": "For women choosing a period tracker while trying to conceive",
-  "answer": "If you want reminders and somewhere to note symptoms each day, use Period Calendar. If you want to see fertile days without signing up or seeing ads, use Wholesome Girlies. You can also print clinic questions and send your partner a checklist. No calendar app can tell you the exact day you ovulate, ours included. Ours counts from your last period, and we show the count below.",
+  "answer": "If you want reminders and a place to note your symptoms and moods every day, use Period Calendar. If you want to see your fertile days without signing up or seeing ads, use Wholesome Girlies. Type the day your last period started, and your fertile days show on the same screen. You can also print a list of questions for your fertility doctor, and send your husband a checklist of what he can do for his sperm health. No calendar app can tell you the exact day you ovulate, ours included. Ours counts days from your last period, and we show you the count below.",
   "image": {
     "src": "/assets/img/cast/fertility-amaka-calendar.jpg",
     "alt": "Illustration of Amaka looking at a calendar and her cycle app"
@@ -31,7 +31,7 @@
   "rows": [
     {
       "label": "Do I have to sign up?",
-      "wg": "No. Open the Period Tracker or Ovulation Calculator and type your date. Sign in with your email only if you want your programs and streak on another phone.",
+      "wg": "No. Enter each period's first day in the Period Tracker to see when your next one is due. Enter your last period and cycle length in the Ovulation Calculator to see fertile days. Email sign-in is optional. It keeps your programs and streak, the count of days you use Wholesome Girlies in a row, across phones.",
       "other": "No. You only need Google or email when you want to back up your entries.",
       "wg_short": "No sign-up",
       "other_short": "No sign-up",
@@ -39,8 +39,8 @@
     },
     {
       "label": "What does it cost me?",
-      "wg": "The tools need no card. The Blueprint costs ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad.",
-      "other": "Purchases cost ₦500 (about $0.40) to ₦69,900 (about $52). Removing ads costs ₦4,900 (about $4). Premium adds predictions, daily fertility details, self-care content, Kegel exercises, themes, pets and no ads.",
+      "wg": "The tools need no card. The Trying-to-Conceive Blueprint is our five-part paid plan for women trying for their first baby. It costs ₦5,700 early-bird (₦13,700 standard), or $12 early-bird ($27 standard) abroad.",
+      "other": "Purchases cost ₦500 (about $0.40) to ₦69,900 (about $52). Removing ads costs ₦4,900 (about $4). Period Calendar Premium, its paid version, adds predictions, daily fertility details, self-care content, Kegel exercises, themes, pets and no ads.",
       "wg_short": "Tools need no card",
       "other_short": "₦500 ($0.40) to ₦69,900 ($52)",
       "kind": "even"
@@ -55,7 +55,7 @@
     },
     {
       "label": "Where are my dates kept?",
-      "wg": "They stay on your phone. Tap the forget button when you want to clear them.",
+      "wg": "They stay on your phone. The forget button clears the dates saved there.",
       "other": "Its policy says it never shares the health details you enter. Google Play says no data is shared and lists what the app may collect.",
       "wg_short": "On your phone",
       "other_short": "Policy says not shared",
@@ -71,7 +71,7 @@
     },
     {
       "label": "What happens when I change phone?",
-      "wg": "Save one backup file in the Girlies app, then restore it on your new phone. If you sign in with your email, your programs, streak and reading place follow you too. Your dates do not.",
+      "wg": "Add the Girlies app to your phone's home screen, with no app store download. Save your entries in one backup file, then restore it on your new phone. Email sign-in moves your programs, streak and reading place, never your dates.",
       "other": "Back up your period entries to your phone or email, then restore them.",
       "wg_short": "Move one backup file",
       "other_short": "Back up and restore",
@@ -80,14 +80,14 @@
     {
       "label": "How does it estimate fertile days?",
       "wg": "It counts from your last period and cycle length. It estimates ovulation 14 days before your next period.",
-      "other": "You can add basal body temperature, cervical mucus, ovulation tests and pregnancy tests.",
+      "other": "You can add basal body temperature, your temperature when you first wake up, plus cervical mucus, ovulation tests and pregnancy tests.",
       "wg_short": "Counts your cycle days",
       "other_short": "Uses more body signs",
       "kind": "other"
     },
     {
       "label": "Can I prepare for my clinic visit?",
-      "wg": "Print your questions, send your partner his checklist and follow the five-part Blueprint. Buyers can join the Conception community for life.",
+      "wg": "Print Fertility Appointment Questions for your clinic visit. Send His Fertility Checklist to your partner for sperm health steps and semen analysis questions. A semen analysis is a sperm test. The five-part Blueprint guides you both. Buyers join the private Conception community on Telegram for life.",
       "other": "Export a health report with charts for yourself or your doctor.",
       "wg_short": "Print questions and checklist",
       "other_short": "Export a health report",
@@ -95,7 +95,7 @@
     },
     {
       "label": "Can I note symptoms and get reminders?",
-      "wg": "You cannot note symptoms. Tap Add to my calendar under your result. Your next three periods, your fertile days and your likely ovulation day go into your phone calendar, with a reminder 2 days before.",
+      "wg": "You cannot note symptoms. Add to my calendar is a button under your result. It puts your next three periods, fertile days and likely ovulation day in your phone calendar, with a reminder 2 days before.",
       "other": "Yes. It sends period, fertility and pill reminders. You can note 58 symptoms and 67 moods.",
       "wg_short": "Calendar reminders, no symptoms",
       "other_short": "Symptoms and reminders",
@@ -138,7 +138,7 @@
     },
     {
       "h": "Something short for your cycle day",
-      "b": "Open the Girlies app and today's card matches your cycle day, in one or two sentences with a link to the tool or guide behind it. Read it, use a tool or finish a game, and your streak goes up by one. Under your tool result, you can also ask for a weekly email for your stage."
+      "b": "Today's card is a short note on the Girlies app home for your cycle day. It links to the tool or guide behind it. Read it, use a tool or finish a game, and your streak goes up by one day. Under your result, you can ask for a weekly fertility email."
     }
   ],
   "other_ahead_title": "Where Period Calendar is ahead",
@@ -164,7 +164,7 @@
   "picks": [
     {
       "h": "Pick Period Calendar",
-      "b": "if you want reminders, daily symptom and mood logs, BBT and test records, or your history already sits there."
+      "b": "if you want reminders, daily symptom and mood logs, basal body temperature and test records, or your history already sits there."
     },
     {
       "h": "Pick the Wholesome Girlies tools",

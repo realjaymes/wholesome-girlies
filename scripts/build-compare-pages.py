@@ -26,7 +26,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "scripts", "compare-data")
 SITE = "https://wholesomegirlies.xyz"
-CSS_VERSION = "20261106a"
+CSS_VERSION = "20261106c"
 OG_VERSION = "20261027a"
 # One published guide per stage supplies the page shell (fertility) and the stage's program card.
 SHELL = "fertility/guides/fertile-window-explained.html"
@@ -168,11 +168,56 @@ def cards(items, ahead=False):
         f'<div class="{cls}"><h3>{tick}{e(i["h"])}</h3><p>{e(i["b"])}</p></div>' for i in items) + "</div>"
 
 
-def pick_card(x):
-    return (f'<div class="cmp-pick{" first" if x["rank"] == 1 else ""}"><div class="top"><span class="cmp-rank">{x["rank"]}</span>'
-            f'<div><h3>{e(x["name"])}</h3><span class="cmp-pill">{e(x["label"])}</span></div></div>'
-            f'<dl><dt>Who it suits</dt><dd>{e(x["suits"])}</dd><dt>What it does</dt><dd>{e(x["does"])}</dd>'
-            f'<dt>Watch for</dt><dd>{e(x["watch"])}</dd><dt>Price in Nigeria</dt><dd>{e(x["price"])}</dd></dl></div>')
+# ---------------------------------------------------------------- pick cards (alternatives picks and best-of apps)
+# Each card: rank, name, a "best for" label, the rating line, "Choose it if", what you can do (ticks), what it cannot do
+# (crosses) and the price. CARD_OPTIONS=1 writes looks A, B and C for ?card=a|b|c on localhost; only the chosen look ships.
+CARD_OPTIONS = os.environ.get("CMP_CARD_OPTIONS") == "1"
+
+
+def _li(items, ok):
+    mark = '<span class="pk-i ok" aria-hidden="true">✓</span>' if ok else '<span class="pk-i no" aria-hidden="true">✕</span>'
+    return "<ul>" + "".join(f"<li>{mark}{e(t)}</li>" for t in items) + "</ul>"
+
+
+def _head(x):
+    rate = f'<span class="pk-rate">{e(x["rating"])}</span>' if x.get("rating") else ""
+    return (f'<div class="pk-top"><span class="cmp-rank">{x["rank"]}</span><div class="pk-name"><h3>{e(x["name"])}</h3>'
+            f'<span class="cmp-pill">{e(x["label"])}</span></div>{rate}</div>')
+
+
+def card_a(x):
+    return (f'<div class="pk pk-a{" first" if x["rank"] == 1 else ""}">{_head(x)}'
+            f'<p class="pk-suits"><b>Choose it if</b> {e(x["suits"])}</p>'
+            f'<div class="pk-cols"><div class="pk-can"><h4>What you can do</h4>{_li(x["can"], True)}</div>'
+            f'<div class="pk-cant"><h4>What it cannot do</h4>{_li(x["cannot"], False)}</div></div>'
+            f'<p class="pk-price"><b>What it costs in Nigeria</b> {e(x["price"])}</p></div>')
+
+
+def card_b(x):
+    return (f'<div class="pk pk-b{" first" if x["rank"] == 1 else ""}">{_head(x)}'
+            f'<p class="pk-suits"><b>Choose it if</b> {e(x["suits"])}</p>'
+            f'<details><summary>What it can and cannot do, and the price<span class="tv-more">Open</span></summary>'
+            f'<div class="pk-body"><h4>What you can do</h4>{_li(x["can"], True)}<h4>What it cannot do</h4>{_li(x["cannot"], False)}'
+            f'<p class="pk-price"><b>What it costs in Nigeria</b> {e(x["price"])}</p></div></details></div>')
+
+
+def card_c(x):
+    first = x["rank"] == 1
+    return (f'<div class="pk pk-c{" first" if first else ""}">{_head(x)}'
+            f'<p class="pk-suits">{e(x["suits"])}</p>{_li(x["can"], True)}{_li(x["cannot"], False)}'
+            f'<p class="pk-price">{e(x["price"])}</p></div>')
+
+
+CARD_SCRIPT = ('<script>(function(){var m=location.search.match(/[?&]card=([abc])/);'
+               'document.documentElement.setAttribute("data-card",m?m[1]:"a");})();</script>')
+
+
+def pick_cards(items):
+    if not CARD_OPTIONS:
+        return "".join(card_a(x) for x in items)
+    return (CARD_SCRIPT + '<div class="pk-pick pk-pa">' + "".join(card_a(x) for x in items) + "</div>"
+            + '<div class="pk-pick pk-pb">' + "".join(card_b(x) for x in items) + "</div>"
+            + '<div class="pk-pick pk-pc"><div class="pk-grid">' + "".join(card_c(x) for x in items) + "</div></div>")
 
 
 def related(items):
@@ -239,7 +284,7 @@ def body_head_to_head(common, p, S):
 
 def body_alternatives(common, p, S):
     S.add(intro(common, p))
-    S.add(f'<h2>{e(p["picks_title"])}</h2>' + "".join(pick_card(x) for x in p["picks"]))
+    S.add(f'<h2>{e(p["picks_title"])}</h2>' + pick_cards(p["picks"]))
     rows = [{"label": p["glance_labels"][k], "cells": [x[k] for x in p["picks"]], "win": []} for k in p["glance_rows"]]
     S.add(f'<h2>{e(p["glance_title"])}</h2>' + table([x["name"] for x in p["picks"]], rows, "multi"))
     for r in p["reviews"]:
@@ -252,9 +297,10 @@ def body_best_of(common, p, S):
     S.add(intro(common, p))
     S.add(f'<h2>{e(p["method_title"])}</h2><ul class="plain">' + "".join(f"<li>{e(m)}</li>" for m in p["method"]) + "</ul>")
     S.add(f'<h2>{e(p["table_title"])}</h2>' + table(p["cols"], p["rows"], "multi"))
+    S.add(f'<h2>{e(p.get("apps_title") or "The four apps, in our order")}</h2>' + pick_cards(p["apps"]))
     for a in p["apps"]:
-        rv = reviews(common, a["key"], "What women say about " + common["reviews"][a["key"]]["name"], "h3") if a["key"] in common["reviews"] else ""
-        S.add(f'<h2>{a["rank"]}. {e(a["name"])}</h2><p>{e(a["body"])}</p><p><b>Best for:</b> {e(a["best"])}</p><p><b>Watch for:</b> {e(a["watch"])}</p>{rv}')
+        if a["key"] in common["reviews"]:
+            S.add(reviews(common, a["key"], "What women say about " + common["reviews"][a["key"]]["name"]))
 
 
 BODY = {"head-to-head": body_head_to_head, "alternatives": body_alternatives, "best-of": body_best_of}

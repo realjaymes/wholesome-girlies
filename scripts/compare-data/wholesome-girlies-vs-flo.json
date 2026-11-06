@@ -12,7 +12,7 @@
   "h1": "Wholesome Girlies vs Flo",
   "crumb": "Wholesome Girlies vs Flo",
   "kicker": "For women choosing a tracker while trying to conceive",
-  "answer": "If you want to note symptoms every day and get reminders, use Flo. If you want to see fertile days without signing up, use the Wholesome Girlies calculator. You can also print clinic questions and send your partner his checklist. No calendar app can tell you the exact day you ovulate, ours included. Ours counts from your last period, and we show the count below.",
+  "answer": "If you want to note your symptoms every day and get reminders from the app, use Flo. If you want to see your fertile days without signing up, use Wholesome Girlies. Type the day your last period started, and your fertile days show on the same screen. You can also print a list of questions for your fertility doctor, and send your husband a checklist of what he can do for his sperm health. No calendar app can tell you the exact day you ovulate, ours included. Ours counts days from your last period, and we show you the count below.",
   "image": {
     "src": "/assets/img/cast/fertility-amaka-calendar.jpg",
     "alt": "Illustration of Amaka looking at a calendar and her cycle app"
@@ -26,23 +26,23 @@
   "rows": [
     {
       "label": "Do I have to sign up?",
-      "wg": "No. Open the Period Tracker or Ovulation Calculator and type your date. Sign in with your email only if you want your programs and streak on another phone.",
-      "other": "No, if you use Anonymous Mode. Sign up if you want your Flo entries on your other devices.",
+      "wg": "No. Enter each period's first day in the Period Tracker to see when your next one is due. Enter your last period and cycle length in the Ovulation Calculator to see fertile days. Email sign-in is optional. It keeps your programs and streak, the count of days you use Wholesome Girlies in a row, across phones.",
+      "other": "No. Flo's Anonymous Mode lets you use Flo without giving your name or email. Sign up if you want your Flo entries on your other devices.",
       "wg_short": "No sign-up",
       "other_short": "Optional sign-up",
       "kind": "win"
     },
     {
       "label": "What does it cost me?",
-      "wg": "The tools need no card. The Trying-to-Conceive Blueprint is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
-      "other": "On Android in Nigeria, Premium has no charge for one year under Pass It On. On iPhone, it costs ₦3,900 (about $3) to ₦29,900 (about $22).",
+      "wg": "The tools need no card. The Trying-to-Conceive Blueprint is our five-part paid plan for women trying for their first baby. It is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
+      "other": "Through the Pass It On Project, Flo gives Android users in Nigeria Premium at no charge for one year. Premium is Flo's paid version. On iPhone, it costs ₦3,900 (about $3) to ₦29,900 (about $22).",
       "wg_short": "Tools need no card",
       "other_short": "One year on Android",
       "kind": "even"
     },
     {
       "label": "Where are my dates kept?",
-      "wg": "They stay on your phone. Tap the forget button when you want to clear them.",
+      "wg": "They stay on your phone. The forget button clears the dates saved there.",
       "other": "Flo keeps them on its servers and protects them with encryption. Flo says it has never sold user data and earns money from subscriptions only.",
       "wg_short": "On your phone",
       "other_short": "On Flo's servers",
@@ -58,7 +58,7 @@
     },
     {
       "label": "What happens when I change phone?",
-      "wg": "Save one backup file in the Girlies app, then restore it on your new phone. If you sign in with your email, your programs, streak and reading place follow you too. Your dates do not.",
+      "wg": "Add the Girlies app to your phone's home screen, with no app store download. Save your entries in one backup file, then restore it on your new phone. Email sign-in moves your programs, streak and reading place, never your dates.",
       "other": "Sign in to your Flo account to see your entries on another device.",
       "wg_short": "Move one backup file",
       "other_short": "Sign in to Flo",
@@ -82,31 +82,31 @@
     },
     {
       "label": "Can I prepare for my clinic visit?",
-      "wg": "Tick your questions, add your own, print the list and take it to the clinic.",
-      "other": "Use the Symptom Checker and read the Health Library before your visit.",
+      "wg": "Use Fertility Appointment Questions to tick questions, add your own and print the list for your clinic visit.",
+      "other": "Use Flo's Symptom Checker to review symptoms and its Health Library to read health information before your visit.",
       "wg_short": "Print your questions",
       "other_short": "Read before your visit",
       "kind": "win"
     },
     {
       "label": "Can my partner use it too?",
-      "wg": "Send him His Fertility Checklist. He can tick each step himself.",
-      "other": "Flo for Partners lets you share medical information and tips with him.",
+      "wg": "Send him His Fertility Checklist. It covers sperm health and semen analysis questions. He ticks each step himself.",
+      "other": "Flo for Partners is a feature that lets you share tips and medical information with him.",
       "wg_short": "Send him a checklist",
       "other_short": "Share tips with him",
       "kind": "even"
     },
     {
       "label": "Can I talk to other women?",
-      "wg": "Anyone can join our open Telegram group for tips, polls and app help. Blueprint buyers also get the private Conception community for life.",
-      "other": "Secret Chats lets women talk in a moderated group. Flo says 7 million members use it each month.",
+      "wg": "Anyone can join our open Telegram group for tips, polls and app help. Blueprint buyers also get the private Conception community on Telegram for life.",
+      "other": "Flo's Secret Chats is a moderated chat space inside Flo. Flo says 7 million members use it each month.",
       "wg_short": "Open group, plus buyers' community",
       "other_short": "7 million monthly members",
       "kind": "other"
     },
     {
       "label": "Can I note symptoms and get reminders?",
-      "wg": "You cannot note symptoms. Tap Add to my calendar under your result. Your next three periods, your fertile days and your likely ovulation day go into your phone calendar, with a reminder 2 days before.",
+      "wg": "You cannot note symptoms. Add to my calendar is a button under your result. It puts your next three periods, fertile days and likely ovulation day in your phone calendar, with a reminder 2 days before.",
       "other": "Yes. You can note symptoms and ask Flo to remind you.",
       "wg_short": "Calendar reminders, no symptoms",
       "other_short": "Symptoms and reminders",
@@ -137,11 +137,11 @@
     },
     {
       "h": "New phone, same dates",
-      "b": "The Girlies app has Save a backup and Restore a backup. Your saved entries go into one file you keep. Sign in with your email and your programs and streak come with you. Once the app is installed, the tools also work with no data."
+      "b": "The Girlies app has Save a backup and Restore a backup. Your saved entries go into one file you keep and can move to a new phone. Once added to your home screen, the tools work with no data."
     },
     {
       "h": "Something short for your cycle day",
-      "b": "Open the Girlies app and today's card matches your cycle day, in one or two sentences with a link to the tool or guide behind it. Read it, use a tool or finish a game, and your streak goes up by one. Under your tool result, you can also ask for a weekly email for your stage."
+      "b": "Today's card is a short note on the Girlies app home for your cycle day. It links to the tool or guide behind it. Read it, use a tool or finish a game, and your streak goes up by one day. Under your result, you can ask for a weekly fertility email."
     },
     {
       "h": "Written for Nigeria and the diaspora",
@@ -149,7 +149,7 @@
     },
     {
       "h": "You know what to do next",
-      "b": "Pay ₦5,700 early-bird (₦13,700 standard) once, or $12 early-bird ($27 standard) abroad. The Blueprint covers your cycle, preparing, your partner, tests and the wait. You can join the private Conception community for life. The in-app helper explains lessons and tells you when to speak to a doctor."
+      "b": "Pay ₦5,700 early-bird (₦13,700 standard) once, or $12 early-bird ($27 standard) abroad. The Blueprint covers your cycle, preparing, your partner, tests and the wait. Buyers join the private Conception community on Telegram for life. The Blueprint assistant explains lessons and tells you when to see a doctor."
     },
     {
       "h": "Clinic questions to print, and his own checklist",
