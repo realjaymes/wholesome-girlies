@@ -12,7 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-KW443M88');</script>
 <!-- End Google Tag Manager -->
 <title>Sign in | Wholesome Girlies</title>
-<meta name="description" content="Sign in with your email to open the programs you bought.">
+<meta name="description" content="Sign in with your email to open your programs and your account.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<link rel="stylesheet" href="/assets/css/wg-signin.css?v=20261022i">
+<link rel="stylesheet" href="/assets/css/wg-signin.css?v=20261106a">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -55,17 +55,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
-<main class="signin" id="signin" data-option="a">
-  <div class="signin-options" id="signinOptions" hidden>
-    <span>Preview:</span>
-    <a href="?option=a">Option A</a><a href="?option=b">Option B</a><a href="?option=c&amp;program=first-baby-playbook">Option C</a>
-    <span class="signin-options-note">Demo: the email code is 123456, and an email with "two" in it holds two programs. FBP-7K2M-Q9XP is the demo personal code.</span>
-  </div>
-
+<main class="signin" id="signin">
   <section class="signin-wrap">
     <div class="signin-card">
 
-      <!-- Option C only: the program she was trying to open -->
+      <!-- Inside Instagram, TikTok or Facebook: the note is written by wg-signin.js -->
+      <div class="signin-warn" id="signinInApp" hidden></div>
+
+      <!-- The program she was trying to open -->
       <div class="signin-program" hidden>
         <img src="/assets/img/products/first-baby-playbook-cover.webp" alt="" width="72" height="96">
         <div>
@@ -77,50 +74,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1 class="signin-title" id="signinTitle">Open your programs</h1>
       <p class="signin-lead" id="signinLead">Type the email you used when you paid. We will send you a 6-digit code.</p>
 
-      <!-- Option B only: two ways in -->
-      <div class="signin-tabs" data-show="b" hidden role="tablist">
-        <button type="button" role="tab" class="is-on" data-tab="email">Use my email</button>
-        <button type="button" role="tab" data-tab="code">I have a program code</button>
-      </div>
-
       <!-- Step 1: email -->
       <form class="signin-step" id="stepEmail" novalidate>
         <label for="siEmail">Your email</label>
         <input type="email" id="siEmail" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
         <p class="signin-error" id="emailError" hidden></p>
         <button class="btn btn-primary signin-btn" type="submit">Send my code</button>
-        <p class="signin-alt" data-show="a c" hidden><button type="button" class="signin-link" data-go="code">I have a program code instead</button></p>
+        <p class="signin-hint">Just paid? If you paid on Selar, it can take a few minutes for your purchase to reach us. We will email you the moment it does.</p>
         <p class="signin-alt" data-locked hidden>Not bought it yet? <a href="/programs/first-baby-playbook">See the program</a></p>
       </form>
 
       <!-- Step 2: the 6-digit code from the email -->
       <form class="signin-step" id="stepOtp" novalidate hidden>
-        <p class="signin-sent">If <strong id="sentTo"></strong> has a purchase, we sent it a 6-digit code. It works for 10 minutes.</p>
-        <label for="siOtp">6-digit code</label>
+        <p class="signin-sent">If <strong id="sentTo"></strong> has an account, we sent it a 6-digit code. It works for 10 minutes.</p>
+        <label for="siOtp">Your code</label>
         <input type="text" id="siOtp" class="signin-otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" required>
         <p class="signin-error" id="otpError" hidden></p>
         <button class="btn btn-primary signin-btn" type="submit">Open my programs</button>
         <p class="signin-alt"><button type="button" class="signin-link" id="resend">Send a new code</button> · <button type="button" class="signin-link" data-go="email">Use a different email</button></p>
         <p class="signin-hint">No email after a minute? Check your spam folder, or use the email you paid with.</p>
-        <p class="signin-hint">Just paid on Selar? Your purchase can take up to 30 minutes to reach us. As soon as it does, we email you a link that opens your program in one tap.</p>
-      </form>
-
-      <!-- Personal or program code -->
-      <form class="signin-step" id="stepCode" novalidate hidden>
-        <label for="siCode">Program code</label>
-        <input type="text" id="siCode" class="app-code" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="FBP-7K2M-Q9XP" required>
-        <p class="signin-hint">It is in your first email from us, or on page 1 of your program PDF. Capital letters and spaces do not matter.</p>
-        <p class="signin-error" id="codeError" hidden></p>
-        <button class="btn btn-primary signin-btn" type="submit">Add my program</button>
-        <p class="signin-alt" data-show="a c" hidden><button type="button" class="signin-link" data-go="email">Use my email instead</button></p>
+        <p class="signin-hint">Just paid on Selar? It can take a few minutes for your purchase to reach us. We will email you the moment it does.</p>
+        <details class="signin-lost">
+          <summary>Can&#8217;t get into that email?</summary>
+          <p>Email <a href="mailto:care@wholesomegirlies.xyz?subject=I%20cannot%20get%20into%20my%20email">care@wholesomegirlies.xyz</a> from any address. Tell us your name, the email you paid with and roughly when you paid. We check your order and send a sign-in link to the address you choose.</p>
+        </details>
       </form>
 
       <!-- Done -->
       <div class="signin-step signin-done" id="stepDone" hidden>
         <p class="signin-done-mark" aria-hidden="true">✓</p>
         <p class="signin-done-title">You are in</p>
-        <p class="signin-lead">This phone now has your programs. You will not need to sign in again on it.</p>
+        <p class="signin-lead" id="doneLead">This phone now has your programs. You stay signed in while you keep using it.</p>
         <ul class="signin-programs" id="doneList"></ul>
+        <p class="signin-hint" id="doneNote">Your name, your reading place, your streak, your saved tools and the games you finished came with you. What you typed into tools stays on the phone where you typed it.</p>
+        <p class="signin-alt" id="doneApp" hidden><a class="btn btn-primary" href="/app/">Go to the app &rarr;</a></p>
+      </div>
+
+      <!-- Access ended or refunded -->
+      <div class="signin-step signin-ended" id="stepEnded" hidden>
+        <div class="signin-program">
+          <img src="/assets/img/products/first-baby-playbook-cover.webp" alt="" width="72" height="96" id="endedImg">
+          <div>
+            <p class="signin-kicker" id="endedName">The First Baby Playbook</p>
+            <p class="signin-program-name" id="endedTitle">Not active on this account</p>
+          </div>
+        </div>
+        <p class="signin-lead" id="endedLead">This program is no longer active for this account. Your tools, games and saved entries are all still here.</p>
+        <p class="signin-alt"><a class="btn btn-primary" id="endedBuy" href="/programs/">Get the program &rarr;</a></p>
+        <p class="signin-hint">Think this is a mistake? Email <a href="mailto:care@wholesomegirlies.xyz">care@wholesomegirlies.xyz</a>.</p>
       </div>
 
       <p class="signin-help">Still stuck? Email <a href="mailto:care@wholesomegirlies.xyz">care@wholesomegirlies.xyz</a> with the email you paid with.</p>
@@ -128,8 +129,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
 </main>
 
-<script src="/assets/js/wg-access.js?v=20261106a"></script>
-<script src="/assets/js/wg-signin.js?v=20261023a"></script>
+<script src="/assets/js/wg-access.js?v=20261106b"></script>
+<script src="/assets/js/wg-signin.js?v=20261106a"></script>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -194,7 +195,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20261024c"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261012g"></script>
+<script defer src="/assets/js/wg-app.js?v=20261106a"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
 </body>
 </html>

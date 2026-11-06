@@ -1,144 +1,260 @@
-/* Wholesome Girlies: programs bought on Bachs, on this phone (window.WGAccess).
- * Used by /signin/ and the app's "Add a program you bought". It talks to the payment server (wg-pay)
- * and puts each program on her phone the way its program home does.
+/* Wholesome Girlies: her account on this phone (window.WGAccess).
+ * Used by /signin/, the "Payment received" page, the app home, the First 1,000 pages and the program homes. It talks to the
+ * payment server (wg-pay) and keeps three things on her phone, all under keys that start with wg_ so the consent guard covers them:
  *
- * Keys on her phone (all start with wg_, so the consent guard covers them):
- *   wg_codes_v1   {"<program home slug>": "<personal access code>"}, her personal codes, added to and never replaced
- *   wg_device_v1  a random id for this phone, so a personal code counts it once against its device limit
- *   wg_<stage>_home  the program home flags, set by addHome() with the same rule as appAddHome() in /app/
+ *   wg_session_v1  the signed session token the server gave her at sign-in (90 days). Never in a URL, a backup or an event.
+ *   wg_account_v1  {"v":1,"at":<ms>,"account":{email,name,programs,member?},"saved":[tool keys]}, a copy of her account so
+ *                  the app can show "Signed in as ..." and her steps before the network answers.
+ *   wg_<stage>_home  the program home flags, written from her account at sign-in (never from a typed code or a link).
  *
- * Shared program codes (BABY-K7P3) are checked on the phone against assets/data/program-flags.json and never
- * leave it. Personal codes (FBP-XGM6-Y9YF) go to the server. Selar to Bachs Migration Plan, phase 3.
+ * Everyone signs in the same way: her email, then a 6-digit code. There are no program codes. A buyer, a First 1,000 member
+ * and a woman with a plain account (no program) are the same kind of account. The signed pass the server returns goes to this
+ * site (POST /api/pass), which keeps it in the wg_pass cookie the program-page gate reads.
  *
- * Phase 8: when the program pages close, the server's answer to a right email code or a personal code carries a
- * signed pass. sendPass() hands it to this site (POST /api/pass), which keeps it in the wg_pass cookie the gate reads.
- * A shared code never earns a pass. PHASE8 below is the one switch for the phase 8 screens and rules: it is read
- * here, by wg-signin.js, wg-signin-entry.js and the app's code box. Leave it false until the gate is live.
+ * What goes to her account: her name, the reading place per program, the KEYS of the tools she saved and the games she
+ * finished. Never what she typed into a tool, never a date (period, due date, delivery, the baby's birth).
+ * Growth Build Contract (vault: Wholesome Girlies/Growth Experiments/Build) fixes the routes.
  */
-(function () {
+(function (w, d) {
   'use strict';
   var PAY_API = 'https://wg-pay.realjaymes.workers.dev';
-  var PHASE8 = true; // true once the program pages are closed: Option B only, shared codes retired
-  var CODES_KEY = 'wg_codes_v1', DEVICE_KEY = 'wg_device_v1';
+  // On localhost only, a wrangler dev server can stand in for the payment server: localStorage.wg_pay_api = 'http://localhost:8787'.
+  try {
+    if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) { var o = w.localStorage.getItem('wg_pay_api'); if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(o || '')) PAY_API = o; }
+  } catch (e) {}
+  var SESSION = 'wg_session_v1', ACCOUNT = 'wg_account_v1', NAME = 'wg_name_v1';
+  var HOME_KEYS = ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'];
   var data = null;
 
+  // ── storage, always wrapped: a blocked localStorage just means nothing is kept ──
+  function get(k) { try { return w.localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { try { w.localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+  function del(k) { try { w.localStorage.removeItem(k); } catch (e) {} }
+  function jget(k) { try { return JSON.parse(get(k) || 'null'); } catch (e) { return null; } }
+  // Code-era keys from before the sign-in switch: no program code or device id is kept any more.
+  del('wg_codes_v1'); del('wg_device_v1');
+
+  function push(ev, extra) {
+    w.dataLayer = w.dataLayer || [];
+    var o = { event: ev }; for (var k in extra) if (Object.prototype.hasOwnProperty.call(extra, k)) o[k] = extra[k];
+    w.dataLayer.push(o);
+  }
+
+  // ── network ──
+  function request(method, path, body, tok) {
+    var h = {}; if (body !== undefined) h['content-type'] = 'application/json';
+    if (tok) h.authorization = 'Bearer ' + tok;
+    return fetch(PAY_API + path, { method: method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j.status = r.status; return j; }); });
+  }
+  function authed(method, path, body) {
+    var tok = token();
+    if (!tok) return Promise.resolve({ ok: false, status: 401, error: 'signed_out' });
+    return request(method, path, body, tok).then(function (j) {
+      if (j.status === 401) forget(); // the session ended or was signed out elsewhere; her entries stay on the phone
+      return j;
+    });
+  }
+
+  // ── session and account copy ──
+  function token() { return get(SESSION) || ''; }
+  function cached() { var c = jget(ACCOUNT); return c && c.v === 1 && c.account ? c : null; }
+  function account() { var c = cached(); return token() && c ? c.account : null; }
+  function signedIn() { return !!token(); }
+  function remember(acct, extra) {
+    var c = cached() || { v: 1, saved: [] };
+    c.v = 1; c.at = Date.now(); if (acct) c.account = acct;
+    if (extra) for (var k in extra) c[k] = extra[k];
+    set(ACCOUNT, JSON.stringify(c));
+    d.dispatchEvent(new CustomEvent('wg:account', { detail: { signedIn: signedIn() } }));
+  }
+  function forget() { del(SESSION); del(ACCOUNT); d.dispatchEvent(new CustomEvent('wg:account', { detail: { signedIn: false } })); }
+
+  // ── program flags, from her account ──
   function homes() {
     if (data) return Promise.resolve(data);
-    return fetch('/assets/data/program-flags.json?v=20261022a').then(function (r) { return r.json(); })
-      .then(function (d) { data = d; return d; });
+    return fetch('/assets/data/program-flags.json?v=20261106b').then(function (r) { return r.json(); }).then(function (x) { data = x; return x; });
+  }
+  function slugOf(url) { var m = /\/programs\/([a-z0-9-]+)\/(?:thank-you|read)/.exec(url || ''); return m ? m[1] : ''; }
+  function isBundle(u) { return /^\/programs\/complete-motherhood-journey/.test(u || ''); }
+  // The Complete Motherhood Journey outranks a single program for a stage (the same rule as every program home).
+  function addHome(slug) {
+    return homes().then(function (x) {
+      var h = x.homes[slug]; if (!h) return null;
+      var u = '/programs/' + slug + '/thank-you', v = JSON.stringify({ u: u, l: h.label });
+      h.flags.forEach(function (k) { var cur = jget(k); if (!(cur && isBundle(cur.u) && !isBundle(u))) set(k, v); });
+      return { slug: slug, url: u, name: h.name, program: h.program };
+    }, function () { return null; });
+  }
+  // A flag only says "show this program in my app". From her account, flags are added for what she owns and dropped for what she
+  // no longer owns (a refund, months that ended), so a typed link can never put a program in her app.
+  function reconcile(programs) {
+    var own = {}; programs.forEach(function (p) { own[p.slug] = 1; });
+    HOME_KEYS.forEach(function (k) { var cur = jget(k), s = cur && slugOf(cur.u); if (s && !own[s]) del(k); });
+  }
+  function accountPrograms(acct) {
+    return ((acct && acct.programs) || []).map(function (p) { return { slug: slugOf(p.home) || p.slug, ends: p.ends || '' }; }).filter(function (p) { return p.slug; });
+  }
+  function applyPrograms(acct) {
+    var list = accountPrograms(acct);
+    reconcile(list);
+    return Promise.all(list.map(function (p) { return addHome(p.slug); })).then(function (added) {
+      var got = added.filter(Boolean);
+      // A Selar buyer's "Finish getting ..." card stops once sign-in lists what she bought.
+      if (got.length) { var lead = jget('wg_lead'); if (lead && lead.product) { lead.product = ''; set('wg_lead', JSON.stringify(lead)); } }
+      return got;
+    });
   }
 
-  function post(path, body) {
-    return fetch(PAY_API + path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
-      .then(function (r) {
-        return r.json().catch(function () { return {}; }).then(function (j) { j.status = r.status; return j; });
-      });
-  }
-
-  // Gives the server's pass to this site so the gate opens for this phone. If the site has no /api/pass (GitHub
-  // Pages today) it answers 404 and we carry on, because there is no gate to open.
+  // ── pass cookie ──
   function sendPass(pass) {
     if (!pass) return Promise.resolve();
-    return fetch('/api/pass', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pass: pass }) })
-      .catch(function () {});
+    return fetch('/api/pass', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pass: pass }) }).catch(function () {});
   }
 
-  function device() {
+  // ── her name: the account is the source, the phone keeps a copy so every page can greet her ──
+  function cleanName(v) { return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 30).trim(); }
+  function writeName(n) { n = cleanName(n); if (n) set(NAME, JSON.stringify({ v: 1, name: n, asked: true })); return n; }
+
+  // ── state that follows her to a new phone ──
+  function localState() {
+    var reading = {}, saved = [], played = [], i, k, v;
     try {
-      var id = localStorage.getItem(DEVICE_KEY);
-      if (!id) {
-        var b = new Uint8Array(16); crypto.getRandomValues(b);
-        id = Array.prototype.map.call(b, function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
-        localStorage.setItem(DEVICE_KEY, id);
+      for (i = 0; i < w.localStorage.length; i++) {
+        k = w.localStorage.key(i);
+        var m = /^wg_read_([a-z0-9-]+)$/.exec(k);
+        if (m) {
+          v = jget(k);
+          if (v && v.done && typeof v.done === 'object') reading[m[1]] = { n: v.n || Object.keys(v.done).length, total: v.total || 0, at: v.at || 0, last: v.last || '', next: v.next || '', nextId: v.nextId || '', done: Object.keys(v.done).filter(function (id) { return v.done[id]; }) };
+        } else if (w.WGApp && w.WGApp.toolKey && w.WGApp.toolKey.test(k)) saved.push(k);
       }
-      return id;
-    } catch (e) { return 'nostorage' + Date.now(); }
-  }
-
-  function hash(text) {
-    var code = String(text).toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (!code || !(window.crypto && crypto.subtle)) return Promise.resolve('');
-    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(code)).then(function (b) {
-      return Array.prototype.map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
-    });
-  }
-
-  // The program home slug from its address: /programs/<slug>/thank-you.
-  function slugOf(url) {
-    var m = /\/programs\/([a-z0-9-]+)\/thank-you/.exec(url || '');
-    return m ? m[1] : '';
-  }
-
-  // Same rule as appAddHome(slug, true) in /app/: an empty stage takes this home, The Complete Motherhood
-  // Journey outranks a single program, and a program she signed in for replaces another single program.
-  function addHome(slug) {
-    return homes().then(function (d) {
-      var h = d.homes[slug];
-      if (!h) return null;
-      var bundle = function (u) { return /^\/programs\/complete-motherhood-journey/.test(u || ''); };
-      var u = '/programs/' + slug + '/thank-you', v = JSON.stringify({ u: u, l: h.label });
-      try {
-        h.flags.forEach(function (k) {
-          var cur = null; try { cur = JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) {}
-          var had = cur && cur.u;
-          if (!had || !bundle(had)) localStorage.setItem(k, v);
-        });
-      } catch (e) {}
-      return { slug: slug, url: u, name: h.name, program: h.program };
-    });
-  }
-
-  // A right sign-in code or link: every program she bought is saved and added to her phone. The pass goes to the
-  // site before the programs are shown, so the page she taps next opens.
-  function openAll(j) {
-    if (!j.ok) return j;
-    var list = j.codes || [];
-    return sendPass(j.pass)
-      .then(function () { return Promise.all(list.map(function (c) { saveCode(slugOf(c.program_home), c.code); return addHome(slugOf(c.program_home)); })); })
-      .then(function (added) { return { ok: true, programs: added.filter(Boolean) }; });
-  }
-
-  function saveCode(slug, code) {
-    if (!slug || !code) return; // a Selar purchase has no personal code
-    try {
-      var all = JSON.parse(localStorage.getItem(CODES_KEY) || '{}') || {};
-      all[slug] = code;
-      localStorage.setItem(CODES_KEY, JSON.stringify(all));
     } catch (e) {}
+    var pl = jget('wg_played_v1'); if (pl && typeof pl === 'object') played = Object.keys(pl);
+    return { reading: reading, saved: saved, played: played };
+  }
+  function applyState(st) {
+    if (!st) return;
+    var rd = st.reading || {};
+    Object.keys(rd).forEach(function (slug) {
+      if (!/^[a-z0-9-]+$/.test(slug) || !rd[slug]) return;
+      var theirs = rd[slug], mine = jget('wg_read_' + slug) || { done: {} }, done = mine.done || {}, add = false;
+      (theirs.done || []).forEach(function (id) { if (!done[id]) { done[id] = true; add = true; } });
+      if (add || (theirs.n || 0) > (mine.n || 0)) {
+        mine.done = done; mine.n = Math.max(mine.n || 0, theirs.n || 0, Object.keys(done).length);
+        mine.total = mine.total || theirs.total || 0;
+        if (!mine.next && theirs.next) { mine.next = theirs.next; mine.nextId = theirs.nextId || ''; }
+        mine.last = mine.last || theirs.last || ''; mine.at = Math.max(mine.at || 0, theirs.at || 0) || Date.now();
+        set('wg_read_' + slug, JSON.stringify(mine));
+      }
+    });
+    var pl = jget('wg_played_v1') || {}, grew = false;
+    var theirsPlayed = st.played;
+    (Array.isArray(theirsPlayed) ? theirsPlayed : Object.keys(theirsPlayed || {})).forEach(function (p) {
+      if (/^\/(relationships|fertility|pregnancy|postpartum|parenting)\/tools\/[a-z0-9-]+$/.test(p) && !pl[p]) { pl[p] = (theirsPlayed && theirsPlayed[p] > 1 && !Array.isArray(theirsPlayed)) ? theirsPlayed[p] : Date.now(); grew = true; }
+    });
+    if (grew) set('wg_played_v1', JSON.stringify(pl));
+    if (Array.isArray(st.saved)) remember(null, { saved: st.saved.filter(function (k) { return typeof k === 'string' && /^wg_[a-z0-9_]+$/.test(k); }) });
+  }
+  var syncing = null;
+  // Reads her account, sends what the phone has that the account lacks, and brings back what the phone lacks.
+  function sync(force) {
+    if (!signedIn()) return Promise.resolve(null);
+    var last = 0; try { last = +w.sessionStorage.getItem('wg_sync_at') || 0; } catch (e) {}
+    if (!force && Date.now() - last < 120000) return Promise.resolve(cached());
+    if (syncing) return syncing;
+    try { w.sessionStorage.setItem('wg_sync_at', String(Date.now())); } catch (e) {}
+    syncing = authed('GET', '/account').then(function (j) {
+      if (!j.ok) return null;
+      remember(j.account);
+      if (j.account && j.account.name) writeName(j.account.name);
+      return applyPrograms(j.account).then(function () {
+        applyState(j.state);
+        return authed('POST', '/account/state', localState());
+      }).then(function (r) { if (r && r.ok) applyState(r.state); return cached(); });
+    }).catch(function () { return null; }).then(function (x) { syncing = null; return x; });
+    return syncing;
   }
 
-  window.WGAccess = {
-    PHASE8: PHASE8,
-
-    // What the sign-in screen needs to name a program: { name, program } or null for a slug we do not sell.
-    program: function (slug) { return homes().then(function (d) { return d.homes[slug] || null; }, function () { return null; }); },
-
-    // Ask for a 6-digit code by email. The server answers the same for every email.
-    signin: function (email) { return post('/access/signin', { email: email }); },
-
-    // Check the 6-digit code. When it is right, every program she bought is saved and added to her phone.
-    check: function (email, code) {
-      return post('/access/signin/check', { email: email, code: code }).then(openAll);
-    },
-
-    // The one-tap link emailed to a Selar buyer when her sale reaches us. It signs her in as a right code does, once.
-    link: function (token) {
-      return post('/access/signin/link', { token: token }).then(openAll);
-    },
-
-    // A typed code: a shared program code is checked on the phone first, then a personal code on the server.
-    addCode: function (text) {
-      return Promise.all([homes(), hash(text)]).then(function (r) {
-        var slug = r[1] && r[0].codes[r[1]];
-        if (slug && !PHASE8) return addHome(slug).then(function (p) { return { ok: true, programs: [p] }; });
-        var clean = String(text).toUpperCase().replace(/[^A-Z0-9]/g, '');
-        if (clean.length !== 11) return { ok: false, reason: 'invalid' };
-        return post('/access/verify', { code: text, device: device() }).then(function (j) {
-          if (!j.ok) return j;
-          saveCode(slugOf(j.program_home), clean.slice(0, 3) + '-' + clean.slice(3, 7) + '-' + clean.slice(7));
-          return sendPass(j.pass).then(function () { return addHome(slugOf(j.program_home)); }).then(function (p) { return { ok: true, programs: p ? [p] : [] }; });
-        });
+  // ── sign in ──
+  // A right code or link: the session, the pass, her programs, her name, and her state all land on this phone.
+  function adopt(j) {
+    if (!j || !j.ok) return Promise.resolve(j);
+    var acct = j.account || null;
+    if (j.token) { set(SESSION, j.token); remember(acct || { email: '', name: '', programs: [] }); }
+    if (acct && acct.name) writeName(acct.name);
+    return sendPass(j.pass)
+      .then(function () {
+        if (acct) return applyPrograms(acct);
+        // The earlier server answered with codes and no account; keep that working until the new server is live.
+        return Promise.all((j.codes || []).map(function (c) { return addHome(slugOf(c.program_home)); })).then(function (a) { return a.filter(Boolean); });
+      })
+      .then(function (programs) {
+        return (j.token ? sync(true) : Promise.resolve()).then(function () { return { ok: true, account: acct, programs: programs, token: !!j.token }; });
       });
+  }
+
+  w.WGAccess = {
+    PAY_API: PAY_API,
+    signedIn: signedIn,
+    adopt: adopt,
+    account: account,
+    email: function () { var a = account(); return a ? a.email || '' : ''; },
+    name: function () { var a = account(); return a ? a.name || '' : ''; },
+    member: function () { var a = account(); return a && a.member ? a.member : null; },
+    savedKeys: function () { var c = cached(); return c && c.saved ? c.saved : []; },
+    program: function (slug) { return homes().then(function (x) { return x.homes[slug] || null; }, function () { return null; }); },
+    addHome: addHome,
+    push: push,
+    // The server answers the same for every email, so no one can learn whether an address bought a program.
+    // create:true makes a plain account first when the email has none (the "Make the app yours" screen).
+    signin: function (email, opts) {
+      var b = { email: email }; if (opts && opts.name) b.name = opts.name; if (opts && opts.create) b.create = true;
+      return request('POST', '/access/signin', b);
     },
+    check: function (email, code) { return request('POST', '/access/signin/check', { email: email, code: code }).then(adopt); },
+    // The one-tap link in the buyer email. It signs her in as a right code does, once.
+    link: function (tok) { return request('POST', '/access/signin/link', { token: tok }).then(adopt); },
+    // Selar waiting page: has her sale reached the server? Not in the contract; see the report. The answer may carry a session
+    // (then the page opens by itself) or only ready:true (then the page sends her a code).
+    ready: function (email, program, nonce) { return request('POST', '/access/ready', { email: email, program: program, nonce: nonce }).then(function (j) { return j.ok && (j.token ? adopt(j).then(function (a) { a.ready = true; return a; }) : j); }); },
+    signout: function () {
+      var tok = token();
+      var done = function () {
+        forget(); HOME_KEYS.forEach(del);
+        return fetch('/api/pass', { method: 'DELETE', credentials: 'same-origin' }).catch(function () {});
+      };
+      return (tok ? request('POST', '/account/signout', {}, tok).catch(function () {}) : Promise.resolve()).then(done);
+    },
+    setName: function (n) {
+      n = writeName(n); if (!n) return Promise.resolve(false);
+      var c = cached(); if (c && c.account) { c.account.name = n; remember(c.account); }
+      return signedIn() ? authed('POST', '/account/name', { name: n }).then(function (j) { return !!j.ok; }) : Promise.resolve(true);
+    },
+    sync: sync,
+    refresh: function () { return sync(true); },
+    // ── the First 1,000 ──
+    first1000: {
+      status: function () { return request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); },
+      claim: function (body) {
+        return request('POST', '/first1000/claim', body).then(function (j) {
+          if (!j.ok) return j;
+          push('first1000_claim');
+          return adopt(j).then(function (a) { a.ok = true; return a; });
+        });
+      },
+      // Each step counts once on the server; the answer carries the new end date and the steps she has finished.
+      step: function (step) {
+        return authed('POST', '/member/step', { step: step }).then(function (j) {
+          if (j.ok) { var c = cached(); if (c && c.account && c.account.member) { c.account.member.ends = j.ends || c.account.member.ends; c.account.member.steps = j.steps || c.account.member.steps; remember(c.account); } }
+          return j;
+        });
+      }
+    }
   };
-})();
+
+  // A signed-in phone keeps its account fresh when a page opens, and sends her place when she leaves a lesson.
+  if (signedIn()) {
+    d.addEventListener('DOMContentLoaded', function () { sync(false); });
+    d.addEventListener('visibilitychange', function () { if (d.visibilityState === 'hidden') { try { w.sessionStorage.removeItem('wg_sync_at'); } catch (e) {} } });
+  }
+})(window, document);

@@ -1,6 +1,6 @@
 /* Wholesome Girlies: a program home loaded inside a frame never shows its page.
  * The Bachs payment window is an iframe. After a payment Bachs can send that frame to the thank-you address,
- * and a program home loaded there would show the shared program code instead of the buyer's personal one.
+ * and a program home loaded there would open inside the payment window instead of on the real page.
  * So a framed home shows nothing but a "Payment received" card, tells the top page to move to the real
  * thank-you page (checkout-intent.js listens), and offers a button that opens it in the top window.
  * The framed copy never asks the payment server for anything: wg-order.js stops when it is framed.

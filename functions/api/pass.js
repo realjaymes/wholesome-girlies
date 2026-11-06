@@ -29,4 +29,11 @@ export async function onRequestPost({ request, env }) {
   return reply({ ok: true, programs: merged.p }, 200, { "set-cookie": cookie });
 }
 
-export const onRequest = () => reply({ ok: false }, 405, { allow: "POST" });
+// DELETE /api/pass: signing out of this phone ends the cookie, so the program pages lock again here.
+export async function onRequestDelete({ request }) {
+  const origin = request.headers.get("origin");
+  if (origin && origin !== new URL(request.url).origin) return reply({ ok: false }, 403);
+  return reply({ ok: true }, 200, { "set-cookie": `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax` });
+}
+
+export const onRequest = () => reply({ ok: false }, 405, { allow: "POST, DELETE" });

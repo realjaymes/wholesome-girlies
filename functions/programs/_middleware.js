@@ -16,8 +16,9 @@ async function homes(env, request) {
   return homesCache;
 }
 
-function lock(slug) {
-  const to = /^[a-z0-9-]+$/.test(slug) ? `/signin/?program=${slug}` : "/signin/";
+function lock(slug, next) {
+  // next is the page she asked for (the home or the reader), so sign-in can take her straight back to it.
+  const to = /^[a-z0-9-]+$/.test(slug) ? `/signin/?program=${slug}${next ? `&next=${encodeURIComponent(next)}` : ""}` : "/signin/";
   return new Response(null, { status: 302, headers: { location: to, "cache-control": NO_STORE } });
 }
 
@@ -51,7 +52,7 @@ export async function onRequest({ request, env, next }) {
     open = !!pass && covers(await homes(env, request), pass.p, slug);
   }
   if (!open && /^thank-you(\.html)?\/?$/.test(m[2])) open = await justPaid(url, env);
-  if (!open) return lock(slug);
+  if (!open) return lock(slug, /^[a-z0-9\/-]+$/.test(path.replace(/\.html$/, "")) ? path.replace(/\.html$/, "") : "");
 
   const res = await next();
   const out = new Response(res.body, res);
