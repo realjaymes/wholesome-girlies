@@ -95,12 +95,25 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   await ph2.goto(B + '/tools/', { waitUntil: 'load' }); await wait(300);
   await ph2.evaluate(() => { localStorage.setItem('wg_random_last', 'x'); localStorage.setItem('wg_pill_off', '1'); }); await wait(1600);
   ok('phone: spinning for a game is not a saved entry (no bar)', !(await ph2.$('.wg-app-bar')));
-  // 7. one footer everywhere, and the sales page Back button (CLAUDE.md section 10)
-  for (const [u, w] of [['/tools/', 390], ['/tools/', 1280], ['/', 1280], ['/tools/?preview=installed', 390], ['/legal/privacy?preview=installed', 1280]]) {
+  // 7. the footer rule (CLAUDE.md section 10): a browser tab shows the full footer at every width; the installed app, program sales
+  // pages, /go/ pages, thank-you and reader pages keep the two short lines; /first-1000 is full. Then the sales page Back button.
+  const footKids = f => [...f.children].filter(c => getComputedStyle(c).display !== 'none' && c.offsetHeight).map(c => c.className).join(',');
+  for (const [u, w, want] of [['/tools/', 390, 'full'], ['/tools/', 1280, 'full'], ['/', 1280, 'full'], ['/', 390, 'full'], ['/first-1000', 390, 'full'], ['/first-1000', 1280, 'full'],
+                              ['/tools/?preview=installed', 390, 'short'], ['/legal/privacy?preview=installed', 1280, 'short'],
+                              ['/programs/wife-material-blueprint', 390, 'short'], ['/programs/wife-material-blueprint', 1280, 'short'],
+                              ['/programs/postpartum-reset/thank-you', 1280, 'short'], ['/programs/postpartum-reset/read', 390, 'short']]) {
     const fp = await browser.newPage(); await fp.setViewport({ width: w, height: 844 });
-    await fp.goto(B + u, { waitUntil: 'load' }); await wait(300);
-    const vis = await fp.$eval('footer.site-footer', f => [...f.children].filter(c => getComputedStyle(c).display !== 'none' && c.offsetHeight).map(c => c.className).join(','));
-    ok(`short footer only: ${u} at ${w}px`, vis === 'wg-app-foot', vis);
+    await fp.goto(B + u, { waitUntil: 'load' }); await wait(400);
+    const vis = await fp.$eval('footer.site-footer', footKids);
+    const kids = vis.split(',').filter(Boolean);
+    const good = want === 'short' ? vis === 'wg-app-foot' : (!kids.includes('wg-app-foot') && kids.length >= 1);
+    ok(`${want} footer: ${u} at ${w}px`, good, vis);
+    if (want === 'full' && w < 900) {
+      // the tab bar must not cover the last link of the full footer when she scrolls to the bottom
+      await fp.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await wait(200);
+      const clear = await fp.evaluate(() => { const n = document.getElementById('wg-app-nav'); const as = [...document.querySelectorAll('footer.site-footer a')].filter(a => a.offsetHeight); const l = as[as.length - 1]; if (!n || !l) return 'nav ' + !!n + ' link ' + !!l; return l.getBoundingClientRect().bottom <= n.getBoundingClientRect().top ? 'clear' : 'covered'; });
+      ok(`full footer clears the tab bar: ${u} at ${w}px`, clear === 'clear', clear);
+    }
     await fp.close();
   }
   const sb = await browser.newPage(); await sb.setViewport({ width: 390, height: 844 });

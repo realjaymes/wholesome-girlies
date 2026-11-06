@@ -18,7 +18,7 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-APP_JS_VERSION = "20261107b"
+APP_JS_VERSION = "20261107c"
 IDEAS_JS_VERSION = "20261012a"
 STREAK_JS_VERSION = "20261106b"  # wg-streak.js and wg-capture.js
 HEAD = ('<link rel="manifest" href="/manifest.webmanifest">\n'

@@ -422,7 +422,7 @@ if "app/index.html" in SRC:
             fail("app/index.html", 'the Get help card must not call the open Telegram group "the community"')
     _wga = read("assets/js/wg-app.js")
     if "    tabBar();\n    appFooter();" not in _wga:
-        fail("assets/js/wg-app.js", "every page must end like the installed app in a browser tab too: the tab bar and the short footer")
+        fail("assets/js/wg-app.js", "every page must end like the installed app in a browser tab too: the tab bar and the footer rule")
     # Stage, checkout and streak cards (wg-ideas.js) and the shared week logic (wg-weeks.js).
     if not re.search(r"TOOL_KEY\s*=.*stage_check_v1\$.*install_test_v1\$", _wga):
         fail("assets/js/wg-app.js", "wg_stage_check_v1 and wg_install_test_v1 are not saved tools: keep both out of TOOL_KEY")
@@ -435,9 +435,10 @@ if "app/index.html" in SRC:
     _trk = read("pregnancy/tools/week-by-week-tracker.html")
     if "/assets/js/wg-weeks.js?v=" not in _trk or "WGWeeks.noteFor(" not in _trk or re.search(r"function noteFor\(w\)\s*\{\s*if", _trk):
         fail("pregnancy/tools/week-by-week-tracker.html", "the tracker must take its week note from WGWeeks.noteFor (wg-weeks.js), not keep its own copy")
-    # One footer for the installed app and a browser tab at every width: no second class, no width exception.
-    if "f.classList.add('wg-app-foot-on');" not in _wga or "footer.wg-app-foot-on>:not(.wg-app-foot){display:none !important}" not in _wga or "wg-web-foot" in _wga:
-        fail("assets/js/wg-app.js", "the footer must be the same short footer in the installed app and a browser tab, at every width (the full footer stays in the code, hidden)")
+    # The footer rule: a browser tab shows the full footer; the installed app, sales pages (.sticky-cta), /go/, thank-you and read pages keep the two short lines; /first-1000 is exempt from the sales page rule.
+    if ("function shortFooter()" not in _wga or "f.classList.add('wg-app-foot-on');" not in _wga or "footer.wg-app-foot-on>:not(.wg-app-foot){display:none !important}" not in _wga
+            or "wg-web-foot" in _wga or "foot=full" in _wga or "wg-foot-full" not in _wga or "first-1000" not in _wga or "thank-you|read" not in _wga):
+        fail("assets/js/wg-app.js", "appFooter() must show the full footer in a browser tab and the two short lines only in the installed app, on sales pages, /go/, thank-you and read pages (not /first-1000), with no ?foot=full switch")
     # The stage line (James's pick, option A): the homepage's five stops open the stage pages, the app home's open the
     # programs, in life order, with no stage cards left; the app home's closing line has no "every tool" link.
     _STOPS = re.compile(r'<a class="stage-stop" href="([^"]+)">')

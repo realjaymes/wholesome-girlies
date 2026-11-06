@@ -73,6 +73,9 @@
       '.wg-app-nav .on svg{background:var(--mustard,#D49A2A);border:2px solid var(--ink,#33322A);border-radius:10px;padding:3px;width:30px;height:30px;box-sizing:border-box;margin:-4px 0}' +
       'body.wg-in-app{padding-bottom:calc(66px + env(safe-area-inset-bottom))}' +
       '@media (min-width:900px){body.wg-web-tabs .wg-app-nav{display:none}body.wg-web-tabs{padding-bottom:0}}' +
+      // the full footer in a browser tab: it carries the room for the tab bar itself
+      'body.wg-web-tabs.wg-foot-full{padding-bottom:0}body.wg-web-tabs.wg-foot-full footer.site-footer{padding-bottom:calc(var(--wg-nav-h,66px) + 24px)}' +
+      '@media (min-width:900px){body.wg-web-tabs.wg-foot-full footer.site-footer{padding-bottom:revert-layer}}' +
       'body.wg-in-app .wg-app-bar{bottom:calc(var(--wg-nav-h,66px) + 12px)}' +
       'body.wg-in-app .wg-pill{bottom:calc(var(--wg-nav-h,66px) + 12px)}' +
       // a sales page's floating price bar sits above the tab bar, and hides fully behind it when not shown
@@ -265,8 +268,8 @@
     // 5. Inside Instagram, TikTok or Facebook, a program home sits in that app's own storage, so her program and reading
     //    progress would stay behind. A top card asks her to open the page in her real browser.
     if (inApp && !standalone && /^\/programs\/[^/]+\/thank-you$/.test(path)) inAppCard();
-    // Every page ends like the installed app, in a browser tab too: the tab bar and the short footer. The footer is the
-    // same at every width; a browser tab hides only the tab bar on wide screens, where the header does its job.
+    // Every page gets the tab bar in a browser tab (hidden on wide screens, where the header does its job). The footer is
+    // the full site footer in a browser tab and the two short lines in the installed app and on the pages named at appFooter().
     tabBar();
     appFooter();
     appWords();
@@ -368,16 +371,21 @@
     navH(); w.addEventListener('resize', navH);
   }
 
-  // The footer is the same in the installed app and a browser tab, at every width: the not-medical-advice line, the
-  // legal pages and "Privacy choices" (consent must be changeable at any time). The full footer stays in the page code,
-  // hidden, so search engines still read its links.
+  // The footer: a browser tab shows the full site footer at every width. Four places keep the short two-line footer
+  // (the not-medical-advice line, the legal pages and "Privacy choices", because consent must be changeable at any time):
+  // the installed app, program sales pages (they have the floating price bar, .sticky-cta), /go/ ad bridges, and the
+  // program pages she reads (/programs/<slug>/thank-you and /programs/<slug>/read). /first-1000 has a floating claim bar
+  // of its own, so it is exempt from the sales page rule and keeps the full footer. On a phone the full footer gets bottom
+  // padding, so the tab bar never covers its last links. The full footer stays in the page code either way.
+  function shortFooter() {
+    if (standalone) return true;
+    if (/^\/first-1000(\/|$)/.test(path)) return false;
+    return !!d.querySelector('.sticky-cta') || /^\/go\//.test(path) || /^\/programs\/[^/]+\/(thank-you|read)$/.test(path);
+  }
   function appFooter() {
     var f = d.querySelector('footer.site-footer');
     if (!f) return;
-    // TEMPORARY review switch (local host only): ?foot=full keeps the full site footer so it can be compared with the two-line one.
-    if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname) && /[?&]foot=full\b/.test(w.location.search)) {
-      f.style.paddingBottom = 'calc(var(--wg-nav-h, 64px) + 24px)'; return;
-    }
+    if (!shortFooter()) { style(); d.body.classList.add('wg-foot-full'); return; }
     if (f.querySelector('.wg-app-foot')) return;
     style();
     var line = d.createElement('div'); line.className = 'wg-app-foot';
