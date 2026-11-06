@@ -5,14 +5,14 @@
   "updated": "October 2026",
   "updated_iso": "2026-10-27",
   "other": "Babymigo",
-  "title": "Wholesome Girlies vs Babymigo: First Pregnancy in Nigeria",
-  "description": "Wholesome Girlies and Babymigo compared for a first pregnancy in Nigeria: price, account, where your dates are kept, and where Babymigo is ahead.",
-  "share": "Expecting your first baby in Nigeria? This compares Wholesome Girlies and Babymigo on price, privacy and what each one does best.",
+  "title": "Wholesome Girlies vs Babymigo for a First Pregnancy",
+  "description": "Compare Wholesome Girlies and Babymigo for a first pregnancy in Nigeria. See their classes, tools, prices and ways to prepare for antenatal visits.",
+  "share": "If you are choosing between Babymigo and Wholesome Girlies for a first pregnancy, this comparison shows their classes, tools, Nigerian prices and antenatal help.",
   "eyebrow": "Compare",
   "h1": "Wholesome Girlies vs Babymigo",
   "crumb": "Wholesome Girlies vs Babymigo",
-  "kicker": "Which is better for a first pregnancy in Nigeria?",
-  "answer": "Use Babymigo to find a hospital or a lactation consultant near you, ask other women and doctors a question, or join a live online class. Use Wholesome Girlies for a week by week plan for a first pregnancy, tools that need no account and keep your dates only on your phone, and questions to print for your antenatal visit. PreggClass is a class and The First Pregnancy Plan is a plan, so they are different products, and you can use both. We make no claim of better medical guidance.",
+  "kicker": "For women preparing for their first pregnancy in Nigeria",
+  "answer": "If you want a live antenatal class or need to find a hospital, use Babymigo. If you want a week-by-week plan and questions to print for each antenatal visit, use Wholesome Girlies. You can use both because PreggClass is a class and The First Pregnancy Plan guides you over time. Neither one replaces advice from your doctor, and we do not claim our medical guidance is better.",
   "image": {
     "src": "/assets/img/cast/pregnancy-zainab-chart.jpg",
     "alt": "Illustration of Zainab, pregnant, looking at a week-by-week chart"
@@ -27,74 +27,94 @@
     "Babymigo"
   ],
   "table_title": "The comparison",
-  "legend": "A tick marks something we can show in our own code or a cited source. Babymigo facts come from Babymigo's own pages, and its numbers are its own.",
+  "legend": "A tick means that option does this better. We only use a tick when our tools or a source on this page supports it.",
   "rows": [
     {
-      "label": "What it is",
-      "wg": "Tools, guides and The First Pregnancy Plan, a paced plan for a first pregnancy.",
-      "other": "A Nigerian parenting forum on the web, with expert questions and answers, articles, tools, a directory of local providers and PreggClass, an online antenatal class.",
+      "label": "What can I use it for?",
+      "wg": "Use the tools and guides as you need them. The First Pregnancy Plan takes you through your first pregnancy.",
+      "other": "Ask questions, read articles, use tools, find Nigerian providers or join PreggClass online.",
+      "wg_short": "Plan and practical tools",
+      "other_short": "Forum, directory and class",
       "kind": "even"
     },
     {
-      "label": "A paced plan",
-      "wg": "The First Pregnancy Plan has five parts: Know What's Happening (Week by Week), Is This Normal?, What Can I Eat, Understand Your Scans and Tests, and Get Ready for Birth.",
-      "other": "Articles, forum threads and classes, plus a pregnancy week by week page.",
+      "label": "Will it guide me week by week?",
+      "wg": "Yes. Five parts cover each week, common concerns, food, scans and tests, then preparing for birth.",
+      "other": "You can use its week-by-week page, articles, forum discussions and classes.",
+      "wg_short": "Five-part pregnancy plan",
+      "other_short": "Week-by-week page",
       "kind": "win"
     },
     {
-      "label": "Price",
+      "label": "What does it cost me?",
       "wg": "The tools need no card. The First Pregnancy Plan is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
-      "other": "The forum, articles, tools and directory show no price. PreggClass, for individuals, partners or couples, is ₦10,000 (about $7.50) a class, shown beside ₦20,500 (about $15) struck through. A class and a plan are different products.",
+      "other": "The forum, articles, tools and directory show no price. PreggClass costs ₦10,000 (about $7.50) a class, beside ₦20,500 (about $15) struck through.",
+      "wg_short": "Tools need no card",
+      "other_short": "₦10,000 ($7.50) per class",
       "kind": "even"
     },
     {
-      "label": "Account to use the tools",
-      "wg": "None. The due date calculator, week by week tracker, antenatal appointment questions and safe foods checklist open with no sign-in.",
-      "other": "Forum threads, articles and the directory open without signing in. Posting needs a login with Gmail, Facebook or email. Its home page says you can ask questions anonymously.",
+      "label": "Do I have to sign up?",
+      "wg": "No. Open the due date calculator, weekly tracker, antenatal questions or food checklist and start.",
+      "other": "No sign-in to read or search the directory. Sign in with Gmail to post. You can also use Facebook or email. You can ask anonymously.",
+      "wg_short": "No sign-up for tools",
+      "other_short": "Sign in to post",
       "kind": "win"
     },
     {
-      "label": "Where your dates are kept",
-      "wg": "Only on your phone. The due date calculator and week by week tracker say: Saved only on this phone. Nothing is sent to us.",
-      "other": "Its privacy policy says it may ask for your expected delivery date, location, mobile number and email address. The relevant lines are quoted below.",
+      "label": "Where are my dates kept?",
+      "wg": "Your due date and weekly tracker date stay on your phone. We do not receive them.",
+      "other": "Babymigo says it may ask for your due date, location, phone number and email. Its words appear below.",
+      "wg_short": "On your phone",
+      "other_short": "Babymigo may ask",
       "kind": "win"
     },
     {
-      "label": "Questions for your doctor",
-      "wg": "Antenatal Appointment Questions lets you tick what you want to ask, add your own, print it and take it along.",
-      "other": "You ask on its forum and read replies from other women and doctors.",
+      "label": "Can I prepare questions for my doctor?",
+      "wg": "Tick questions, add your own, print the list and take it to your antenatal visit.",
+      "other": "Ask on the forum and read replies from other women and doctors.",
+      "wg_short": "Print your questions",
+      "other_short": "Ask on the forum",
       "kind": "win"
     },
     {
-      "label": "Nigerian context",
-      "wg": "It is written for Nigerian and diaspora women and shows prices in naira and dollars.",
-      "other": "Lists providers in Lagos, Abuja, Ibadan, Port Harcourt, Kano, Calabar and Kaduna, with Ghana and Kenya in its header.",
+      "label": "Does it cover life in Nigeria?",
+      "wg": "Yes. It is written for Nigerian women at home and abroad. Prices appear in naira and dollars.",
+      "other": "It lists providers in Lagos, Abuja, Ibadan, Port Harcourt, Kano, Calabar and Kaduna. Ghana and Kenya also appear in its header.",
+      "wg_short": "Written for Nigerians",
+      "other_short": "Nigerian provider listings",
       "kind": "even"
     },
     {
-      "label": "Finding a provider",
-      "wg": "We have no directory.",
-      "other": "Its pages say it lists 50+ breastfeeding consultants, 1000+ maternity hospitals and 5000+ creches and day care centres across Nigerian states.",
+      "label": "Can I find a provider near me?",
+      "wg": "No. We do not have a provider directory.",
+      "other": "Yes. It lists 50+ breastfeeding consultants, 1000+ maternity hospitals and 5000+ creches and day care centres across Nigerian states.",
+      "wg_short": "No directory",
+      "other_short": "Large provider directory",
       "kind": "other"
     },
     {
-      "label": "Asking other women and doctors",
-      "wg": "Our community is open only to program buyers.",
-      "other": "Its home page says \"Join 250,000+ members\", and that count is Babymigo's own. It says answers come from experienced mothers and doctors. Its rules page says: \"Babymigo cannot guarantee the correctness of the answers or comments posted by users.\"",
+      "label": "Can I ask other women and doctors?",
+      "wg": "Anyone can join our open Telegram group for tips, polls and app help. Program buyers also get a private community.",
+      "other": "Yes. Babymigo says it has 250,000+ members and replies from mothers and doctors. It does not guarantee that user replies are correct.",
+      "wg_short": "Open group, plus buyers' community",
+      "other_short": "250,000+ members",
       "kind": "other"
     },
     {
-      "label": "A live class",
-      "wg": "The Plan has no live class.",
-      "other": "PreggClass is an online antenatal class led by a trained and board certified gynaecologist, paediatrician or midwife, by its own page.",
+      "label": "Can I join a live class?",
+      "wg": "No. The First Pregnancy Plan has no live class.",
+      "other": "Yes. Babymigo says a trained and board certified gynaecologist, paediatrician or midwife leads PreggClass online.",
+      "wg_short": "No live class",
+      "other_short": "Live online PreggClass",
       "kind": "other"
     }
   ],
   "wins_title": "Where Wholesome Girlies is ahead",
   "wins": [
     {
-      "h": "A paced plan",
-      "b": "The First Pregnancy Plan takes you from your first week to getting ready for birth in five parts, with the community and the Girlies app. You keep all of it."
+      "h": "You know what to do each week",
+      "b": "The First Pregnancy Plan takes you from your first week to preparing for birth in five parts. You also get the community and Girlies app, and you keep access."
     },
     {
       "h": "One payment",
@@ -106,7 +126,7 @@
     },
     {
       "h": "Your dates stay on your phone",
-      "b": "The due date calculator and the week by week tracker keep your date in storage on your phone. The pages say: Saved only on this phone. Nothing is sent to us."
+      "b": "Your date stays on your phone when you use the due date calculator or weekly tracker. We do not receive it."
     },
     {
       "h": "Questions to print for the clinic",
@@ -114,7 +134,11 @@
     },
     {
       "h": "A new phone, and no data needed",
-      "b": "The Girlies app has Save a backup and Restore a backup, so your saved entries move to a new phone in one file. Once the app is installed, the tools work even when you have no data."
+      "b": "The Girlies app has Save a backup and Restore a backup, so your saved entries move to a new phone in one file. Sign in with your email and your programs and streak come with you. Once the app is installed, the tools work even when you have no data."
+    },
+    {
+      "h": "Something short for your pregnancy week",
+      "b": "Open the Girlies app and today's card matches your pregnancy week, in one or two sentences with a link to the tool or guide behind it. Under your due date result, you can also ask for a weekly email for your stage."
     }
   ],
   "other_ahead_title": "Where Babymigo is ahead",
@@ -125,7 +149,7 @@
     },
     {
       "h": "Asking other women and doctors",
-      "b": "Its forum has more than 250,000 members, by Babymigo's own count, and questions get answers from other mothers and doctors. Our community is open only to program buyers."
+      "b": "Its forum has more than 250,000 members, by Babymigo's own count, and questions get answers from other mothers and doctors. Our open Telegram group is smaller, and our private community is for program buyers."
     },
     {
       "h": "A live class",
@@ -144,7 +168,7 @@
     },
     {
       "h": "Pick The First Pregnancy Plan",
-      "b": "if you want a paced plan with a community that you pay for once."
+      "b": "if you want five clear parts to follow and a community that you pay for once."
     },
     {
       "h": "Use both",
@@ -162,7 +186,7 @@
     },
     {
       "q": "Does the Wholesome Girlies Plan need an account?",
-      "a": "The tools need no account and no card. The Plan opens with the email you paid with, and you enter a code we send to it."
+      "a": "The tools need no account and no card. The Plan opens when you sign in with the email you paid with. We send a sign-in link to that email."
     },
     {
       "q": "Can I use both?",
@@ -215,7 +239,7 @@
   ],
   "statements": {
     "title": "What Babymigo says about your data",
-    "lead": "These are Babymigo's own words from its privacy policy. We quote them and add nothing.",
+    "lead": "Babymigo uses these exact words in its privacy policy. Read them before you decide what to enter.",
     "items": [
       {
         "t": "we may ask you to provide certain information, including your age, gender, actual or expected delivery date, location, mobile number, e-mail address, and/or other information to help provide the Service.",

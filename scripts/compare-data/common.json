@@ -8,8 +8,8 @@
     "naira_per_dollar": 1333,
     "line": "Dollar amounts use the official rate of about ₦1,333 to the dollar."
   },
-  "disclosure": "We make Wholesome Girlies. Every claim about it comes from our own tools and prices, and every claim about another app comes from that app's own pages and its Nigerian store listing.",
-  "review_footer": "Quotes are exact, apart from collapsed spaces. Reviews show what women said. They do not show whether it is true, and none of them is medical advice. We pulled them from the public App Store and Google Play listings.",
+  "disclosure": "Wholesome Girlies is ours, so we are not neutral. We use our own tools and prices for facts about it. We use each app's own pages and Nigerian App Store or Google Play listing for facts about that app.",
+  "review_footer": "We copied these quotes from public App Store and Google Play reviews. We only closed extra spaces. A review describes one woman's experience. Do not treat it as a proven fact or medical advice.",
   "listings": {
     "flo": "https://apps.apple.com/ng/app/flo-period-cycle-health/id1038369065",
     "clue": "https://apps.apple.com/app/id657189652",
@@ -150,7 +150,7 @@
   "faq": {
     "flo_price": {
       "q": "What does Flo cost in Nigeria?",
-      "a": "On Android in Nigeria, Flo's Pass It On Project gives Premium at no charge for one year from the upgrade date, and Google Play's Nigerian listing says Premium costs nothing in your country. On iPhone, the Nigerian App Store sells Premium purchases from ₦3,900 (about $3) to ₦29,900 (about $22)."
+      "a": "If you use Android in Nigeria, Flo's Pass It On Project gives you Premium for one year at no charge from your upgrade date. Google Play also lists Premium at no charge in Nigeria. On iPhone, the lowest price is ₦3,900 (about $3). The highest is ₦29,900 (about $22)."
     }
   },
   "reviews": {
@@ -158,7 +158,7 @@
       "name": "Flo",
       "listing": "https://apps.apple.com/ng/app/flo-period-cycle-health/id1038369065",
       "listing_label": "Flo on the Nigerian App Store",
-      "share": "Of 3,521 one to three star Flo reviews we sampled, about half (51%) mention paying and 18% say features moved behind premium. In the Nigerian App Store sample, 7 of 22 mention paying. The samples are small and counted by keyword.",
+      "share": "We sampled 3,521 Flo reviews with one to three stars. About half (51%) mention paying, and 18% say features moved behind Premium. In our Nigerian App Store sample, 7 of 22 mention paying. We counted words in small samples.",
       "complaints": [
         {
           "t": "Too many subscriptions just want a tracking app for dates and symptoms without an extra charge",
@@ -203,13 +203,13 @@
           "year": 2026
         }
       ],
-      "note": "The Nigerian review is one woman's words. Flo's Pass It On Project gives Premium at no charge on Android in Nigeria for one year, and the Nigerian App Store sells Premium purchases from ₦3,900 (about $3) to ₦29,900 (about $22)."
+      "note": "The Nigerian quote is one woman's experience. On Android in Nigeria, Flo's Pass It On Project gives Premium at no charge for one year. On iPhone, the lowest price is ₦3,900 (about $3). The highest is ₦29,900 (about $22)."
     },
     "clue": {
       "name": "Clue",
       "listing": "https://apps.apple.com/app/id657189652",
       "listing_label": "Clue on the App Store",
-      "share": "Of 3,500 one to three star Clue reviews we sampled, about half (49%) mention paying and 28% mention ads, mostly upgrade pop-ups.",
+      "share": "We sampled 3,500 Clue reviews with one to three stars. About half (49%) mention paying. Another 28% mention ads, mostly pop-ups asking women to upgrade.",
       "complaints": [
         {
           "t": "It constantly (multiple times per session) pops up trying to get you to buy the subscription.",
@@ -246,7 +246,7 @@
       "name": "Period Calendar",
       "listing": "https://apps.apple.com/app/id896501514",
       "listing_label": "Period Calendar on the App Store",
-      "share": "In the 2,583 one to three star Period Calendar reviews we sampled, ads were the top theme at 17%. App bugs came next at 11%, then paying at 6%, and 56% matched none of our themes.",
+      "share": "We sampled 2,583 Period Calendar reviews with one to three stars. Ads appeared most at 17%. App problems came next at 11%, then paying at 6%. Another 56% did not match any topic we counted.",
       "complaints": [
         {
           "t": "Good app, but confusing features and ads. Why are there ads in a period app?",

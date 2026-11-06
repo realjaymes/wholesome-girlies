@@ -5,14 +5,14 @@
   "updated": "October 2026",
   "updated_iso": "2026-10-27",
   "other": "Flo",
-  "title": "Flo Alternatives in Nigeria: Four Trackers, Compared",
-  "description": "Four Flo alternatives for Nigerian women trying to conceive: Wholesome Girlies, Clue, Period Calendar and Ovia, with who each suits and what it costs.",
-  "share": "Looking for a Flo alternative? This compares four period tracker apps on price in Nigeria, where your dates are kept and who each one suits.",
+  "title": "Flo Alternatives in Nigeria: Four Period Trackers Compared",
+  "description": "Compare four Flo alternatives for Nigerian women trying to conceive. See reminders, prices, sign-up and what each tracker lets you do with your dates.",
+  "share": "If you want an alternative to Flo in Nigeria, this comparison shows what four period trackers let you do, what they cost and where they keep your dates.",
   "eyebrow": "Alternatives",
   "h1": "Flo alternatives in Nigeria",
   "crumb": "Flo alternatives in Nigeria",
-  "kicker": "Wholesome Girlies, Clue, Period Calendar and Ovia, with who each one suits",
-  "answer": "Our pick is Wholesome Girlies if you are trying to conceive and want a calendar with no account, dates only on your phone and a plan for the clinic. Clue suits a science-led tracker, Period Calendar suits reminders and a long history, and Ovia suits a woman who wants one app that follows her into pregnancy and postpartum. No app on this page can detect ovulation from dates alone, so this page makes no claim about prediction accuracy.",
+  "kicker": "For Nigerian women who want another option beside Flo",
+  "answer": "If you want to see fertile days without signing up, choose Wholesome Girlies. If you want reminders and years of saved entries, choose Period Calendar. Clue gives you expert-written guides, while Ovia can stay with you through pregnancy and postpartum. No app here can tell you the exact day you ovulate from dates alone.",
   "image": {
     "src": "/assets/img/cast/fertility-amaka-planner.jpg",
     "alt": "Illustration of Amaka reading a planner at the kitchen table"
@@ -22,19 +22,19 @@
     {
       "rank": 1,
       "name": "Wholesome Girlies",
-      "label": "Our pick for trying to conceive",
-      "suits": "A woman trying to conceive who wants no account, dates only on her phone, and a plan, clinic questions and a partner checklist.",
-      "does": "It has six fertility tools, including the Period Tracker and Ovulation Calculator, and The Trying-to-Conceive Blueprint.",
-      "watch": "No symptom logging and no reminders. The calculator is day-14 arithmetic and cannot detect ovulation, and we make no accuracy claim.",
+      "label": "Start without signing up",
+      "suits": "Choose it if you want your dates on your phone, questions to print for the clinic and a checklist to send your partner.",
+      "does": "Open six fertility tools, including the Period Tracker and Ovulation Calculator. You can also buy The Trying-to-Conceive Blueprint.",
+      "watch": "You cannot note symptoms. Reminders go into your own phone calendar when you tap Add to my calendar. The calculator counts 14 days back from your next period and cannot detect ovulation.",
       "price": "The tools need no card. The Blueprint is ₦5,700 early-bird (₦13,700 standard), paid once. Buyers abroad pay $12 early-bird ($27 standard).",
       "rating": "Not in the app stores. Open it here, or add the Girlies app to your home screen."
     },
     {
       "rank": 2,
       "name": "Clue",
-      "label": "Best for a science-led tracker",
-      "suits": "A woman who wants a research-minded tracker and is comfortable with content not written for Nigeria.",
-      "does": "A cycle tracker from Berlin. Clue says it does not sell data to advertisers.",
+      "label": "Read expert-written guides",
+      "suits": "Choose it if you want expert-written guides and do not mind advice that was not written for Nigeria.",
+      "does": "Track your cycle with an app from Berlin. Clue says it does not sell your data to advertisers.",
       "watch": "Forecasts need the Plus tier. Clue ranks 46 in the Nigerian App Store Health and Fitness chart.",
       "price": "Clue Plus on the Nigerian App Store runs from ₦1,500 (about $1) to ₦12,900 (about $10).",
       "rating": "4.4 from 3.1k ratings"
@@ -42,9 +42,9 @@
     {
       "rank": 3,
       "name": "Period Calendar",
-      "label": "Best for reminders and long history",
-      "suits": "A woman who wants reminders and a calendar with years of history.",
-      "does": "A cycle calendar app. It ranks 2 in the Nigerian App Store Health and Fitness chart and first in Nigerian Google Play search for period tracker.",
+      "label": "Get reminders and keep years",
+      "suits": "Choose it if you want reminders and want to keep years of period entries in one app.",
+      "does": "Track your cycle and get reminders. It ranks 2 in the Nigerian App Store Health and Fitness chart and first in Nigerian Google Play search for period tracker.",
       "watch": "Google Play marks it as containing ads, and reviews mention ads and upgrade pop-ups.",
       "price": "In-app purchases on the Nigerian App Store run from ₦500 (about $0.40) for 7 days of Premium to ₦69,900 (about $52) for Pro: Period Calendar.",
       "rating": "4.8 from 11k ratings"
@@ -52,11 +52,11 @@
     {
       "rank": 4,
       "name": "Ovia",
-      "label": "Best for one app through pregnancy and postpartum",
-      "suits": "A woman who wants one app for fertility, pregnancy and postpartum.",
-      "does": "Its App Store listing describes period and fertility tracking with a daily fertility score, pregnancy, postpartum and menopause modes, and over 2,000 articles.",
+      "label": "Keep one app for later",
+      "suits": "Choose it if you want the same app for fertility, pregnancy and postpartum.",
+      "does": "See a daily fertility score and switch to pregnancy, postpartum or menopause mode. Its listing also says it has over 2,000 articles.",
       "watch": "It has in-app purchases on both stores. Ovuline makes it, and the company is now Ovia Health by Labcorp.",
-      "price": "Google Play Nigeria lists in-app items from ₦4,270 (about $3) to ₦29,000 (about $22).",
+      "price": "Google Play Nigeria lists purchases inside the app from ₦4,270 (about $3) to ₦29,000 (about $22).",
       "rating": "4.5 from 856 ratings"
     }
   ],
@@ -84,14 +84,14 @@
     }
   ],
   "why_title": "Why women look elsewhere",
-  "why": "In the store reviews we read for Flo, Clue and Period Calendar, women ask for the same four things: a price they can see before they commit, fewer upgrade pop-ups, their dates kept when they change phone, and content that fits where they live. The Nigerian samples are too small to measure how common each request is.",
+  "why": "Women reviewing Flo, Clue and Period Calendar often want to see the price before paying. They also mention upgrade pop-ups, losing dates when they change phone and advice that does not fit where they live. Our Nigerian samples are too small to show how common each concern is.",
   "criteria_title": "What to look for",
   "criteria": [
-    "Whether you need an account before you see a date.",
-    "Where your dates are kept.",
-    "Tools you can take to a clinic.",
-    "Content that fits Nigeria.",
-    "Reminders and symptom logging, if you want them."
+    "Check whether you must sign up before you can see a date.",
+    "Check where the app keeps your dates.",
+    "Check whether you can print or show anything at the clinic.",
+    "Check whether the advice fits Nigerian women.",
+    "Check whether you can note symptoms and get reminders."
   ],
   "faq": [
     {
@@ -103,7 +103,7 @@
     },
     {
       "q": "Which alternative is best for trying to conceive?",
-      "a": "Choose Wholesome Girlies for a plan, clinic questions and a partner checklist, Clue for a science-led tracker and Period Calendar for reminders and history."
+      "a": "Choose Wholesome Girlies if you want clinic questions and a partner checklist. Choose Clue for expert-written guides. Choose Period Calendar for reminders and years of saved dates."
     },
     {
       "q": "Do these apps predict ovulation accurately?",
@@ -129,7 +129,7 @@
     {
       "tag": "Compare",
       "h": "Wholesome Girlies vs Flo",
-      "p": "Price, privacy and planning, compared side by side.",
+      "p": "See prices, where dates go and what each lets you do.",
       "href": "/fertility/compare/wholesome-girlies-vs-flo",
       "cta": "Read"
     },
