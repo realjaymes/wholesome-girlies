@@ -1,0 +1,778 @@
+{
+ "v": 1,
+ "source": "Educational, not medical advice.",
+ "stages": {
+  "relationships": {
+   "cards": [
+    {
+     "n": 1,
+     "t": "Decide what you want from dating right now. Think about marriage and roughly when, and about children. Write your answers down before you talk to anyone.",
+     "p": "/relationships/guides/dating-on-purpose",
+     "l": "Read Dating on Purpose"
+    },
+    {
+     "n": 2,
+     "t": "Pick two things to try this month for meeting serious men. Church groups, classes, running clubs and volunteering put you in the same room every week.",
+     "p": "/relationships/tools/meet-marriage-minded-men-checklist",
+     "l": "Open the Meet Marriage Minded Men Checklist"
+    },
+    {
+     "n": 3,
+     "t": "Write down everything you think you want in a man, without editing. Twenty items is normal at this stage.",
+     "p": "/relationships/tools/standards-non-negotiables-worksheet",
+     "l": "Open the Standards Worksheet"
+    },
+    {
+     "n": 4,
+     "t": "Cross out anything you would stay in the relationship despite. That is a preference. What is left is your short list.",
+     "p": "/relationships/tools/standards-non-negotiables-worksheet",
+     "l": "Open the Standards Worksheet"
+    },
+    {
+     "n": 5,
+     "t": "Rewrite one item as something you can see. \"He keeps the commitments he makes to me, even small ones\" is easier to check than \"he must be responsible.\"",
+     "p": "/relationships/guides/non-negotiables",
+     "l": "Read about non negotiables"
+    },
+    {
+     "n": 6,
+     "t": "Most people have three to five non negotiables. If you would stay anyway, it is a preference, and you are allowed those too.",
+     "p": "/relationships/guides/non-negotiables",
+     "l": "Read about non negotiables"
+    },
+    {
+     "n": 7,
+     "t": "Watch how he treats the waiter, the gateman and his mother. Character shows most where there is nothing to gain.",
+     "p": "/relationships/guides/green-flags-that-matter",
+     "l": "Read the green flags guide"
+    },
+    {
+     "n": 8,
+     "t": "Notice whether he does what he says, again and again. The guide calls consistency the strongest early signal.",
+     "p": "/relationships/guides/green-flags-that-matter",
+     "l": "Read the green flags guide"
+    },
+    {
+     "n": 9,
+     "t": "Next time you say no or not yet, watch what he does. Sulking or pressing tells you something. Hearing it without fuss tells you something too.",
+     "p": "/relationships/guides/green-flags-that-matter",
+     "l": "Read the green flags guide"
+    },
+    {
+     "n": 10,
+     "t": "Ask him what he is looking for right now. A specific answer with a timeline helps. \"Just going with the flow\" for three months is also an answer.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 11,
+     "t": "Ask two or three questions per conversation, and answer them yourself too. That way it does not feel like an interview.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 12,
+     "t": "Ask when he was last in a relationship and what ended it. Listen for whether he can name one thing that was his fault.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 13,
+     "t": "Ask if he wants children, and roughly when. The \"when\" matters most.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 14,
+     "t": "Ask how he handles money and who he supports. Black tax is real and supporting family is fine. Not telling you about it is the problem.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 15,
+     "t": "Ask what an argument looks like for him. He may shout, go silent, walk out or talk it through. Then check it against what you have seen.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 16,
+     "t": "Play Delulu or Clear-Eyed. You pick what you would do in ten talking stage situations, like he watched your story and did not reply.",
+     "p": "/relationships/tools/delulu-or-clear-eyed",
+     "l": "Play Delulu or Clear-Eyed"
+    },
+    {
+     "n": 17,
+     "t": "A talking stage usually runs a few weeks to about three months. If you cannot say what this is after eight to twelve weeks of near daily contact, it may be idling.",
+     "p": "/relationships/guides/talking-stage",
+     "l": "Read the talking stage guide"
+    },
+    {
+     "n": 18,
+     "t": "Ask \"what are we?\" once, plainly, around week eight to twelve. His answer, or his dodge, is information.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 19,
+     "t": "Before you ask him \"so what are we?\", answer five questions for yourself. What do you want, and what will you do if his answer is not what you hope?",
+     "p": "/relationships/tools/the-talk-planner",
+     "l": "Open the Talk Planner"
+    },
+    {
+     "n": 20,
+     "t": "If plans are always short notice and you are rarely part of anything scheduled, try the Situationship Checker. Six questions give you a read and words to ask where this is going.",
+     "p": "/relationships/tools/situationship-checker",
+     "l": "Open the Situationship Checker"
+    },
+    {
+     "n": 21,
+     "t": "A situationship is a relationship in everything but name. If the two of you would describe it differently, that is the sign.",
+     "p": "/relationships/guides/situationship",
+     "l": "Read the situationship guide"
+    },
+    {
+     "n": 22,
+     "t": "Notice how you feel after you see him. Early weeks of a real relationship are uncertain but they settle you. If you feel more anxious every time, write that down.",
+     "p": "/relationships/guides/situationship",
+     "l": "Read the situationship guide"
+    },
+    {
+     "n": 23,
+     "t": "Early red flags are small and repeated. Every ex is crazy. Your no gets negotiated. He is vague about the basics. Pick one and watch whether it repeats.",
+     "p": "/relationships/guides/red-flags-in-a-man",
+     "l": "Read the red flags guide"
+    },
+    {
+     "n": 24,
+     "t": "One red flag, owned and changed afterwards, is a bad day. Three or more together is a pattern, and the guide says to act on it.",
+     "p": "/relationships/guides/red-flags-in-a-man",
+     "l": "Read the red flags guide"
+    },
+    {
+     "n": 25,
+     "t": "Tick what you have actually seen him do, from the green list and the red list, and see them counted with one next step.",
+     "p": "/relationships/tools/green-red-flags-checker",
+     "l": "Open the Green and Red Flags Checker"
+    },
+    {
+     "n": 26,
+     "t": "Call five everyday situations green flag, let's talk or red flag in Red Flag Radar, then see where your read matches ours.",
+     "p": "/relationships/tools/red-flag-radar",
+     "l": "Play Red Flag Radar"
+    },
+    {
+     "n": 27,
+     "t": "Couple Alignment asks each of you the same 12 questions on money, children, family, where to live, faith at home and work after children. Then you see where you agree.",
+     "p": "/relationships/tools/couple-alignment",
+     "l": "Open Couple Alignment"
+    },
+    {
+     "n": 28,
+     "t": "Ask how close he is to his family and how much they decide. Then ask yourself the same thing.",
+     "p": "/relationships/guides/talking-stage-questions",
+     "l": "Read the talking stage questions"
+    },
+    {
+     "n": 29,
+     "t": "When family keeps asking when you will marry, remember that knowing what you want is the easier part. Holding onto it is harder, so read your own list again before you answer them.",
+     "p": "/relationships/guides/dating-on-purpose",
+     "l": "Read Dating on Purpose"
+    },
+    {
+     "n": 30,
+     "t": "Take the Are You Ready for Love quiz. Eight questions on what you want, your standards and whether family pressure, age or fear is driving who you date. You cannot fail it.",
+     "p": "/relationships/tools/ready-for-love-quiz",
+     "l": "Take the Ready for Love quiz"
+    }
+   ]
+  },
+  "fertility": {
+   "cards": [
+    {
+     "n": 1,
+     "t": "Day 1 is the first day of bleeding. Log it in the Period Tracker on the day it starts. Three logged periods give you your own average cycle.",
+     "p": "/fertility/tools/period-tracker",
+     "l": "Open the Period Tracker"
+    },
+    {
+     "n": 2,
+     "t": "Count cycle days from the first day of your last period. The day bleeding stops has no part in the sum, and every calculator and app starts at day 1.",
+     "p": "/fertility/tools/period-tracker",
+     "l": "Open the Period Tracker"
+    },
+    {
+     "n": 3,
+     "t": "Write down the first day of every period. A doctor will want your last three or four dates, and so will an antenatal clinic.",
+     "p": "/fertility/tools/period-tracker",
+     "l": "Open the Period Tracker"
+    },
+    {
+     "n": 4,
+     "t": "The National Health Service advises 400 micrograms of folic acid a day, ideally from three months before you try. You cannot reliably get that amount from food alone.",
+     "p": "/fertility/guides/preparing-to-conceive",
+     "l": "Read Preparing to Conceive"
+    },
+    {
+     "n": 5,
+     "t": "Ask a doctor before you start folic acid if you have sickle cell disease or do not know your genotype. Some women are advised a higher dose on prescription.",
+     "p": "/fertility/guides/preparing-to-conceive",
+     "l": "Read Preparing to Conceive",
+     "w": 1
+    },
+    {
+     "n": 6,
+     "t": "The fertile window is about six days: the five days before ovulation plus the day itself. Sperm can live up to about five days inside the body.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 7,
+     "t": "On a short cycle the window can start soon after bleeding ends. The days right after a period are not a time to assume you cannot conceive.",
+     "p": "/fertility/tools/ovulation-calculator",
+     "l": "Open the Ovulation Calculator"
+    },
+    {
+     "n": 8,
+     "t": "Day 14 only fits a 28 day cycle. The National Health Service puts normal cycles at 21 to 35 days, so ovulation can move by two weeks.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 9,
+     "t": "Ovulation is better estimated backwards from your next period. The National Health Service puts it at around 10 to 16 days before.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 10,
+     "t": "Add your last period start and usual cycle length to the Ovulation Calculator. It gives a window and not a date, because even the steadier half of a cycle has a six day spread.",
+     "p": "/fertility/tools/ovulation-calculator",
+     "l": "Open the Ovulation Calculator"
+    },
+    {
+     "n": 11,
+     "t": "Cervical mucus that is clear, stretchy and slippery like raw egg white may mean the window is open now. It is the one common sign that points forwards.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 12,
+     "t": "A small rise in resting temperature comes after ovulation. It helps you learn your pattern, but it cannot help you catch this month.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 13,
+     "t": "A one sided twinge is felt by some women and not by many. It is not reliable enough to plan around on its own.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 14,
+     "t": "Most of the fertile window sits before ovulation. Sex every two or three days across the cycle covers it without checking a chart first.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 15,
+     "t": "There is no evidence that saving up improves the odds, and long gaps can work against you. Regular works better than strategic.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 16,
+     "t": "Ovulation predictor strips pick up the hormone surge a day or two before release. A clinic scan can see it directly. Both tell you more than any calendar.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 17,
+     "t": "Illness, travel, stress and weight change can all move ovulation. Treat every date on a screen as an estimate.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide"
+    },
+    {
+     "n": 18,
+     "t": "Read each date as the middle of a range. Cycles that vary by three or four days are ordinary, so your real days can sit three or four days either side.",
+     "p": "/fertility/tools/ovulation-calculator",
+     "l": "Open the Ovulation Calculator"
+    },
+    {
+     "n": 19,
+     "t": "Folic acid protects a pregnancy once there is one. It does not make conception more likely, and it does not treat hormonal imbalance.",
+     "p": "/fertility/guides/folic-acid-benefits",
+     "l": "Read the folic acid guide"
+    },
+    {
+     "n": 20,
+     "t": "The neural tube closes in the first month, often before a woman knows she is pregnant. That is why folic acid starts before you try.",
+     "p": "/fertility/guides/folic-acid-benefits",
+     "l": "Read the folic acid guide"
+    },
+    {
+     "n": 21,
+     "t": "Stop alcohol and smoking, and ask him to stop too. Both affect fertility and an early pregnancy you do not yet know about.",
+     "p": "/fertility/guides/preparing-to-conceive",
+     "l": "Read Preparing to Conceive"
+    },
+    {
+     "n": 22,
+     "t": "Review every medicine and supplement with a pharmacist, herbal products included. Some need changing well before you try.",
+     "p": "/fertility/guides/preparing-to-conceive",
+     "l": "Read Preparing to Conceive"
+    },
+    {
+     "n": 23,
+     "t": "Know your genotype and your blood group before you try. Dental work is also far simpler now than later.",
+     "p": "/fertility/guides/preparing-to-conceive",
+     "l": "Read Preparing to Conceive"
+    },
+    {
+     "n": 24,
+     "t": "Aim for a steady weight. Being very underweight or very overweight can affect fertility, and a crash diet while trying works against you.",
+     "p": "/fertility/guides/preparing-to-conceive",
+     "l": "Read Preparing to Conceive"
+    },
+    {
+     "n": 25,
+     "t": "Fertility is a two person job. Ask him to get a semen analysis early. It is cheap and quick, and testing one person tells you about one person.",
+     "p": "/fertility/tools/his-fertility-checklist",
+     "l": "Send him the checklist"
+    },
+    {
+     "n": 26,
+     "t": "See a doctor if your cycles are very irregular, shorter than 21 days, longer than 35, or have stopped. Severe period pain or pain during sex also needs a visit.",
+     "p": "/fertility/guides/fertile-window-explained",
+     "l": "Read the fertile window guide",
+     "w": 1
+    },
+    {
+     "n": 27,
+     "t": "Talk to a doctor after twelve months of trying, or six months if you are over 35. Go together and ask for a semen analysis at the first visit.",
+     "p": "/fertility/tools/fertility-appointment-questions",
+     "l": "Open the Fertility Appointment Questions",
+     "w": 1
+    },
+    {
+     "n": 28,
+     "t": "Your next day 1 is your last first day plus your usual cycle length. Log it the day it starts. A late date on the screen tells you nothing a test cannot tell you better.",
+     "p": "/fertility/tools/period-tracker",
+     "l": "Open the Period Tracker"
+    }
+   ]
+  },
+  "pregnancy": {
+   "cards": [
+    {
+     "n": 4,
+     "t": "Very early. A test may only just be positive. Start folic acid if you have not, 400 micrograms a day through week 12.",
+     "p": "/pregnancy/tools/due-date-calculator",
+     "l": "Open the Due Date Calculator"
+    },
+    {
+     "n": 5,
+     "t": "Register at an antenatal clinic early, before you start to show. This first visit is called booking.",
+     "p": "/pregnancy/tools/antenatal-appointment-questions",
+     "l": "Open the Antenatal Appointment Questions"
+    },
+    {
+     "n": 6,
+     "t": "The baby's major organs are forming. Nausea and tiredness are common, and some women feel almost nothing, and that is normal too.",
+     "p": "/pregnancy/tools/week-by-week-tracker",
+     "l": "Open the Week by Week Tracker"
+    },
+    {
+     "n": 7,
+     "t": "Booking checks blood pressure, blood group, genotype and anaemia. They help most when there is time to act on them.",
+     "p": "/pregnancy/tools/antenatal-appointment-questions",
+     "l": "Open the Antenatal Appointment Questions"
+    },
+    {
+     "n": 8,
+     "t": "Take the malaria doses your clinic gives you and sleep under a treated net. The World Health Organization lists pregnant women at higher risk of severe malaria.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide"
+    },
+    {
+     "n": 9,
+     "t": "Your first scan is often somewhere around weeks 8 to 12. It dates the pregnancy more accurately than counting yourself.",
+     "p": "/pregnancy/tools/antenatal-appointment-questions",
+     "l": "Open the Antenatal Appointment Questions"
+    },
+    {
+     "n": 10,
+     "t": "Raw or undercooked meat, unpasteurised milk and liver are on the list to avoid. Cook everything through, and skip alcohol.",
+     "p": "/pregnancy/tools/safe-foods-checklist",
+     "l": "Open the Safe Foods Checklist"
+    },
+    {
+     "n": 11,
+     "t": "You do not need to eat for two. Aim for at least five portions of fruit and vegetables a day, and wash them to remove soil.",
+     "p": "/pregnancy/tools/safe-foods-checklist",
+     "l": "Open the Safe Foods Checklist"
+    },
+    {
+     "n": 12,
+     "t": "This is the end of the first trimester. Sickness often begins to ease, and the folic acid advice runs through week 12.",
+     "p": "/pregnancy/tools/week-by-week-tracker",
+     "l": "Open the Week by Week Tracker"
+    },
+    {
+     "n": 13,
+     "t": "The second trimester begins. Many women feel more energy, and you may start to show.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide"
+    },
+    {
+     "n": 14,
+     "t": "The second trimester is usually the easiest stretch. Use the energy to plan the birth, sort the money and settle who is coming for omugwo.",
+     "p": "/pregnancy/tools/birth-plan-builder",
+     "l": "Open the Birth Plan Builder"
+    },
+    {
+     "n": 15,
+     "t": "Tiger nut, garden egg and cloves in your jollof are fine. We would leave bitter kola alone. Concentrated clove oil is a different thing.",
+     "p": "/pregnancy/guides/nigerian-foods-in-pregnancy",
+     "l": "Read the Nigerian foods guide"
+    },
+    {
+     "n": 16,
+     "t": "Lipton and every other tea count toward the caffeine limit of 200mg a day. Drink tea an hour away from meals, because it lowers how much iron you absorb.",
+     "p": "/pregnancy/guides/nigerian-foods-in-pregnancy",
+     "l": "Read the Nigerian foods guide"
+    },
+    {
+     "n": 17,
+     "t": "Bottled kunun aya from the roadside is soaked, ground and sold unrefrigerated. Make it at home with clean water, keep it cold and drink it the same day.",
+     "p": "/pregnancy/guides/nigerian-foods-in-pregnancy",
+     "l": "Read the Nigerian foods guide"
+    },
+    {
+     "n": 18,
+     "t": "The detailed scan of how your baby is growing usually comes around weeks 18 to 22. Tick the questions you want to ask before you go.",
+     "p": "/pregnancy/tools/antenatal-appointment-questions",
+     "l": "Open the Antenatal Appointment Questions"
+    },
+    {
+     "n": 19,
+     "t": "Around now many women feel the first movements, often between weeks 18 and 24, and earlier in a second pregnancy.",
+     "p": "/pregnancy/tools/week-by-week-tracker",
+     "l": "Open the Week by Week Tracker"
+    },
+    {
+     "n": 20,
+     "t": "The anomaly scan usually happens near week 20. Ask what it costs and whether the price includes the report and a printout before you book.",
+     "p": "/pregnancy/tools/antenatal-appointment-questions",
+     "l": "Open the Antenatal Appointment Questions"
+    },
+    {
+     "n": 21,
+     "t": "Anaemia is common in pregnancy across Nigeria, so take iron seriously. Keep tea away from meals you are eating for iron.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide"
+    },
+    {
+     "n": 22,
+     "t": "Do not take agbo or herbal mixtures without asking your doctor. In one study of 595 pregnant women in Nigeria, more than two thirds had used herbal medicines.",
+     "p": "/pregnancy/tools/safe-foods-checklist",
+     "l": "Open the Safe Foods Checklist"
+    },
+    {
+     "n": 23,
+     "t": "A fever or an illness that is not settling is a reason to call your clinic the same day. Do not treat it yourself with tablets, agbo or herbal mixtures first.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide",
+     "w": 1
+    },
+    {
+     "n": 24,
+     "t": "Write your birth preferences down: who is with you, pain relief, movement and feeding. Plans can change on the day, and that is normal.",
+     "p": "/pregnancy/tools/birth-plan-builder",
+     "l": "Open the Birth Plan Builder"
+    },
+    {
+     "n": 25,
+     "t": "A newborn needs far less than the baby shop and the aunty at church will tell you. Tick the Newborn Essentials Checklist before you buy.",
+     "p": "/pregnancy/tools/baby-essentials-checklist",
+     "l": "Open the Newborn Essentials Checklist"
+    },
+    {
+     "n": 26,
+     "t": "Buy the baby cot, clothes and diapers first and leave the rest until after the birth. If you plan to breastfeed, you do not need to stock up on bottles.",
+     "p": "/pregnancy/tools/baby-essentials-checklist",
+     "l": "Open the Newborn Essentials Checklist"
+    },
+    {
+     "n": 27,
+     "t": "Decide who takes you to hospital and how you will get there at 2am. Working it out during contractions is how avoidable delays happen.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide"
+    },
+    {
+     "n": 28,
+     "t": "The third trimester begins. Learn your baby's pattern of movement and report any change the same day. Do not wait for your next appointment.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide",
+     "w": 1
+    },
+    {
+     "n": 29,
+     "t": "Backache, heartburn, breathlessness and broken sleep are the usual complaints now. Avoid lifting heavy objects and wear flat shoes.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide"
+    },
+    {
+     "n": 30,
+     "t": "Start thinking about your hospital bag. The checklist has one list for you, one for the baby and one for whoever is with you.",
+     "p": "/pregnancy/tools/hospital-bag-checklist",
+     "l": "Open the Hospital Bag Checklist"
+    },
+    {
+     "n": 31,
+     "t": "The World Health Organization recommends at least eight antenatal contacts. Each one catches something that is cheaper to fix early. Take your questions with you.",
+     "p": "/pregnancy/tools/antenatal-appointment-questions",
+     "l": "Open the Antenatal Appointment Questions"
+    },
+    {
+     "n": 32,
+     "t": "Call your midwife or maternity unit immediately if the baby is moving less than usual. Do not wait until the next day.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide",
+     "w": 1
+    },
+    {
+     "n": 33,
+     "t": "Take your birth plan to your next visit. Your team will always put your safety and your baby's first, and plans often change on the day.",
+     "p": "/pregnancy/tools/birth-plan-builder",
+     "l": "Open the Birth Plan Builder"
+    },
+    {
+     "n": 34,
+     "t": "Bleeding, severe pain, fever, a bad headache with blurred sight, or fluid leaking means see a doctor or go to hospital. If you are unsure, call.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide",
+     "w": 1
+    },
+    {
+     "n": 35,
+     "t": "Ask your hospital for its own packing list at antenatal booking, and follow it as well as ours.",
+     "p": "/pregnancy/tools/hospital-bag-checklist",
+     "l": "Open the Hospital Bag Checklist"
+    },
+    {
+     "n": 36,
+     "t": "Your hospital bag should be packed by about now. Know the route and decide who takes you, so nobody works it out during contractions.",
+     "p": "/pregnancy/tools/hospital-bag-checklist",
+     "l": "Open the Hospital Bag Checklist"
+    },
+    {
+     "n": 37,
+     "t": "Full term from here, so baby could arrive any time. Know the signs of labour and when to go in.",
+     "p": "/pregnancy/guides/trimester-by-trimester",
+     "l": "Read the trimester guide"
+    },
+    {
+     "n": 38,
+     "t": "Read your birth plan once more and print it for the hospital. Birth can change, and that is normal.",
+     "p": "/pregnancy/tools/birth-plan-builder",
+     "l": "Open the Birth Plan Builder"
+    },
+    {
+     "n": 39,
+     "t": "Check the basics are ready: a baby cot with a firm, flat mattress and a mosquito net, clothes, diapers and a way to feed.",
+     "p": "/pregnancy/tools/baby-essentials-checklist",
+     "l": "Open the Newborn Essentials Checklist"
+    },
+    {
+     "n": 40,
+     "t": "Contact your hospital or midwife if your waters break, contractions are strong and regular, you bleed, or the baby is moving less. It is always fine to call.",
+     "p": "/pregnancy/tools/hospital-bag-checklist",
+     "l": "Open the Hospital Bag Checklist",
+     "w": 1
+    }
+   ]
+  },
+  "postpartum": {
+   "cards": [
+    {
+     "n": 1,
+     "t": "Bleeding, called lochia, is heaviest this week, so you need maternity pads. If a pad soaks in minutes, or the bleeding feels like gushing, go to hospital.",
+     "p": "/postpartum/guides/postpartum-warning-signs",
+     "l": "Read the warning signs",
+     "w": 1
+    },
+    {
+     "n": 2,
+     "t": "Bleeding lightens and changes colour from red to brown to a pale discharge. Heavier bleeding again, fever, foul smelling discharge or pain that gets worse needs a doctor.",
+     "p": "/postpartum/guides/postpartum-warning-signs",
+     "l": "Read the warning signs",
+     "w": 1
+    },
+    {
+     "n": 3,
+     "t": "Ask visitors and whoever came for omugwo to take the kitchen and the laundry. Holding the baby comes second. Tick what would help most.",
+     "p": "/postpartum/tools/partner-support-planner",
+     "l": "Open the Partner Support Planner"
+    },
+    {
+     "n": 4,
+     "t": "Many women feel a little more themselves around weeks 4 to 5. Short walks help. Hard exercise has to wait while the core and pelvic floor heal.",
+     "p": "/postpartum/guides/postpartum-recovery-timeline",
+     "l": "Read the recovery timeline"
+    },
+    {
+     "n": 5,
+     "t": "Enter your delivery date and whether it was vaginal or caesarean. The calculator shows your current stage and the date each stage starts.",
+     "p": "/postpartum/tools/recovery-timeline-calculator",
+     "l": "Open the Recovery Timeline Calculator"
+    },
+    {
+     "n": 6,
+     "t": "The six week check is about you. Write your questions down first, because the appointment is short. Ask about pain, sex, contraception and feeding.",
+     "p": "/postpartum/tools/check-up-questions",
+     "l": "Open the Check up Questions"
+    },
+    {
+     "n": 7,
+     "t": "You can become pregnant again as soon as three weeks after birth, even if you are breastfeeding and your periods have not returned. Raise contraception at your check.",
+     "p": "/postpartum/guides/postpartum-recovery-timeline",
+     "l": "Read the recovery timeline"
+    },
+    {
+     "n": 8,
+     "t": "Six weeks is not a finish line. Blood pressure problems, clots and infection can start after week six. See a doctor for fever, worsening pain or a hot, painful, swollen calf.",
+     "p": "/postpartum/guides/postpartum-recovery-timeline",
+     "l": "Read the recovery timeline",
+     "w": 1
+    },
+    {
+     "n": 9,
+     "t": "Omugwo usually runs one to three months, and one to two months is typical for a mother going back to work. The first six weeks matter most.",
+     "p": "/postpartum/guides/omugwo",
+     "l": "Read the omugwo guide"
+    },
+    {
+     "n": 10,
+     "t": "If you had a caesarean, hold off on driving, exercise, sex and lifting anything heavier than your baby for six weeks or so. Restart each one only when it feels comfortable.",
+     "p": "/postpartum/tools/recovery-timeline-calculator",
+     "l": "Open the Recovery Timeline Calculator"
+    },
+    {
+     "n": 11,
+     "t": "Sex can hurt for months, and leaking urine when you sneeze is common and treatable. Tell your doctor instead of putting up with either.",
+     "p": "/postpartum/tools/check-up-questions",
+     "l": "Open the Check up Questions"
+    },
+    {
+     "n": 12,
+     "t": "Most women feel physically recovered between six and eight weeks, and a caesarean takes longer. Hair may fall out in handfuls around month three or four, and it grows back.",
+     "p": "/postpartum/guides/postpartum-recovery-timeline",
+     "l": "Read the recovery timeline"
+    }
+   ]
+  },
+  "parenting": {
+   "cards": [
+    {
+     "n": 1,
+     "t": "A baby under three months with a temperature of 38°C or higher needs hospital now. So does a baby who cannot feed, has a fit or is hard to wake.",
+     "p": "/parenting/guides/when-to-take-your-baby-to-hospital",
+     "l": "Read when to go to hospital",
+     "w": 1
+    },
+    {
+     "n": 2,
+     "t": "The 6 week visit is three injections and two doses by mouth. Feeding straight after settles most babies faster than anything else.",
+     "p": "/parenting/tools/vaccination-tracker",
+     "l": "Open the Vaccination Tracker"
+    },
+    {
+     "n": 3,
+     "t": "The 10 week visit is two injections and two doses by mouth, and the 14 week visit follows. Add your baby's date of birth and each visit shows the date it falls due.",
+     "p": "/parenting/tools/vaccination-tracker",
+     "l": "Open the Vaccination Tracker"
+    },
+    {
+     "n": 4,
+     "t": "Put your baby on the back for every nap and every night sleep, on a firm, flat mattress in a separate baby cot in your room. Nothing else goes in the cot.",
+     "p": "/parenting/guides/safe-sleep-for-newborns",
+     "l": "Read the safe sleep guide"
+    },
+    {
+     "n": 5,
+     "t": "Pick your baby's age to see what many babies do around then. Every baby moves at their own pace, so mention any worry at your next clinic visit.",
+     "p": "/parenting/tools/milestone-tracker",
+     "l": "Open the Milestone Tracker"
+    },
+    {
+     "n": 6,
+     "t": "Solids start at around six months, when your baby can sit and hold their head steady, get food to their mouth and swallow it. Milk is still the main meal.",
+     "p": "/parenting/guides/starting-solids",
+     "l": "Read the starting solids guide"
+    },
+    {
+     "n": 7,
+     "t": "Start with one food at a time, soft and unseasoned: ripe banana, pawpaw, sweet potato, pap or mashed beans. Take your baby's portion out before the seasoning goes in.",
+     "p": "/parenting/tools/first-foods-planner",
+     "l": "Open the First Foods Planner"
+    },
+    {
+     "n": 8,
+     "t": "Leave out salt, including stock cubes, and leave out sugar. Give no honey before one year. Whole nuts and hard chunks are choking hazards.",
+     "p": "/parenting/guides/starting-solids",
+     "l": "Read the starting solids guide"
+    },
+    {
+     "n": 9,
+     "t": "The 9 month visit gives the measles and rubella vaccine, yellow fever and meningitis A. If you expect to travel, ask the clinic for the yellow card then.",
+     "p": "/parenting/tools/vaccination-tracker",
+     "l": "Open the Vaccination Tracker"
+    },
+    {
+     "n": 10,
+     "t": "Before crawling turns into climbing, keep kerosene, bleach, medicines and chemicals in their original containers, locked away. Never put kerosene in a water or soft drink bottle.",
+     "p": "/parenting/guides/babyproofing-your-home",
+     "l": "Read the babyproofing guide"
+    },
+    {
+     "n": 11,
+     "t": "Turn pot handles to the wall and keep hot drinks beyond the table's edge. Never carry your baby with hot tea or soup. Run the generator outside, about 6 metres from windows and doors.",
+     "p": "/parenting/tools/babyproofing-safety-checklist",
+     "l": "Open the Babyproofing Checklist"
+    },
+    {
+     "n": 12,
+     "t": "At 12 months vitamin A is given by mouth. Tick the visit off in the Vaccination Tracker, and photograph both sides of the clinic card.",
+     "p": "/parenting/tools/vaccination-tracker",
+     "l": "Open the Vaccination Tracker"
+    }
+   ],
+   "years": [
+    {
+     "n": 2,
+     "t": "The 15 month visit gives the second measles and rubella dose. Add your child's date of birth in the Vaccination Tracker and check which visits are done.",
+     "p": "/parenting/tools/vaccination-tracker",
+     "l": "Open the Vaccination Tracker"
+    },
+    {
+     "n": 3,
+     "t": "A child can drown quickly and silently in a small amount of water. Empty every bucket after use, cover wells and stay beside a young child near water.",
+     "p": "/parenting/guides/babyproofing-your-home",
+     "l": "Read the babyproofing guide"
+    },
+    {
+     "n": 4,
+     "t": "Keep groundnuts, seeds, whole grapes, hard food and small objects away from children under four. Cut food small and have your child sit to eat.",
+     "p": "/parenting/guides/babyproofing-your-home",
+     "l": "Read the babyproofing guide"
+    },
+    {
+     "n": 5,
+     "t": "Write your questions for the next clinic visit before you go. After a long wait it is easy to forget half of them.",
+     "p": "/parenting/tools/paediatric-visit-questions",
+     "l": "Open the Paediatric Visit Questions"
+    }
+   ]
+  }
+ }
+}
