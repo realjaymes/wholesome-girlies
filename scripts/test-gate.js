@@ -29,7 +29,7 @@ async function givePass(pass, cookie) {
   const set = r.headers.get('set-cookie') || '';
   return { status: r.status, set, cookie: (/wg_pass=[^;]+/.exec(set) || [''])[0], body: await r.json().catch(() => ({})) };
 }
-const locked = (r, slug) => r.status === 302 && r.location === `/signin/?program=${slug}`;
+const locked = (r, slug) => r.status === 302 && r.location.startsWith(`/signin/?program=${slug}&next=%2Fprograms%2F${slug}%2F`); // the lock remembers the page she wanted
 
 const FBP = 'first-baby-playbook', PPR = 'postpartum-reset';
 const TY = (s) => `/programs/${s}/thank-you`;
@@ -93,7 +93,7 @@ const TY = (s) => `/programs/${s}/thank-you`;
   await page.goto(BASE + TY(FBP), { waitUntil: 'networkidle0' });
   ok(new URL(page.url()).pathname === '/signin/' && new URL(page.url()).searchParams.get('program') === FBP, 'browser: a visitor with no pass lands on /signin/?program=' + FBP);
   const banner = await page.evaluate(() => ({ shown: !document.querySelector('.signin-program').hidden, name: document.getElementById('programName').textContent, img: document.querySelector('.signin-program img').src, title: document.getElementById('signinTitle').textContent }));
-  ok(banner.shown && banner.name === 'The First Baby Playbook' && /first-baby-playbook-cover/.test(banner.img) && /Sign in to read it/.test(banner.title), 'browser: the screen shows the program banner and "Sign in to read it"');
+  ok(banner.shown && banner.name === 'The First Baby Playbook' && /first-baby-playbook-cover/.test(banner.img) && /Sign in to open your program/.test(banner.title), 'browser: the screen shows the program banner and "Sign in to open your program"');
   await page.goto(BASE + TY(PPR), { waitUntil: 'networkidle0' });
   ok(await page.evaluate(() => document.getElementById('programName').textContent) === 'The 6-Week Postpartum Reset', 'browser: the banner names the program that was locked');
   // The page hands a pass to /api/pass the way wg-access.js does, then the program page opens.
@@ -121,12 +121,13 @@ const TY = (s) => `/programs/${s}/thank-you`;
   };
   const home = `${BASE}${TY(FBP)}`;
   const ctxA = await browser.createBrowserContext(), signin = await ctxA.newPage();
-  await stub(signin, [[/signin\/check/, { ok: true, pass: mint([FBP]), codes: [{ code: 'FBP-AAAA-BBBB', product: FBP, name: 'The First Baby Playbook', market: 'ng', program_home: 'https://wholesomegirlies.xyz' + TY(FBP) }] }], [/access\/signin$/, { ok: true }]]);
+  const acct = { email: 'ada@example.com', name: 'Ada', programs: [{ slug: FBP, home: TY(FBP) }] };
+  await stub(signin, [[/signin\/check/, { ok: true, token: 'tok_test', pass: mint([FBP]), account: acct }], [/access\/signin$/, { ok: true }], [/\/account/, { ok: true, account: acct }]]);
   await signin.goto(BASE + '/signin/?live=1&program=' + FBP, { waitUntil: 'networkidle0' });
-  await signin.type('#siEmail', 'ada@example.com'); await signin.click('#stepEmail .signin-btn');
-  await signin.waitForSelector('#stepOtp:not([hidden])'); await signin.type('#siOtp', '123456'); await signin.click('#stepOtp .signin-btn');
-  await signin.waitForSelector('#stepDone:not([hidden])');
-  ok((await ctxA.cookies(BASE)).some((c) => c.name === 'wg_pass'), 'browser: a right email code leaves the wg_pass cookie before "You are in"');
+  await signin.type('#siEmail', 'ada@example.com'); await signin.$eval('#stepEmail .signin-btn', (b) => b.click());
+  await signin.waitForSelector('#stepOtp:not([hidden])'); await signin.type('#siOtp', '123456'); await signin.$eval('#stepOtp .signin-btn', (b) => b.click());
+  await signin.waitForFunction(() => location.pathname.indexOf('/programs/') === 0 || !document.getElementById('stepDone').hidden, { timeout: 8000 }); // a locked sign-in goes straight back to the program
+  ok((await ctxA.cookies(BASE)).some((c) => c.name === 'wg_pass'), 'browser: a right email code leaves the wg_pass cookie before the program opens');
   await signin.goto(home, { waitUntil: 'networkidle0' });
   ok(new URL(signin.url()).pathname === TY(FBP), 'browser: after email sign-in the program page opens');
 
