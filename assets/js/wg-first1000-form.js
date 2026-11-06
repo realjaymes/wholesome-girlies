@@ -84,20 +84,18 @@
       if (q) s = { ok: true, taken: 1000 - +q[1], left: +q[1], open: +q[1] > 0 };
       if (!s) return;
       var left = s.left, taken = s.taken, open = s.open && left > 0;
-      var total = (taken + left) || 1000;
-      // The hero bar under the Claim button: the server's number, filled once. It shows from 0 taken (James, 2026-11-06). It stays hidden, and the old line stays, when status() gives nothing.
-      var tm = $('[data-taken-meter]');
-      if (tm && open && typeof taken === 'number' && taken >= 0) {
-        var tf = $('[data-taken-fill]', tm), fine = $('[data-fine]');
-        $('[data-taken-line]', tm).textContent = taken.toLocaleString('en-US') + ' of 1,000 places taken';
-        tm.hidden = false; if (fine) fine.hidden = true;
-        tf.style.width = '0%';
-        (w.requestAnimationFrame || setTimeout)(function () { (w.requestAnimationFrame || setTimeout)(function () { tf.style.width = Math.min(100, Math.max(taken > 0 ? 2 : 0, taken / 10)) + '%'; }); });
+      // The bar under each Claim button (hero and closing section): the server's number, filled once. It shows from 0 taken (James, 2026-11-06). It stays hidden, and the hero's old line stays, when status() gives nothing.
+      if (open && typeof taken === 'number' && taken >= 0) {
+        var fine = $('[data-fine]');
+        if (fine) fine.hidden = true;
+        $$('[data-taken-meter]').forEach(function (tm) {
+          var tf = $('[data-taken-fill]', tm);
+          $('[data-taken-line]', tm).textContent = taken.toLocaleString('en-US') + ' of 1,000 places taken';
+          tm.hidden = false;
+          tf.style.width = '0%';
+          (w.requestAnimationFrame || setTimeout)(function () { (w.requestAnimationFrame || setTimeout)(function () { tf.style.width = Math.min(100, Math.max(taken > 0 ? 2 : 0, taken / 10)) + '%'; }); });
+        });
       }
-      $$('[data-meter]').forEach(function (m) { m.hidden = false; });
-      $$('[data-f1k-bar]').forEach(function (b) { b.style.width = Math.min(100, Math.round(taken / total * 100)) + '%'; });
-      $$('[data-f1k-left]').forEach(function (b) { b.textContent = open ? left.toLocaleString('en-US') : ''; });
-      $$('[data-f1k-text]').forEach(function (t) { t.textContent = open ? ' places left of 1,000' : 'All 1,000 places are taken.'; });
       if (!open) { full = true; html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; closeSheet(); }
     });
   }

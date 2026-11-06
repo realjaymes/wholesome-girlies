@@ -36,7 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#6E7A3F">
 <meta name="apple-mobile-web-app-title" content="Girlies">
-<link rel="stylesheet" href="/assets/css/wg-first1000-landing.css?v=20261107f">
+<link rel="stylesheet" href="/assets/css/wg-first1000-landing.css?v=20261108f">
 <link rel="stylesheet" href="/assets/vendor/cookieconsent/cookieconsent.css?v=3.1.0">
 <link rel="stylesheet" href="/assets/css/wg-consent.css?v=20260915a">
 </head>
@@ -220,11 +220,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wrap">
       <h2>Claim your place</h2>
       <p data-final-line>One place per woman. No payment and no card.</p>
-      <div class="fx-meter" data-meter hidden>
-        <p class="fx-meter-line"><b data-f1k-left></b><span data-f1k-text></span></p>
-        <div class="fx-bar-track" aria-hidden="true"><i data-f1k-bar></i></div>
+      <div class="fx-final-cta">
+        <button type="button" class="btn btn-primary btn-lg" data-claim>Claim my place &rarr;</button>
+        <div class="fx-taken" data-taken-meter hidden>
+          <div class="fx-taken-track" role="img" aria-label="Places taken"><i data-taken-fill></i></div>
+          <p class="fx-taken-line" data-taken-line></p>
+        </div>
       </div>
-      <button type="button" class="btn btn-primary btn-lg" data-claim>Claim my place &rarr;</button>
     </div>
   </section>
 </main>
@@ -243,7 +245,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dialog>
 
 <script src="/assets/js/wg-access.js?v=20261107d"></script>
-<script defer src="/assets/js/wg-first1000-form.js?v=20261108d"></script>
+<script defer src="/assets/js/wg-first1000-form.js?v=20261108e"></script>
 
 <footer class="site-footer">
   <div class="wrap">
