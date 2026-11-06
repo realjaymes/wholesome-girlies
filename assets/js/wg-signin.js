@@ -28,6 +28,12 @@
       banner.querySelector("img").src = coverOf(h.program);
       var see = document.querySelector("[data-locked] a"); if (see) see.href = "/programs/" + h.program;
       bannerReady = true; banner.hidden = false;
+      /* the one offer (rule book): the free place while places are left, else the program */
+      if (see && window.WGNext) window.WGNext.ready({ status: true }).then(function () {
+        var st = window.WGNext.data().programs[h.program.replace(/-diaspora$/, "")], f = st && st.stage ? window.WGNext.offer(st.stage) : null;
+        if (f && f.kind === "f1k") { see.href = f.href; see.textContent = "Claim my place"; see.parentNode.firstChild.nodeValue = "Not got it yet? "; window.WGNext.mark(see.parentNode, "signin_locked", "offer_f1k"); }
+        else if (f && f.kind === "paid") window.WGNext.mark(see.parentNode, "signin_locked", "offer_paid");
+      });
     });
   }
 
@@ -167,7 +173,8 @@
     document.getElementById("endedLead").textContent = over
       ? "Thank you for being one of our first members" + who + ". Get the program today to keep it and your place in it. Your tools, games and saved entries are still here."
       : "This program is no longer active for " + (acct && acct.email ? acct.email : "this account") + ". Your tools, games and saved entries are all still here.";
-    document.getElementById("endedBuy").textContent = "Get " + (h ? h.name.replace(/^The /, "the ") : "the program") + " →";
+    document.getElementById("endedBuy").textContent = over ? "Keep " + (h ? h.name : "my program") + " →" : "Get " + (h ? h.name.replace(/^The /, "the ") : "the program") + " →";
+    if (window.WGNext && window.WGNext.mark) window.WGNext.mark(document.getElementById("endedBuy").parentNode, "signin_locked", over ? "keep_program" : "offer_paid");
     document.getElementById("endedBuy").href = "/programs/" + (h ? h.program : slug.replace(/-diaspora$/, ""));
     show("ended");
   }

@@ -355,33 +355,21 @@ if os.path.exists("scripts/results.json"):
         if 'id="wg-result-share"' not in SRC[page]:
             fail(page, 'quiz or checker must carry id="wg-result-share" in its result panel')
 
-# The app home: a line in APP_PROGRAMS for every program, and two game cards that point at real games or quizzes.
-if os.path.exists("app/index.html") and os.path.exists("assets/data/program-homes.json"):
+# The app home (note 07, "One next action for every woman"): one main action by state, drawn by wg-app-home.js from the rule book.
+if os.path.exists("app/index.html"):
     _app_src = SRC["app/index.html"]
-    _m = re.search(r"var APP_PROGRAMS = \{(.*?)\};", _app_src, flags=re.S)
-    _prog_lines = _m.group(1) if _m else ""
-    # One line per stage, for the Nigerian program. Diaspora homes share it and the Complete Motherhood Journey spans four stages.
-    for slug in json.load(open("assets/data/program-homes.json"))["homes"]:
-        if slug.endswith("-diaspora") or slug == "complete-motherhood-journey":
-            continue
-        if f"'{slug}'" not in _prog_lines:
-            fail("app/index.html", f"program {slug} has no line in APP_PROGRAMS")
-    _gm = re.search(r'id="appGames".*?<div class="grid[^>]*>(.*?)</div>\s*</div>', _app_src, flags=re.S)
-    _cards = re.findall(r'<a class="card" href="(/[^"]+)"', _gm.group(1)) if _gm else []
-    _tools_idx = SRC.get("tools/index.html", "")
-    if len(_cards) != 2:
-        fail("app/index.html", f'"Games to play and send to a friend" must hold exactly two cards, found {len(_cards)}')
-    for href in _cards:
-        _tag = re.search(r'href="' + re.escape(href) + r'"[^>]*><span class="tag">([^<]*)', _tools_idx)
-        if (href[1:] + ".html") not in SRC:
-            fail("app/index.html", f"game card {href} does not match a tool page")
-        elif not _tag or _tag.group(1) not in ("Game", "Quiz"):
-            fail("app/index.html", f"game card {href} must be a tool tagged Game or Quiz on /tools/")
-    # James picks the two top games (CLAUDE.md section 10). Change this list only when he picks others.
-    APP_TOP_GAMES = ["/relationships/tools/girls-girl-quiz", "/relationships/tools/is-he-husband-material"]
-    if _cards and _cards != APP_TOP_GAMES:
-        fail("app/index.html", f"the app's games must be {', '.join(APP_TOP_GAMES)} in that order, found {', '.join(_cards)}")
-
+    for _c in ("appHandoff", "appMain", "appProgram", "appToday", "appSpin", "appMine", "appSave", "appCommunity", "appFirst", "appNotice", "appInstallBox"):
+        if f'id="{_c}"' not in _app_src:
+            fail("app/index.html", f"the app home needs the #{_c} block (wg-app-home.js fills it)")
+    _ord = [_app_src.find('id="appMain"'), _app_src.find('id="appToday"'), _app_src.find('id="appMine"'), _app_src.find('id="appInstallBox"')]
+    if not (0 < _ord[0] < _ord[1] < _ord[2] < _ord[3]):
+        fail("app/index.html", "the app home order is: main action (#appMain), today row (#appToday), saved tools (#appMine), then the install card")
+    for _bad in ("APP_PROGRAMS", "APP_BUNDLE", 'id="appAsk"', 'id="appPick"', 'id="appGames"', 'id="appMore"'):
+        if _bad in _app_src:
+            fail("app/index.html", f"{_bad} is gone: the app home shows one offer card from the rule book and asks for her name only in the save-your-tools capture")
+    for _js in ("wg-next.js", "wg-app-home.js"):
+        if f"/assets/js/{_js}?v=" not in _app_src:
+            fail("app/index.html", f"the app home must load {_js} with a version")
 # Games lead every tool list (CLAUDE.md section 9): on the homepage Tools grid no tool card comes before a
 # game card. A game is a tool tagged Game or Quiz on /tools/. Program reels are sorted by build-tool-reels.py.
 if "index.html" in SRC and "tools/index.html" in SRC:
@@ -427,9 +415,6 @@ if "app/index.html" in SRC:
     if not re.search(r"TOOL_KEY\s*=.*stage_check_v1\$.*install_test_v1\$", _wga):
         fail("assets/js/wg-app.js", "wg_stage_check_v1 and wg_install_test_v1 are not saved tools: keep both out of TOOL_KEY")
     _appsrc = read("app/index.html")
-    for _c in ("appNotice", "appHandoff", "appWeek", "appFinish", "appStreak"):
-        if f'id="{_c}"' not in _appsrc:
-            fail("app/index.html", f"the app home needs the #{_c} container for wg-ideas.js")
     if "WGIdeas.appHome()" not in _appsrc or "/assets/js/wg-weeks.js?v=" not in _appsrc:
         fail("app/index.html", "appRender() must call WGIdeas.appHome(), and the page must load wg-weeks.js with a version")
     _trk = read("pregnancy/tools/week-by-week-tracker.html")
@@ -442,17 +427,12 @@ if "app/index.html" in SRC:
     # The stage line (James's pick, option A): the homepage's five stops open the stage pages, the app home's open the
     # programs, in life order, with no stage cards left; the app home's closing line has no "every tool" link.
     _STOPS = re.compile(r'<a class="stage-stop" href="([^"]+)">')
-    for _f, _id, _want in (("index.html", 'id="stages"', ["/relationships/", "/fertility/", "/pregnancy/", "/postpartum/", "/parenting/"]),
-                           ("app/index.html", 'id="appStages"', ["/programs/wife-material-blueprint", "/programs/trying-to-conceive-blueprint", "/programs/first-pregnancy-plan", "/programs/postpartum-reset", "/programs/first-baby-playbook"])):
+    for _f, _id, _want in (("index.html", 'id="stages"', ["/relationships/", "/fertility/", "/pregnancy/", "/postpartum/", "/parenting/"]),):
         _src = SRC.get(_f) or read(_f)
         _blk = _src[_src.find(_id):]
         _blk = _blk[:_blk.find("</section>") if _f == "index.html" else _blk.find('id="appMine"')]
         if _STOPS.findall(_blk) != _want or "stage-card" in _blk:
             fail(_f, "the stage block must be the stage line: five stage-stop links in life order to " + ", ".join(_want) + ", and no stage cards")
-    # Her program pick sits straight after "Pick up where you left off", so a recommendation is near the top (James).
-    _o = [_app.find('id="appMine"'), _app.find('id="appPick"'), _app.find('id="appMore"')]
-    if not (0 < _o[0] < _o[1] < _o[2]):
-        fail("app/index.html", 'the program pick (#appPick) must come straight after "Pick up where you left off" (#appMine) and before "More for your stage" (#appMore)')
     if "See every tool and guide" in _app:
         fail("app/index.html", 'the app home closing line ends after the stage links, with no "See every tool and guide"')
     # Program sales pages: no tab bar; the installed app gets the round Back button, a browser tab gets nothing.
@@ -520,12 +500,12 @@ for p in RESOURCES:
         fail(p, "share line is over 250 characters; it must fit X with the link")
     if "wg-rail.css" not in s:
         fail(p, "missing wg-rail.css (sticky contents panel styles)")
-    a, b = s.find("member-cta.js"), s.find("wg-article.js")
-    if b == -1:
+    if "wg-article.js" not in s:
         fail(p, "missing wg-article.js (contents panel and share icons)")
-    elif a == -1 or a > b:
-        fail(p, "member-cta.js must load before wg-article.js")
-    if "program-cta" not in s:
+    quiet_page = ("/" + p).replace(".html", "") in json.load(open("assets/data/program-flags.json"))["quiet"]["paths"]
+    if quiet_page and "program-cta" in s:
+        fail(p, "a quiet page shows no offer: remove the program card (.program-cta)")
+    elif not quiet_page and "program-cta" not in s:
         fail(p, "missing the program card (.program-cta)")
     if KIND[p] == "GUIDE" and 'class="byline"' not in s:
         fail(p, "guide is missing its author byline (the top share row sits under it)")

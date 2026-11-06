@@ -172,10 +172,13 @@
     var ctaName = main.querySelector(".program-cta h3");
     if (cta) {
       var href = cta.getAttribute("href");
-      /* buyers: member-cta.js has already pointed the button at their
-         thank-you home, so mirror its wording instead of a "Start" offer */
+      /* the rule book (wg-next.js) may have swapped the end card: it
+         stamps the rail wording on the card, so mirror that; a card it left alone keeps the "Start" offer */
       var member = /\/thank-you(\.html)?$/.test(href);
-      var offer = member
+      var card = cta.closest(".program-cta"), railLabel = card && card.getAttribute("data-rail-label");
+      var offer = railLabel
+        ? [card.getAttribute("data-rail-hook"), railLabel]
+        : member
         ? ["Your space", cta.textContent.replace(/\s*→\s*$/, "").trim()]
         : OFFERS[href.replace(/\/$/, "")] ||
           [null, "Start " + (ctaName ? ctaName.textContent.trim() : "the program")];
@@ -194,6 +197,7 @@
       rail.appendChild(box);
     }
     document.body.appendChild(rail);
+    if (window.WGNext && window.WGNext.endCard) window.WGNext.ready({ status: true }).then(function () { window.WGNext.endCard(); }); /* the rail exists now: let the end card update it */
 
     addShare(main, rail, isTool, hasGuide);
 

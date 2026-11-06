@@ -40,8 +40,8 @@ JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"><
 # Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows the
 # "Payment received" card until the payment server confirms the payment (Selar to Bachs Migration Plan).
 # It does nothing without ?order=.
-ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261110a"></script>'
-ACCESS_TAG = '<script defer src="/assets/js/wg-access.js?v=20261109c"></script>'
+ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261107c"></script>'
+ACCESS_TAG = '<script defer src="/assets/js/wg-access.js?v=20261110a"></script>'
 STEP_TAG = '<script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -345,13 +345,37 @@ TOOLS_JSON = "assets/data/app-tools.json"
 HOMES_JSON = "assets/data/program-flags.json"
 
 
+# The one program table every surface reads (assets/js/wg-next.js): the offer card's words, its cover, what a program covers, and
+# the stage keys her phone saves. Nothing else keeps a copy of these maps.
+TOPIC = {
+    "relationships": "Short lessons for your dating and relationship life.",
+    "fertility": "Short lessons for the hard months of trying for a baby.",
+    "pregnancy": "Short lessons for every week of a first pregnancy.",
+    "postpartum": "Short lessons for the first six weeks after birth.",
+    "parenting": "Short lessons for the first months with a new baby.",
+}
+STAGE_WORD = {"relationships": "Relationships", "fertility": "Fertility", "pregnancy": "Pregnancy", "postpartum": "Postpartum", "parenting": "Parenting"}
+COVER = {"wife-material-blueprint": "wife-material"}
+# Pages where no offer shows to anyone: loss, warning signs and the check-ins. wg-app.js (WGApp.quiet) and every offer read this list.
+QUIET_PATHS = ["/pregnancy/guides/chemical-miscarriage", "/postpartum/guides/postpartum-warning-signs",
+               "/parenting/guides/when-to-take-your-baby-to-hospital", "/postpartum/tools/mind-check-in", "/fertility/tools/the-wait-check-in"]
+QUIET_RX = "mind-check-in|the-wait-check-in|warning-signs|loss|miscarriage|stillbirth|when-to-take-your-baby-to-hospital"
+
+
 def expected_homes_json(m):
-    """assets/data/program-flags.json: what /signin needs to put a program on her phone the way its home does: each home's
-    name, label and flag keys (the same as APP_DATA in app/index.html)."""
+    """assets/data/program-flags.json, the one program table: each home's name, label and flag keys (what /signin needs), each
+    program's stage, what it covers, its cover and topic line, each stage's flag key, and the quiet pages."""
+    single = {p: v for p, v in PROGRAMS.items() if p != "complete-motherhood-journey"}
+    stage_prog = {st: slug for slug, v in single.items() for st in v[2]}
     data = {
         "_about": "Written by scripts/build-program-homes.py from program-homes.json. Do not edit.",
         "homes": {slug: {"name": PROGRAMS[h["program"]][0], "label": PROGRAMS[h["program"]][1], "program": h["program"],
                          "flags": flag_keys(h)} for slug, h in m["homes"].items()},
+        "stages": {st: {"word": STAGE_WORD[st], "flag": STAGE_FLAG[st], "program": stage_prog[st], "topic": TOPIC[st]} for st in STAGE_FLAG},
+        "programs": {slug: {"name": v[0], "stage": (v[2][0] if len(v[2]) == 1 else ""), "covers": v[2], "bundle": len(v[2]) > 1,
+                            "cover": "/assets/img/products/%s-cover.webp" % COVER.get(slug, slug)} for slug, v in PROGRAMS.items()},
+        "prices": {"ng": "\u20a65,700", "dia": "$12"},
+        "quiet": {"paths": QUIET_PATHS, "rx": QUIET_RX},
     }
     full = os.path.join(ROOT, HOMES_JSON)
     old = open(full, encoding="utf-8").read() if os.path.exists(full) else None

@@ -1,9 +1,9 @@
 /* Wholesome Girlies: The First 1,000. Two jobs, one file, each only on its own page. The landing page and its claim form
  * are wg-first1000-form.js.
  *   /first/welcome  the thank-you page: her end date, her program and the two steps she can finish now.
- *   /app/                #appFirst: the "Earn more free months" card for a member, or a short offer for a visitor
- *                        who holds no program, while places are left. The offer waits until her status is known (her account
- *                        has loaded, or her program flags are read) and is never shown to a member or a buyer.
+ *   /app/                WGFirst1000.todayStep(): the member's one next step; WGFirst1000.stepsCard(): the full list of ways to earn
+ *                        months, shown behind "See every way to earn months". The visitor offer is no longer here: the rule book
+ *                        (wg-next.js) decides who sees the offer and draws the one card.
  * Everything is written with textContent or .value. Her stage and steps go to the payment server and never to the dataLayer:
  * events carry no stage, date or entry.
  */
@@ -17,9 +17,14 @@
     postpartum: ['The 6-Week Postpartum Reset', 'postpartum-reset'],
     parenting: ['The First Baby Playbook', 'first-baby-playbook']
   };
-  var STEPS = [ // key, label, months
-    ['app_saved', 'Add the app', 1], ['first_finish', 'Finish your first lesson', 1], ['telegram', 'Join our Telegram group', 1],
-    ['streak_3', '3 days in a row', 1], ['streak_7', '7 days in a row', 1], ['streak_30', '30 days in a row', 2], ['feedback_d7', 'Tell us what you think on day 7', 2]
+  var STEPS = [ // key, label, months, today's step line, button. The order is the order of her next step.
+    ['app_saved', 'Add the app', 1, 'Save the app. It adds one month.', 'Save the app'],
+    ['first_finish', 'Finish your first lesson', 1, 'Finish your first lesson. It adds one month.', 'Open lesson 1'],
+    ['streak_3', '3 days in a row', 1, 'Come back 3 days in a row. It adds one month.', 'Do today’s lesson'],
+    ['streak_7', '7 days in a row', 1, 'Come back 7 days in a row. It adds one month.', 'Do today’s lesson'],
+    ['feedback_d7', 'Tell us what you think on day 7', 2, 'Tell us what you think. It adds 2 months.', 'Give feedback'],
+    ['telegram', 'Join our Telegram group', 1, 'Join our Telegram group. It adds one month.', 'Join the group'],
+    ['streak_30', '30 days in a row', 2, 'Come back 30 days in a row. It adds 2 months.', 'Do today’s lesson']
   ];
   function $(id) { return d.getElementById(id); }
   function fmtN(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
@@ -65,73 +70,60 @@
   }
 
   // ── app home ──
-  // On localhost the status answer can be previewed (?f1kcap=C&f1ktaken=T or ?f1kleft=N): see wg-access.js.
+  // On localhost the status answer can be previewed (?f1kcap=C&f1ktaken=T or ?f1kleft=N): see wg-next.js.
   var seq = 0;
-  // Any program flag on this phone (the bundle writes all four motherhood keys), or any program in her account.
-  function holdsProgram() {
-    try { for (var i = 0; i < localStorage.length; i++) { if (/^wg_.*_home$/.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i))) return true; } } catch (e) {}
-    var a = WGAccess.account();
-    return !!(a && (a.member || (a.programs && a.programs.length)));
+  // The member's one next step: the first step she has not finished, in the order of STEPS. Feedback opens on day 7.
+  // Returns {key, line, btn, href, action} or null when every step is done.
+  function todayStep(m) {
+    m = m || WGAccess.member(); if (!m) return null;
+    var reader = m.stage && PROGRAMS[m.stage] ? '/programs/' + PROGRAMS[m.stage][1] + '/read' : '/app/';
+    for (var i = 0; i < STEPS.length; i++) {
+      var s = STEPS[i];
+      if (isDone(m, s[0])) continue;
+      if (s[0] === 'feedback_d7' && dayOf(m) < 7) continue;
+      var r = { key: s[0], line: s[3], btn: s[4], href: reader, action: '' };
+      if (s[0] === 'app_saved') { r.href = '#appInstallBox'; r.action = 'install'; }
+      else if (s[0] === 'feedback_d7') r.href = '/first/feedback';
+      else if (s[0] === 'telegram') r.href = 'https://t.me/wholesomegirlies';
+      return r;
+    }
+    return null;
   }
-  function appCard() {
-    var host = $('appFirst'); if (!host) return;
+  // The full list of ways to earn months, with the invite link. Drawn into `host`.
+  function stepsCard(host) {
     var run = ++seq;
     host.textContent = ''; host.hidden = true;
-    // Her status is unknown while she is signed in and her account has not loaded: show nothing until it does (wg:account runs this again).
     if (WGAccess.signedIn() && !WGAccess.account()) return;
-    var m = WGAccess.member();
-    if (m) {
-      var card = el('section', 'card f1k-app'); card.setAttribute('aria-label', 'Earn more free months');
-      card.appendChild(el('h2', '', 'Earn more free months'));
-      card.appendChild(el('p', 'meta', (m.ends ? 'Your program is free until ' + fmtDate(m.ends) + '.' : 'Your program is free for one month.') + ' You have earned ' + months(m) + ' of 12 months.'));
-      var ul = el('ul'); var first = el('li', 'done'); first.appendChild(el('span', '', 'Claim your place')); first.appendChild(el('b', '', '1')); ul.appendChild(first);
-      STEPS.forEach(function (s) {
-        var done = isDone(m, s[0]), li = el('li', done ? 'done' : '');
-        if (s[0] === 'feedback_d7' && !done) {
-          li.setAttribute('data-f1k-step', 'feedback_d7');
-          if (dayOf(m) >= 7) { var fa = el('a', '', s[1]); fa.href = '/first/feedback'; li.appendChild(fa); }
-          else { var sp = el('span', '', s[1]); sp.appendChild(el('small', '', 'Opens on day 7')); li.appendChild(sp); }
-        } else li.appendChild(el('span', '', s[1]));
-        li.appendChild(el('b', '', '+' + s[2])); ul.appendChild(li);
-      });
-      card.appendChild(ul);
-      var link = inviteLink(m);
-      if (link) {
-        card.appendChild(el('p', '', 'You earn 2 months for each friend who joins, up to 3 friends.'));
-        var row = el('div', 'row');
-        var wa = el('a', 'btn btn-primary', 'Send on WhatsApp'); wa.target = '_blank'; wa.rel = 'noopener';
-        wa.href = 'https://wa.me/?text=' + encodeURIComponent('I am getting a Wholesome Girlies program free as one of the first women. You can too: ' + link);
-        var cp = el('button', 'btn btn-ghost', 'Copy my invite link'); cp.type = 'button';
-        cp.addEventListener('click', function () { try { navigator.clipboard.writeText(link).then(function () { cp.textContent = 'Copied'; }); } catch (e) {} });
-        row.appendChild(wa); row.appendChild(cp); card.appendChild(row);
-      }
-      host.appendChild(card); host.hidden = false; return;
-    }
-    // A visitor who holds no program sees the offer while places are left. A buyer, a member, and a woman who bought on another
-    // phone (her signed-in account lists the program) never do. A signed-out visitor on a new phone cannot be told apart, so the
-    // card carries a sign-in link, and the claim route refuses an email that already owns a program and sends her to sign in.
-    if (holdsProgram()) return;
-    WGAccess.first1000.status().then(function (s) {
-      if (run !== seq || holdsProgram() || (WGAccess.signedIn() && !WGAccess.account())) return;
-      if (!s || typeof s.cap !== 'number') return; // no count: no offer
-      var full = !(s.open && s.left > 0);
-      var card = el('section', 'card f1k-app f1k-offer'); card.appendChild(el('h2', '', full ? 'The free places are taken for now' : 'Get a program free'));
-      if (full) {
-        // The cap is full and paused: say so and point to the waiting list on the First 1,000 page.
-        card.appendChild(el('p', '', 'All ' + fmtN(s.cap) + ' places are taken. We can email you if one opens.'));
-        var wl = el('a', 'btn btn-primary', 'Tell me if a place opens →'); wl.href = '/first'; card.appendChild(wl);
-        host.appendChild(card); host.hidden = false; return;
-      }
-      card.appendChild(el('p', '', 'This offer is for the first ' + fmtN(s.cap) + ' women. ' + fmtN(s.left) + ' of ' + fmtN(s.cap) + (s.left === 1 ? ' places is' : ' places are') + ' left.'));
-      var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first'; card.appendChild(a);
-      var si = el('p', 'muted'); si.appendChild(d.createTextNode('Already bought? ')); var sl = el('a', '', 'Sign in'); sl.href = '/signin/'; si.appendChild(sl); card.appendChild(si);
-      host.appendChild(card); host.hidden = false;
+    var m = WGAccess.member(); if (!m) return;
+    var card = el('section', 'card f1k-app'); card.setAttribute('aria-label', 'Every way to earn months');
+    card.appendChild(el('h2', '', 'Every way to earn months'));
+    card.appendChild(el('p', 'meta', (m.ends ? 'Your program is free until ' + fmtDate(m.ends) + '.' : 'Your program is free for one month.') + ' You have earned ' + months(m) + ' of 12 months.'));
+    var ul = el('ul'); var first = el('li', 'done'); first.appendChild(el('span', '', 'Claim your place')); first.appendChild(el('b', '', '1')); ul.appendChild(first);
+    STEPS.slice().sort(function (a, b) { return ['app_saved', 'first_finish', 'telegram', 'streak_3', 'streak_7', 'streak_30', 'feedback_d7'].indexOf(a[0]) - ['app_saved', 'first_finish', 'telegram', 'streak_3', 'streak_7', 'streak_30', 'feedback_d7'].indexOf(b[0]); }).forEach(function (s) {
+      var done = isDone(m, s[0]), li = el('li', done ? 'done' : '');
+      if (s[0] === 'feedback_d7' && !done) {
+        li.setAttribute('data-f1k-step', 'feedback_d7');
+        if (dayOf(m) >= 7) { var fa = el('a', '', s[1]); fa.href = '/first/feedback'; li.appendChild(fa); }
+        else { var sp = el('span', '', s[1]); sp.appendChild(el('small', '', 'Opens on day 7')); li.appendChild(sp); }
+      } else li.appendChild(el('span', '', s[1]));
+      li.appendChild(el('b', '', '+' + s[2])); ul.appendChild(li);
     });
+    card.appendChild(ul);
+    var link = inviteLink(m);
+    if (link) {
+      card.appendChild(el('p', '', 'You earn 2 months for each friend who joins, up to 3 friends.'));
+      var row = el('div', 'row');
+      var wa = el('a', 'btn btn-primary', 'Send on WhatsApp'); wa.target = '_blank'; wa.rel = 'noopener';
+      wa.href = 'https://wa.me/?text=' + encodeURIComponent('I am getting a Wholesome Girlies program free as one of the first women. You can too: ' + link);
+      var cp = el('button', 'btn btn-ghost', 'Copy my invite link'); cp.type = 'button';
+      cp.addEventListener('click', function () { try { navigator.clipboard.writeText(link).then(function () { cp.textContent = 'Copied'; }); } catch (e) {} });
+      row.appendChild(wa); row.appendChild(cp); card.appendChild(row);
+    }
+    host.appendChild(card); host.hidden = false;
   }
+  w.WGFirst1000 = { todayStep: todayStep, stepsCard: stepsCard, months: months, fmtDate: fmtDate, dayOf: dayOf, isDone: isDone };
 
   d.addEventListener('DOMContentLoaded', function () {
     if ($('f1kWelcome')) welcome();
-    appCard();
-    d.addEventListener('wg:account', appCard);
   });
 })(window, document);

@@ -1,12 +1,12 @@
 /* Wholesome Girlies: the cards that read what is on her phone (CLAUDE.md section 10; vault "Site & App Logic").
  *
  * Loaded on every page after wg-app.js. Each card has a rule, and shows nothing when the rule says nothing:
- *   1. Stage hand-off     app home and the date tools: a due date near, or a delivery date 5 to 12 weeks past (asks "Is this still right?" first)
- *   2. This week          app home: her true week (or her baby's stretch) from a stage date, with tools and a guide
+ *   1. Stage check        app home and the date tools: a due date within 3 weeks asks "Is this still right?" (it only asks; once she
+ *                         confirms, the rule book in wg-next.js moves her stage on and the one offer follows it)
+ *   2. This week          weekModel() gives the stretch the app home's today card uses (the app home no longer draws a week card)
  *   8. Storage notice     app home, iPhone browser tab only: her browser may clear what she saved
- *   9. Finish getting     homepage, app home, tool pages: the program she began to buy in the last 1 to 14 days
  *  10. Continue in stage  tool pages: two tools in her stage she has not used, under a result or a saved tool
- *  13. Streak card        app home games block: Finish Mummy's Sentence is ready
+ * No program is sold from this file: the single offer slot belongs to WGNext (wg-next.js).
  * Everything is read on the device. No date, week, band, stage or entry goes to the dataLayer, a URL or a share line;
  * the few events here name a target program or a surface only. Cards show nothing on the quiet pages (loss, warning
  * signs, the check-ins), which WGApp.quiet() knows. Text goes in with textContent, never innerHTML.
@@ -20,40 +20,13 @@
   var bare = path.replace(/\/$/, '');
   var onApp = /^\/app\/?$/.test(path);
   var DATA_V = '20261012a';
-  var MOTHERHOOD = ['trying-to-conceive-blueprint', 'first-pregnancy-plan', 'postpartum-reset', 'first-baby-playbook'];
-  var NAMES = {
-    'wife-material-blueprint': 'The Wife Material Blueprint', 'trying-to-conceive-blueprint': 'The Trying-to-Conceive Blueprint',
-    'first-pregnancy-plan': 'The First Pregnancy Plan', 'postpartum-reset': 'The 6-Week Postpartum Reset',
-    'first-baby-playbook': 'The First Baby Playbook', 'complete-motherhood-journey': 'The Complete Motherhood Journey'
-  };
-  var STAGE_OF = { 'wife-material-blueprint': ['relationships'], 'trying-to-conceive-blueprint': ['fertility'], 'first-pregnancy-plan': ['pregnancy'],
-    'postpartum-reset': ['postpartum'], 'first-baby-playbook': ['parenting'], 'complete-motherhood-journey': ['fertility', 'pregnancy', 'postpartum', 'parenting'] };
   // The words (approved copy). The member offer is always said as a percentage, never a price.
   var C = {
-    handoffEyebrow: 'Plan for what comes next',
-    ppTitle: 'Plan for the weeks after birth', ppBody: 'The 6-Week Postpartum Reset helps you prepare your recovery plan, support list and first weeks at home.', ppBtn: 'See the postpartum plan',
-    pbTitle: 'Plan for the months ahead', pbBody: 'The First Baby Playbook covers feeding, sleep, play and everyday questions during your baby’s first year.', pbBtn: 'See the baby playbook',
-    bundleLine: 'You already have one part of motherhood covered. {JOURNEY} covers every stage, and code MOTHER gives you 35% off.',
     forget: 'Forget my due date', checkQ: 'Is this still right?',
     checkBody: 'Your saved due date is {DATE}, so please confirm it before we show planning for after the birth.',
     checkKeep: 'Yes, keep it', checkGone: 'The date has been removed from this phone.',
-    weekTitle: 'Week {W}', weekIntro: 'Here is what many women look at around this stage.', weekBtn: 'Open your weekly tracker',
-    band: {
-      t1: ['First trimester: what to look at now', 'You can look through the tools and guide below for this stretch.'],
-      t2: ['Second trimester: what to look at now', 'You can look through the tools and guide below for this stretch.'],
-      t3: ['Third trimester: what to look at now', 'You can look through the tools and guide below as you plan for after the birth.'],
-      pp: ['First six weeks: what to look at now', 'You can look through the tools and guide below for these early weeks.'],
-      b1: ['Birth to three months: what to look at now', 'Look through the tools and guides below for support with sleep and warning signs during this stretch.'],
-      b2: ['Four to six months: what to look at now', 'Look through the tools and guides below to help you get your home ready for this stretch.'],
-      b3: ['Seven to twelve months: what to look at now', 'Explore the tools and guides below for help with first foods during this stretch.']
-    },
-    toolsLabel: 'Start with these tools', guideLabel: 'Read this guide', guidesLabel: 'Read these guides', pickLabel: 'This program covers this stretch.',
     notice: 'Your browser on this iPhone may clear what you have saved on Wholesome Girlies. You can add Wholesome Girlies to your home screen and save a backup.',
     noticeInstall: 'Add to home screen', noticeBackup: 'Save a backup',
-    finishTitle: 'Finish getting {PROGRAM}', finishBody: 'You can return to the program page when you are ready.', finishBtn: 'View the program', finishClear: 'Clear my saved details',
-    nextLabel: 'Continue in your stage',
-    streakTitle: 'Today’s Mummy sentence is ready', streakBest: 'Your best is {BEST} days played in a row.',
-    streakPlain: 'You can play a new Mummy sentence whenever you feel like it.', streakBtn: 'Play now'
   };
 
   // ── small helpers ──────────────────────────────────────────────────────
@@ -90,17 +63,10 @@
 
   // ── who she is, from her phone ────────────────────────────────────────
   function who() {
-    var P = (A.programs ? A.programs() : []).map(function (p) {
-      var slug = (p.u.match(/^\/programs\/([a-z0-9-]+)\//) || [])[1] || '';
-      return { slug: slug, base: slug.replace(/-diaspora$/, ''), dia: /-diaspora$/.test(slug) };
-    });
-    var bundle = P.some(function (p) { return p.base === 'complete-motherhood-journey'; });
+    var N = w.WGNext, S = N && N.state ? N.state() : null;
     return {
-      count: P.length, bundle: bundle,
-      owns: function (base) { return P.some(function (p) { return p.base === base; }) || (bundle && MOTHERHOOD.indexOf(base) > -1); },
-      member: !bundle && P.some(function (p) { return MOTHERHOOD.indexOf(p.base) > -1; }),
-      wmOnly: P.length > 0 && P.every(function (p) { return p.base === 'wife-material-blueprint'; }),
-      dia: P.some(function (p) { return p.dia; })
+      count: S ? Object.keys(S.own).length : 0, bundle: !!(S && S.bundle),
+      owns: function (stage) { return !!(S && S.own[stage]); }
     };
   }
   function region() { return w.WGConsent && w.WGConsent.region; }
@@ -113,14 +79,6 @@
     var c = daysTo(ls('wg_vax_dob')); if (c !== null && c <= 0 && c >= -2200) out.dob = -c;
     return out;
   }
-  function journeyLink(who_) { return '/programs/complete-motherhood-journey' + (who_.dia ? '-diaspora' : ''); }
-  // Text with {JOURNEY} replaced by a link to the bundle's program page.
-  function journeyText(p, text, who_) {
-    var parts = text.split('{JOURNEY}');
-    p.appendChild(d.createTextNode(parts[0]));
-    var a = mk('a'); a.href = journeyLink(who_); var b = mk('b', '', NAMES['complete-motherhood-journey']); a.appendChild(b); p.appendChild(a);
-    p.appendChild(d.createTextNode(parts[1] || ''));
-  }
   function forgetDue() {
     try { if (w.WGStage && w.WGStage.clear) w.WGStage.clear('pregnancy'); else w.localStorage.removeItem('wg_stage_pregnancy_v1'); } catch (e) {}
     try { w.localStorage.removeItem('wg_stage_check_v1'); } catch (e) {}
@@ -130,40 +88,29 @@
   // A saved due date can belong to a pregnancy that ended in loss, and the device cannot know. So the first time a due date
   // would trigger the card, she is asked "Is this still right?" instead, and the planning card waits for Keep. The answer is
   // stored per due date in wg_stage_check_v1 ({v, due}), which the install bar ignores (TOOL_KEY in wg-app.js).
+  // Only the question is asked here. Once she has said the date is right, the rule book moves her stage on (WGNext.moved) and the
+  // one offer for her new stage appears wherever the offer slot is; nothing is sold from this card.
   function handoff() {
     if (A.quiet && A.quiet()) return null;
-    var D = dates(), W = who(), kind = '', target = '';
-    if (D.due !== null && D.due <= 21 && D.due >= -21) { kind = 'pp'; target = 'postpartum-reset'; }
-    else if (D.delivery !== null && D.delivery >= 28 && D.delivery <= 84) { kind = 'pb'; target = 'first-baby-playbook'; }
-    if (!kind) return null;
-    if (W.bundle || W.owns(target)) return null;
+    var D = dates(), W = who();
+    if (D.due === null || D.due > 21 || D.due < -21) return null;
+    if (W.owns('postpartum')) return null;
     var chk = jr('wg_stage_check_v1');
-    return { kind: kind, target: target, who: W, dueStr: D.dueStr, ask: kind === 'pp' && !(chk && chk.v === 1 && chk.due === D.dueStr) };
+    if (chk && chk.v === 1 && chk.due === D.dueStr) return null;
+    return { kind: 'pp', dueStr: D.dueStr, ask: true };
   }
-  var DATE_TOOLS = { pp: ['/pregnancy/tools/due-date-calculator', '/pregnancy/tools/week-by-week-tracker'], pb: ['/postpartum/tools/recovery-timeline-calculator'] };
+  var DATE_TOOLS = { pp: ['/pregnancy/tools/due-date-calculator', '/pregnancy/tools/week-by-week-tracker'] };
   function handoffCard(h) {
     var c = card('handoff');
-    var drawPlan = function () {
-      c.innerHTML = '';
-      c.appendChild(mk('p', 'eyebrow', C.handoffEyebrow));
-      c.appendChild(mk('h3', '', C[h.kind + 'Title']));
-      c.appendChild(mk('p', 'muted', C[h.kind + 'Body']));
-      var go = btn(C[h.kind + 'Btn'], '/programs/' + h.target + (h.who.dia ? '-diaspora' : ''));
-      go.addEventListener('click', function () { push({ event: 'handoff_click', handoff_program: NAMES[h.target] }); });
-      c.appendChild(go);
-      if (h.who.member) { var line = mk('p', 'muted wgi-note'); journeyText(line, C.bundleLine, h.who); c.appendChild(line); }
-      if (h.kind === 'pp' && onApp) { var f = mk('button', 'wgi-link', C.forget); f.type = 'button'; f.addEventListener('click', function () { forgetDue(); if (w.appRender) w.appRender(); }); c.appendChild(f); }
-    };
-    if (!h.ask) { drawPlan(); return c; }
     c.appendChild(mk('h3', '', C.checkQ));
     c.appendChild(mk('p', 'muted', fill(C.checkBody, { DATE: nice(h.dueStr) })));
     var keep = mk('button', 'btn btn-primary', C.checkKeep); keep.type = 'button';
     keep.addEventListener('click', function () {
       try { w.localStorage.setItem('wg_stage_check_v1', JSON.stringify({ v: 1, due: h.dueStr })); } catch (e) {}
-      if (onApp) appHome(); else { h.ask = false; drawPlan(); }
+      if (onApp && w.appRender) w.appRender(); else { c.remove(); }
     });
     var no = mk('button', 'wgi-link', C.forget); no.type = 'button';
-    no.addEventListener('click', function () { forgetDue(); c.innerHTML = ''; c.appendChild(mk('p', 'muted', C.checkGone)); c.setAttribute('role', 'status'); if (onApp) { var wk = d.getElementById('appWeek'); if (wk) { wk.innerHTML = ''; wk.hidden = true; } } });
+    no.addEventListener('click', function () { forgetDue(); c.innerHTML = ''; c.appendChild(mk('p', 'muted', C.checkGone)); c.setAttribute('role', 'status'); if (onApp && w.appRender) setTimeout(w.appRender, 900); });
     c.appendChild(keep); c.appendChild(no);
     return c;
   }
@@ -183,39 +130,6 @@
     } else return null;
     return band ? { band: band, week: wk } : null;
   }
-  function weekCard(m) {
-    var Wk = w.WGWeeks, B = Wk.bands[m.band], cp = C.band[m.band], W = who(), c = card('week');
-    if (m.week !== null) {
-      c.appendChild(mk('h3', '', fill(C.weekTitle, { W: m.week })));
-      c.appendChild(mk('p', 'muted', C.weekIntro));
-      var note = mk('p', 'muted'); note.appendChild(mk('i', '', Wk.noteFor(m.week))); c.appendChild(note);
-      var go = btn(C.weekBtn, '/pregnancy/tools/week-by-week-tracker'); go.addEventListener('click', function () { push({ event: 'week_card_click' }); }); c.appendChild(go);
-      c.appendChild(mk('h3', '', cp[0])); 
-    } else c.appendChild(mk('h3', '', cp[0]));
-    c.appendChild(mk('p', 'muted', cp[1]));
-    c.appendChild(mk('p', 'wgi-lbl', C.toolsLabel));
-    var tools = mk('div', 'ph-tools');
-    B.tools.forEach(function (p) { if (w.APP_DATA && w.APP_DATA.tools[p] && w.appTool) tools.appendChild(w.appTool(p, false)); });
-    c.appendChild(tools);
-    c.appendChild(mk('p', 'wgi-lbl', B.guides.length > 1 ? C.guidesLabel : C.guideLabel));
-    var gl = mk('div', 'ph-tools');
-    B.guides.forEach(function (g) {
-      var a = mk('a', 'ph-tool'); a.href = g[0];
-      a.innerHTML = '<span class="ph-ico" data-ico="book" aria-hidden="true"></span><span class="ph-tool-t"><b></b></span><span class="ph-chev" aria-hidden="true">&rsaquo;</span>';
-      a.querySelector('b').textContent = g[1]; gl.appendChild(a);
-    });
-    c.appendChild(gl);
-    // Someone with no program yet sees the program for this stretch on the same card.
-    var pr = w.APP_PROGRAMS && w.APP_PROGRAMS[B.stage];
-    if (!W.count && pr) {
-      var sub = mk('div', 'wgi-note'); sub.appendChild(mk('p', 'wgi-lbl', C.pickLabel)); sub.appendChild(mk('b', '', pr[1]));
-      var pp = mk('p', 'muted', pr[2]); pp.style.marginTop = '4px'; sub.appendChild(pp);
-      sub.appendChild(btn('See the program', '/programs/' + pr[0])); c.appendChild(sub);
-    }
-    if (m.week !== null) { var f = mk('button', 'wgi-link', C.forget); f.type = 'button'; f.addEventListener('click', function () { forgetDue(); if (w.appRender) w.appRender(); }); c.appendChild(f); }
-    return c;
-  }
-
   // ── idea 8: storage notice (iPhone browser tab only) ──────────────────
   function noticeCard() {
     if (!A.ios || A.standalone || !w.APP_TOOLS) return null;
@@ -233,45 +147,6 @@
     return c;
   }
 
-  // ── idea 9: finish getting a program ──────────────────────────────────
-  // wg_lead is one record: the latest checkout she began (checkout-intent.js writes name, email, phone, product and the time).
-  // The card shows only that program, 1 to 14 days later, when no program home is on her phone, never in a region that asks
-  // first, never with her name, email or a price.
-  var PRODUCT_SLUG = {};
-  Object.keys(NAMES).forEach(function (k) { PRODUCT_SLUG[NAMES[k]] = k; });
-  function finishModel() {
-    if (region() === 'consent' || (A.quiet && A.quiet())) return null;
-    var lead = jr('wg_lead'); if (!lead || !lead.product || !lead.ts) return null;
-    var days = (Date.now() - lead.ts) / DAY; if (days < 1 || days > 14) return null;
-    var slug = PRODUCT_SLUG[lead.product]; if (!slug) return null;
-    if (who().count) return null;
-    return { slug: slug };
-  }
-  function finishCard(m) {
-    var c = card('finish');
-    c.appendChild(mk('h3', '', fill(C.finishTitle, { PROGRAM: NAMES[m.slug] })));
-    c.appendChild(mk('p', 'muted', C.finishBody));
-    var go = btn(C.finishBtn, '/programs/' + m.slug); go.addEventListener('click', function () { push({ event: 'checkout_resume_click', resume_program: NAMES[m.slug] }); });
-    c.appendChild(go);
-    var no = mk('button', 'wgi-link', C.finishClear); no.type = 'button';
-    no.addEventListener('click', function () { try { w.localStorage.removeItem('wg_lead'); } catch (e) {} c.remove(); var h = d.getElementById('appFinish'); if (h) h.hidden = true; });
-    c.appendChild(no);
-    return c;
-  }
-
-  // ── idea 13: streak card ──────────────────────────────────────────────
-  function streakCard() {
-    var st = jr('wg_daily_mummy'); if (!st || !st.last) return null;
-    var n = new Date(), pad = function (x) { return (x < 10 ? '0' : '') + x; };
-    var today = n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate());
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(st.last) || st.last >= today) return null;
-    var best = +st.best || 0, c = card('streak');
-    c.appendChild(mk('h3', '', C.streakTitle));
-    c.appendChild(mk('p', 'muted', best >= 2 ? fill(C.streakBest, { BEST: best }) : C.streakPlain)); // a best of 1 is not worth naming; nothing ever says she lost a streak
-    c.appendChild(btn(C.streakBtn, '/parenting/tools/finish-mummys-sentence'));
-    return c;
-  }
-
   // ── the app home ──────────────────────────────────────────────────────
   function put(id, node) {
     var box = d.getElementById(id); if (!box) return;
@@ -280,12 +155,9 @@
   }
   function appHome() {
     if (!onApp) return;
-    var h = handoff(), m = weekModel();
+    var h = handoff();
     put('appNotice', noticeCard());
     put('appHandoff', h ? handoffCard(h) : null);
-    put('appWeek', m ? weekCard(m) : null);
-    var f = finishModel(); put('appFinish', f ? finishCard(f) : null);
-    put('appStreak', streakCard());
   }
 
   // ── pages other than the app home ─────────────────────────────────────
@@ -297,15 +169,7 @@
     if (!hero) return;
     var h = handoff();
     if (h && DATE_TOOLS[h.kind].indexOf(bare) > -1) placeAfter(hero, handoffCard(h));
-    var f = finishModel();
-    if (f && STAGE_OF[f.slug].indexOf(bare.split('/')[1]) > -1) placeAfter(hero, finishCard(f));
     nextInStage(hero);
-  }
-  function homepage() {
-    var stages = d.getElementById('stages'), f = finishModel();
-    if (!stages || !f) return;
-    var sec = mk('section', 'wgi-sec'), wrap = mk('div', 'wrap narrow'); wrap.appendChild(finishCard(f)); sec.appendChild(wrap);
-    stages.parentNode.insertBefore(sec, stages.nextSibling);
   }
 
   // ── idea 10: Continue in your stage ───────────────────────────────────
@@ -357,9 +221,8 @@
 
   d.addEventListener('DOMContentLoaded', function () {
     if (onApp) return; // the app home draws its cards from appRender(), which calls WGIdeas.appHome()
-    if (path === '/') { homepage(); return; }
     if (/^\/(relationships|fertility|pregnancy|postpartum|parenting)\/tools\/[a-z0-9-]+$/.test(bare)) toolPages();
   });
 
-  w.WGIdeas = { appHome: appHome, handoff: handoff, weekModel: weekModel, finishModel: finishModel, dates: dates };
+  w.WGIdeas = { appHome: appHome, handoff: handoff, weekModel: weekModel, dates: dates };
 })(window, document);

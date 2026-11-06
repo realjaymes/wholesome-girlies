@@ -59,12 +59,13 @@
     h.textContent = /^Welcome in\.\s/.test(t) ? 'Welcome in, ' + n + '. ' + t.replace(/^Welcome in\.\s/, '') : n + ', ' + t.charAt(0).toLowerCase() + t.slice(1);
   });
 
+  d.addEventListener('DOMContentLoaded', function () { // the program table and her flags (wg-next.js) are ready once every deferred script has run
   // 5. A Complete Motherhood Journey owner is never offered the bundle again: the build script marks every next-step
   // card that offers it (or the single programs it holds) with data-bundle-offer, and those cards stay hidden for her.
-  var own = ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].some(function (k) {
-    try { var v = JSON.parse(get(k) || 'null'); return !!(v && /^\/programs\/complete-motherhood-journey/.test(v.u || '')); } catch (e) { return false; }
-  });
-  if (own) [].forEach.call(d.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
+  var own = !!(w.WGNext && w.WGNext.bundleHeld());
+  // A campaign member is shown no bundle or paid card during her free months either.
+  var gifted = !!(w.WGNext && w.WGNext.active().some(function (h) { return h.gift; }));
+  if (own || gifted) [].forEach.call(d.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
 
   // 7. The member bundle card moves up. A buyer of a single motherhood program (never a Complete Motherhood Journey owner,
   // never Wife Material only) who has read half of her reader or all of it sees the MOTHER card under her reading card instead
@@ -72,9 +73,7 @@
   // wg_read_<program> on this phone only.
   var MOTHERHOOD = ['trying-to-conceive-blueprint', 'first-pregnancy-plan', 'postpartum-reset', 'first-baby-playbook'];
   function singleMember() {
-    return ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].some(function (k) {
-      try { var v = JSON.parse(get(k) || 'null'); return !!(v && v.u && !/^\/programs\/complete-motherhood-journey/.test(v.u)); } catch (e) { return false; }
-    });
+    return !!(w.WGNext && w.WGNext.paidHeld().some(function (h) { return !h.bundle && MOTHERHOOD.indexOf(h.base) > -1; }));
   }
   (function () {
     var rd = d.getElementById('phRead'), links = rd && rd.parentNode.querySelector('.ph-links');
@@ -82,7 +81,7 @@
     var key = rd.getAttribute('data-read-key') || '', slug = key.replace(/^wg_read_/, ''), base = slug.replace(/-diaspora$/, '');
     if (MOTHERHOOD.indexOf(base) < 0) return;
     var st = null; try { st = JSON.parse(get(key)); } catch (e) {}
-    if (!st || !st.total || st.n / st.total < 0.5) return;
+    if (!st || !st.total || st.n < st.total) return; // the bundle is offered once, after she finishes
     var done = st.n >= st.total, dia = /-diaspora$/.test(slug) ? '-diaspora' : '';
     var box = d.createElement('div'); box.className = 'ph-card ph-member'; box.setAttribute('data-bundle-offer', '');
     box.innerHTML = '<p class="eyebrow"></p><h3></h3><p class="muted"></p><a class="btn btn-primary"></a>';
@@ -98,6 +97,7 @@
       if (sec.querySelector('a[href*="complete-motherhood-journey"]')) { sec.hidden = true; sec.style.display = 'none'; }
     });
   })();
+  });
 
   // 8. In a region that asks first (Europe, the UK, Canada), with remembering off, in a browser tab: a closed card under the hero.
   // While remembering is off every wg_ key lives in memory for one page, so her program and her place would not carry to the
@@ -194,5 +194,6 @@
     d.getElementById('phTitle').textContent = r.title;
     if (r.mins) { var mp = d.createElement('p'); mp.className = 'muted ph-mins'; mp.textContent = r.mins; d.getElementById('phTitle').parentNode.insertBefore(mp, d.getElementById('phTitle').nextSibling); }
     var go = d.getElementById('phGo'); go.innerHTML = r.btn + ' &rarr;'; go.href = r.href;
+    if (w.WGNext && w.WGNext.ready) w.WGNext.ready().then(function () { w.WGNext.mark(card, 'program_home', 'next_lesson'); });
   }).catch(function () {});
 })(window, document);

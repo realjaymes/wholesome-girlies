@@ -10,7 +10,7 @@ body { font-size: 11pt; line-height: 1.45; }
 * { box-shadow: none !important; }
 
 /* Site chrome and anything that only makes sense on screen */
-.site-header, .site-footer, .breadcrumb, .tool-hero, .byline, .program-cta, .related,
+.site-header, .site-footer, .breadcrumb, .tool-hero, .byline, .program-cta, .wgn-offer, .related,
 .addrow, .tool-app button, .tool-app .btn, .tool-app .field, .del, .progress-bar,
 #cc-main, .toc-rail, .toc-inline, .read-progress, .wg-share, .wg-share-top, .wg-share-end, noscript, iframe { display: none !important; }
 

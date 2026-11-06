@@ -103,5 +103,110 @@
     "wg_parenting_home"
    ]
   }
+ },
+ "stages": {
+  "relationships": {
+   "word": "Relationships",
+   "flag": "wg_relationships_home",
+   "program": "wife-material-blueprint",
+   "topic": "Short lessons for your dating and relationship life."
+  },
+  "fertility": {
+   "word": "Fertility",
+   "flag": "wg_fertility_home",
+   "program": "trying-to-conceive-blueprint",
+   "topic": "Short lessons for the hard months of trying for a baby."
+  },
+  "pregnancy": {
+   "word": "Pregnancy",
+   "flag": "wg_pregnancy_home",
+   "program": "first-pregnancy-plan",
+   "topic": "Short lessons for every week of a first pregnancy."
+  },
+  "postpartum": {
+   "word": "Postpartum",
+   "flag": "wg_pp_home",
+   "program": "postpartum-reset",
+   "topic": "Short lessons for the first six weeks after birth."
+  },
+  "parenting": {
+   "word": "Parenting",
+   "flag": "wg_parenting_home",
+   "program": "first-baby-playbook",
+   "topic": "Short lessons for the first months with a new baby."
+  }
+ },
+ "programs": {
+  "wife-material-blueprint": {
+   "name": "The Wife Material Blueprint",
+   "stage": "relationships",
+   "covers": [
+    "relationships"
+   ],
+   "bundle": false,
+   "cover": "/assets/img/products/wife-material-cover.webp"
+  },
+  "trying-to-conceive-blueprint": {
+   "name": "The Trying-to-Conceive Blueprint",
+   "stage": "fertility",
+   "covers": [
+    "fertility"
+   ],
+   "bundle": false,
+   "cover": "/assets/img/products/trying-to-conceive-blueprint-cover.webp"
+  },
+  "first-pregnancy-plan": {
+   "name": "The First Pregnancy Plan",
+   "stage": "pregnancy",
+   "covers": [
+    "pregnancy"
+   ],
+   "bundle": false,
+   "cover": "/assets/img/products/first-pregnancy-plan-cover.webp"
+  },
+  "postpartum-reset": {
+   "name": "The 6-Week Postpartum Reset",
+   "stage": "postpartum",
+   "covers": [
+    "postpartum"
+   ],
+   "bundle": false,
+   "cover": "/assets/img/products/postpartum-reset-cover.webp"
+  },
+  "first-baby-playbook": {
+   "name": "The First Baby Playbook",
+   "stage": "parenting",
+   "covers": [
+    "parenting"
+   ],
+   "bundle": false,
+   "cover": "/assets/img/products/first-baby-playbook-cover.webp"
+  },
+  "complete-motherhood-journey": {
+   "name": "The Complete Motherhood Journey",
+   "stage": "",
+   "covers": [
+    "fertility",
+    "pregnancy",
+    "postpartum",
+    "parenting"
+   ],
+   "bundle": true,
+   "cover": "/assets/img/products/complete-motherhood-journey-cover.webp"
+  }
+ },
+ "prices": {
+  "ng": "₦5,700",
+  "dia": "$12"
+ },
+ "quiet": {
+  "paths": [
+   "/pregnancy/guides/chemical-miscarriage",
+   "/postpartum/guides/postpartum-warning-signs",
+   "/parenting/guides/when-to-take-your-baby-to-hospital",
+   "/postpartum/tools/mind-check-in",
+   "/fertility/tools/the-wait-check-in"
+  ],
+  "rx": "mind-check-in|the-wait-check-in|warning-signs|loss|miscarriage|stillbirth|when-to-take-your-baby-to-hospital"
  }
 }

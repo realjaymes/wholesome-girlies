@@ -5,7 +5,8 @@
  *   wg_acct_skip_v1  "1" once she skips "Make the app yours", so it never asks again
  *   wg:notify-optin  dispatched on document when she taps "Allow notifications instead". This file renders nothing for it; the
  *                    notification build listens for it.
- * Events: account_created (a plain account was made from the first-open sheet), with the surface only.
+ * capture(host) draws the same flow inline as "Save your tools on any phone", the app's only ask for her name, always with her email.
+ * Events: account_created (a plain account was made from the first-open sheet or the capture card), with the surface only.
  */
 (function (w, d) {
   'use strict';
@@ -69,75 +70,99 @@
     });
   }
 
-  // "Make the app yours": a plain account with no program. Name and email, then the 6-digit code.
-  function makeItYours() {
-    var o = sheet(function (inn) {
-      var step = 1, email = '';
-      function s1() {
-        inn.textContent = '';
-        inn.appendChild(el('h3', '', 'Make the app yours'));
-        inn.appendChild(el('p', '', 'Save your streak, tools and reading place to your account. They will come back when you sign in on a new phone.'));
-        var f = el('form'); f.noValidate = true;
-        var l1 = el('label', '', 'Your first name'); l1.setAttribute('for', 'wgMyName');
-        var n = el('input'); n.type = 'text'; n.id = 'wgMyName'; n.maxLength = 30; n.autocomplete = 'given-name'; n.placeholder = 'e.g. Ada';
-        var l2 = el('label', '', 'Your email'); l2.setAttribute('for', 'wgMyEmail');
-        var e = el('input'); e.type = 'email'; e.id = 'wgMyEmail'; e.autocomplete = 'email'; e.inputMode = 'email'; e.placeholder = 'you@example.com';
-        var er = el('p', 'err'); er.hidden = true;
-        var go = el('button', 'btn btn-primary', 'Save my progress'); go.type = 'submit';
+  // The account flow, used twice: the "Make the app yours" sheet on the first open of the installed app, and the inline
+  // "Save your tools on any phone" card on the app home. A plain account with no program: first name and email, then the 6-digit
+  // code. cfg = { title, lead, btn, extras (sheet only), onSkip, surface, doneTitle, doneBody, onDone }.
+  function flow(inn, cfg) {
+    var email = '';
+    function s1() {
+      inn.textContent = '';
+      inn.appendChild(el('h3', '', cfg.title));
+      inn.appendChild(el('p', '', cfg.lead));
+      var f = el('form'); f.noValidate = true;
+      var l1 = el('label', '', 'Your first name'); l1.setAttribute('for', 'wgMyName');
+      var n = el('input'); n.type = 'text'; n.id = 'wgMyName'; n.maxLength = 30; n.autocomplete = 'given-name'; n.placeholder = 'e.g. Ada';
+      var l2 = el('label', '', 'Your email'); l2.setAttribute('for', 'wgMyEmail');
+      var e = el('input'); e.type = 'email'; e.id = 'wgMyEmail'; e.autocomplete = 'email'; e.inputMode = 'email'; e.placeholder = 'you@example.com';
+      var er = el('p', 'err'); er.hidden = true;
+      var go = el('button', 'btn btn-primary', cfg.btn); go.type = 'submit';
+      var parts = [l1, n, l2, e, er, go];
+      if (cfg.extras) {
         var notify = el('button', 'btn btn-ghost', 'Allow notifications instead'); notify.type = 'button';
         var skip = el('p', 'center'); var sk = el('button', 'link', 'Skip for now'); sk.type = 'button'; skip.appendChild(sk);
-        var fine = el('p', 'small center'); fine.appendChild(d.createTextNode('We use your email to sign you in. What you type into tools stays on your phone. '));
-        var pl = el('a', '', 'Privacy'); pl.href = '/legal/privacy'; fine.appendChild(pl);
-        [l1, n, l2, e, er, go, notify, skip, fine].forEach(function (x) { f.appendChild(x); }); inn.appendChild(f);
-        f.addEventListener('submit', function (ev) {
-          ev.preventDefault(); email = e.value.trim();
-          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { er.textContent = 'Please enter your full email address and try again.'; er.hidden = false; return; }
-          er.hidden = true; go.disabled = true; go.textContent = 'Sending...';
-          WGAccess.signin(email, { name: n.value.trim(), create: true }).then(function (j) {
-            go.disabled = false; go.textContent = 'Save my progress';
-            if (j.status === 429) { er.textContent = 'We need to wait 15 minutes before sending another code. Please try again then.'; er.hidden = false; return; }
-            if (!j.ok) { er.textContent = 'We could not send that. Check your email address and try again.'; er.hidden = false; return; }
-            s2(n.value.trim());
-          }).catch(function () { go.disabled = false; go.textContent = 'Save my progress'; er.textContent = 'We could not check that. Check your internet connection and try again.'; er.hidden = false; });
-        });
-        sk.addEventListener('click', function () { set(SKIP, '1'); close(); });
-        notify.addEventListener('click', function () { set(SKIP, '1'); d.dispatchEvent(new CustomEvent('wg:notify-optin', { detail: { surface: 'make_it_yours' } })); close(); });
-        setTimeout(function () { n.focus(); }, 30);
+        sk.addEventListener('click', function () { cfg.onSkip(); });
+        notify.addEventListener('click', function () { cfg.onSkip(); d.dispatchEvent(new CustomEvent('wg:notify-optin', { detail: { surface: 'make_it_yours' } })); });
+        parts.push(notify, skip);
       }
-      function s2(name) {
-        inn.textContent = '';
-        inn.appendChild(el('h3', '', 'Check your email'));
-        var p = el('p'); p.appendChild(d.createTextNode('We sent a 6-digit code to ')); p.appendChild(el('b', 'who', email)); p.appendChild(d.createTextNode('. It works for 10 minutes.')); inn.appendChild(p);
-        var f = el('form'); f.noValidate = true;
-        var l = el('label', '', 'Your code'); l.setAttribute('for', 'wgMyCode');
-        var c = el('input', 'otp'); c.type = 'text'; c.id = 'wgMyCode'; c.inputMode = 'numeric'; c.autocomplete = 'one-time-code'; c.maxLength = 6; c.placeholder = '000000';
-        var er = el('p', 'err'); er.hidden = true;
-        var go = el('button', 'btn btn-primary', 'Open my account'); go.type = 'submit';
-        var back = el('p', 'center small'); var b = el('button', 'link', 'Use a different email'); b.type = 'button'; back.appendChild(b);
-        [l, c, er, go, back].forEach(function (x) { f.appendChild(x); }); inn.appendChild(f);
-        b.addEventListener('click', s1);
-        f.addEventListener('submit', function (ev) {
-          ev.preventDefault(); var v = c.value.replace(/\D/g, '');
-          if (v.length !== 6) { er.textContent = 'The code should have 6 numbers. Check it and try again.'; er.hidden = false; return; }
-          go.disabled = true; go.textContent = 'Checking...';
-          WGAccess.check(email, v).then(function (j) {
-            go.disabled = false; go.textContent = 'Open my account';
-            if (!j.ok) { er.textContent = 'We could not match that code. Check the newest email from us and try again.'; er.hidden = false; return; }
-            set(SKIP, '1'); WGAccess.push('account_created', { account_surface: 'app_first_open' });
-            s3();
-          }).catch(function () { go.disabled = false; go.textContent = 'Open my account'; er.textContent = 'We could not check that. Check your internet connection and try again.'; er.hidden = false; });
-        });
-        setTimeout(function () { c.focus(); }, 30);
-      }
-      function s3() {
-        inn.textContent = '';
-        inn.appendChild(el('h3', '', 'You are in'));
-        inn.appendChild(el('p', '', 'Your account now has your name, streak, saved tools and reading place. They will appear on any phone you sign in on.'));
-        var done = el('button', 'btn btn-primary', 'Back to the app'); done.type = 'button'; done.addEventListener('click', function () { location.reload(); }); inn.appendChild(done);
-      }
-      s1();
+      var fine = el('p', 'small center'); fine.appendChild(d.createTextNode('We use your email to sign you in. What you type into tools stays on your phone. '));
+      var pl = el('a', '', 'Privacy'); pl.href = '/legal/privacy'; fine.appendChild(pl); parts.push(fine);
+      parts.forEach(function (x) { f.appendChild(x); }); inn.appendChild(f);
+      f.addEventListener('submit', function (ev) {
+        ev.preventDefault(); email = e.value.trim();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { er.textContent = 'Please enter your full email address and try again.'; er.hidden = false; return; }
+        er.hidden = true; go.disabled = true; go.textContent = 'Sending...';
+        WGAccess.signin(email, { name: n.value.trim(), create: true }).then(function (j) {
+          go.disabled = false; go.textContent = cfg.btn;
+          if (j.status === 429) { er.textContent = 'We need to wait 15 minutes before sending another code. Please try again then.'; er.hidden = false; return; }
+          if (!j.ok) { er.textContent = 'We could not send that. Check your email address and try again.'; er.hidden = false; return; }
+          s2(n.value.trim());
+        }).catch(function () { go.disabled = false; go.textContent = cfg.btn; er.textContent = 'We could not check that. Check your internet connection and try again.'; er.hidden = false; });
+      });
+      setTimeout(function () { if (cfg.focus !== false) n.focus(); }, 30);
+    }
+    function s2() {
+      inn.textContent = '';
+      inn.appendChild(el('h3', '', 'Check your email'));
+      var p = el('p'); p.appendChild(d.createTextNode('We sent a 6-digit code to ')); p.appendChild(el('b', 'who', email)); p.appendChild(d.createTextNode('. It works for 10 minutes.')); inn.appendChild(p);
+      var f = el('form'); f.noValidate = true;
+      var l = el('label', '', 'Your code'); l.setAttribute('for', 'wgMyCode');
+      var c = el('input', 'otp'); c.type = 'text'; c.id = 'wgMyCode'; c.inputMode = 'numeric'; c.autocomplete = 'one-time-code'; c.maxLength = 6; c.placeholder = '000000';
+      var er = el('p', 'err'); er.hidden = true;
+      var go = el('button', 'btn btn-primary', 'Open my account'); go.type = 'submit';
+      var back = el('p', 'center small'); var b = el('button', 'link', 'Use a different email'); b.type = 'button'; back.appendChild(b);
+      [l, c, er, go, back].forEach(function (x) { f.appendChild(x); }); inn.appendChild(f);
+      b.addEventListener('click', s1);
+      f.addEventListener('submit', function (ev) {
+        ev.preventDefault(); var v = c.value.replace(/\D/g, '');
+        if (v.length !== 6) { er.textContent = 'The code should have 6 numbers. Check it and try again.'; er.hidden = false; return; }
+        go.disabled = true; go.textContent = 'Checking...';
+        WGAccess.check(email, v).then(function (j) {
+          go.disabled = false; go.textContent = 'Open my account';
+          if (!j.ok) { er.textContent = 'We could not match that code. Check the newest email from us and try again.'; er.hidden = false; return; }
+          set(SKIP, '1'); WGAccess.push('account_created', { account_surface: cfg.surface });
+          s3();
+        }).catch(function () { go.disabled = false; go.textContent = 'Open my account'; er.textContent = 'We could not check that. Check your internet connection and try again.'; er.hidden = false; });
+      });
+      setTimeout(function () { c.focus(); }, 30);
+    }
+    function s3() {
+      inn.textContent = '';
+      inn.appendChild(el('h3', '', cfg.doneTitle));
+      inn.appendChild(el('p', '', cfg.doneBody));
+      var done = el('button', 'btn btn-primary', 'Back to the app'); done.type = 'button'; done.addEventListener('click', function () { location.reload(); }); inn.appendChild(done);
+    }
+    s1();
+  }
+  // "Make the app yours": the first open of the installed app, in a sheet.
+  function makeItYours() {
+    var o = sheet(function (inn) {
+      flow(inn, { title: 'Make the app yours', lead: 'Save your streak, tools and reading place to your account. They will come back when you sign in on a new phone.', btn: 'Save my progress', extras: true,
+        onSkip: function () { set(SKIP, '1'); close(); }, surface: 'app_first_open', doneTitle: 'You are in', doneBody: 'Your account now has your name, streak, saved tools and reading place. They will appear on any phone you sign in on.' });
     });
     o._dismiss = function () { set(SKIP, '1'); close(); };
+  }
+  // "Save your tools on any phone": the one place the app asks for her name, always together with her email. Drawn inline on the app home.
+  function capture(host) {
+    if (!host.querySelector('.wga-inline')) {
+      var st = d.getElementById('wga-css');
+      if (!st) { st = el('style'); st.id = 'wga-css'; st.textContent = '.wga-inline{text-align:left}.wga-inline label{display:block;margin:10px 0 4px;font-weight:800}.wga-inline input{width:100%;box-sizing:border-box;padding:12px 14px;font:inherit;border:2px solid var(--ink,#33322A);border-radius:12px;background:#fff}.wga-inline .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box;margin:14px 0 0}.wga-inline h3{margin:0 0 6px}.wga-inline .err{color:#9b2c1d;font-weight:800;margin:8px 0 0}.wga-inline .small,.wga-inline .center{font-size:.86rem}.wga-inline .link{background:none;border:0;padding:6px 0;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer}'; d.head.appendChild(st); }
+      var card = el('section', 'card f1k-app wga-inline'); card.setAttribute('data-wga', 'capture');
+      card.appendChild(el('p', 'eyebrow', 'Keep your results'));
+      var inn = el('div'); card.appendChild(inn);
+      flow(inn, { title: 'Save your tools on any phone', lead: 'Add your name and your email, and your saved tools come with you.', btn: 'Save my tools', focus: false, surface: 'app_home_capture',
+        doneTitle: 'You are in', doneBody: 'Your saved tools now come with you. They will appear on any phone you sign in on.' });
+      host.appendChild(card);
+    }
   }
 
   d.addEventListener('DOMContentLoaded', function () {
@@ -153,5 +178,5 @@
     // First open of the installed app, signed out, not skipped: the plain account.
     else if (standalone && !WGAccess.signedIn() && !get(SKIP) && w.APP_FIRST_OPEN) setTimeout(makeItYours, 900);
   });
-  w.WGAccountUI = { accountSheet: accountSheet, makeItYours: makeItYours };
+  w.WGAccountUI = { accountSheet: accountSheet, makeItYours: makeItYours, capture: capture };
 })(window, document);

@@ -42,6 +42,10 @@ async function open(seed, url, o = {}) {
       Object.keys(seed).forEach((k) => localStorage.setItem(k, typeof seed[k] === 'string' ? seed[k] : JSON.stringify(seed[k])));
     }
   }, Object.assign({ wg_install_test_v1: { v: 1, g: 'later', s: 'x' }, wg_name_v1: { v: 1, name: '', asked: true } }, seed), o.route || null);
+  // o.pre: a script run in every new document before the page's own, e.g. to record dataLayer pushes (see test-next.js).
+  if (o.pre) await page.evaluateOnNewDocument(o.pre);
+  // o.block: abort requests to the analytics hosts, so a test that records dataLayer pushes keeps its own recorder.
+  if (o.block) { await page.setRequestInterception(true); page.on('request', (r) => (/googletagmanager|google-analytics|doubleclick/.test(r.url()) ? r.abort() : r.continue())); }
   await page.goto(B + url, { waitUntil: 'load' });
   await wait(o.wait || 900);
   return { page, close: () => ctx.close() };

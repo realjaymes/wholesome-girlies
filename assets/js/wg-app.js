@@ -203,7 +203,7 @@
   // wg_name_v1 (her name) is not a saved entry either.
   // Keys that are not her entries never count: the spin button's last game, the hidden resume pill, location and
   // first-visit markers, consent, her name, finished games, the answer to "Is this still right?" and the install test's group.
-  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|streak_|capture_|push_|session_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$|session_v1$|account_v1$|acct_|f1k_|pay_api$|sync_at$|home_hint$)(?!.*_home$)/;
+  var TOOL_KEY = /^wg_(?!lead$|app_|consent|played_|streak_|capture_|journey_|push_|session_|name_v1$|random_last$|pill_off$|geo$|region$|first_|stage_check_v1$|install_test_v1$|session_v1$|account_v1$|acct_|f1k_|pay_api$|sync_at$|home_hint$)(?!.*_home$)/;
   // wg_session_v1 (the sign-in token), wg_account_v1 (a copy of her account), wg_acct_* and wg_f1k_* (the plain account and First 1,000
   // markers) are not saved entries either, and none of them ever goes into a backup.
   // The install timing test (wg_install_test_v1, {v, g, s}): a random group per device, drawn the first time the bar could show.
@@ -303,14 +303,8 @@
   // Every program home she has, once each (the bundle writes four stage keys that point at one home).
   function myPrograms() {
     var out = [], seen = {};
-    ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
-      try {
-        var v = JSON.parse(w.localStorage.getItem(k) || 'null');
-        if (v && v.u && /^\/programs\/[a-z0-9-]+\/thank-you(\.html)?$/.test(v.u)) {
-          var u = v.u.replace(/\.html$/, '');
-          if (!seen[u]) { seen[u] = 1; out.push({ u: u, l: v.l || 'Your program home' }); }
-        }
-      } catch (e) {}
+    (w.WGNext ? w.WGNext.active() : []).forEach(function (h) {
+      if (!seen[h.u]) { seen[h.u] = 1; out.push({ u: h.u, l: h.l || 'Your program home', gift: h.gift, ends: h.ends }); }
     });
     return out;
   }

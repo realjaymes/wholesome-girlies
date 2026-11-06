@@ -361,28 +361,17 @@
    * Selar applies at checkout, and the price card tells her the code and her price. A bundle owner and every other
    * visitor see the plain price, and a bundle owner sees no bundle offer on a sales page at all. */
   var COUPON = 'MOTHER', COUPON_OFF = 0.35;
-  function bundleOwner() {
-    var own = false;
-    ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
-      try { var v = JSON.parse(localStorage.getItem(k) || 'null'); if (v && /^\/programs\/complete-motherhood-journey/.test(v.u || '')) own = true; } catch (e) {}
-    });
-    return own;
-  }
+  function bundleOwner() { return !!(window.WGNext && window.WGNext.bundleHeld()); }
   function hideBundleOffers() {
-    if (!bundleOwner()) return;
+    var gifted = !!(window.WGNext && window.WGNext.active().some(function (h) { return h.gift; }));
+    if (!bundleOwner() && !gifted) return;
     [].forEach.call(document.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
   }
+  // Only a bought single motherhood program earns the coupon: a campaign program (gift:true) never does.
   function couponMember() {
-    var single = false, bundle = false;
-    ['wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
-      try {
-        var v = JSON.parse(localStorage.getItem(k) || 'null'), u = (v && v.u) || '';
-        if (/^\/programs\/complete-motherhood-journey/.test(u)) bundle = true;
-        else if (/^\/programs\/(trying-to-conceive-blueprint|first-pregnancy-plan|postpartum-reset|first-baby-playbook)(-diaspora)?\/thank-you/.test(u)) single = true;
-      } catch (e) {}
-    });
+    var single = !!(window.WGNext && window.WGNext.paidHeld().some(function (h) { return !h.bundle && h.base !== 'wife-material-blueprint'; }));
     var fromHome = new URLSearchParams(location.search).get('coupon') === COUPON;
-    return !bundle && (single || fromHome);
+    return !bundleOwner() && (single || fromHome);
   }
   function memberPrice(text) {
     var m = (text || '').match(/([₦$])\s*([\d,]+(?:\.\d+)?)/);

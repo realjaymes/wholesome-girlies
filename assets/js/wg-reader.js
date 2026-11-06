@@ -82,7 +82,8 @@
     if (on) st.done[id] = 1; else delete st.done[id];
     save(); paint();
     (w.dataLayer = w.dataLayer || []).push({ event: 'reader_lesson', reader_program: main.getAttribute('data-program'),
-      reader_lesson: id, reader_state: on ? 'done' : 'undone', reader_done_count: Object.keys(st.done).length });
+      reader_lesson_id: id, reader_state: on ? 'done' : 'undone', reader_done_count: Object.keys(st.done).length });
+    if (on && w.WGNext) { var S = w.WGNext.state(); w.WGNext.step('activated', S && S.gift && !S.paid ? 'campaign' : 'purchase'); w.WGNext.useful('tool'); }
     var i = ids.indexOf(id);
     if (on) w.location.hash = i < ids.length - 1 ? ids[i + 1] : '';
     if (on) afterDone(id);
@@ -116,19 +117,20 @@
     w.scrollTo(0, 0);
   }
 
+  d.addEventListener('DOMContentLoaded', function () { // the manuscript's own bundle line is a paid offer: not for a campaign member
+    if (giftOnly()) [].forEach.call(d.querySelectorAll('.rd p a[href^="/programs/complete-motherhood-journey"]'), function (a) { var p = a.closest('p'); if (p) p.remove(); });
+  });
+
   // ── Who she is, for the member line and the next step ─────────────────────
   var PROG = main.getAttribute('data-name') || 'your program';
   var SLUG = main.getAttribute('data-program') || '', BASE = SLUG.replace(/-diaspora$/, ''), DIA = /-diaspora$/.test(SLUG) ? '-diaspora' : '';
   var MOTHERHOOD = ['trying-to-conceive-blueprint', 'first-pregnancy-plan', 'postpartum-reset', 'first-baby-playbook'];
-  function heldBases() { // the program homes on her phone, as [{base}]
-    var out = [];
-    ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'].forEach(function (k) {
-      try { var v = JSON.parse(w.localStorage.getItem(k) || 'null'), m = v && v.u && v.u.match(/^\/programs\/([a-z0-9-]+)\//); if (m) out.push(m[1].replace(/-diaspora$/, '')); } catch (e) {}
-    });
-    return out;
-  }
-  function bundleOwner() { return heldBases().indexOf('complete-motherhood-journey') > -1; }
-  function owns(base) { var h = heldBases(); return h.indexOf(base) > -1 || (MOTHERHOOD.indexOf(base) > -1 && h.indexOf('complete-motherhood-journey') > -1); }
+  // What she holds comes from the one rule book (wg-next.js): a bought program, never a campaign program, counts for the bundle offer.
+  function heldBases() { return (w.WGNext ? w.WGNext.active() : []).map(function (h) { return h.base; }); }
+  function bundleOwner() { return !!(w.WGNext && w.WGNext.bundleHeld()); }
+  function owns(base) { var h = heldBases(); return h.indexOf(base) > -1 || (MOTHERHOOD.indexOf(base) > -1 && bundleOwner()); }
+  function giftOnly() { var a = w.WGNext ? w.WGNext.active() : []; return a.length > 0 && a.every(function (h) { return h.gift; }); }
+  function paidSingle(base) { return !!(w.WGNext && w.WGNext.paidHeld().some(function (h) { return h.base === base; })); }
   function herName() { try { return (w.WGApp && w.WGApp.name && w.WGApp.name()) || ''; } catch (e) { return ''; } }
   function doneCount() { return ids.filter(function (id) { return st.done[id]; }).length; }
   function push(o) { (w.dataLayer = w.dataLayer || []).push(o); }
@@ -139,7 +141,7 @@
   // manuscript's own "Want it all, for less?" line for her.
   function memberLine(cur, id) {
     [].forEach.call(d.querySelectorAll('.rd-member'), function (e) { e.remove(); });
-    if (id !== ids[ids.length - 1] || MOTHERHOOD.indexOf(BASE) < 0 || !owns(BASE) || bundleOwner() || doneCount() / ids.length < 0.5) return;
+    if (id !== ids[ids.length - 1] || MOTHERHOOD.indexOf(BASE) < 0 || !paidSingle(BASE) || bundleOwner() || doneCount() < ids.length) return; // bought programs only, once she has finished
     var home = '/programs/complete-motherhood-journey' + DIA, p = el('p', 'rd-member');
     p.appendChild(d.createTextNode('Continue with '));
     var a = el('a'); a.href = home; a.appendChild(el('b', '', 'The Complete Motherhood Journey')); p.appendChild(a);
@@ -190,7 +192,7 @@
     box.appendChild(el('h2', '', 'You did it' + n + '!'));
     box.appendChild(el('p', '', 'You finished every lesson in ' + PROG + '. Take a moment' + n + '. This one is yours.'));
     var nx = NEXT[BASE];
-    if (nx && !(nx[0] && owns(nx[0])) && !bundleOwner() || (nx && !nx[0])) {
+    if (nx && !giftOnly() && (!(nx[0] && owns(nx[0])) && !bundleOwner() || !nx[0])) { // a campaign member sees no paid offer during her months
       var nc = el('div', 'rd-next-card'); nc.appendChild(el('b', '', nx[1])); nc.appendChild(el('p', '', nx[2]));
       var na = el('a', 'btn btn-primary'); na.href = nx[0] ? '/programs/' + nx[0] + DIA : '/tools/?stage=parenting'; na.innerHTML = ''; na.appendChild(d.createTextNode(nx[3] + ' →')); nc.appendChild(na); box.appendChild(nc);
     }

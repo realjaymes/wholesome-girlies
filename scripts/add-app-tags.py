@@ -20,13 +20,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 APP_JS_VERSION = "20261110a"
 IDEAS_JS_VERSION = "20261110a"
+NEXT_JS_VERSION = "20261110b"  # wg-next.js, the rule book
 STREAK_JS_VERSION = "20261110a"  # wg-streak.js and wg-capture.js
 HEAD = ('<link rel="manifest" href="/manifest.webmanifest">\n'
         '<meta name="theme-color" content="#6E7A3F">\n'
         '<meta name="apple-mobile-web-app-title" content="Girlies">')
 ARROWS_VERSION = "20261010b"
 ARROWS_CSS = f'<link rel="stylesheet" href="/assets/css/wg-arrows.css?v={ARROWS_VERSION}">'
-SCRIPT = (f'<script defer src="/assets/js/wg-arrows.js?v={ARROWS_VERSION}"></script>\n'
+SCRIPT = (f'<script defer src="/assets/js/wg-next.js?v={NEXT_JS_VERSION}"></script>\n'
+          f'<script defer src="/assets/js/wg-arrows.js?v={ARROWS_VERSION}"></script>\n'
           f'<script defer src="/assets/js/wg-app.js?v={APP_JS_VERSION}"></script>\n'
           f'<script defer src="/assets/js/wg-ideas.js?v={IDEAS_JS_VERSION}"></script>\n'
           f'<script defer src="/assets/js/wg-streak.js?v={STREAK_JS_VERSION}"></script>\n'
@@ -44,7 +46,7 @@ for p in sorted(glob.glob("**/*.html", recursive=True)):
     s = re.sub(r'\n?<link rel="stylesheet" href="/assets/css/wg-arrows\.css\?v=[0-9a-z]+">', "", s)
     css = re.search(r'<link rel="stylesheet" href="/assets/css/styles\.css[^"]*">', s)
     s = s[:css.end()] + "\n" + ARROWS_CSS + s[css.end():] if css else s.replace("</head>", ARROWS_CSS + "\n</head>", 1)
-    s = re.sub(r"<script defer src=\"/assets/js/wg-(?:app|ideas|streak|capture|arrows)\.js\?v=[0-9a-z]+\"></script>\n?", "", s)
+    s = re.sub(r"<script defer src=\"/assets/js/wg-(?:next|app|ideas|streak|capture|arrows)\.js\?v=[0-9a-z]+\"></script>\n?", "", s)
     reel = re.search(r'<script defer src="/assets/js/wg-tool-reel\.js[^"]*"></script>', s)
     s = s[:reel.start()] + SCRIPT + "\n" + s[reel.start():] if reel else s.replace("</body>", SCRIPT + "\n</body>", 1)
     s = re.sub(r"(<h4>Explore</h4>\s*<ul>)((?:(?!</ul>).)*?)(</ul>)",

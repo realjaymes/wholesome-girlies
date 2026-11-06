@@ -103,6 +103,7 @@
     var milestone = MILES.indexOf(s.count) > -1 && s.milestones.indexOf(s.count) < 0 ? s.count : 0;
     if (milestone) { s.milestones.push(milestone); u.pending = milestone; }
     writeS(s); writeU(u);
+    if (w.WGNext && w.WGNext.useful) w.WGNext.useful('tool');
     if (milestone) push({ event: 'streak_milestone', days: milestone });
     var showToast = !quiet() && u.toast !== t;
     if (showToast) { u.toast = t; writeU(u); toast(s.count); }
@@ -136,6 +137,11 @@
       '.wgs-dot.today{box-shadow:0 0 0 3px var(--mustard,#D49A2A)}.wgs-count{font-weight:800}' +
       '.wgs-src a,.wgs-rule li a{font-weight:800;text-decoration:underline}.wgs-more:empty{display:none}' +
       '.wgs-rule ul{margin:8px 0 10px;padding-left:20px}.wgs-pick{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:14px 0 4px}.wgs-pick::before{content:"";position:absolute;left:10%;right:10%;top:21px;border-top:3px dashed var(--ink);opacity:.35}.wgs-stop{position:relative;background:none;border:0;padding:0;font:inherit;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0;-webkit-tap-highlight-color:transparent}.wgs-dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;background:var(--t);border:2px solid var(--ink);transition:transform .15s}.wgs-stop:hover .wgs-dot,.wgs-stop:focus-visible .wgs-dot{background:var(--c);box-shadow:var(--sticker-sm);transform:scale(1.08)}.wgs-stop b{font-size:clamp(.6rem,2.65vw,.78rem);line-height:1.2;letter-spacing:-.01em}.wgs-stop small{font-size:clamp(.6rem,2.45vw,.7rem);line-height:1.2;opacity:.75}';
+    s.textContent += '.wgs-link{display:block;margin:6px auto 0;padding:8px 12px;background:none;border:0;color:inherit;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer}' +
+      '.wgs-tail{margin-top:14px}.wgs-tail .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box;margin:0}.wgs-more .wgs-main{display:flex;width:100%;justify-content:center;box-sizing:border-box;margin:12px 0 0}.wgs-more .wgn-offer{margin:12px 0 0}' +
+      '.wgs-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 6px}.wgs-ct{font-family:var(--serif,Georgia,serif);font-size:2rem;line-height:1}.wgs-ct small{display:block;font:800 .72rem var(--sans,system-ui);letter-spacing:.04em;color:var(--plum-soft,#66645A)}' +
+      '.wgs-dots{display:flex;gap:6px}.wgs-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink,#33322A);background:#fff}.wgs-dots i.d{background:var(--olive,#6E7A3F)}.wgs-dots i.r{background:repeating-linear-gradient(45deg,#fff 0 3px,var(--peach,#F0C9A8) 3px 6px)}.wgs-dots i.t{box-shadow:0 0 0 3px var(--mustard,#D49A2A)}' +
+      '.wgs-todayd{margin:6px 0 0}.wgs-todayd summary{cursor:pointer;font-weight:800;text-decoration:underline}.wgs-todayd .wgs-today{margin-top:10px}';
     d.head.appendChild(s);
   }
   function toast(n) {
@@ -164,18 +170,36 @@
       var dt = parse(u.ends.slice(0, 10)), when = dt ? dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }) : '';
       box.appendChild(mk('p', 'wgs-src', 'Member: we added ' + (MONTHS[n] > 1 ? MONTHS[n] + ' months' : '1 month') + '.' + (when ? ' Your access now runs to ' + when + '.' : '')));
     }
-    var pl = plan(), slot = mk('div', 'wgs-more'); box.appendChild(slot);
-    if (pl.wh.paid.length) progressFor(pl).then(function (txt) { if (txt && ov.isConnected) slot.appendChild(mk('p', 'wgs-src', txt)); });
-    else if (pl.wh.kind === 'free' && (n === 7 || n === 30)) freeNudge(pl, slot, ov);
+    var slot = mk('div', 'wgs-more'); box.appendChild(slot);
     var close = function () { ov.remove(); d.removeEventListener('keydown', esc); try { d.dispatchEvent(new CustomEvent('wg:streak-sheet-closed', { detail: { days: n } })); } catch (e) {} };
     var esc = function (e) { if (e.key === 'Escape') close(); };
     d.addEventListener('keydown', esc);
+    // Her one main action (note 07, streak sheet): a buyer or member continues reading, a woman with no program sees the one offer
+    // card, a lapsed member sees the keep card. Sharing is the outlined button under it (filled when nothing else is offered), and
+    // Keep going is a text link. Days 3 and 14 offer nothing.
+    var sh = null;
     if ((MCOPY[n] || MCOPY[7])[1]) {
-      var sh = mk('button', 'btn btn-primary', 'Share my ' + n + ' days'); sh.type = 'button';
+      sh = mk('button', 'btn btn-primary', 'Share my ' + n + ' days'); sh.type = 'button';
       sh.addEventListener('click', function () { shareView(box, n, function () { close(); }); });
-      box.appendChild(sh);
     }
-    var go = mk('button', 'btn btn-ghost', 'Keep going'); go.type = 'button'; go.addEventListener('click', close); box.appendChild(go);
+    var go = mk('button', 'wgs-link', 'Keep going'); go.type = 'button'; go.addEventListener('click', close);
+    var tail = mk('div', 'wgs-tail'); if (sh) tail.appendChild(sh); tail.appendChild(go); box.appendChild(tail);
+    var rb = w.WGNext ? w.WGNext.ready({ status: true }) : Promise.resolve(null);
+    rb.then(function () {
+      if (!ov.isConnected) return;
+      var pl = plan(), kind = pl.wh.kind, main = null, act = '';
+      if (pl.wh.paid.length) progressFor(pl).then(function (txt) { if (txt && ov.isConnected) slot.appendChild(mk('p', 'wgs-src', txt)); });
+      if (n !== 7 && n !== 30) return;
+      if (kind !== 'free') {
+        var href = lessonHref(pl);
+        if (href) { main = mk('a', 'btn btn-primary wgs-main'); main.href = href; main.setAttribute('data-wgs', 'continue'); main.appendChild(d.createTextNode('Continue reading →')); act = 'next_lesson'; }
+      } else if (w.WGNext) {
+        var S = w.WGNext.state(), stg = S && S.name === 'lapsed' ? Object.keys(S.lapsed)[0] : (pl.stage || w.WGNext.stage());
+        var f = stg ? w.WGNext.offer(stg) : null;
+        if (f && f.kind !== 'none' && f.kind !== 'own') { main = w.WGNext.card(f, { inner: true, surface: 'streak-sheet' }); act = w.WGNext.actionOf(f); }
+      }
+      if (main) { slot.appendChild(main); if (sh) sh.className = 'btn btn-ghost'; if (w.WGNext) w.WGNext.mark(main, 'streak_sheet', act); }
+    });
     ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
     ov.appendChild(box); d.body.appendChild(ov); go.focus();
   }
@@ -243,7 +267,7 @@
       if (changed) { writeS(l); if (onApp) renderApp(); }
       // A member earns months at 3, 7 and 30 days. The server refuses a streak step until her saved streak reached it, so the
       // steps go only after the state above is saved, one after another. Each step counts once on the server, so a repeat is harmless.
-      var chain = Promise.resolve(), known = acct();
+      var chain = Promise.resolve(), known = w.WGNext && w.WGNext.account ? w.WGNext.account() : null;
       [3, 7, 30].forEach(function (m) {
         if (s.best < m || u.steps[m] || (known && !known.member)) return; // an account that is not a member never asks
         chain = chain.then(function () {
@@ -308,48 +332,26 @@
     if (gaps.length >= 2) return Math.round(gaps.reduce(function (a, b) { return a + b; }, 0) / gaps.length);
     var c = +o.cycle; return c >= 21 && c <= 40 ? c : 28;
   }
-  var STAGE_OF = { 'wife-material-blueprint': 'relationships', 'trying-to-conceive-blueprint': 'fertility', 'first-pregnancy-plan': 'pregnancy', 'postpartum-reset': 'postpartum', 'first-baby-playbook': 'parenting' };
-  var PROG_OF = {}; Object.keys(STAGE_OF).forEach(function (k) { PROG_OF[STAGE_OF[k]] = k; });
-  var HOME_STAGE = { wg_relationships_home: 'relationships', wg_fertility_home: 'fertility', wg_pregnancy_home: 'pregnancy', wg_pp_home: 'postpartum', wg_parenting_home: 'parenting' };
   var STAGE_WORD = { relationships: 'Relationships', fertility: 'Fertility', pregnancy: 'Pregnancy', postpartum: 'Postpartum', parenting: 'Parenting' };
   var MOTHER = ['fertility', 'pregnancy', 'postpartum', 'parenting'];
 
-  // ── who she is: free, a First 1,000 member, a buyer, or both ──
-  // Read from this phone only: her program flags (wg_<stage>_home, which the bundle writes for all four motherhood stages), her
-  // cached account (programs with an end date are the member's free program; the rest were paid for) and the member's end date.
-  function acct() { var c = jr('wg_account_v1'); return token() && c && c.v === 1 && c.account ? c.account : null; }
-  function memberActive(a) { var m = a && a.member; if (!m) return false; var e = Date.parse(m.ends); return isNaN(e) || e > Date.now(); }
-  function slugIn(url) { var m = /\/programs\/([a-z0-9-]+)\/(?:thank-you|read)/.exec(url || ''); return m ? m[1] : ''; }
+  // ── who she is: free, a First 100 member, a buyer, or both ──
+  // The rule book (wg-next.js) works it out from her program flags and her cached account; this file only reads the answer.
+  // A program with an end date is the member's free program (gift). The bundle follows the stage her card follows.
+  function N() { return w.WGNext && w.WGNext.state && w.WGNext.state() ? w.WGNext : null; }
+  function progOf(stage) { var n = N(), dd = n && n.data(); return dd && dd.stages[stage] ? dd.stages[stage].program : ''; }
   function who() {
-    var a = acct(), u = readU(), entries = [], gift = {};
-    ((a && a.programs) || []).forEach(function (p) { if (p.ends) gift[slugIn(p.home) || p.slug] = 1; });
-    Object.keys(HOME_STAGE).forEach(function (k) {
-      var v = jr(k), slug = slugIn(v && v.u), stage = HOME_STAGE[k]; if (!slug) return;
-      var dia = /-diaspora$/.test(slug) ? '-diaspora' : '', base = slug.replace(/-diaspora$/, ''), bundle = base === 'complete-motherhood-journey';
-      if (!bundle && STAGE_OF[base] !== stage) return;
-      entries.push({ stage: stage, prog: bundle ? PROG_OF[stage] + dia : slug, bundle: bundle, member: !bundle && !!gift[slug] });
+    var n = N(); if (!n) return { kind: 'free', entries: [], paid: [], mem: [] };
+    var S = n.state(), entries = n.entries().filter(function (e) { return !e.lapsed; }).map(function (e) {
+      return { stage: e.stage, prog: e.bundle ? progOf(e.stage) + (e.dia ? '-diaspora' : '') : e.slug, bundle: e.bundle, member: e.gift };
     });
-    var member = memberActive(a) || (!!u.ends && Date.parse(u.ends) > Date.now());
-    if (member && a && a.member && a.member.stage && PROG_OF[a.member.stage] && !entries.some(function (e) { return e.member || e.stage === a.member.stage; })) {
-      entries.push({ stage: a.member.stage, prog: PROG_OF[a.member.stage], bundle: false, member: true });
-    }
     var paid = entries.filter(function (e) { return !e.member; }), mem = entries.filter(function (e) { return e.member; });
-    var kind = paid.length ? (member || mem.length ? 'both' : 'buyer') : (member || mem.length ? 'member' : 'free');
+    var kind = S.name === 'both' ? 'both' : (S.name === 'buyer' || S.name === 'bundle') ? 'buyer' : S.name === 'member' ? 'member' : 'free';
     return { kind: kind, entries: entries, paid: paid, mem: mem };
   }
   // The stage she is in right now, from the dates only she has. A delivery in the last 12 weeks beats a due date still ahead
   // (a baby that came early), a due date beats a baby's birth date (a new pregnancy), and a due date up to 21 days past comes last.
-  function dateStage(stages) {
-    var t = now(), has = function (s) { return stages.indexOf(s) > -1; };
-    var pr = jr('wg_stage_pregnancy_v1'), due = pr && pr.v === 1 ? parse(pr.due) : null, ahead = due ? between(due, t) : null;
-    var pp = jr('wg_stage_postpartum_v1'), del = pp && pp.v === 1 ? parse(pp.delivery) : null, since = del ? between(t, del) : -1;
-    var dob = parse(ls('wg_vax_dob')), age = dob ? between(t, dob) : -1;
-    if (has('postpartum') && del && since >= 0 && since <= 83) return 'postpartum';
-    if (has('pregnancy') && due && ahead >= 0 && ahead <= 300) return 'pregnancy';
-    if (has('parenting') && dob && age >= 0 && age <= 2200) return 'parenting';
-    if (has('pregnancy') && due && ahead < 0 && ahead >= -21) return 'pregnancy';
-    return '';
-  }
+  function dateStage(stages) { var n = w.WGNext; return n && n.dateStage ? n.dateStage(stages) : ''; }
   // The stage with the most activity (the app home's own appActivity). Off the app home the last answer it gave is used.
   function activityOrder() {
     try {
@@ -421,37 +423,6 @@
     var st = readState(pick.prog), n = doneCount(st), prefix = paid.length > 1 ? STAGE_WORD[pick.stage] + ': ' : '';
     return totalOf(pick.prog, st).then(function (total) { return total ? prefix + n + ' of ' + total + ' lessons' : ''; });
   }
-  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-  // Localhost only: ?f1kcap=C sets the cap (default 100), ?f1ktaken=T the places taken, ?f1kleft=N the places left. A check only, never on the live site.
-  function preview(j) {
-    if (!/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) return j;
-    var c = /[?&]f1kcap=(\d{2,4})/.exec(w.location.search), t = /[?&]f1ktaken=(\d{1,4})/.exec(w.location.search), l = /[?&]f1kleft=(\d{1,4})/.exec(w.location.search);
-    if (!c && !t && !l) return j;
-    var cap = c ? +c[1] : 100, taken = t ? +t[1] : l ? cap - +l[1] : 0;
-    taken = Math.min(cap, Math.max(0, taken));
-    return { ok: true, taken: taken, cap: cap, left: cap - taken, open: cap - taken > 0 };
-  }
-  // A free woman at 7 and 30 days: a First 1,000 place while places are left, her stage's program once they are gone.
-  function freeNudge(pl, slot, ov) {
-    if (!w.fetch) return;
-    w.fetch(PAY + '/first1000/status').then(function (r) { return r.json(); }).then(function (j) {
-      j = preview(j);
-      if (!j || !j.ok || !ov.isConnected) return;
-      var a = mk('a', 'btn btn-primary'), left = +j.left || 0, stage = pl.stage, hasCap = typeof j.cap === 'number';
-      if (hasCap && !(j.open && left > 0)) {
-        slot.appendChild(mk('p', 'wgs-src', 'All ' + fmt(j.cap) + ' places are taken.'));
-        a.href = '/first' + (stage ? '?stage=' + stage : ''); a.appendChild(d.createTextNode('Tell me if a place opens →'));
-      } else if (hasCap) {
-        slot.appendChild(mk('p', 'wgs-src', 'You could get a program free as one of the first ' + fmt(j.cap) + ' women. ' + fmt(left) + ' of ' + fmt(j.cap) + (left === 1 ? ' places is' : ' places are') + ' left.'));
-        a.href = '/first' + (stage ? '?stage=' + stage : ''); a.appendChild(d.createTextNode('Claim my place →'));
-      } else {
-        slot.appendChild(mk('p', 'wgs-src', stage ? 'The program for your stage goes further.' : 'Every stage has a program that goes further.'));
-        a.href = stage && PROG_OF[stage] ? '/programs/' + PROG_OF[stage] : '/programs/'; a.appendChild(d.createTextNode((stage ? 'See the program' : 'See the programs') + ' →'));
-      }
-      slot.appendChild(a);
-    }).catch(function () {});
-  }
-
   // ── the app home card (option B: today's card first, the week strip under it) ──
   function strip(s, u) {
     var row = mk('div', 'wgs-strip'), t = now(), names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -472,27 +443,25 @@
     if (u.ended) return 'Your last streak was ' + u.ended + ' days. ' + (u.ended >= s.best ? 'That is your best, and it stays.' : 'Your best is ' + s.best + ', and it stays.') + ' Read today’s card to start a new one.';
     return 'Read today’s card to start your streak.';
   }
-  var box = null, picked = false, curPlan = null;
-  function host() {
-    if (box && box.isConnected) return box;
-    var anchor = d.getElementById('appNotice') || d.getElementById('appHandoff'); if (!anchor) return null;
-    box = mk('div', 'app-block'); box.id = 'appToday'; anchor.parentNode.insertBefore(box, anchor); return box;
-  }
+  var curPlan = null;
+  // The today row sits in the static #appToday block of the app home (app/index.html). The rule book decides the main action
+  // above it; this row is the streak: the count, the week, and a small link to today's card. Nothing here is an offer.
+  function host() { return d.getElementById('appToday'); }
   function renderApp() {
     if (!onApp || quiet()) return;
     var b = host(); if (!b) return;
     style();
+    (w.WGNext ? w.WGNext.ready() : Promise.resolve()).then(function () { draw(b); });
+  }
+  function draw(b) {
     var st = settle(), s = st.s, u = st.u, t = today(), doneToday = s.last_day === t;
     var signed = !!token(), blocked = A && A.remembering && !A.remembering() && !signed;
-    var firstOpen = !s.best && !s.last_day && (!u.rule || (u.rule === t && !u.first));
     if (!u.rule) { u.rule = t; writeU(u); }
-    b.innerHTML = ''; b.hidden = false;
     loadCards().then(function (data) {
-      b.innerHTML = '';
+      b.innerHTML = ''; b.hidden = false;
       var pl = plan(), stage = pl.stage, res = data && stage ? cardFor(stage, data) : null;
       curPlan = pl;
       if (pl.wh.entries.length && stage && u.cur !== stage) { var uc = readU(); uc.cur = stage; writeU(uc); }
-      var card = mk('div', 'card wgs-today'); card.setAttribute('data-wgs', 'today');
       if (blocked) {
         var oc = mk('div', 'card wgs-today'); oc.setAttribute('data-wgs', 'turn-on');
         oc.appendChild(mk('h3', '', 'Your streak'));
@@ -502,32 +471,24 @@
           var c = w.WGConsent; if (c && c.apply) c.apply({ analytics: c.state.analytics, advertising: c.state.advertising, remember: true });
           try { if (w.appRender) w.appRender(); } catch (e) {}
         });
-        oc.appendChild(on);
-        if (res && res.card) card.appendChild(todayBody(res, s, u, doneToday, false));
-        if (res && res.card) b.appendChild(card);
-        b.appendChild(oc); return;
+        oc.appendChild(on); b.appendChild(oc); return;
       }
-      if (firstOpen) { // the day 1 rule, shown once
-        var rc = mk('div', 'card wgs-today wgs-rule'); rc.setAttribute('data-wgs', 'rule');
-        rc.appendChild(mk('h3', '', 'Start your streak'));
-        rc.appendChild(mk('p', 'muted', 'Open the app and do one thing a day. Any of these counts:'));
-        var ul = mk('ul'), lessons = pl.wh.entries.length ? lessonHref(pl) : '';
-        ['Read today’s card for your stage', 'Use a tool', lessons ? 'Open a lesson' : '', 'Play a game'].forEach(function (x) {
-          if (!x) return;
-          var li = mk('li');
-          if (x === 'Open a lesson') { var la = mk('a', '', x); la.href = lessons; la.setAttribute('data-wgs', 'lesson'); li.appendChild(la); } else li.textContent = x;
-          ul.appendChild(li);
-        }); rc.appendChild(ul);
-        rc.appendChild(mk('p', 'muted', 'Miss one day a week and your streak is safe.'));
-        b.appendChild(rc);
-        if (res && res.card) { card.appendChild(todayBody(res, s, u, doneToday, false)); b.appendChild(card); }
-        else if (!res || res.need) pickOrNeed(b, res);
-        return;
+      if (!stage) { pickOrNeed(b, null); return; } // no stage yet: she picks one, and the app home follows it
+      var row = mk('div', 'wgs-row'); row.setAttribute('data-wgs', 'today');
+      var ct = mk('div', 'wgs-ct', String(s.count)); ct.appendChild(mk('small', '', s.count === 1 ? 'day in a row' : 'days in a row')); row.appendChild(ct);
+      var dots = mk('div', 'wgs-dots'), tt = now();
+      for (var i = 6; i >= 0; i--) {
+        var k = iso(shift(tt, -i)), dot = mk('i');
+        if (u.rest === k) dot.className = 'r'; else if (u.days.indexOf(k) > -1 || (k === t && s.last_day === k)) dot.className = 'd';
+        if (i === 0) dot.className += ' t';
+        dots.appendChild(dot);
       }
-      if (res && (res.card || res.need)) { card.appendChild(todayBody(res, s, u, doneToday, true)); b.appendChild(card); }
-      else {
-        if (!stage) pickOrNeed(b, null);
-        if (s.best || s.count || u.rest) { card.appendChild(streakOnly(s, u, doneToday)); b.appendChild(card); }
+      row.appendChild(dots); b.appendChild(row);
+      var line = mk('p', 'wgs-src', sayLine(s, u, doneToday)); b.appendChild(line);
+      if (res && (res.card || res.need)) {
+        var det = mk('details', 'wgs-todayd'); det.appendChild(mk('summary', '', doneToday ? 'Today’s card' : 'Read today’s card'));
+        var card = mk('div', 'card wgs-today'); card.setAttribute('data-wgs', 'today-card');
+        card.appendChild(todayBody(res, s, u, doneToday, false)); det.appendChild(card); b.appendChild(det);
       }
     });
   }
@@ -541,7 +502,7 @@
       var bt = mk('button', 'wgs-stop'); bt.type = 'button';
       bt.style.setProperty('--c', 'var(--' + x[4] + ')'); bt.style.setProperty('--t', 'var(--' + x[4] + '-t)');
       var dot = mk('span', 'wgs-dot', x[2]); dot.setAttribute('aria-hidden', 'true'); bt.appendChild(dot); bt.appendChild(mk('b', '', x[1])); bt.appendChild(mk('small', '', x[3]));
-      bt.addEventListener('click', function () { var u = readU(); u.stage = x[0]; writeU(u); renderApp(); }); row.appendChild(bt);
+      bt.addEventListener('click', function () { var u = readU(); u.stage = x[0]; writeU(u); if (w.appRender) w.appRender(); else renderApp(); }); row.appendChild(bt);
     });
     c.appendChild(row); b.appendChild(c);
   }
@@ -605,12 +566,6 @@
     if (!quiet()) setTimeout(maybeSheet, 1200);
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', boot); else boot();
-
-  if (onApp && typeof w.appRender === 'function') {
-    var orig = w.appRender;
-    w.appRender = function () { var r = orig.apply(this, arguments); try { renderApp(); } catch (e) {} return r; };
-    if (d.readyState !== 'loading') renderApp();
-  }
 
   w.WGStreak = {
     record: record, settle: settle, read: readS, ui: readU, cardFor: cardFor, stageOf: stageOf, plan: plan, who: who, progressFor: progressFor, loadCards: loadCards, isoWeek: isoWeek,

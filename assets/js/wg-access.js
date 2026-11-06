@@ -23,7 +23,7 @@
     if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) { var o = w.localStorage.getItem('wg_pay_api'); if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(o || '')) PAY_API = o; }
   } catch (e) {}
   var SESSION = 'wg_session_v1', ACCOUNT = 'wg_account_v1', NAME = 'wg_name_v1';
-  var HOME_KEYS = ['wg_relationships_home', 'wg_fertility_home', 'wg_pregnancy_home', 'wg_pp_home', 'wg_parenting_home'];
+  var HOME_KEYS = []; // filled from the program table (assets/data/program-flags.json): the flag key of each stage
   var data = null;
 
   // ── storage, always wrapped: a blocked localStorage just means nothing is kept ──
@@ -41,15 +41,6 @@
   }
 
   // ── network ──
-  // Localhost only: ?f1kcap=C sets the cap (default 100), ?f1ktaken=T the places taken, ?f1kleft=N the places left. A check only, never on the live site.
-  function previewStatus(j) {
-    if (!/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) return j;
-    var c = /[?&]f1kcap=(\d{2,4})/.exec(w.location.search), t = /[?&]f1ktaken=(\d{1,4})/.exec(w.location.search), l = /[?&]f1kleft=(\d{1,4})/.exec(w.location.search);
-    if (!c && !t && !l) return j;
-    var cap = c ? +c[1] : 100, taken = t ? +t[1] : l ? cap - +l[1] : 0;
-    taken = Math.min(cap, Math.max(0, taken));
-    return { ok: true, taken: taken, cap: cap, left: cap - taken, open: cap - taken > 0 };
-  }
   function request(method, path, body, tok) {
     var h = {}; if (body !== undefined) h['content-type'] = 'application/json';
     if (tok) h.authorization = 'Bearer ' + tok;
@@ -87,16 +78,24 @@
   // ── program flags, from her account ──
   function homes() {
     if (data) return Promise.resolve(data);
-    return fetch('/assets/data/program-flags.json?v=20261106b').then(function (r) { return r.json(); }).then(function (x) { data = x; return x; });
+    return fetch('/assets/data/program-flags.json?v=20261110a').then(function (r) { return r.json(); }).then(function (x) { data = x; HOME_KEYS = Object.keys(x.stages).map(function (k) { return x.stages[k].flag; }); return x; });
   }
   function slugOf(url) { var m = /\/programs\/([a-z0-9-]+)\/(?:thank-you|read)/.exec(url || ''); return m ? m[1] : ''; }
   function isBundle(u) { return /^\/programs\/complete-motherhood-journey/.test(u || ''); }
   // The Complete Motherhood Journey outranks a single program for a stage (the same rule as every program home).
-  function addHome(slug) {
+  // A program with an end date is a campaign member's: its flag carries gift:true and the end date, so nothing treats her as a buyer.
+  function addHome(slug, ends) {
     return homes().then(function (x) {
       var h = x.homes[slug]; if (!h) return null;
-      var u = '/programs/' + slug + '/thank-you', v = JSON.stringify({ u: u, l: h.label });
-      h.flags.forEach(function (k) { var cur = jget(k); if (!(cur && isBundle(cur.u) && !isBundle(u))) set(k, v); });
+      var u = '/programs/' + slug + '/thank-you', f = { u: u, l: h.label };
+      if (ends) { f.gift = true; f.ends = ends; }
+      var v = JSON.stringify(f);
+      h.flags.forEach(function (k) {
+        var cur = jget(k);
+        if (cur && isBundle(cur.u) && !isBundle(u)) return;
+        if (cur && cur.u && !cur.gift && ends && !isBundle(u) === !isBundle(cur.u)) return; // a bought program is never replaced by a gifted one
+        set(k, v);
+      });
       return { slug: slug, url: u, name: h.name, program: h.program };
     }, function () { return null; });
   }
@@ -111,13 +110,12 @@
   }
   function applyPrograms(acct) {
     var list = accountPrograms(acct);
-    reconcile(list);
-    return Promise.all(list.map(function (p) { return addHome(p.slug); })).then(function (added) {
+    return homes().then(function () { reconcile(list); }, function () {}).then(function () { return Promise.all(list.map(function (p) { return addHome(p.slug, p.ends); })).then(function (added) {
       var got = added.filter(Boolean);
       // A Selar buyer's "Finish getting ..." card stops once sign-in lists what she bought.
       if (got.length) { var lead = jget('wg_lead'); if (lead && lead.product) { lead.product = ''; set('wg_lead', JSON.stringify(lead)); } }
       return got;
-    });
+    }); });
   }
 
   // ── pass cookie ──
@@ -242,7 +240,7 @@
     signout: function () {
       var tok = token();
       var done = function () {
-        forget(); HOME_KEYS.forEach(del);
+        forget(); homes().then(function () { HOME_KEYS.forEach(del); }, function () {});
         return fetch('/api/pass', { method: 'DELETE', credentials: 'same-origin' }).catch(function () {});
       };
       return (tok ? request('POST', '/account/signout', {}, tok).catch(function () {}) : Promise.resolve()).then(done);
@@ -258,7 +256,7 @@
     first1000: {
       // { ok, taken, cap, left, open }. cap is the public number ("the first N women"), left is cap minus taken, and open is true only
       // when a claim would succeed now. On localhost, ?f1kcap=C&f1ktaken=T (or ?f1kleft=N) stands in for the server, with no request: see previewStatus.
-      status: function () { var pre = previewStatus(null); if (pre) return Promise.resolve(pre); return request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); },
+      status: function () { return w.WGNext ? w.WGNext.status() : request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); },
       claim: function (body) {
         return request('POST', '/first1000/claim', body).then(function (j) {
           if (!j.ok) return j;
