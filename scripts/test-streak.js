@@ -398,7 +398,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true 
   ok('a buyer who bought on another device (her account lists it) never sees the offer', o.tx === '', o.tx);
   await o.x.close();
   o = await offer(mem.seed, mem.route);
-  ok('a member sees her steps card, not the offer', /Your First 1,000 steps/.test(o.tx) && !/Get a program free/.test(o.tx), o.tx);
+  ok('a member sees her steps card, not the offer', /Earn more free months/.test(o.tx) && !/Get a program free/.test(o.tx), o.tx);
   await o.x.close();
 
   // the tool pages carry the same check

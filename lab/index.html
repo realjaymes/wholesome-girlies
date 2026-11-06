@@ -115,7 +115,7 @@ button.big{background:var(--rust);text-align:center}
       expect: 'The card has no lesson line. Tick an item on the Hospital Bag Checklist: the 7 days sheet says you could get a program free as one of the first 1,000 women, with Claim my place. The app home offer carries an Already bought? Sign in link. The buttons with a number pretend only 3 places are left, or none (the sheet then points to the pregnancy program).',
       go: [['App home', APPH], ['Hospital Bag Checklist, then the 7 day sheet', BAG], ['App home, 3 places left', APPH + '&f1kleft=3'], ['Checklist, 7 day sheet with 3 places left', BAG + '?f1kleft=3'], ['Checklist, 7 day sheet with no places left', BAG + '?f1kleft=0']]},
     {id: 'sgmember', title: 'Streak group: a First 1,000 member (day 6)', set: function(s){ streak6(s); signedIn(s, [['first-pregnancy-plan', day(200) + 'T00:00:00Z']], {stage: 'pregnancy', ends: day(200) + 'T00:00:00Z', steps: {claim: day(-3) + 'T00:00:00Z'}, invite: 'LAB'}); flag(s, HOMES.preg); },
-      expect: 'The First 1,000 steps card sits under the card and the offer is not shown. A 7 day milestone would add a month through the server, which a lab phone cannot reach.',
+      expect: 'The Earn more free months card sits under the card and the offer is not shown. A 7 day milestone would add a month through the server, which a lab phone cannot reach.',
       go: [['App home', APPH]]},
     {id: 'sgbuyer', title: 'Streak group: a buyer of the First Pregnancy Plan (day 6, 12 lessons read)', set: function(s){ streak6(s); flag(s, HOMES.preg); reading(s, 'first-pregnancy-plan', 12); s.wg_stage_pregnancy_v1 = JSON.stringify({v: 1, due: day(120)}); s.wg_stage_check_v1 = JSON.stringify({v: 1, due: day(120)}); },
       expect: 'No free-program offer anywhere. Tick an item on the Hospital Bag Checklist: the 7 days sheet shows 12 of 31 lessons, not months and not a place.',
@@ -142,7 +142,7 @@ button.big{background:var(--rust);text-align:center}
       expect: 'Today, week 22 with Switch to relationships. The 7 day sheet says Pregnancy: 12 of 31 lessons.',
       go: [['App home', APPH], ['Hospital Bag Checklist, then the 7 day sheet', BAG]]},
     {id: 'sgboth', title: 'A member who then bought (member pregnancy, bought the First Baby Playbook)', set: function(s){ streak6(s); signedIn(s, [['first-pregnancy-plan', day(200) + 'T00:00:00Z'], ['first-baby-playbook']], {stage: 'pregnancy', ends: day(200) + 'T00:00:00Z', steps: {claim: day(-3) + 'T00:00:00Z'}, invite: 'LAB'}); flag(s, HOMES.preg); flag(s, HOMES.baby); reading(s, 'first-baby-playbook', 9); },
-      expect: 'The First 1,000 steps card shows, the offer does not. The 7 day sheet shows 9 of 27 lessons for the paid program.',
+      expect: 'The Earn more free months card shows, the offer does not. The 7 day sheet shows 9 of 27 lessons for the paid program.',
       go: [['App home', APPH], ['Hospital Bag Checklist, then the 7 day sheet', BAG]]}
   ];
 

@@ -32,6 +32,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="stylesheet" href="/assets/css/styles.css?v=20261026a">
 <link rel="stylesheet" href="/assets/css/wg-arrows.css?v=20261010b">
 <link rel="stylesheet" href="/assets/css/wg-program-home.css?v=20261107c">
+<link rel="stylesheet" href="/assets/css/wg-first1000.css?v=20261108b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
@@ -109,6 +110,10 @@ main [hidden]{display:none!important} /* .card and .app-install set display, whi
 .app-backup .app-btns .btn.app-rm{flex:0 0 auto;padding:9px 16px;font-size:.9rem}
 .app-install.no-btn .btn{display:none}
 @media (min-width:600px){.app-install{grid-template-columns:1fr 168px;grid-template-areas:"text phone" "btn phone";gap:14px 36px;padding:26px 34px;align-content:center}.app-install .txt{align-self:end}.app-install .btn{width:auto;justify-self:start;align-self:start}.app-phone{width:168px;border-width:7px;border-radius:32px}.app-phone .sb{font-size:10px}.app-install h2{font-size:1.4rem}}
+/* The email-me-the-link block (wg-capture.js) spans the card under the text and QR code, with the field and button on one row */
+#appInstall > .wgc-card{grid-column:1/-1;margin:0;padding-top:16px;border-top:1px solid var(--line,#e6e1d3)}#appInstall .wgc-card p{margin:0}#appInstall .wgc-card .wgc-note{margin-top:8px}
+#appInstall .wgc-form{grid-template-columns:minmax(0,1fr) auto;align-items:stretch}#appInstall .wgc-form .btn{grid-area:auto;width:auto;justify-self:stretch;align-self:stretch}#appInstall .wgc-form .wgc-msg{grid-column:1/-1}
+@media (max-width:479px){#appInstall .wgc-form{grid-template-columns:1fr}}
 .app-list{display:grid;gap:10px;grid-template-columns:1fr;margin:12px 0 0}
 @media (min-width:600px){.app-list{grid-template-columns:1fr 1fr}}
 .app-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-radius:14px;color:var(--plum);text-decoration:none}
@@ -661,7 +666,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script defer src="/assets/js/wg-random-game.js?v=20261012a"></script>
 <script defer src="/assets/js/wg-access.js?v=20261107d"></script>
 <script defer src="/assets/js/wg-account.js?v=20261106b"></script>
-<script defer src="/assets/js/wg-first1000.js?v=20261108a"></script>
+<script defer src="/assets/js/wg-first1000.js?v=20261108b"></script>
 <script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
 <script defer src="/assets/js/wg-app.js?v=20261107d"></script>

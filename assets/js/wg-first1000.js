@@ -1,7 +1,7 @@
 /* Wholesome Girlies: The First 1,000. Two jobs, one file, each only on its own page. The landing page and its claim form
  * are wg-first1000-form.js.
  *   /first-1000/welcome  the thank-you page: her end date, her program and the two steps she can finish now.
- *   /app/                #appFirst: the "Your First 1,000 steps" card for a member, or a short offer for a visitor
+ *   /app/                #appFirst: the "Earn more free months" card for a member, or a short offer for a visitor
  *                        who holds no program, while places are left. The offer waits until her status is known (her account
  *                        has loaded, or her program flags are read) and is never shown to a member or a buyer.
  * Everything is written with textContent or .value. Her stage and steps go to the payment server and never to the dataLayer:
@@ -85,9 +85,9 @@
     if (WGAccess.signedIn() && !WGAccess.account()) return;
     var m = WGAccess.member();
     if (m) {
-      var card = el('section', 'card f1k-app'); card.setAttribute('aria-label', 'Your First 1,000 steps');
-      card.appendChild(el('h2', '', 'Your First 1,000 steps'));
-      var meta = el('div', 'meta'); meta.appendChild(el('span', '', m.ends ? 'Your free month runs until ' + fmtDate(m.ends) : 'You have one free month')); meta.appendChild(el('span', '', 'You have earned ' + months(m) + ' of 12 months')); card.appendChild(meta);
+      var card = el('section', 'card f1k-app'); card.setAttribute('aria-label', 'Earn more free months');
+      card.appendChild(el('h2', '', 'Earn more free months'));
+      card.appendChild(el('p', 'meta', (m.ends ? 'Your program is free until ' + fmtDate(m.ends) + '.' : 'Your program is free for one month.') + ' You have earned ' + months(m) + ' of 12 months.'));
       var ul = el('ul'); var first = el('li', 'done'); first.appendChild(el('span', '', 'Claim your place')); first.appendChild(el('b', '', '1')); ul.appendChild(first);
       STEPS.forEach(function (s) {
         var done = isDone(m, s[0]), li = el('li', done ? 'done' : '');
