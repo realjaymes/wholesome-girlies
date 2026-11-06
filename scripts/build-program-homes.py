@@ -17,15 +17,14 @@ figure from assets/img/cast/guides/ and one line in a speech bubble); reading (t
 toolkit PDF; the bundle lists its four toolkits); Get the app (browser only); community (motherhood only);
 your tools as a list with Saved marks and no videos; help and safety; the next program; pass it on.
 
-Program code (vault journey F): each home has a "code" (PREFIX-XXXX, no look-alike characters). The home shows
-it, and APP_DATA carries only the SHA-256 of each normalised code, so /app/ can add a program she typed.
+Programs open by email sign-in, so no home carries a program code. A home saved on her phone is only a flag (which program the
+app shows), and the signed pass in her cookie is what opens the page.
 Per-program manifests (journey C): manifests/<slug>.webmanifest is manifest.webmanifest with start_url
 /app/?home=<slug> (same id, so it is the same app), and each home's <link rel="manifest"> points at its own.
 
   python3 scripts/build-program-homes.py           write every page (idempotent)
   python3 scripts/build-program-homes.py --check   write nothing; exit 1 if any page differs
 """
-import hashlib
 import html
 import json
 import os
@@ -38,10 +37,12 @@ START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
 ASSET_VERSION = "20261012a"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
-# Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows her
-# personal access code once the payment server confirms the payment (Selar to Bachs Migration Plan).
+# Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows the
+# "Payment received" card until the payment server confirms the payment (Selar to Bachs Migration Plan).
 # It does nothing without ?order=.
-ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261024a"></script>'
+ORDER_TAG = '<script defer src="/assets/js/wg-order.js?v=20261106a"></script>'
+ACCESS_TAG = '<script defer src="/assets/js/wg-access.js?v=20261106b"></script>'
+STEP_TAG = '<script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>'
 ARROW = ('<svg class="nav-dropdown-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">'
          '<path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
@@ -58,13 +59,7 @@ PROGRAMS = {
     "complete-motherhood-journey": ("The Complete Motherhood Journey", "Motherhood Journey home",
                                     ["fertility", "pregnancy", "postpartum", "parenting"]),
 }
-CODE_RE = re.compile(r"^(WIFE|TTC|PREG|RESET|BABY|JOURNEY)-[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{4}$")  # no 0, O, 1, I or L
 MANIFEST = os.path.join(ROOT, "manifest.webmanifest")
-
-
-def code_hash(code):
-    """SHA-256 of the code as /app/ normalises what she types: capitals, letters and digits only."""
-    return hashlib.sha256(re.sub(r"[^A-Z0-9]", "", code.upper()).encode()).hexdigest()
 
 
 def flag_keys(h):
@@ -268,10 +263,6 @@ def block(m, h):
     extra = f'\n      <p style="margin-top:10px;">{sh["extra"]}</p>' if sh.get("extra") else ""
     community = f'\n    <section class="ph-sec">{card(h["community"])}</section>' if h.get("community") else ""
     nxt = next_cards(h)
-    code = (f'\n    <section class="ph-sec ph-code" style="text-align:center;padding-top:14px">'
-            f'<p class="muted" style="margin:0">Your program code: <b>{h["code"]}</b></p>'
-            f'<p class="muted" style="margin:6px auto 0;max-width:54ch;font-size:.9rem">Use it to add this program to the Girlies app on another phone, '
-            f'or if you added the app before you bought.</p></section>')
     return f"""{START}
 <header class="ph-head">
   <div class="wrap"><a class="brand" href="/"><span class="dot"></span> Wholesome Girlies</a>
@@ -287,7 +278,7 @@ def block(m, h):
       </div>
       <img class="ph-hero-img" src="/assets/img/cast/guides/{g[1]}.webp?v={ASSET_VERSION}" width="{g[2]}" height="{g[3]}" alt="Illustration of {g[0]}">
     </div>
-    <p class="muted ph-keep ph-site">Add Girlies to your home screen or bookmark this page so you can come back. The link is also in your email.</p>
+    <p class="muted ph-keep ph-site">Add Girlies to your home screen so you can come back in one tap. On a new phone, sign in with the email you paid with.</p>
   </div></section>
   <div class="wrap narrow">
     <section class="ph-sec" style="padding-top:12px">
@@ -295,7 +286,7 @@ def block(m, h):
     </section>
   </div>
   <section class="sales-hero ph-appslot ph-site"><div class="wrap narrow"></div></section>
-  <div class="wrap narrow">{code}{community}{play_section(m, h)}
+  <div class="wrap narrow">{community}{play_section(m, h)}
     <section class="ph-sec">
       <h2>Your tools</h2>
       {tools(m, h)}
@@ -334,7 +325,6 @@ def app_data(m):
                          **({"reader": h["reader"]} if h.get("reader") else {}),
                          "name": PROGRAMS[h["program"]][0], "label": PROGRAMS[h["program"]][1], "flags": flag_keys(h)}
                   for slug, h in m["homes"].items()},
-        "codes": {code_hash(h["code"]): slug for slug, h in m["homes"].items()},
     }
     return f"{APP_START}\nvar APP_DATA = {json.dumps(data, ensure_ascii=False, separators=(',', ':'))};\n{APP_END}"
 
@@ -357,12 +347,11 @@ HOMES_JSON = "assets/data/program-flags.json"
 
 def expected_homes_json(m):
     """assets/data/program-flags.json: what /signin needs to put a program on her phone the way its home does: each home's
-    name, label and flag keys, and the hashes of the shared program codes (the same as APP_DATA in app/index.html)."""
+    name, label and flag keys (the same as APP_DATA in app/index.html)."""
     data = {
         "_about": "Written by scripts/build-program-homes.py from program-homes.json. Do not edit.",
         "homes": {slug: {"name": PROGRAMS[h["program"]][0], "label": PROGRAMS[h["program"]][1], "program": h["program"],
                          "flags": flag_keys(h)} for slug, h in m["homes"].items()},
-        "codes": {code_hash(h["code"]): slug for slug, h in m["homes"].items()},
     }
     full = os.path.join(ROOT, HOMES_JSON)
     old = open(full, encoding="utf-8").read() if os.path.exists(full) else None
@@ -391,11 +380,11 @@ def with_assets(src, slug):
     src = src.replace('<link rel="manifest" href="/manifest.webmanifest">', f'<link rel="manifest" href="/manifests/{slug}.webmanifest">')
     src = re.sub(r'\s*<link rel="stylesheet" href="/assets/css/wg-program-home\.css[^"]*">', "", src)
     src = re.sub(r'\s*<script defer src="/assets/js/wg-program-home\.js[^"]*"></script>', "", src)
-    src = re.sub(r'\s*<script defer src="/assets/js/wg-order\.js[^"]*"></script>', "", src)
+    src = re.sub(r'\s*<script defer src="/assets/js/wg-(order|access|member-step)\.js[^"]*"></script>', "", src)
     src, n = re.subn(r'(<link rel="stylesheet" href="/assets/css/styles\.css[^"]*">)', lambda x: x.group(1) + "\n" + CSS_TAG, src, count=1)
     if not n:
         raise SystemExit("no styles.css link to hang the program home CSS on")
-    tags = JS_TAG + "\n" + ORDER_TAG
+    tags = JS_TAG + "\n" + ACCESS_TAG + "\n" + STEP_TAG + "\n" + ORDER_TAG
     return src.replace("</body>", tags + "\n</body>", 1)
 
 

@@ -20,7 +20,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OFFERS = os.path.expanduser("~/Documents/James Obsidian Vault/Areas/Work/Wholesome Girlies/Offers")
 SITE = "https://wholesomegirlies.xyz"
-READER_VERSION = "20261012c"
+READER_VERSION = "20261106a"
 COVERS = "/assets/img/products/{}-cover.webp?v=20261009c"
 # One manuscript per program. The diaspora home reads the same manuscript; its reader only links back to the diaspora home.
 PROGRAMS = {
@@ -302,6 +302,7 @@ def page(slug, cfg):
 
 <script defer src="/assets/js/wg-share.js?v=20261007a"></script>
 <script defer src="/assets/js/wg-reader.js?v={READER_VERSION}"></script>
+<script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>
 {tail}
 </html>
 """
