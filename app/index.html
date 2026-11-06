@@ -118,6 +118,9 @@ main [hidden]{display:none!important} /* .card and .app-install set display, whi
 .app-row .arrow{white-space:nowrap;font-weight:800;font-size:.9rem;color:var(--olive,#6E7A3F)}
 .app-block{margin-top:30px}
 .app-block:first-child{margin-top:0}
+#appToday > .card + .card,#appToday > .card + .app-block{margin-top:30px}
+#appFirst:not([hidden]){margin-top:30px}
+#appFirst .f1k-app{margin:0}
 .app-games .card{padding:18px 20px}
 .app-games .card .tag{margin-bottom:8px}
 .app-btns{display:flex;gap:10px;margin:14px 0 0}
@@ -658,12 +661,12 @@ document.addEventListener('DOMContentLoaded', function(){
 <script defer src="/assets/js/wg-random-game.js?v=20261012a"></script>
 <script defer src="/assets/js/wg-access.js?v=20261107d"></script>
 <script defer src="/assets/js/wg-account.js?v=20261106b"></script>
-<script defer src="/assets/js/wg-first1000.js?v=20261107d"></script>
+<script defer src="/assets/js/wg-first1000.js?v=20261108a"></script>
 <script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
 <script defer src="/assets/js/wg-app.js?v=20261107d"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
-<script defer src="/assets/js/wg-streak.js?v=20261107d"></script>
-<script defer src="/assets/js/wg-capture.js?v=20261107d"></script>
+<script defer src="/assets/js/wg-streak.js?v=20261108a"></script>
+<script defer src="/assets/js/wg-capture.js?v=20261108a"></script>
 </body>
 </html>

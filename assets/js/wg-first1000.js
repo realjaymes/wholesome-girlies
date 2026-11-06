@@ -1,8 +1,9 @@
 /* Wholesome Girlies: The First 1,000. Two jobs, one file, each only on its own page. The landing page and its claim form
  * are wg-first1000-form.js.
  *   /first-1000/welcome  the thank-you page: her end date, her program and the two steps she can finish now.
- *   /app/                #appFirst: the "Your First 1,000 steps" card for a member, or a one-line offer for a visitor
- *                        who holds no program, while places are left.
+ *   /app/                #appFirst: the "Your First 1,000 steps" card for a member, or a short offer for a visitor
+ *                        who holds no program, while places are left. The offer waits until her status is known (her account
+ *                        has loaded, or her program flags are read) and is never shown to a member or a buyer.
  * Everything is written with textContent or .value. Her stage and steps go to the payment server and never to the dataLayer:
  * events carry no stage, date or entry.
  */
@@ -21,6 +22,7 @@
     ['streak_3', '3 days in a row', 1], ['streak_7', '7 days in a row', 1], ['streak_30', '30 days in a row', 2], ['feedback_d7', 'Tell us what you think on day 7', 2]
   ];
   function $(id) { return d.getElementById(id); }
+  function fmtN(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
   function el(tag, cls, text) { var e = d.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function fmtDate(v) {
     var t = new Date(v); if (isNaN(t)) return '';
@@ -63,9 +65,24 @@
   }
 
   // ── app home ──
+  // On localhost ?f1kleft=N pretends N places are left (a check only, never on the live site).
+  function pretendLeft(s) {
+    var q = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(location.search) : null;
+    return q ? { ok: true, taken: 1000 - +q[1], left: +q[1], open: +q[1] > 0 } : s;
+  }
+  var seq = 0;
+  // Any program flag on this phone (the bundle writes all four motherhood keys), or any program in her account.
+  function holdsProgram() {
+    try { for (var i = 0; i < localStorage.length; i++) { if (/^wg_.*_home$/.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i))) return true; } } catch (e) {}
+    var a = WGAccess.account();
+    return !!(a && (a.member || (a.programs && a.programs.length)));
+  }
   function appCard() {
     var host = $('appFirst'); if (!host) return;
-    host.textContent = '';
+    var run = ++seq;
+    host.textContent = ''; host.hidden = true;
+    // Her status is unknown while she is signed in and her account has not loaded: show nothing until it does (wg:account runs this again).
+    if (WGAccess.signedIn() && !WGAccess.account()) return;
     var m = WGAccess.member();
     if (m) {
       var card = el('section', 'card f1k-app'); card.setAttribute('aria-label', 'Your First 1,000 steps');
@@ -94,15 +111,18 @@
       }
       host.appendChild(card); host.hidden = false; return;
     }
-    // A visitor who holds no program sees the offer while places are left.
-    var bought = false;
-    try { for (var i = 0; i < localStorage.length; i++) { if (/^wg_.*_home$/.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i))) bought = true; } } catch (e) {}
-    if (bought || WGAccess.signedIn()) return;
+    // A visitor who holds no program sees the offer while places are left. A buyer, a member, and a woman who bought on another
+    // phone (her signed-in account lists the program) never do. A signed-out visitor on a new phone cannot be told apart, so the
+    // card carries a sign-in link, and the claim route refuses an email that already owns a program and sends her to sign in.
+    if (holdsProgram()) return;
     WGAccess.first1000.status().then(function (s) {
+      s = pretendLeft(s);
+      if (run !== seq || holdsProgram() || (WGAccess.signedIn() && !WGAccess.account())) return;
       if (!s || !s.open || s.left <= 0) return;
       var card = el('section', 'card f1k-app'); card.appendChild(el('h2', '', 'Get a program free'));
-      card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + s.left + ' places are left.'));
+      card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + fmtN(s.left) + (s.left === 1 ? ' place is' : ' places are') + ' left.'));
       var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first-1000'; card.appendChild(a);
+      var si = el('p', 'muted'); si.appendChild(d.createTextNode('Already bought? ')); var sl = el('a', '', 'Sign in'); sl.href = '/signin/'; si.appendChild(sl); card.appendChild(si);
       host.appendChild(card); host.hidden = false;
     });
   }

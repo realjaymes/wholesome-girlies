@@ -6,6 +6,31 @@ const T = require('./lib-wgtest.js');
 const { ok, wait, plus, isoWeek, open, ls, reqs, text, has } = T;
 const S = (o) => ({ wg_streak_v1: Object.assign({ v: 1, count: 0, best: 0, last_day: '', rest_used_week: null, milestones: [] }, o) });
 const DATE_LIKE = /\d{4}-\d{2}-\d{2}/;
+// ── who she is: the flags, the cached account and the server's answers for each group ──
+const HOMEKEY = { relationships: 'wg_relationships_home', fertility: 'wg_fertility_home', pregnancy: 'wg_pregnancy_home', postpartum: 'wg_pp_home', parenting: 'wg_parenting_home' };
+const STAGE_OF = { 'wife-material-blueprint': 'relationships', 'trying-to-conceive-blueprint': 'fertility', 'first-pregnancy-plan': 'pregnancy', 'postpartum-reset': 'postpartum', 'first-baby-playbook': 'parenting' };
+const FL = (slug) => JSON.stringify({ u: '/programs/' + slug + '/thank-you', l: 'Home' });
+const flagsFor = (slug) => { // the program flags her phone holds
+  const b = slug.replace(/-diaspora$/, ''), o = {};
+  if (b === 'complete-motherhood-journey') ['fertility', 'pregnancy', 'postpartum', 'parenting'].forEach((st) => { o[HOMEKEY[st]] = FL(slug); });
+  else o[HOMEKEY[STAGE_OF[b]]] = FL(slug);
+  return o;
+};
+const homeUrl = (slug) => 'https://wholesomegirlies.xyz/programs/' + slug + '/thank-you';
+// A buyer (flags only, signed out): a phone that bought on the program's thank-you page.
+const owns = (...slugs) => Object.assign({}, ...slugs.map(flagsFor));
+// A signed-in phone: session, cached account and the server answering with the same account. programs: [{slug, ends?}].
+function signed(programs, member) {
+  const account = { email: 'ada@example.com', name: '', programs: programs.map((x) => ({ slug: x.slug, home: homeUrl(x.slug), ends: x.ends })), member: member || undefined };
+  const seed = { wg_session_v1: JSON.stringify({ token: 'tok123' }), wg_account_v1: { v: 1, at: Date.now(), account, saved: [] } };
+  programs.forEach((x) => Object.assign(seed, flagsFor(x.slug)));
+  return { seed, route: { '/account': { ok: true, account, state: {} }, '/first1000/status': { ok: true, taken: 8, left: 992, open: true } } };
+}
+const memberOf = (stage) => ({ stage, ends: plus(200) + 'T00:00:00Z', steps: {}, invite: 'ABC' });
+const UI = (o) => ({ wg_streak_ui_v1: Object.assign({ v: 1, rule: plus(-3), first: plus(-3), days: [] }, o) });
+const READ = (slug, n, ago) => ({ ['wg_read_' + slug]: { done: {}, n, at: Date.now() - (ago || 0) } });
+const totalOf = async (slug) => +(/data-total="(\d+)"/.exec(await (await fetch(T.B + '/programs/' + slug + '/read')).text())[1]);
+const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true } };
 
 (async () => {
   try {
@@ -165,6 +190,239 @@ const DATE_LIKE = /\d{4}-\d{2}-\d{2}/;
   await t.close();
 
 
+  // ═══ Streak rules by group ═══════════════════════════════════════════════
+  const APP = '/app/?preview=installed';
+  const home = async (seed, route, wt) => { const x = await open(seed, APP, { route: route || OPEN, wait: wt || 1800 }); return x; };
+  // The milestone sheet at day 7, on a tool page. The toast is marked as shown, so the sheet comes at once.
+  const sheetAt7 = async (seed, route) => {
+    const x = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), UI({ toast: plus(0) }), seed), '/pregnancy/tools/hospital-bag-checklist', { route: route || OPEN });
+    await x.page.evaluate(() => WGStreak.record('x')); await wait(2600);
+    const tx = await text(x.page, '.wgs-sheet'); const links = await x.page.$$eval('.wgs-sheet a', (a) => a.map((e) => e.getAttribute('href')));
+    await x.close(); return { tx, links };
+  };
+
+  // 1. free: the card, a tool or a game; no lesson line
+  t = await home({});
+  let rule = await text(t.page, '#appToday .wgs-rule');
+  ok('free: the rule card lists the card, a tool and a game', /Read today’s card for your stage/.test(rule) && /Use a tool/.test(rule) && /Play a game/.test(rule), rule);
+  ok('free: no lesson line', !/lesson/i.test(rule) && !(await has(t.page, '#appToday [data-wgs="lesson"]')));
+  await t.close();
+  let r7 = await sheetAt7({}, OPEN);
+  ok('free: day 7 points to a First 1,000 place while places are left', /get a program free as one of the first 1,000 women\. 992 places are left\./.test(r7.tx) && r7.links.some((h) => /^\/first-1000/.test(h)), r7.tx);
+  ok('free: the badge ladder stays', /3 days/.test(r7.tx) && /14 days/.test(r7.tx) && /30 days/.test(r7.tx));
+  ok('free: no lesson progress and no member line', !/lessons/.test(r7.tx) && !/First 1,000 member/.test(r7.tx));
+  r7 = await sheetAt7(UI({ toast: plus(0), stage: 'pregnancy' }), { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false } });
+  ok('free: with the places gone, day 7 points to her stage’s program', /The program for your stage goes further\./.test(r7.tx) && r7.links.indexOf('/programs/first-pregnancy-plan') > -1 && !/first-1000/.test(r7.links.join()), r7.tx + r7.links.join());
+  r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 29, best: 29, last_day: plus(-1), rest_used_week: null, milestones: [3, 7, 14] } }, OPEN);
+  ok('free: day 30 points to a place too', /30 days in a row/.test(r7.tx) && /first 1,000 women/.test(r7.tx), r7.tx);
+  r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 13, best: 13, last_day: plus(-1), rest_used_week: null, milestones: [3, 7] } }, OPEN);
+  ok('free: day 14 shows the badge and no nudge', /14 days in a row/.test(r7.tx) && !/first 1,000 women/.test(r7.tx), r7.tx);
+
+  // 2. First 1,000 member: lessons count and link into her program; months at 3, 7 and 30
+  const mem = signed([{ slug: 'first-pregnancy-plan', ends: plus(200) + 'T00:00:00Z' }], memberOf('pregnancy'));
+  t = await home(mem.seed, mem.route);
+  rule = await text(t.page, '#appToday .wgs-rule');
+  ok('member: the rule card adds "Open a lesson"', /Open a lesson/.test(rule), rule);
+  ok('member: "Open a lesson" links straight into her program', (await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href')).catch(() => '')) === '/programs/first-pregnancy-plan/read');
+  ok('member: she is a member, not a buyer', await t.page.evaluate(() => WGStreak.who().kind) === 'member');
+  await t.close();
+  const memSteps = { '/account': mem.route['/account'], '/account/state': { ok: true, state: { streak: { count: 6, best: 6, last_day: plus(-1), rest_used_week: null } } }, '/member/step': { ok: true, ends: plus(230) + 'T00:00:00Z', steps: {} } };
+  t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), UI({ toast: plus(0) }), mem.seed), '/pregnancy/tools/hospital-bag-checklist', { route: memSteps });
+  await t.page.evaluate(() => WGStreak.record('x')); await wait(3000);
+  const msh = await text(t.page, '.wgs-sheet');
+  ok('member: the milestone shows the added month and her new end date', /First 1,000 member: we added 1 month\. Your access now runs to/.test(msh), msh);
+  ok('member: no lesson progress line, no free-place nudge', !/lessons/.test(msh) && !/first 1,000 women/.test(msh));
+  ok('member: months are posted to /member/step', (await reqs(t.page)).filter((r) => r.path === '/member/step').map((r) => JSON.parse(r.body).step).indexOf('streak_3') > -1);
+  await t.close();
+  // a woman who is signed in and is not a member never posts a streak step
+  const plain = signed([], null);
+  t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), plain.seed), '/pregnancy/tools/hospital-bag-checklist', { route: Object.assign({}, plain.route, { '/account/state': { ok: true, state: { streak: { count: 6, best: 6, last_day: plus(-1), rest_used_week: null } } } }) });
+  await t.page.evaluate(() => WGStreak.record('x')); await wait(1200);
+  ok('signed in without a membership: no /member/step request', (await reqs(t.page)).filter((r) => r.path === '/member/step').length === 0);
+  ok('a plain account is free', await t.page.evaluate(() => WGStreak.who().kind) === 'free');
+  await t.close();
+
+  // 3. one paid program: lessons count, progress in the milestone, no offer
+  const pregTotal = await totalOf('first-pregnancy-plan'), wmTotal = await totalOf('wife-material-blueprint');
+  ok('the lesson totals come from the reader pages', pregTotal > 10 && wmTotal > 10, pregTotal + ' ' + wmTotal);
+  t = await home(owns('first-pregnancy-plan'));
+  rule = await text(t.page, '#appToday .wgs-rule');
+  ok('buyer: the rule card has "Open a lesson", linked to her program', /Open a lesson/.test(rule) && (await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href'))) === '/programs/first-pregnancy-plan/read');
+  ok('buyer: never offered the free program', !(await has(t.page, '#appFirst .card')) && (await t.page.evaluate(() => WGStreak.who().kind)) === 'buyer');
+  await t.close();
+  r7 = await sheetAt7(Object.assign(owns('first-pregnancy-plan'), READ('first-pregnancy-plan', 12)), OPEN);
+  ok('buyer: the milestone shows lessons, not months', r7.tx.indexOf('12 of ' + pregTotal + ' lessons') > -1 && !/months?\./.test(r7.tx) && !/first 1,000 women/.test(r7.tx) && !/^Pregnancy:/m.test(r7.tx), r7.tx);
+  t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), UI({ toast: plus(0) }), owns('wife-material-blueprint'), READ('wife-material-blueprint', 3)), '/relationships/tools/is-he-husband-material', { route: OPEN });
+  await t.page.evaluate(() => WGStreak.record('x')); await wait(2600);
+  ok('buyer of Wife Material: progress in her own program', (await text(t.page, '.wgs-sheet')).indexOf('3 of ' + wmTotal + ' lessons') > -1);
+  await t.close();
+  // a lesson ticked in the reader keeps the streak
+  t = await open(Object.assign({}, owns('wife-material-blueprint')), '/programs/wife-material-blueprint/read');
+  await t.page.$eval('.rd-done', (e) => e.click()); await wait(500);
+  s = await ls(t.page, 'wg_streak_v1');
+  ok('a lesson ticked in the reader counts for a buyer', s && s.count === 1);
+  await t.close();
+
+  // 4. the bundle: the stage follows her own dates
+  const BUNDLE = owns('complete-motherhood-journey');
+  const stageCases = [
+    ['a due date means pregnancy', { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) } }, /week 22/i, 'first-pregnancy-plan'],
+    ['a delivery date in the last 12 weeks means postpartum', { wg_stage_postpartum_v1: { v: 1, delivery: plus(-15), type: 'vaginal' } }, /week 3/i, 'postpartum-reset'],
+    ['a baby’s birth date means parenting', { wg_vax_dob: plus(-130) }, /month 5/i, 'first-baby-playbook'],
+    ['an old delivery date and a baby’s birth date mean parenting', { wg_stage_postpartum_v1: { v: 1, delivery: plus(-200), type: 'vaginal' }, wg_vax_dob: plus(-200) }, /month 7/i, 'first-baby-playbook'],
+    ['a delivery date beats a due date that has not passed (an early baby)', { wg_stage_pregnancy_v1: { v: 1, due: plus(10) }, wg_stage_check_v1: { v: 1, due: plus(10) }, wg_stage_postpartum_v1: { v: 1, delivery: plus(-4), type: 'vaginal' } }, /week 1\b/i, 'postpartum-reset'],
+    ['no dates: the stage with the most activity', { wg_hospitalbag_v1: { 0: true }, wg_safe_foods_checklist_v1: { 0: true } }, /./, 'first-pregnancy-plan'],
+    ['no dates and no activity: fertility', {}, /./, 'trying-to-conceive-blueprint'],
+  ];
+  for (const [what, seed, rx, prog] of stageCases) {
+    t = await home(Object.assign({}, BUNDLE, UI({}), seed));
+    const lab = await text(t.page, '#appToday .eyebrow'), tb = await text(t.page, '#appToday');
+    const stage = await t.page.evaluate(() => WGStreak.stageOf());
+    ok('bundle: ' + what + ' (' + stage + ')', rx.test(lab + ' ' + tb) && STAGE_OF[prog] === stage, lab + ' | ' + stage);
+    await t.close();
+    t = await home(Object.assign({}, BUNDLE, seed));
+    const lh = await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href')).catch(() => 'none');
+    ok('bundle: "Open a lesson" opens ' + prog, lh.indexOf('/programs/' + prog + '/read') === 0, lh);
+    await t.close();
+  }
+  t = await home(Object.assign({}, owns('complete-motherhood-journey-diaspora'), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) } }));
+  ok('diaspora bundle: the lesson opens the diaspora stage program', (await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href')).catch(() => '')).indexOf('/programs/first-pregnancy-plan-diaspora/read') === 0);
+  await t.close();
+  const ppTotal = await totalOf('postpartum-reset'), pbTotal = await totalOf('first-baby-playbook'), ttcTotal = await totalOf('trying-to-conceive-blueprint');
+  for (const [what, seed, line] of [
+    ['pregnancy', { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) }, ...READ('first-pregnancy-plan', 12) }, 'Pregnancy: 12 of ' + pregTotal + ' lessons'],
+    ['postpartum', { wg_stage_postpartum_v1: { v: 1, delivery: plus(-15), type: 'vaginal' }, ...READ('postpartum-reset', 4) }, 'Postpartum: 4 of ' + ppTotal + ' lessons'],
+    ['parenting', { wg_vax_dob: plus(-130), ...READ('first-baby-playbook', 7) }, 'Parenting: 7 of ' + pbTotal + ' lessons'],
+    ['fertility (no dates)', { ...READ('trying-to-conceive-blueprint', 2) }, 'Fertility: 2 of ' + ttcTotal + ' lessons'],
+  ]) {
+    r7 = await sheetAt7(Object.assign({}, BUNDLE, READ('first-pregnancy-plan', 30, 1e6), seed), OPEN);
+    ok('bundle milestone, ' + what + ': "' + line + '", one stage and not a total', r7.tx.indexOf(line) > -1 && (r7.tx.match(/lessons/g) || []).length === 1, r7.tx);
+  }
+  t = await home(BUNDLE);
+  ok('bundle: never offered the bundle, another program or the free place', !(await has(t.page, '#appFirst .card')) && !(await has(t.page, '#appPick .app-pick')) && await t.page.evaluate(() => document.getElementById('appPick').hidden));
+  await t.close();
+
+  // 5. Wife Material plus motherhood
+  const WM = owns('wife-material-blueprint', 'first-pregnancy-plan');
+  t = await home(Object.assign({}, WM, UI({})));
+  let eb = await text(t.page, '#appToday .eyebrow'), sw = await text(t.page, '#appToday [data-wgs="switch"]');
+  ok('Wife Material plus motherhood, no stage date: relationships, with a switch to motherhood', /Today · day/i.test(eb) && sw === 'Switch to motherhood', eb + '|' + sw);
+  await t.page.$eval('#appToday [data-wgs="switch"]', (e) => e.click()); await wait(900);
+  ok('the switch opens the motherhood card and saves her pick on this phone', (await ls(t.page, 'wg_streak_ui_v1')).pref === 'motherhood' && /Which|Add your due date|week/i.test(await text(t.page, '#appToday')) && await text(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
+  await t.page.reload({ waitUntil: 'load' }); await wait(1600);
+  ok('her pick is still there after a reload', await text(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
+  await t.close();
+  t = await home(Object.assign({}, WM, UI({}), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) } }));
+  eb = await text(t.page, '#appToday .eyebrow'); sw = await text(t.page, '#appToday [data-wgs="switch"]');
+  ok('Wife Material plus motherhood with a stage date: the motherhood card, with a switch to relationships', /week 22/i.test(eb) && sw === 'Switch to relationships', eb + '|' + sw);
+  await t.page.$eval('#appToday [data-wgs="switch"]', (e) => e.click()); await wait(900);
+  ok('switching to relationships shows the relationships card', /Today · day/i.test(await text(t.page, '#appToday .eyebrow')) && (await ls(t.page, 'wg_streak_ui_v1')).pref === 'relationships');
+  ok('she is offered nothing she already owns', !(await has(t.page, '#appFirst .card')) && await t.page.evaluate(() => document.getElementById('appPick').hidden));
+  await t.close();
+  t = await home(Object.assign({}, owns('wife-material-blueprint'), UI({})));
+  ok('Wife Material alone: no switch link', !(await has(t.page, '#appToday [data-wgs="switch"]')));
+  await t.close();
+  t = await home(Object.assign({}, owns('first-pregnancy-plan'), UI({})));
+  ok('one motherhood program: no switch link', !(await has(t.page, '#appToday [data-wgs="switch"]')));
+  await t.close();
+  t = await home(Object.assign({}, owns('wife-material-blueprint', 'complete-motherhood-journey'), UI({}), { wg_vax_dob: plus(-130) }));
+  eb = await text(t.page, '#appToday .eyebrow');
+  ok('Wife Material plus the bundle: the bundle follows the stage date', /month 5/i.test(eb) && await text(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships', eb);
+  await t.close();
+  // the milestone follows the program she read most recently
+  for (const [what, a, b, line] of [
+    ['motherhood most recent', 90000, 1000, 'Pregnancy: 12 of ' + pregTotal + ' lessons'],
+    ['relationships most recent', 1000, 90000, 'Relationships: 5 of ' + wmTotal + ' lessons'],
+  ]) {
+    r7 = await sheetAt7(Object.assign({}, WM, READ('wife-material-blueprint', 5, a), READ('first-pregnancy-plan', 12, b)), OPEN);
+    ok('Wife Material plus motherhood milestone, ' + what, r7.tx.indexOf(line) > -1 && (r7.tx.match(/lessons/g) || []).length === 1, r7.tx);
+  }
+  // a lesson in either program keeps the streak
+  for (const prog of ['wife-material-blueprint', 'first-pregnancy-plan']) {
+    t = await open(Object.assign({}, WM), '/programs/' + prog + '/read');
+    await t.page.$eval('.rd-done', (e) => e.click()); await wait(500);
+    ok('a lesson in ' + prog + ' keeps the streak', (await ls(t.page, 'wg_streak_v1') || {}).count === 1);
+    await t.close();
+  }
+
+  // 6. a First 1,000 member who then buys
+  const both = signed([{ slug: 'first-pregnancy-plan', ends: plus(200) + 'T00:00:00Z' }, { slug: 'first-baby-playbook' }], memberOf('pregnancy'));
+  const bothSteps = Object.assign({}, both.route, { '/account/state': { ok: true, state: { streak: { count: 6, best: 6, last_day: plus(-1), rest_used_week: null } } }, '/member/step': { ok: true, ends: plus(230) + 'T00:00:00Z', steps: {} } });
+  t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), UI({ toast: plus(0) }), both.seed, READ('first-baby-playbook', 9)), '/pregnancy/tools/hospital-bag-checklist', { route: bothSteps });
+  ok('member who bought: she is in both groups', await t.page.evaluate(() => WGStreak.who().kind) === 'both');
+  await t.page.evaluate(() => WGStreak.record('x')); await wait(3000);
+  const bs = await text(t.page, '.wgs-sheet');
+  ok('member who bought: the paid program’s progress and the member’s months both show', bs.indexOf('Parenting: 9 of ' + pbTotal + ' lessons') > -1 || bs.indexOf('9 of ' + pbTotal + ' lessons') > -1, bs);
+  ok('member who bought: her months still count until the free program ends', /First 1,000 member: we added 1 month/.test(bs) && (await reqs(t.page)).some((r) => r.path === '/member/step'), bs);
+  await t.close();
+  t = await home(both.seed, both.route);
+  ok('member who bought: the steps card stays and the offer does not show', await has(t.page, '#appFirst .f1k-app') && !/Get a program free/.test(await text(t.page, '#appFirst')));
+  await t.close();
+
+  // ═══ The free offer reaches the right women ══════════════════════════════
+  const offer = async (seed, route, wt) => { const x = await open(seed, '/app/', { route: route || OPEN, wait: wt || 1800 }); const tx = await text(x.page, '#appFirst'); return { x, tx }; };
+  let o = await offer({});
+  ok('signed out, no program: the offer shows with a sign-in link', /Get a program free/.test(o.tx) && /Already bought\? Sign in/.test(o.tx) && (await o.x.page.$eval('#appFirst a[href="/signin/"]', (e) => e.textContent)) === 'Sign in', o.tx);
+  ok('the count line reads "992 places are left"', /first 1,000 women\. 992 places are left\./.test(o.tx), o.tx);
+  await o.x.close();
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true } });
+  ok('1,000 has its separator: "1,000 places are left"', /1,000 places are left\./.test(o.tx) && !/1000/.test(o.tx), o.tx);
+  await o.x.close();
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 999, left: 1, open: true } });
+  ok('one place left: "1 place is left"', /1 place is left\./.test(o.tx), o.tx);
+  await o.x.close();
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false } });
+  ok('no places left: no offer', o.tx === '');
+  await o.x.close();
+  // nothing renders until her status is known
+  t = await open({}, '/app/', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true } } }, wait: 900 });
+  ok('the offer waits for the server: nothing renders before it answers', (await text(t.page, '#appFirst')) === '' && await t.page.evaluate(() => document.getElementById('appFirst').hidden));
+  await t.page.waitForSelector('#appFirst .card', { timeout: 12000 }).catch(() => {});
+  ok('the offer shows once the server has answered', /Get a program free/.test(await text(t.page, '#appFirst')));
+  await t.close();
+  const unloaded = signed([], null);
+  o = await offer({ wg_session_v1: unloaded.seed.wg_session_v1 }, { '/account': { ok: false }, '/first1000/status': OPEN['/first1000/status'] });
+  ok('signed in with her account not loaded: no offer', o.tx === '', o.tx);
+  await o.x.close();
+  o = await offer(unloaded.seed, unloaded.route);
+  ok('a signed-in woman with no program sees the offer', /Get a program free/.test(o.tx));
+  await o.x.close();
+  o = await offer(owns('first-pregnancy-plan'));
+  ok('a buyer on this phone never sees the offer', o.tx === '');
+  await o.x.close();
+  o = await offer(owns('complete-motherhood-journey'));
+  ok('a bundle buyer never sees the offer', o.tx === '');
+  await o.x.close();
+  const elsewhere = signed([{ slug: 'first-baby-playbook' }], null);
+  o = await offer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
+  ok('a buyer who bought on another device (her account lists it) never sees the offer', o.tx === '', o.tx);
+  await o.x.close();
+  o = await offer(mem.seed, mem.route);
+  ok('a member sees her steps card, not the offer', /Your First 1,000 steps/.test(o.tx) && !/Get a program free/.test(o.tx), o.tx);
+  await o.x.close();
+
+  // the tool pages carry the same check
+  const toolOffer = async (seed, route, wt) => { const x = await open(seed, '/pregnancy/tools/hospital-bag-checklist', { route: route || OPEN, wait: wt || 1500 }); const tx = await text(x.page, '.program-cta'); await x.close(); return tx; };
+  let tc = await toolOffer({});
+  ok('tool page, signed out with no program: the offer, with a sign-in link and a thousands count', /free/.test(tc) && /992 places left/.test(tc) && /Already bought\? Sign in/.test(tc), tc);
+  tc = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true } });
+  ok('tool page: 1,000 places left, with the separator', /1,000 places left/.test(tc), tc);
+  tc = await toolOffer(owns('wife-material-blueprint'));
+  ok('tool page: a buyer of another program never sees the offer', !/ free|Claim my place/.test(tc), tc);
+  tc = await toolOffer(owns('complete-motherhood-journey'));
+  ok('tool page: a bundle buyer is not offered a place', !/Claim my place/.test(tc), tc);
+  tc = await toolOffer({ wg_session_v1: unloaded.seed.wg_session_v1 });
+  ok('tool page: signed in with no account on the phone yet, no offer', !/Claim my place/.test(tc), tc);
+  tc = await toolOffer(mem.seed, mem.route);
+  ok('tool page: a member is not offered a place', !/Claim my place/.test(tc), tc);
+  tc = await toolOffer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
+  ok('tool page: a buyer whose account lists a program is not offered a place', !/Claim my place/.test(tc), tc);
+  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true } } }, wait: 900 });
+  ok('tool page: no offer before the server answers', !/Claim my place/.test(await text(t.page, '.program-cta')));
+  await t.page.waitForFunction(() => /Claim my place/.test((document.querySelector('.program-cta') || {}).innerText || ''), { timeout: 12000 }).catch(() => {});
+  ok('tool page: the offer shows once the server has answered', /Claim my place/.test(await text(t.page, '.program-cta')));
+  await t.close();
+
   // the lab scenarios (James loads them with a button)
   for (const [id, rx, what] of [['streak6', /week 22[\s\S]*6 days in a row/i, 'day 6'], ['streakrest', /rest day[\s\S]*10-day streak is safe/, 'the rest day used'], ['streakended', /Your last streak was 12 days\. That is your best, and it stays\./, 'a streak ended'], ['streak1', /Start your streak/, 'day 1']]) {
     t = await open({}, '/lab/', { wait: 500 });
@@ -172,6 +430,15 @@ const DATE_LIKE = /\d{4}-\d{2}-\d{2}/;
     await wait(1500);
     const lt = await text(t.page, '#appToday');
     ok('lab scenario ' + id + ': ' + what, rx.test(lt), lt.slice(0, 160));
+    await t.close();
+  }
+  // the group scenarios in the lab
+  for (const [id, rx, what] of [['sgnew', /Open a lesson/, 'a buyer’s rule card has the lesson line'], ['sgbpp', /week 3/i, 'the bundle follows a delivery date'], ['sgbbaby', /month 5/i, 'the bundle follows a baby’s birth date'], ['sgwm', /Switch to motherhood/, 'Wife Material plus motherhood offers the switch'], ['sgwmdate', /week 22[\s\S]*Switch to relationships/i, 'a due date moves the card to motherhood'], ['sgmember', /Add your due date/i, 'a member follows her program’s stage'], ['sgfree', /Start your streak|week 22/i, 'a free woman']]) {
+    t = await open({}, '/lab/', { wait: 500 });
+    await Promise.all([t.page.waitForNavigation({ waitUntil: 'load' }), t.page.$eval('button[data-run="' + id + '"][data-t="0"]', (e) => e.click())]);
+    await wait(1800);
+    const lt = await text(t.page, '#appToday');
+    ok('lab scenario ' + id + ': ' + what, rx.test(lt), lt.slice(0, 200));
     await t.close();
   }
   // a 7-day milestone from the lab

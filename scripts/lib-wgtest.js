@@ -30,6 +30,8 @@ async function open(seed, url, o = {}) {
         const path = u.replace(/^https:\/\/[^/]+/, '');
         window.__reqs.push({ url: u, path, method: (init && init.method) || 'GET', body: (init && init.body) || '', auth: ((init && init.headers) || {}).Authorization || '' });
         const r = route && route[path] !== undefined ? route[path] : { ok: true };
+        // { __delay: ms, __body: {...} } answers late, to test what a page shows while it still does not know.
+        if (r && r.__delay) return new Promise((res) => setTimeout(() => res(new Response(JSON.stringify(r.__body), { status: 200, headers: { 'content-type': 'application/json' } })), r.__delay));
         return Promise.resolve(new Response(JSON.stringify(r), { status: 200, headers: { 'content-type': 'application/json' } }));
       }
       return real(u, init);

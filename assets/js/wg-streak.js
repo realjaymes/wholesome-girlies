@@ -9,6 +9,10 @@
  *   wg_streak_ui_v1   This phone's own notes: her first streak day, the last 14 days, the rest day used, the day the toast showed,
  *                     a milestone waiting to be shown, the stage she picked. Never sent anywhere.
  * One missed day per ISO week is covered by the rest day. Milestones are 3, 7, 14 and 30 days.
+ * Who she is decides what the streak offers: a free woman (no program) keeps it with the card, a tool or a game; a First 1,000
+ * member and a buyer also count a lesson; only a member earns months. A buyer's milestone shows her lesson progress, and a woman
+ * with two programs (the bundle, or Wife Material plus motherhood) is followed to the right one. All of it is worked out on her
+ * phone from her program flags, her cached account and her stage dates; nothing about it is sent anywhere.
  * Today's card comes from assets/data/daily-cards.json and is chosen here, on her phone, from her saved stage date. No date,
  * week or stage is sent anywhere. The only analytics event is streak_milestone with the number of days.
  * Both keys are skipped by TOOL_KEY in wg-app.js (a streak write is not a saved entry), and the backup keeps them.
@@ -67,7 +71,7 @@
   function readU() {
     var o = jr(UIK) || {};
     return { v: 1, first: parse(o.first) ? o.first : '', days: Array.isArray(o.days) ? o.days.filter(parse).slice(-14) : [], rest: parse(o.rest) ? o.rest : '',
-      toast: o.toast || '', pending: +o.pending || 0, ended: +o.ended || 0, rule: o.rule || '', stage: o.stage || '', steps: o.steps || {}, ends: o.ends || '' };
+      toast: o.toast || '', pending: +o.pending || 0, ended: +o.ended || 0, rule: o.rule || '', stage: o.stage || '', steps: o.steps || {}, ends: o.ends || '', cur: o.cur || '', pref: o.pref === 'relationships' || o.pref === 'motherhood' ? o.pref : '' };
   }
   function writeU(u) { return lset(UIK, JSON.stringify(u)); }
 
@@ -130,6 +134,7 @@
       '.wgs-dot{display:grid;place-items:center;width:34px;height:34px;margin:0 auto 4px;border-radius:50%;border:2px solid var(--ink,#33322A);background:#fff;font-size:.9rem;color:var(--ink,#33322A)}' +
       '.wgs-dot.done{background:var(--olive,#6E7A3F);color:#fff}.wgs-dot.rest{background:repeating-linear-gradient(45deg,#fff 0 4px,var(--peach,#F0C9A8) 4px 8px)}' +
       '.wgs-dot.today{box-shadow:0 0 0 3px var(--mustard,#D49A2A)}.wgs-count{font-weight:800}' +
+      '.wgs-src a,.wgs-rule li a{font-weight:800;text-decoration:underline}.wgs-more:empty{display:none}' +
       '.wgs-rule ul{margin:8px 0 10px;padding-left:20px}.wgs-pick{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.wgs-pick button{margin:0}';
     d.head.appendChild(s);
   }
@@ -159,6 +164,9 @@
       var dt = parse(u.ends.slice(0, 10)), when = dt ? dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }) : '';
       box.appendChild(mk('p', 'wgs-src', 'First 1,000 member: we added ' + (MONTHS[n] > 1 ? MONTHS[n] + ' months' : '1 month') + '.' + (when ? ' Your access now runs to ' + when + '.' : '')));
     }
+    var pl = plan(), slot = mk('div', 'wgs-more'); box.appendChild(slot);
+    if (pl.wh.paid.length) progressFor(pl).then(function (txt) { if (txt && ov.isConnected) slot.appendChild(mk('p', 'wgs-src', txt)); });
+    else if (pl.wh.kind === 'free' && (n === 7 || n === 30)) freeNudge(pl, slot, ov);
     var close = function () { ov.remove(); d.removeEventListener('keydown', esc); try { d.dispatchEvent(new CustomEvent('wg:streak-sheet-closed', { detail: { days: n } })); } catch (e) {} };
     var esc = function (e) { if (e.key === 'Escape') close(); };
     d.addEventListener('keydown', esc);
@@ -235,9 +243,9 @@
       if (changed) { writeS(l); if (onApp) renderApp(); }
       // A member earns months at 3, 7 and 30 days. The server refuses a streak step until her saved streak reached it, so the
       // steps go only after the state above is saved, one after another. Each step counts once on the server, so a repeat is harmless.
-      var chain = Promise.resolve();
+      var chain = Promise.resolve(), known = acct();
       [3, 7, 30].forEach(function (m) {
-        if (s.best < m || u.steps[m]) return;
+        if (s.best < m || u.steps[m] || (known && !known.member)) return; // an account that is not a member never asks
         chain = chain.then(function () {
           return api('/member/step', { step: 'streak_' + m }).then(function (res) {
             if (!res) return;
@@ -301,23 +309,136 @@
     var c = +o.cycle; return c >= 21 && c <= 40 ? c : 28;
   }
   var STAGE_OF = { 'wife-material-blueprint': 'relationships', 'trying-to-conceive-blueprint': 'fertility', 'first-pregnancy-plan': 'pregnancy', 'postpartum-reset': 'postpartum', 'first-baby-playbook': 'parenting' };
+  var PROG_OF = {}; Object.keys(STAGE_OF).forEach(function (k) { PROG_OF[STAGE_OF[k]] = k; });
+  var HOME_STAGE = { wg_relationships_home: 'relationships', wg_fertility_home: 'fertility', wg_pregnancy_home: 'pregnancy', wg_pp_home: 'postpartum', wg_parenting_home: 'parenting' };
+  var STAGE_WORD = { relationships: 'Relationships', fertility: 'Fertility', pregnancy: 'Pregnancy', postpartum: 'Postpartum', parenting: 'Parenting' };
   var MOTHER = ['fertility', 'pregnancy', 'postpartum', 'parenting'];
-  // Her stage: the stage of her program, else the stage with the most activity (the app home's own appActivity), else the one she picked.
-  function stageOf() {
-    var progs = A && A.programs ? A.programs() : [], bundle = false, fromProg = '';
-    progs.forEach(function (p) {
-      var slug = ((p.u || '').match(/^\/programs\/([a-z0-9-]+)\//) || [])[1] || '', base = slug.replace(/-diaspora$/, '');
-      if (base === 'complete-motherhood-journey') bundle = true; else if (!fromProg && STAGE_OF[base]) fromProg = STAGE_OF[base];
+
+  // ── who she is: free, a First 1,000 member, a buyer, or both ──
+  // Read from this phone only: her program flags (wg_<stage>_home, which the bundle writes for all four motherhood stages), her
+  // cached account (programs with an end date are the member's free program; the rest were paid for) and the member's end date.
+  function acct() { var c = jr('wg_account_v1'); return token() && c && c.v === 1 && c.account ? c.account : null; }
+  function memberActive(a) { var m = a && a.member; if (!m) return false; var e = Date.parse(m.ends); return isNaN(e) || e > Date.now(); }
+  function slugIn(url) { var m = /\/programs\/([a-z0-9-]+)\/(?:thank-you|read)/.exec(url || ''); return m ? m[1] : ''; }
+  function who() {
+    var a = acct(), u = readU(), entries = [], gift = {};
+    ((a && a.programs) || []).forEach(function (p) { if (p.ends) gift[slugIn(p.home) || p.slug] = 1; });
+    Object.keys(HOME_STAGE).forEach(function (k) {
+      var v = jr(k), slug = slugIn(v && v.u), stage = HOME_STAGE[k]; if (!slug) return;
+      var dia = /-diaspora$/.test(slug) ? '-diaspora' : '', base = slug.replace(/-diaspora$/, ''), bundle = base === 'complete-motherhood-journey';
+      if (!bundle && STAGE_OF[base] !== stage) return;
+      entries.push({ stage: stage, prog: bundle ? PROG_OF[stage] + dia : slug, bundle: bundle, member: !bundle && !!gift[slug] });
     });
-    if (fromProg && !bundle) return fromProg;
+    var member = memberActive(a) || (!!u.ends && Date.parse(u.ends) > Date.now());
+    if (member && a && a.member && a.member.stage && PROG_OF[a.member.stage] && !entries.some(function (e) { return e.member || e.stage === a.member.stage; })) {
+      entries.push({ stage: a.member.stage, prog: PROG_OF[a.member.stage], bundle: false, member: true });
+    }
+    var paid = entries.filter(function (e) { return !e.member; }), mem = entries.filter(function (e) { return e.member; });
+    var kind = paid.length ? (member || mem.length ? 'both' : 'buyer') : (member || mem.length ? 'member' : 'free');
+    return { kind: kind, entries: entries, paid: paid, mem: mem };
+  }
+  // The stage she is in right now, from the dates only she has. A delivery in the last 12 weeks beats a due date still ahead
+  // (a baby that came early), a due date beats a baby's birth date (a new pregnancy), and a due date up to 21 days past comes last.
+  function dateStage(stages) {
+    var t = now(), has = function (s) { return stages.indexOf(s) > -1; };
+    var pr = jr('wg_stage_pregnancy_v1'), due = pr && pr.v === 1 ? parse(pr.due) : null, ahead = due ? between(due, t) : null;
+    var pp = jr('wg_stage_postpartum_v1'), del = pp && pp.v === 1 ? parse(pp.delivery) : null, since = del ? between(t, del) : -1;
+    var dob = parse(ls('wg_vax_dob')), age = dob ? between(t, dob) : -1;
+    if (has('postpartum') && del && since >= 0 && since <= 83) return 'postpartum';
+    if (has('pregnancy') && due && ahead >= 0 && ahead <= 300) return 'pregnancy';
+    if (has('parenting') && dob && age >= 0 && age <= 2200) return 'parenting';
+    if (has('pregnancy') && due && ahead < 0 && ahead >= -21) return 'pregnancy';
+    return '';
+  }
+  // The stage with the most activity (the app home's own appActivity). Off the app home the last answer it gave is used.
+  function activityOrder() {
     try {
       if (typeof w.appActivity === 'function' && w.APP_TOOLS && w.APP_DATA && A) {
         var keys = A.savedKeys(), saved = w.APP_TOOLS.filter(function (t) { return w.appHas(keys, t[0]) && w.APP_DATA.tools[t[1]]; }).map(function (t) { return t[1]; });
-        var order = w.appActivity(saved).order.filter(function (s) { return !bundle || MOTHER.indexOf(s) > -1; });
-        if (order.length) return order[0];
+        return { order: w.appActivity(saved).order, live: true };
       }
     } catch (e) {}
-    return readU().stage || '';
+    var c = readU().cur; return { order: c ? [c] : [], live: false };
+  }
+  function motherStage(stages) {
+    var ds = dateStage(stages); if (ds) return ds;
+    var order = activityOrder().order.filter(function (s) { return stages.indexOf(s) > -1; });
+    if (order.length) return order[0];
+    return stages.indexOf('fertility') > -1 ? 'fertility' : stages[0];
+  }
+  // The plan for her card: who she is, which stage the card follows, and whether she can switch between the two kinds of program.
+  function plan() {
+    var wh = who(), u = readU(), stages = [];
+    wh.entries.forEach(function (e) { if (stages.indexOf(e.stage) < 0) stages.push(e.stage); });
+    if (!stages.length) { // free: the stage with the most activity, else the one she picked
+      var o = activityOrder().order;
+      return { wh: wh, stage: o.length ? o[0] : u.stage || '', canSwitch: false, mode: '' };
+    }
+    var mom = stages.filter(function (s) { return MOTHER.indexOf(s) > -1; }), rel = stages.indexOf('relationships') > -1;
+    if (!mom.length) return { wh: wh, stage: 'relationships', canSwitch: false, mode: 'relationships' };
+    if (!rel) return { wh: wh, stage: motherStage(mom), canSwitch: false, mode: 'motherhood' };
+    var mode = u.pref || (dateStage(mom) ? 'motherhood' : 'relationships');
+    return { wh: wh, stage: mode === 'relationships' ? 'relationships' : motherStage(mom), canSwitch: true, mode: mode };
+  }
+  function stageOf() { return plan().stage; }
+  function entryFor(pl, stage) {
+    var list = pl.wh.entries, i;
+    for (i = 0; i < list.length; i++) if (list[i].stage === stage && !list[i].member) return list[i];
+    for (i = 0; i < list.length; i++) if (list[i].stage === stage) return list[i];
+    return list[0] || null;
+  }
+  function readState(prog) { var o = jr('wg_read_' + prog); return o && o.done ? o : { done: {} }; }
+  function doneCount(st) { return Math.max(+st.n || 0, Object.keys(st.done || {}).filter(function (id) { return st.done[id]; }).length); }
+  // Where "Open a lesson" goes: her program for the stage the card follows, straight to the lesson up next when she has a place.
+  function lessonHref(pl) {
+    var e = entryFor(pl, pl.stage); if (!e) return '';
+    var st = readState(e.prog);
+    return '/programs/' + e.prog + '/read' + (st.nextId && /^[a-z0-9-]+$/.test(st.nextId) ? '#' + st.nextId : '');
+  }
+  // How many lessons a program has comes from its reader page (data-total), never from a number kept here.
+  var totals = {};
+  function totalOf(prog, st) {
+    if (totals[prog]) return totals[prog];
+    var fallback = +st.total || 0;
+    totals[prog] = w.fetch ? w.fetch('/programs/' + prog + '/read').then(function (r) { return r.text(); }).then(function (h) {
+      var m = /data-total="(\d+)"/.exec(h); return m ? +m[1] : fallback;
+    }).catch(function () { return fallback; }) : Promise.resolve(fallback);
+    return totals[prog];
+  }
+  // A buyer's milestone line: how far she is through the program. With one program it reads "12 of 30 lessons". With several
+  // (the bundle, or Wife Material plus motherhood) it names the stage: "Pregnancy: 12 of 30 lessons". The bundle follows the stage
+  // her card follows; Wife Material plus motherhood follows the program she read most recently.
+  function progressFor(pl) {
+    var paid = pl.wh.paid; if (!paid.length) return Promise.resolve('');
+    var rel = paid.some(function (e) { return e.stage === 'relationships'; }), mom = paid.some(function (e) { return e.stage !== 'relationships'; }), pick = null, i;
+    var recent = function () {
+      var best = null, at = 0;
+      paid.forEach(function (e) { var x = +readState(e.prog).at || 0; if (x > at) { at = x; best = e; } });
+      return best;
+    };
+    if (rel && mom) pick = recent() || entryFor({ wh: { entries: paid } }, pl.stage);
+    else { for (i = 0; i < paid.length; i++) if (paid[i].stage === pl.stage) pick = paid[i]; pick = pick || recent() || paid[0]; }
+    var st = readState(pick.prog), n = doneCount(st), prefix = paid.length > 1 ? STAGE_WORD[pick.stage] + ': ' : '';
+    return totalOf(pick.prog, st).then(function (total) { return total ? prefix + n + ' of ' + total + ' lessons' : ''; });
+  }
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  // A free woman at 7 and 30 days: a First 1,000 place while places are left, her stage's program once they are gone.
+  function freeNudge(pl, slot, ov) {
+    if (!w.fetch) return;
+    w.fetch(PAY + '/first1000/status').then(function (r) { return r.json(); }).then(function (j) {
+      var q = /^(localhost|127\.0\.0\.1)$/.test(w.location.hostname) ? /[?&]f1kleft=(\d{1,4})/.exec(w.location.search) : null; // localhost only: ?f1kleft=N pretends N places are left
+      if (q) j = { ok: true, left: +q[1], open: +q[1] > 0 };
+      if (!j || !j.ok || !ov.isConnected) return;
+      var a = mk('a', 'btn btn-primary'), left = +j.left || 0, stage = pl.stage;
+      if (j.open && left > 0) {
+        slot.appendChild(mk('p', 'wgs-src', 'You could get a program free as one of the first 1,000 women. ' + fmt(left) + (left === 1 ? ' place is' : ' places are') + ' left.'));
+        a.href = '/first-1000' + (stage ? '?stage=' + stage : ''); a.appendChild(d.createTextNode('Claim my place →'));
+      } else {
+        slot.appendChild(mk('p', 'wgs-src', stage ? 'The program for your stage goes further.' : 'Every stage has a program that goes further.'));
+        a.href = stage && PROG_OF[stage] ? '/programs/' + PROG_OF[stage] : '/programs/'; a.appendChild(d.createTextNode((stage ? 'See the program' : 'See the programs') + ' →'));
+      }
+      slot.appendChild(a);
+    }).catch(function () {});
   }
 
   // ── the app home card (option B: today's card first, the week strip under it) ──
@@ -340,7 +461,7 @@
     if (u.ended) return 'Your last streak was ' + u.ended + ' days. ' + (u.ended >= s.best ? 'That is your best, and it stays.' : 'Your best is ' + s.best + ', and it stays.') + ' Read today’s card to start a new one.';
     return 'Read today’s card to start your streak.';
   }
-  var box = null, picked = false;
+  var box = null, picked = false, curPlan = null;
   function host() {
     if (box && box.isConnected) return box;
     var anchor = d.getElementById('appNotice') || d.getElementById('appHandoff'); if (!anchor) return null;
@@ -357,7 +478,9 @@
     b.innerHTML = ''; b.hidden = false;
     loadCards().then(function (data) {
       b.innerHTML = '';
-      var stage = stageOf(), res = data && stage ? cardFor(stage, data) : null;
+      var pl = plan(), stage = pl.stage, res = data && stage ? cardFor(stage, data) : null;
+      curPlan = pl;
+      if (pl.wh.entries.length && stage && u.cur !== stage) { var uc = readU(); uc.cur = stage; writeU(uc); }
       var card = mk('div', 'card wgs-today'); card.setAttribute('data-wgs', 'today');
       if (blocked) {
         var oc = mk('div', 'card wgs-today'); oc.setAttribute('data-wgs', 'turn-on');
@@ -377,7 +500,13 @@
         var rc = mk('div', 'card wgs-today wgs-rule'); rc.setAttribute('data-wgs', 'rule');
         rc.appendChild(mk('h3', '', 'Start your streak'));
         rc.appendChild(mk('p', 'muted', 'Open the app and do one thing a day. Any of these counts:'));
-        var ul = mk('ul'); ['Read today’s card for your stage', 'Use a tool', 'Open a lesson', 'Play a game'].forEach(function (x) { ul.appendChild(mk('li', '', x)); }); rc.appendChild(ul);
+        var ul = mk('ul'), lessons = pl.wh.entries.length ? lessonHref(pl) : '';
+        ['Read today’s card for your stage', 'Use a tool', lessons ? 'Open a lesson' : '', 'Play a game'].forEach(function (x) {
+          if (!x) return;
+          var li = mk('li');
+          if (x === 'Open a lesson') { var la = mk('a', '', x); la.href = lessons; la.setAttribute('data-wgs', 'lesson'); li.appendChild(la); } else li.textContent = x;
+          ul.appendChild(li);
+        }); rc.appendChild(ul);
         rc.appendChild(mk('p', 'muted', 'Miss one day a week and your streak is safe.'));
         b.appendChild(rc);
         if (res && res.card) { card.appendChild(todayBody(res, s, u, doneToday, false)); b.appendChild(card); }
@@ -426,6 +555,12 @@
       f.appendChild(slot);
       f.appendChild(mk('p', 'wgs-src', 'Educational, not medical advice.'));
     }
+    if (curPlan && curPlan.canSwitch) {
+      var sw = mk('p', 'wgs-src'), sa = mk('a', '', curPlan.mode === 'relationships' ? 'Switch to motherhood' : 'Switch to relationships');
+      sa.href = '#'; sa.setAttribute('data-wgs', 'switch');
+      sa.addEventListener('click', function (e) { e.preventDefault(); var uu = readU(); uu.pref = curPlan.mode === 'relationships' ? 'motherhood' : 'relationships'; writeU(uu); renderApp(); });
+      sw.appendChild(sa); f.appendChild(sw);
+    }
     if (full) {
       f.appendChild(strip(s, u));
       restLine(f, s, u);
@@ -464,7 +599,7 @@
   }
 
   w.WGStreak = {
-    record: record, settle: settle, read: readS, ui: readU, cardFor: cardFor, stageOf: stageOf, loadCards: loadCards, isoWeek: isoWeek,
+    record: record, settle: settle, read: readS, ui: readU, cardFor: cardFor, stageOf: stageOf, plan: plan, who: who, progressFor: progressFor, loadCards: loadCards, isoWeek: isoWeek,
     sheet: sheet, today: today, onRecord: function (f) { onRecord.push(f); }, token: token, render: renderApp
   };
 })(window, document);
