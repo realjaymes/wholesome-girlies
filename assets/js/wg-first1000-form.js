@@ -14,12 +14,14 @@
   var html = d.documentElement;
 
   var STAGES = [
-    { key: 'relationships', who: 'Dating or in love', prog: 'The Wife Material Blueprint', cover: 'wife-material-cover', guide: 'tolu', gw: 392, gh: 620, name: 'Tolu', topic: 'dating' },
-    { key: 'fertility', who: 'Trying for a baby', prog: 'The Trying-to-Conceive Blueprint', cover: 'trying-to-conceive-blueprint-cover', guide: 'amaka', gw: 255, gh: 569, name: 'Amaka', topic: 'trying for a baby' },
-    { key: 'pregnancy', who: 'I am pregnant', prog: 'The First Pregnancy Plan', cover: 'first-pregnancy-plan-cover', guide: 'zainab', gw: 289, gh: 563, name: 'Zainab', topic: 'pregnancy' },
-    { key: 'postpartum', who: 'I just gave birth', prog: 'The 6-Week Postpartum Reset', cover: 'postpartum-reset-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'the weeks after birth' },
-    { key: 'parenting', who: 'I am raising children', prog: 'The First Baby Playbook', cover: 'first-baby-playbook-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'raising your baby' }
+    { key: 'relationships', who: 'Dating or in love', prog: 'The Wife Material Blueprint', cover: 'wife-material-cover', guide: 'tolu', gw: 392, gh: 620, name: 'Tolu', topic: 'dating', h1: 'Get your relationship program free', lead: 'Join the Girlies community where women like you are getting support and guidance for the most difficult stages of your dating and relationship life. As one of the first 1,000 women, you get The Wife Material Blueprint free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'fertility', who: 'Trying for a baby', prog: 'The Trying-to-Conceive Blueprint', cover: 'trying-to-conceive-blueprint-cover', guide: 'amaka', gw: 255, gh: 569, name: 'Amaka', topic: 'trying for a baby', h1: 'Get your fertility program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the hard months of trying for a baby. As one of the first 1,000 women, you get The Trying-to-Conceive Blueprint free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'pregnancy', who: 'I am pregnant', prog: 'The First Pregnancy Plan', cover: 'first-pregnancy-plan-cover', guide: 'zainab', gw: 289, gh: 563, name: 'Zainab', topic: 'pregnancy', h1: 'Get your pregnancy program free', lead: 'Join the Girlies community where women like you are getting support and guidance through every week of a first pregnancy. As one of the first 1,000 women, you get The First Pregnancy Plan free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'postpartum', who: 'I just gave birth', prog: 'The 6-Week Postpartum Reset', cover: 'postpartum-reset-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'the weeks after birth', h1: 'Get your postpartum program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the first six weeks after birth. As one of the first 1,000 women, you get The 6-Week Postpartum Reset free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'parenting', who: 'I am raising children', prog: 'The First Baby Playbook', cover: 'first-baby-playbook-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'raising your baby', h1: 'Get your parenting program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the first months with a new baby. As one of the first 1,000 women, you get The First Baby Playbook free for a month. Use it, and you can earn up to 12 months.' }
   ];
+  // The hero words live here so they can be swapped in one line: DEFAULT_HERO for the page with no stage, h1 and lead on each stage.
+  var DEFAULT_HERO = { h1: 'Get the program for your stage free', lead: 'Join the Girlies community where women like you are getting support and guidance for the most difficult stages of life: dating and relationships, trying to conceive, pregnancy, postpartum, and parenting. As one of the first 1,000 women, you get a program for your stage free for a month. Use it, and you can earn up to 12 months.' };
   var BY = {}; STAGES.forEach(function (s) { BY[s.key] = s; });
   var COUNTRIES = [
     ['Nigeria', '234'], ['United Kingdom', '44'], ['United States', '1'], ['Canada', '1'], ['Ghana', '233'], ['South Africa', '27'],
@@ -45,6 +47,9 @@
     var st = BY[S.stage];
     if (st) html.setAttribute('data-stage', st.key); else html.removeAttribute('data-stage');
     html.classList.toggle('fx-has-stage', !!st);
+    var hero = st || DEFAULT_HERO, h1 = $('.fx-copy h1'), lead = $('.fx-copy .lead');
+    if (h1) h1.textContent = hero.h1;
+    if (lead) lead.textContent = hero.lead;
     var her = $('[data-her]'), fan = $('[data-fan]');
     if (her) her.hidden = !st;
     if (fan) fan.hidden = !!st;
@@ -77,6 +82,15 @@
       if (!s) return;
       var left = s.left, taken = s.taken, open = s.open && left > 0;
       var total = (taken + left) || 1000;
+      // The hero bar under the Claim button: the server's number, filled once. It stays hidden (and the old line stays) when status() gives nothing.
+      var tm = $('[data-taken-meter]');
+      if (tm && open && typeof taken === 'number') {
+        var tf = $('[data-taken-fill]', tm), fine = $('[data-fine]');
+        $('[data-taken-line]', tm).textContent = taken.toLocaleString('en-US') + ' of 1,000 places taken';
+        tm.hidden = false; if (fine) fine.hidden = true;
+        tf.style.width = '0%';
+        (w.requestAnimationFrame || setTimeout)(function () { (w.requestAnimationFrame || setTimeout)(function () { tf.style.width = Math.min(100, Math.max(taken > 0 ? 2 : 0, taken / 10)) + '%'; }); });
+      }
       $$('[data-meter]').forEach(function (m) { m.hidden = false; });
       $$('[data-f1k-bar]').forEach(function (b) { b.style.width = Math.min(100, Math.round(taken / total * 100)) + '%'; });
       $$('[data-f1k-left]').forEach(function (b) { b.textContent = open ? left.toLocaleString('en-US') : ''; });
