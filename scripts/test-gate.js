@@ -9,8 +9,8 @@ const SECRET = process.env.GATE_SECRET || 'localtest';
 const b64 = (b) => Buffer.from(b).toString('base64url');
 const now = () => Math.floor(Date.now() / 1000);
 
-function mint(slugs, { secret = SECRET, exp = now() + 86400, tamper = false } = {}) {
-  const body = b64(JSON.stringify({ v: 1, p: slugs, e: 'test', iat: now(), exp }));
+function mint(slugs, { secret = SECRET, exp = now() + 86400, tamper = false, m } = {}) {
+  const body = b64(JSON.stringify({ v: 1, p: slugs, e: 'test', iat: now(), exp, ...(m ? { m } : {}) }));
   const sig = crypto.createHmac('sha256', secret).update(body).digest('base64url');
   return tamper ? `${b64(JSON.stringify({ v: 1, p: ['first-baby-playbook'], e: 'x', iat: now(), exp: now() + 1e6 }))}.${sig}` : `${body}.${sig}`;
 }
@@ -69,6 +69,18 @@ const TY = (s) => `/programs/${s}/thank-you`;
   ok((await get(TY(FBP), bundle.cookie)).status === 200 && (await get(TY(PPR), bundle.cookie)).status === 200, 'a bundle pass opens the single motherhood programs');
   ok(locked(await get(TY('wife-material-blueprint'), bundle.cookie), 'wife-material-blueprint'), 'a bundle pass does not open Wife Material');
   ok(locked(await get(TY(FBP + '-diaspora'), bundle.cookie), FBP + '-diaspora'), 'a naira bundle pass does not open the diaspora programs');
+
+  // 5b. First 1,000 passes carry m (slug -> end seconds): the program opens until its end date, and a pass without m is unchanged.
+  const fut = now() + 3 * 86400;
+  const mem = await givePass(mint([FBP], { m: { [FBP]: fut } }));
+  ok(mem.status === 200 && (await get(TY(FBP), mem.cookie)).status === 200, 'a member pass with a future end date opens the program');
+  const ended = mint([FBP], { exp: now() + 86400, m: { [FBP]: now() - 5 } });
+  ok(locked(await get(TY(FBP), 'wg_pass=' + ended), FBP), 'a member pass whose end date has passed opens nothing');
+  const own = await givePass(mint([FBP]));
+  const both = await givePass(mint([FBP], { m: { [FBP]: now() - 5 } }), own.cookie);
+  ok((await get(TY(FBP), both.cookie)).status === 200, 'an owned program stays open when a member pass for it has ended');
+  const two = await givePass(mint([PPR], { m: { [PPR]: fut } }), mem.cookie);
+  ok((await get(TY(FBP), two.cookie)).status === 200 && (await get(TY(PPR), two.cookie)).status === 200, 'member passes merge with the cookie');
 
   // 6. Just paid: ?order= and t= serve a thank-you page. Made-up values do not.
   const order = 'ord_' + 'a1'.repeat(12), t = 'x'.repeat(43);

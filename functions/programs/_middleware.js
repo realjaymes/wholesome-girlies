@@ -3,7 +3,7 @@
 // visitor goes to the sign-in screen for that program. Sales pages (/programs/<slug>), /go/, tools, /app/ and
 // /signin/ are not under /programs/<slug>/ or never reach this file (_routes.json). Closing the program pages
 // is phase 8 of the Selar to Bachs migration; CLAUDE.md section 4 holds the rule.
-import { cookiePass, covers } from "../_lib/pass.js";
+import { cookiePass, covers, openSlugs } from "../_lib/pass.js";
 
 const NO_STORE = "private, no-store";
 
@@ -49,7 +49,8 @@ export async function onRequest({ request, env, next }) {
   let open = false;
   if (env.GATE_SECRET) {
     const pass = await cookiePass(request, env.GATE_SECRET);
-    open = !!pass && covers(await homes(env, request), pass.p, slug);
+    // openSlugs drops a First 1,000 program whose end date (m) has passed; a pass without m opens everything in p.
+    open = !!pass && covers(await homes(env, request), openSlugs(pass), slug);
   }
   if (!open && /^thank-you(\.html)?\/?$/.test(m[2])) open = await justPaid(url, env);
   if (!open) return lock(slug, /^[a-z0-9\/-]+$/.test(path.replace(/\.html$/, "")) ? path.replace(/\.html$/, "") : "");

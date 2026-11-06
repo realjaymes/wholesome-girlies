@@ -2,7 +2,7 @@
 // The cookie is what lets the program pages open (functions/programs/_middleware.js). Signing in adds programs
 // and never removes them: the new pass is merged with whatever the cookie already holds.
 // Nothing here is a secret: GATE_SECRET is a binding on the Pages project, set in the Cloudflare dashboard.
-import { COOKIE, cookiePass, readPass, signPass } from "../_lib/pass.js";
+import { COOKIE, cookiePass, mergePasses, readPass, signPass } from "../_lib/pass.js";
 
 const reply = (body, status = 200, headers = {}) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "private, no-store", ...headers } });
@@ -23,9 +23,9 @@ export async function onRequestPost({ request, env }) {
 
   const old = await cookiePass(request, env.GATE_SECRET);
   const now = Math.floor(Date.now() / 1000);
-  const exp = Math.max(fresh.exp, old ? old.exp : 0);
-  const merged = { v: 1, p: [...new Set([...(old ? old.p : []), ...fresh.p])].sort(), e: fresh.e, iat: now, exp };
-  const cookie = `${COOKIE}=${await signPass(env.GATE_SECRET, merged)}; Path=/; Max-Age=${exp - now}; HttpOnly; Secure; SameSite=Lax`;
+  const { p, m, exp } = mergePasses(old, fresh, now);
+  const merged = { v: 1, p, e: fresh.e, iat: now, exp, ...(Object.keys(m).length ? { m } : {}) };
+  const cookie = `${COOKIE}=${await signPass(env.GATE_SECRET, merged)}; Path=/; Max-Age=${Math.max(exp - now, 0)}; HttpOnly; Secure; SameSite=Lax`;
   return reply({ ok: true, programs: merged.p }, 200, { "set-cookie": cookie });
 }
 
