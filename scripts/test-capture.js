@@ -161,7 +161,7 @@ const cap = async (page) => (await page.evaluate(() => window.dataLayer.filter((
     t = await open({}, '/app/?preview=installed', { ua: IOS163, wait: 1000 });
     ok('iPhone below iOS 16.4: push is not offered', (await t.page.evaluate(() => WGCapture.pushOK())) === false);
     await t.close();
-    t = await open({}, '/app/?preview=installed', { wait: 1000 });
+    t = await open({}, '/app/?preview=installed', { wait: 1000, route: { '/assets/data/push.json': { VAPID_PUBLIC_KEY: 'REPLACE_AT_DEPLOY' } } });
     ok('iPhone on iOS 17.5 installed: push can work', (await t.page.evaluate(() => WGCapture.pushOK())) === true);
     ok('push stays off while the key is the placeholder', (await t.page.evaluate(() => { WGCapture.reminderSheet(); return new Promise((r) => setTimeout(() => r(!!document.body.innerText.match(/phone notification/)), 700)); })) === false);
     await t.page.evaluate(() => document.dispatchEvent(new CustomEvent('wg:notify-optin'))); await wait(300);

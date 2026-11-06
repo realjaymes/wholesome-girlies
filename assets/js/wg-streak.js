@@ -18,6 +18,10 @@
   'use strict';
   var A = w.WGApp || null;
   var PAY = 'https://wg-pay.realjaymes.workers.dev';
+  // On localhost only, a wrangler dev server can stand in for the payment server (localStorage.wg_pay_api = 'http://localhost:8787'), as in wg-access.js.
+  try {
+    if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) { var po = w.localStorage.getItem('wg_pay_api'); if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(po || '')) PAY = po; }
+  } catch (e) {}
   var KEY = 'wg_streak_v1', UIK = 'wg_streak_ui_v1', MILES = [3, 7, 14, 30], DAY = 864e5;
   var DATA_V = '20261106a';
   var path = w.location.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
@@ -221,6 +225,7 @@
   function sync() {
     if (!token() || syncing) return; syncing = true;
     var s = readS();
+    var u = readU();
     api('/account/state', { streak: { count: s.count, best: s.best, last_day: s.last_day, rest_used_week: s.rest_used_week } }).then(function (j) {
       syncing = false;
       var r = j && j.ok && j.state && j.state.streak; if (!r) return;
@@ -228,14 +233,18 @@
       if (+r.best > l.best) { l.best = +r.best; changed = true; }
       if (r.last_day && r.last_day > l.last_day) { l.last_day = r.last_day; l.count = +r.count || l.count; l.rest_used_week = r.rest_used_week || null; changed = true; }
       if (changed) { writeS(l); if (onApp) renderApp(); }
-    });
-    // A member earns months at 3, 7 and 30 days. Each step counts once on the server, so a repeat is harmless.
-    var u = readU();
-    [3, 7, 30].forEach(function (m) {
-      if (s.best < m || u.steps[m]) return;
-      api('/member/step', { step: 'streak_' + m }).then(function (j) {
-        if (!j) return;
-        var uu = readU(); uu.steps[m] = 1; if (j.ok && j.ends) uu.ends = j.ends; writeU(uu);
+      // A member earns months at 3, 7 and 30 days. The server refuses a streak step until her saved streak reached it, so the
+      // steps go only after the state above is saved, one after another. Each step counts once on the server, so a repeat is harmless.
+      var chain = Promise.resolve();
+      [3, 7, 30].forEach(function (m) {
+        if (s.best < m || u.steps[m]) return;
+        chain = chain.then(function () {
+          return api('/member/step', { step: 'streak_' + m }).then(function (res) {
+            if (!res) return;
+            if (!res.ok && res.error !== 'not_member' && res.error !== 'ended') return; // not_earned or a failure: ask again next time
+            var uu = readU(); uu.steps[m] = 1; if (res.ok && res.ends) uu.ends = res.ends; writeU(uu);
+          });
+        });
       });
     });
   }

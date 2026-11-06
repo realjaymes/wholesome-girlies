@@ -23,6 +23,9 @@ async function open(seed, url, o = {}) {
     const real = window.fetch.bind(window);
     window.fetch = (u, init) => {
       u = String(u);
+      // route['/assets/data/push.json'] stands in for the site's push key file (the real file holds the live public key).
+      if (/\/assets\/data\/push\.json/.test(u) && route && route['/assets/data/push.json'] !== undefined)
+        return Promise.resolve(new Response(JSON.stringify(route['/assets/data/push.json']), { status: 200, headers: { 'content-type': 'application/json' } }));
       if (/wg-pay\.realjaymes\.workers\.dev/.test(u)) {
         const path = u.replace(/^https:\/\/[^/]+/, '');
         window.__reqs.push({ url: u, path, method: (init && init.method) || 'GET', body: (init && init.body) || '', auth: ((init && init.headers) || {}).Authorization || '' });

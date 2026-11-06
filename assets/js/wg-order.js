@@ -8,8 +8,9 @@
  * failed, held or refunded order never gets it. The page's own flag script skips itself when ?order is present.
  *
  * Selar route. Selar sends her to /payment-received/?program=<slug>. Her sale reaches the server a few minutes later, so
- * this page checks every 20 seconds (WGAccess.ready, with the email she typed in our form) and opens her program by itself
- * once it is ready. "Paid with a different email?" lets her change the email. After 10 minutes it offers email sign-in.
+ * this page says an email with a sign-in link is coming and offers email sign-in at once. It does not ask the server whether
+ * she has bought, because the server has no route that reveals that. "Paid with a different email?" changes the email named
+ * on the page. After 10 minutes it says the wait is longer than usual.
  *
  * No program code is shown or saved anywhere. Sign-in is by email (wg-access.js).
  *
@@ -155,23 +156,23 @@
       return wrap;
     }
     function render() {
-      say('Payment received', ['We are setting up your program. This usually takes a few minutes. Keep this page open. Your program will open by itself.',
-        email ? 'We will also email ' + email + ' the moment it is ready, so you can close this page if you need to.' : 'We will also email you the moment it is ready, so you can close this page if you need to.'], 1, null, other());
+      say('Payment received', ['We are setting up your program. This usually takes a few minutes.',
+        (email ? 'We will email ' + email : 'We will email you') + ' the moment it is ready, with a link that signs you in. You can close this page.',
+        'Already have our email, or want to sign in now? Use the button below.'], 1, ['Sign in →', signin], other());
     }
     function ready(j) {
       clearTimeout(timer);
       if (j && j.token) { say('Your program is ready', ['It is open on this phone. ' + mailLine(email)], 3, ['Open my program →', '/programs/' + slug + '/thank-you']); setTimeout(function () { location.href = '/programs/' + slug + '/thank-you'; }, 1500); }
       else say('Your program is ready', ['Sign in with the email you paid with and your program opens. ' + mailLine(email)], 2, ['Sign in →', signin]);
     }
+    // The server has no route that says whether an email has bought (it would tell anyone who has), so this page does not ask.
+    // It tells her an email is coming and offers sign-in; after ten minutes it says so again. ?demo= still drives the lab states.
     function poll() {
       clearTimeout(timer); polls++;
       if (selarDemo) { if (selarDemo === 'wait' || polls < 2) { timer = setTimeout(poll, 20000); return; } return ready(selarDemo === 'session' ? { token: 'demo' } : { ready: true }); }
-      if (!email || !window.WGAccess) { timer = setTimeout(poll, 20000); return; }
-      WGAccess.ready(email, slug, '').then(function (j) {
-        if (j && (j.ready || j.token)) return ready(j);
-        if (Date.now() - started > 600000) { say('Still setting up', ['This is taking longer than usual. Sign in with the email you paid with and your program opens as soon as it is ready. We will also email you.'], 1, ['Sign in →', signin], other()); return; }
-        timer = setTimeout(poll, 20000);
-      }).catch(function () { timer = setTimeout(poll, 20000); });
+      timer = setTimeout(function () {
+        say('Still setting up', ['This is taking longer than usual. Sign in with the email you paid with and your program opens as soon as it is ready. We will also email you.'], 1, ['Sign in →', signin], other());
+      }, Math.max(0, 600000 - (Date.now() - started)));
     }
     render(); poll();
   }

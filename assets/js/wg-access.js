@@ -45,7 +45,12 @@
     var h = {}; if (body !== undefined) h['content-type'] = 'application/json';
     if (tok) h.authorization = 'Bearer ' + tok;
     return fetch(PAY_API + path, { method: method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) })
-      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j.status = r.status; return j; }); });
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
+        j.status = r.status;
+        // The account routes answer {ok:false, error}, the older sign-in routes {ok:false, reason}. Callers may read either.
+        if (j.ok === false) { if (j.error == null && j.reason != null) j.error = j.reason; if (j.reason == null && j.error != null) j.reason = j.error; }
+        return j;
+      }); });
   }
   function authed(method, path, body) {
     var tok = token();
@@ -117,6 +122,9 @@
   function writeName(n) { n = cleanName(n); if (n) set(NAME, JSON.stringify({ v: 1, name: n, asked: true })); return n; }
 
   // ── state that follows her to a new phone ──
+  // The server accepts only these shapes (POST /account/state): reading = {program: lessons finished (a whole number)},
+  // saved = tool keys, played = "stage.slug" keys. Anything else is refused as a whole, so each list is cleaned here.
+  var STATE_KEY = /^[a-z0-9][a-z0-9_.-]{0,59}$/;
   function localState() {
     var reading = {}, saved = [], played = [], i, k, v;
     try {
@@ -125,32 +133,40 @@
         var m = /^wg_read_([a-z0-9-]+)$/.exec(k);
         if (m) {
           v = jget(k);
-          if (v && v.done && typeof v.done === 'object') reading[m[1]] = { n: v.n || Object.keys(v.done).length, total: v.total || 0, at: v.at || 0, last: v.last || '', next: v.next || '', nextId: v.nextId || '', done: Object.keys(v.done).filter(function (id) { return v.done[id]; }) };
-        } else if (w.WGApp && w.WGApp.toolKey && w.WGApp.toolKey.test(k)) saved.push(k);
+          if (v && v.done && typeof v.done === 'object' && STATE_KEY.test(m[1])) {
+            var n = Math.max(+v.n || 0, Object.keys(v.done).filter(function (id) { return v.done[id]; }).length);
+            if (n > 0 && Object.keys(reading).length < 30) reading[m[1]] = Math.min(n, 100000);
+          }
+        } else if (w.WGApp && w.WGApp.toolKey && w.WGApp.toolKey.test(k) && STATE_KEY.test(k) && saved.length < 200) saved.push(k);
       }
     } catch (e) {}
-    var pl = jget('wg_played_v1'); if (pl && typeof pl === 'object') played = Object.keys(pl);
+    var pl = jget('wg_played_v1');
+    if (pl && typeof pl === 'object') Object.keys(pl).forEach(function (p) {
+      var x = /^\/(relationships|fertility|pregnancy|postpartum|parenting)\/tools\/([a-z0-9-]+)$/.exec(p);
+      if (x && played.length < 200 && STATE_KEY.test(x[1] + '.' + x[2])) played.push(x[1] + '.' + x[2]);
+    });
     return { reading: reading, saved: saved, played: played };
   }
   function applyState(st) {
     if (!st) return;
     var rd = st.reading || {};
     Object.keys(rd).forEach(function (slug) {
-      if (!/^[a-z0-9-]+$/.test(slug) || !rd[slug]) return;
-      var theirs = rd[slug], mine = jget('wg_read_' + slug) || { done: {} }, done = mine.done || {}, add = false;
-      (theirs.done || []).forEach(function (id) { if (!done[id]) { done[id] = true; add = true; } });
-      if (add || (theirs.n || 0) > (mine.n || 0)) {
-        mine.done = done; mine.n = Math.max(mine.n || 0, theirs.n || 0, Object.keys(done).length);
-        mine.total = mine.total || theirs.total || 0;
-        if (!mine.next && theirs.next) { mine.next = theirs.next; mine.nextId = theirs.nextId || ''; }
-        mine.last = mine.last || theirs.last || ''; mine.at = Math.max(mine.at || 0, theirs.at || 0) || Date.now();
+      if (!/^[a-z0-9-]+$/.test(slug) || rd[slug] == null) return;
+      var theirs = rd[slug], mine = jget('wg_read_' + slug) || { done: {} };
+      // The server keeps how many lessons she finished. A larger number than this phone's lifts the count; the lessons she ticked stay as they are.
+      var count = typeof theirs === 'object' ? (+theirs.n || 0) : (+theirs || 0);
+      if (count > (mine.n || 0)) {
+        mine.done = mine.done || {}; mine.n = count;
+        mine.at = mine.at || Date.now();
         set('wg_read_' + slug, JSON.stringify(mine));
       }
     });
     var pl = jget('wg_played_v1') || {}, grew = false;
-    var theirsPlayed = st.played;
-    (Array.isArray(theirsPlayed) ? theirsPlayed : Object.keys(theirsPlayed || {})).forEach(function (p) {
-      if (/^\/(relationships|fertility|pregnancy|postpartum|parenting)\/tools\/[a-z0-9-]+$/.test(p) && !pl[p]) { pl[p] = (theirsPlayed && theirsPlayed[p] > 1 && !Array.isArray(theirsPlayed)) ? theirsPlayed[p] : Date.now(); grew = true; }
+    var theirsPlayed = Array.isArray(st.played) ? st.played : Object.keys(st.played || {});
+    theirsPlayed.forEach(function (p) {
+      var x = /^(relationships|fertility|pregnancy|postpartum|parenting)\.([a-z0-9-]+)$/.exec(p);
+      var path = x ? '/' + x[1] + '/tools/' + x[2] : p;
+      if (/^\/(relationships|fertility|pregnancy|postpartum|parenting)\/tools\/[a-z0-9-]+$/.test(path) && !pl[path]) { pl[path] = Date.now(); grew = true; }
     });
     if (grew) set('wg_played_v1', JSON.stringify(pl));
     if (Array.isArray(st.saved)) remember(null, { saved: st.saved.filter(function (k) { return typeof k === 'string' && /^wg_[a-z0-9_]+$/.test(k); }) });
@@ -214,9 +230,6 @@
     check: function (email, code) { return request('POST', '/access/signin/check', { email: email, code: code }).then(adopt); },
     // The one-tap link in the buyer email. It signs her in as a right code does, once.
     link: function (tok) { return request('POST', '/access/signin/link', { token: tok }).then(adopt); },
-    // Selar waiting page: has her sale reached the server? Not in the contract; see the report. The answer may carry a session
-    // (then the page opens by itself) or only ready:true (then the page sends her a code).
-    ready: function (email, program, nonce) { return request('POST', '/access/ready', { email: email, program: program, nonce: nonce }).then(function (j) { return j.ok && (j.token ? adopt(j).then(function (a) { a.ready = true; return a; }) : j); }); },
     signout: function () {
       var tok = token();
       var done = function () {

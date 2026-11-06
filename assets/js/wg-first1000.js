@@ -27,10 +27,13 @@
     return t.getDate() + ' ' + ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][t.getMonth()];
   }
   function isDone(m, k) { var s = m && m.steps; if (!s) return false; return Array.isArray(s) ? s.indexOf(k) >= 0 : !!s[k]; }
+  // Months earned: one for the claim, the steps she finished, 2 for each friend step the server added (friend_1 to friend_3) and
+  // 3 for the interview step (the server adds both). The server caps the total at 12. A months number from the server wins.
   function months(m) {
     if (m && typeof m.months === 'number') return m.months;
     var n = 1; STEPS.forEach(function (s) { if (isDone(m, s[0])) n += s[2]; });
-    n += 2 * Math.min(3, (m && (m.invited || m.invites)) | 0);
+    ['friend_1', 'friend_2', 'friend_3'].forEach(function (k) { if (isDone(m, k)) n += 2; });
+    if (isDone(m, 'interview')) n += 3;
     return Math.min(12, n);
   }
   function inviteLink(m) {

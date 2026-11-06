@@ -19,6 +19,10 @@
   'use strict';
   var A = w.WGApp || null;
   var PAY = 'https://wg-pay.realjaymes.workers.dev';
+  // On localhost only, a wrangler dev server can stand in for the payment server (localStorage.wg_pay_api = 'http://localhost:8787'), as in wg-access.js.
+  try {
+    if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) { var po = w.localStorage.getItem('wg_pay_api'); if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(po || '')) PAY = po; }
+  } catch (e) {}
   var CAP = 'wg_capture_v1', PUSHK = 'wg_push_v1';
   var path = w.location.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
   var bare = path.replace(/\/$/, '');

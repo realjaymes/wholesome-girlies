@@ -144,7 +144,7 @@
   // The ring around "11/30 lessons" on the reading card.
   w.WGRing = function (ring, r) {
     ring.style.setProperty('--pct', r.pct);
-    ring.firstChild.innerHTML = r.finished ? '100%<small>done</small>' : r.n ? r.n + '/' + r.total + '<small>lessons</small>' : '0<small>started</small>';
+    ring.firstChild.innerHTML = r.finished ? '100%<small>done</small>' : r.n ? r.n + (r.total ? '/' + r.total : '') + '<small>lessons</small>' : '0<small>started</small>';
   };
 
   // 3. Reading progress. WGReading.load(reader, key) reads the reader page and her saved place, and gives
