@@ -26,12 +26,12 @@ const shot = (p, n) => SHOTS ? p.screenshot({ path: `${SHOTS}/${n}.png` }) : nul
   await p.evaluateOnNewDocument((api) => { try { localStorage.setItem('wg_pay_api', api); } catch (e) {} }, API);
 
   // signed out goes to sign-in with next
-  await p.goto(SITE + '/first-1000/feedback', { waitUntil: 'networkidle0' }); await wait(800);
-  ok('signed out: sent to sign-in with next', /^\/signin\/$/.test(new URL(p.url()).pathname) && /next=%2Ffirst-1000%2Ffeedback|next=\/first-1000\/feedback/.test(p.url()), p.url());
-  ok('page is noindex', /<meta name="robots" content="noindex/.test(await (await fetch(SITE + '/first-1000/feedback')).text()));
+  await p.goto(SITE + '/first/feedback', { waitUntil: 'networkidle0' }); await wait(800);
+  ok('signed out: sent to sign-in with next', /^\/signin\/$/.test(new URL(p.url()).pathname) && /next=%2Ffirst%2Ffeedback|next=\/first\/feedback/.test(p.url()), p.url());
+  ok('page is noindex', /<meta name="robots" content="noindex/.test(await (await fetch(SITE + '/first/feedback')).text()));
 
   // claim a place (this signs her in on this device)
-  await p.goto(SITE + '/first-1000/', { waitUntil: 'networkidle0' });
+  await p.goto(SITE + '/first/', { waitUntil: 'networkidle0' });
   const claim = await p.evaluate(async (em) => { const j = await WGAccess.first1000.claim({ name: 'Ada Test', email: em, whatsapp: '+234 803 ' + String(Math.floor(Math.random() * 9e6 + 1e6)), stage: 'fertility', consent: true }); return JSON.stringify(j); }, email);
   ok('claim made her a member', /"ok":true/.test(claim), claim.slice(0, 120));
   const endsBefore = sql(`SELECT ends_at FROM members WHERE email='${email}'`);
@@ -43,11 +43,11 @@ const shot = (p, n) => SHOTS ? p.screenshot({ path: `${SHOTS}/${n}.png` }) : nul
   await shot(p, 'steps-before-day7');
   await p.goto(SITE + '/app/?f1kday=7', { waitUntil: 'networkidle0' }); await wait(1500);
   row = await p.evaluate(() => { const li = document.querySelector('.f1k-app li[data-f1k-step="feedback_d7"]'); const a = li && li.querySelector('a'); return li ? { text: li.innerText.replace(/\n/g, ' | '), href: a ? a.getAttribute('href') : '' } : null; });
-  ok('steps card: from day 7 links to the feedback page', !!row && row.href === '/first-1000/feedback' && !/Opens on day 7/.test(row.text), row && (row.text + ' ' + row.href));
+  ok('steps card: from day 7 links to the feedback page', !!row && row.href === '/first/feedback' && !/Opens on day 7/.test(row.text), row && (row.text + ' ' + row.href));
   await shot(p, 'steps-day7');
 
   // the form
-  await p.goto(SITE + '/first-1000/feedback', { waitUntil: 'networkidle0' }); await wait(1200);
+  await p.goto(SITE + '/first/feedback', { waitUntil: 'networkidle0' }); await wait(1200);
   ok('member sees the first question', /How useful has your program been so far\?/.test(await p.$eval('#fbCard', e => e.innerText)));
   ok('sales-page header and full footer', !!(await p.$('header')) && !!(await p.$('footer.site-footer')));
   await shot(p, 'feedback-q1');
@@ -82,7 +82,7 @@ const shot = (p, n) => SHOTS ? p.screenshot({ path: `${SHOTS}/${n}.png` }) : nul
   ok('end date moved by 2 months', gap >= 58 && gap <= 62, `${endsBefore} -> ${endsAfter}`);
 
   // second visit
-  await p.goto(SITE + '/first-1000/feedback', { waitUntil: 'networkidle0' }); await wait(1200);
+  await p.goto(SITE + '/first/feedback', { waitUntil: 'networkidle0' }); await wait(1200);
   const again = await p.$eval('#fbCard', e => e.innerText);
   ok('second visit: already sent, no stepper', /You have already sent your feedback\. Thank you\./.test(again) && !(await p.$('.fb-form')), again.replace(/\n/g, ' | '));
   await shot(p, 'feedback-already');

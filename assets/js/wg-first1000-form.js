@@ -1,4 +1,4 @@
-/* Wholesome Girlies: the First 1,000 landing page. The claim form, one step per screen in a sheet (full screen on a phone, a modal on a
+/* Wholesome Girlies: the First 1,000 landing page (/first/). The claim form, one step per screen in a sheet (full screen on a phone, a modal on a
  * computer), plus the page's live counter and "her program" details.
  *
  * It calls only WGAccess.first1000.status() (the counter) and WGAccess.first1000.claim(body) (the claim, which signs her in).
@@ -14,14 +14,14 @@
   var html = d.documentElement;
 
   var STAGES = [
-    { key: 'relationships', who: 'Dating or in love', prog: 'The Wife Material Blueprint', cover: 'wife-material-cover', guide: 'tolu', gw: 392, gh: 620, name: 'Tolu', topic: 'dating', h1: 'Get your relationship program free', lead: 'Join the Girlies community where women like you are getting support and guidance for the most difficult stages of your dating and relationship life. As one of the first 1,000 women, you get The Wife Material Blueprint free for a month. Use it, and you can earn up to 12 months.' },
-    { key: 'fertility', who: 'Trying for a baby', prog: 'The Trying-to-Conceive Blueprint', cover: 'trying-to-conceive-blueprint-cover', guide: 'amaka', gw: 255, gh: 569, name: 'Amaka', topic: 'trying for a baby', h1: 'Get your fertility program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the hard months of trying for a baby. As one of the first 1,000 women, you get The Trying-to-Conceive Blueprint free for a month. Use it, and you can earn up to 12 months.' },
-    { key: 'pregnancy', who: 'I am pregnant', prog: 'The First Pregnancy Plan', cover: 'first-pregnancy-plan-cover', guide: 'zainab', gw: 289, gh: 563, name: 'Zainab', topic: 'pregnancy', h1: 'Get your pregnancy program free', lead: 'Join the Girlies community where women like you are getting support and guidance through every week of a first pregnancy. As one of the first 1,000 women, you get The First Pregnancy Plan free for a month. Use it, and you can earn up to 12 months.' },
-    { key: 'postpartum', who: 'I just gave birth', prog: 'The 6-Week Postpartum Reset', cover: 'postpartum-reset-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'the weeks after birth', h1: 'Get your postpartum program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the first six weeks after birth. As one of the first 1,000 women, you get The 6-Week Postpartum Reset free for a month. Use it, and you can earn up to 12 months.' },
-    { key: 'parenting', who: 'I am raising children', prog: 'The First Baby Playbook', cover: 'first-baby-playbook-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'raising your baby', h1: 'Get your parenting program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the first months with a new baby. As one of the first 1,000 women, you get The First Baby Playbook free for a month. Use it, and you can earn up to 12 months.' }
+    { key: 'relationships', who: 'Dating or in love', prog: 'The Wife Material Blueprint', cover: 'wife-material-cover', guide: 'tolu', gw: 392, gh: 620, name: 'Tolu', topic: 'dating', h1: 'Get your relationship program free', lead: 'Join the Girlies community where women like you are getting support and guidance for the most difficult stages of your dating and relationship life. As one of {G}, you get The Wife Material Blueprint free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'fertility', who: 'Trying for a baby', prog: 'The Trying-to-Conceive Blueprint', cover: 'trying-to-conceive-blueprint-cover', guide: 'amaka', gw: 255, gh: 569, name: 'Amaka', topic: 'trying for a baby', h1: 'Get your fertility program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the hard months of trying for a baby. As one of {G}, you get The Trying-to-Conceive Blueprint free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'pregnancy', who: 'I am pregnant', prog: 'The First Pregnancy Plan', cover: 'first-pregnancy-plan-cover', guide: 'zainab', gw: 289, gh: 563, name: 'Zainab', topic: 'pregnancy', h1: 'Get your pregnancy program free', lead: 'Join the Girlies community where women like you are getting support and guidance through every week of a first pregnancy. As one of {G}, you get The First Pregnancy Plan free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'postpartum', who: 'I just gave birth', prog: 'The 6-Week Postpartum Reset', cover: 'postpartum-reset-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'the weeks after birth', h1: 'Get your postpartum program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the first six weeks after birth. As one of {G}, you get The 6-Week Postpartum Reset free for a month. Use it, and you can earn up to 12 months.' },
+    { key: 'parenting', who: 'I am raising children', prog: 'The First Baby Playbook', cover: 'first-baby-playbook-cover', guide: 'funmi', gw: 293, gh: 569, name: 'Funmi', topic: 'raising your baby', h1: 'Get your parenting program free', lead: 'Join the Girlies community where women like you are getting support and guidance through the first months with a new baby. As one of {G}, you get The First Baby Playbook free for a month. Use it, and you can earn up to 12 months.' }
   ];
   // The hero words live here so they can be swapped in one line: DEFAULT_HERO for the page with no stage, h1 and lead on each stage.
-  var DEFAULT_HERO = { h1: 'Get the program for your stage free', lead: 'Join the Girlies community where women like you are getting support and guidance for the most difficult stages of life: dating and relationships, trying to conceive, pregnancy, postpartum, and parenting. As one of the first 1,000 women, you get a program for your stage free for a month. Use it, and you can earn up to 12 months.' };
+  var DEFAULT_HERO = { h1: 'Get the program for your stage free', lead: 'Join the Girlies community where women like you are getting support and guidance for the most difficult stages of life: dating and relationships, trying to conceive, pregnancy, postpartum, and parenting. As one of {G}, you get a program for your stage free for a month. Use it, and you can earn up to 12 months.' };
   var BY = {}; STAGES.forEach(function (s) { BY[s.key] = s; });
   var COUNTRIES = [
     ['Nigeria', '234'], ['United Kingdom', '44'], ['United States', '1'], ['Canada', '1'], ['Ghana', '233'], ['South Africa', '27'],
@@ -49,7 +49,7 @@
     html.classList.toggle('fx-has-stage', !!st);
     var hero = st || DEFAULT_HERO, h1 = $('.fx-copy h1'), lead = $('.fx-copy .lead');
     if (h1) h1.textContent = hero.h1;
-    if (lead) lead.textContent = hero.lead;
+    if (lead) lead.textContent = leadOf(hero);
     var her = $('[data-her]'), fan = $('[data-fan]');
     if (her) her.hidden = !st;
     if (fan) fan.hidden = !!st;
@@ -77,51 +77,58 @@
   }
 
   /* ---------- the counter ---------- */
-  // The 1,000 places open in rounds of 100. The bars and lines show the open round; when it is full (and the next is not open) the
-  // claim buttons give way to a waiting list. The status answer also has taken, left and open for all 1,000 places.
+  // The public number is s.cap ("the first N women"), from the server. Nothing on the page holds a fixed number: with no count the
+  // page says "the first women" and "No payment and no card. One place per woman." and shows no bar. When the cap is reached and James
+  // has paused it, the claim buttons give way to "All N places are taken." and a waiting list.
+  var CAP = 0;
   var lastStatus = null;
-  function roundWord(s) { return typeof s.round === 'number' ? 'Round ' + s.round : ''; }
+  function fmtN(n) { return n.toLocaleString('en-US'); }
+  function group() { return CAP ? 'the first ' + fmtN(CAP) + ' women' : 'the first women'; }
+  function leadOf(h) { return h.lead.replace('{G}', group()); }
+  // Text that names the number: elements with data-cap-tpl hold the template ({n} is the number); their own text is the version with no number.
+  function applyCopy() {
+    $$('[data-cap-tpl]').forEach(function (e) { if (CAP) e.textContent = e.getAttribute('data-cap-tpl').replace('{n}', fmtN(CAP)); });
+    if (!CAP) return;
+    var n = fmtN(CAP), pairs = [['title', 'Get a Wholesome Girlies Program Free: The First ' + n], ['description', 'The first ' + n + ' women get the Wholesome Girlies program for their stage free for a month, and can earn up to 12 months by using it.'],
+      ['og:title', 'The first ' + n + ' women: get a Wholesome Girlies program free'], ['og:description', 'The first ' + n + ' women get the program for their stage free for a month. Use it, and you can earn up to 12 months.'],
+      ['twitter:title', 'The first ' + n + ' women: get a Wholesome Girlies program free'], ['twitter:description', 'The first ' + n + ' women get the program for their stage free for a month. Use it, and you can earn up to 12 months.']];
+    pairs.forEach(function (p) {
+      if (p[0] === 'title') { d.title = p[1]; return; }
+      var m = $('meta[name="' + p[0] + '"], meta[property="' + p[0] + '"]'); if (m) m.setAttribute('content', p[1]);
+    });
+    var lead = $('.fx-copy .lead'), st = BY[S.stage];
+    if (lead) lead.textContent = leadOf(st || DEFAULT_HERO);
+  }
   function applyStatus(s, keepSheet) {
-    if (!s) return;
-    lastStatus = s;
-    var hasRound = typeof s.round === 'number', left = s.left, taken = s.taken;
-    var allGone = !(left > 0);
-    var roundFull = hasRound && !allGone && !s.round_open;
-    var open = !allGone && !roundFull && s.open !== false;
-    var size = hasRound ? s.round_size : 1000, rtaken = hasRound ? s.round_taken : taken;
-    html.classList.remove('fx-full', 'fx-round-full');
+    if (!s || typeof s.cap !== 'number' || typeof s.taken !== 'number') return;
+    lastStatus = s; CAP = s.cap; applyCopy();
+    var open = s.open !== false && s.cap - s.taken > 0;
+    html.classList.remove('fx-full');
     $$('[data-taken-meter]').forEach(function (tm) {
-      if (!open || typeof rtaken !== 'number' || rtaken < 0) { tm.hidden = true; return; }
-      // The bar shows from 0 taken. In the hero it replaces the "No payment and no card" line; the final section keeps its own line above.
+      if (!open) { tm.hidden = true; return; }
+      // The bar shows from 0 taken. In the hero it replaces the "No payment and no card" line.
       var tf = $('[data-taken-fill]', tm), fine = $('[data-fine]');
-      $('[data-taken-line]', tm).textContent = (hasRound ? roundWord(s) + ': ' : '') + rtaken.toLocaleString('en-US') + ' of ' + size.toLocaleString('en-US') + ' places taken';
+      $('[data-taken-line]', tm).textContent = fmtN(s.taken) + ' of ' + fmtN(s.cap) + ' places taken';
       tm.hidden = false; if (fine && tm.closest('.fx-hero')) fine.hidden = true;
       tf.style.width = '0%';
-      var pct = Math.min(100, Math.max(rtaken > 0 ? 2 : 0, rtaken / size * 100));
+      var pct = Math.min(100, Math.max(s.taken > 0 ? 2 : 0, s.taken / s.cap * 100));
       (w.requestAnimationFrame || setTimeout)(function () { (w.requestAnimationFrame || setTimeout)(function () { tf.style.width = pct + '%'; }); });
     });
-    if (open) { full = false; $$('[data-wait]').forEach(function (x) { x.hidden = true; }); var fl = $('[data-final-line]'); if (fl) fl.textContent = FINAL_LINE; return; }
+    if (open) { full = false; return; }
+    // Full: the cap is reached and James has paused it (or all places are gone). Say so, and offer the waiting list.
     full = true; if (!keepSheet) closeSheet();
-    if (allGone) { html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; return; }
-    html.classList.add('fx-round-full');
-    var msg = roundWord(s) + ' is full. The next round opens soon.';
-    $$('[data-wait]').forEach(function (x) {
-      x.hidden = false;
-      var line = $('[data-wait-line]', x); if (line) line.textContent = msg;
-      fillWait($('[data-wait-host]', x));
-    });
-    var fl2 = $('[data-final-line]'); if (fl2) fl2.textContent = msg;
+    html.classList.add('fx-full');
+    var t = $('[data-taken]'); if (t) { t.hidden = false; var h = $('[data-full-title]', t); if (h) h.textContent = 'All ' + fmtN(s.cap) + ' places are taken'; fillWait($('[data-wait-host]', t)); }
   }
-  var FINAL_LINE = 'One place per woman. No payment and no card.';
 
-  // The waiting list: the capture form (list f1k_next_round, source f1k_round_full). Its event is capture_submit with that capture_point only.
+  // The waiting list: the capture form (list f1k_waitlist, source f1k_full). Its event is capture_submit with that capture_point only.
   // The stage is not sent: the server does not keep it for this list, and a stage is health data.
   function waitNode() {
     var box = el('div', 'fx-wait-box'), C = w.WGCapture;
     if (!C || !C.form) return null;
-    if (C.joined && C.joined('f1k_next_round')) { box.appendChild(el('p', 'fx-wait-note', 'You are on the list. We will email you when the next round opens.')); return box; }
-    box.appendChild(C.form({ list: 'f1k_next_round', source: 'f1k_round_full', token: 'f1k_next_round', button: 'Tell me when it opens', done: 'Thank you. We will email you when the next round opens.' }));
-    box.appendChild(el('p', 'fx-wait-note', 'One email, when the next round opens.'));
+    if (C.joined && C.joined('f1k_waitlist')) { box.appendChild(el('p', 'fx-wait-note', 'You are on the list. We will email you if a place opens.')); return box; }
+    box.appendChild(C.form({ list: 'f1k_waitlist', source: 'f1k_full', token: 'f1k_waitlist', button: 'Tell me if a place opens', done: 'Thank you. We will email you if a place opens.' }));
+    box.appendChild(el('p', 'fx-wait-note', 'One email, only if a place opens.'));
     return box;
   }
   function fillWait(host, email) {
@@ -134,7 +141,7 @@
     host.textContent = ''; host.appendChild(n);
     var inp = $('input[type=email]', n); if (inp && email) inp.value = email;
   }
-  function counter() { WA.first1000.status().then(applyStatus); }
+  function counter() { WA.first1000.status().then(function (s) { applyStatus(s); }); }
 
   /* ---------- the flow ---------- */
   var flow = null;   // { root, host, step, steps }
@@ -291,7 +298,7 @@
     var t = where && $(where, f.body);
     if (t) { t.setAttribute('aria-invalid', 'true'); try { t.focus(); } catch (e) {} }
   }
-  function signInLink(text) { var a = el('a', 'ff-link', text || 'Sign in'); a.href = '/signin/?next=' + encodeURIComponent('/first-1000' + (S.stage ? '?stage=' + S.stage : '')); return a; }
+  function signInLink(text) { var a = el('a', 'ff-link', text || 'Sign in'); a.href = '/signin/?next=' + encodeURIComponent('/first' + (S.stage ? '?stage=' + S.stage : '')); return a; }
 
   function nationalDigits() {
     var c = COUNTRIES[S.country], cc = c[1], n = S.phone.replace(/\D/g, '');
@@ -344,11 +351,10 @@
     function done() { busy = false; btn.disabled = false; btn.textContent = 'Claim my place'; }
     WA.first1000.claim(body).then(function (j) {
       j = j || {};
-      if (j.ok) { try { WA.push('account_created', { account_surface: 'first_1000' }); } catch (e) {} btn.textContent = 'Done. Opening your program...'; location.href = '/first-1000/welcome'; return; }
+      if (j.ok) { try { WA.push('account_created', { account_surface: 'first_1000' }); } catch (e) {} btn.textContent = 'Done. Opening your program...'; location.href = '/first/welcome'; return; }
       done();
       var r = j.error || j.reason || '';
-      if (r === 'round_full') return roundFullInSheet();
-      if (r === 'full' || r === 'closed') { full = true; html.classList.add('fx-full'); var t = $('[data-taken]'); if (t) t.hidden = false; closeSheet(); return; }
+      if (r === 'full' || r === 'closed') return fullInSheet();
       if (r === 'already_claimed' || r === 'exists') { gotoStep('email'); return showErr('This email already has a place. Sign in with it to open your program.', '#fxEmail', signInLink('Sign in')); }
       if (r === 'sign_in_first') { gotoStep('email'); return showErr('This email already has an account. Sign in with it, then claim your place.', '#fxEmail', signInLink('Sign in to claim')); }
       if (r === 'phone_used' || r === 'duplicate') { gotoStep('phone'); return showErr('This number already has a place. Use another WhatsApp number, or sign in with the email you used.', '#fxPhone', signInLink('Sign in')); }
@@ -360,15 +366,16 @@
     });
   }
 
-  // The round filled while she was filling the form: say so inside the sheet and offer the waiting list, with her email filled in.
-  function roundFullInSheet() {
+  // The cap was reached while she was filling the form (James has paused it): say so inside the sheet and offer the waiting list, with her email filled in.
+  function fullInSheet() {
     WA.first1000.status().then(function (s) {
       var host = $('[data-flow-host="sheet"]');
-      if (!s || typeof s.round !== 'number') s = lastStatus && typeof lastStatus.round === 'number' ? lastStatus : { ok: true, taken: 0, left: 1, open: false, round: 1, round_size: 100, round_taken: 100, round_left: 0, round_open: false };
-      if (s.round_open) { applyStatus(s); return showErr('A new round just opened. Press the button to claim your place.'); }
+      if (!s || typeof s.cap !== 'number') s = lastStatus || null;
+      if (!s) return showErr('We could not save your place. Try again in a moment.');
+      if (s.open !== false && s.cap - s.taken > 0) { applyStatus(s); return showErr('Please try again in a moment.'); }
       applyStatus(s, true);
       if (!host) return;
-      var box = el('div', 'fx-wait'), line = el('p', 'fx-wait-line', roundWord(s) + ' is full. The next round opens soon.'); line.tabIndex = -1;
+      var box = el('div', 'fx-wait'), line = el('p', 'fx-wait-line', 'All ' + fmtN(s.cap) + ' places are taken.'); line.tabIndex = -1;
       var wh = el('div'); box.appendChild(line); box.appendChild(wh); host.textContent = ''; host.appendChild(box);
       flow = null; fillWait(wh, S.email);
       try { line.focus(); } catch (e) {}

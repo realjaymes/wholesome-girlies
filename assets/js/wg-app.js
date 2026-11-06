@@ -374,12 +374,12 @@
   // The footer: a browser tab shows the full site footer at every width. Four places keep the short two-line footer
   // (the not-medical-advice line, the legal pages and "Privacy choices", because consent must be changeable at any time):
   // the installed app, program sales pages (they have the floating price bar, .sticky-cta), /go/ ad bridges, and the
-  // program pages she reads (/programs/<slug>/thank-you and /programs/<slug>/read). /first-1000 has a floating claim bar
+  // program pages she reads (/programs/<slug>/thank-you and /programs/<slug>/read). /first has a floating claim bar
   // of its own, so it is exempt from the sales page rule and keeps the full footer. On a phone the full footer gets bottom
   // padding, so the tab bar never covers its last links. The full footer stays in the page code either way.
   function shortFooter() {
     if (standalone) return true;
-    if (/^\/first-1000(\/|$)/.test(path)) return false;
+    if (/^\/first(\/|$)/.test(path)) return false;
     return !!d.querySelector('.sticky-cta') || /^\/go\//.test(path) || /^\/programs\/[^/]+\/(thank-you|read)$/.test(path);
   }
   function appFooter() {

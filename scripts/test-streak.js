@@ -24,13 +24,13 @@ function signed(programs, member) {
   const account = { email: 'ada@example.com', name: '', programs: programs.map((x) => ({ slug: x.slug, home: homeUrl(x.slug), ends: x.ends })), member: member || undefined };
   const seed = { wg_session_v1: JSON.stringify({ token: 'tok123' }), wg_account_v1: { v: 1, at: Date.now(), account, saved: [] } };
   programs.forEach((x) => Object.assign(seed, flagsFor(x.slug)));
-  return { seed, route: { '/account': { ok: true, account, state: {} }, '/first1000/status': { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } } };
+  return { seed, route: { '/account': { ok: true, account, state: {} }, '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, open: true } } };
 }
 const memberOf = (stage) => ({ stage, ends: plus(200) + 'T00:00:00Z', steps: {}, invite: 'ABC' });
 const UI = (o) => ({ wg_streak_ui_v1: Object.assign({ v: 1, rule: plus(-3), first: plus(-3), days: [] }, o) });
 const READ = (slug, n, ago) => ({ ['wg_read_' + slug]: { done: {}, n, at: Date.now() - (ago || 0) } });
 const totalOf = async (slug) => +(/data-total="(\d+)"/.exec(await (await fetch(T.B + '/programs/' + slug + '/read')).text())[1]);
-const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } };
+const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, open: true } };
 
 (async () => {
   try {
@@ -114,7 +114,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   await t.page.evaluate(() => WGStreak.record('x'));
   await wait(4600);
   const sheet = await text(t.page, '.wgs-sheet');
-  ok('the milestone sheet shows 7 days, the ladder and the member line', /7 days in a row/.test(sheet) && /3 days/.test(sheet) && /30 days/.test(sheet) && /First 1,000 member/.test(sheet), sheet.slice(0, 200));
+  ok('the milestone sheet shows 7 days, the ladder and the member line', /7 days in a row/.test(sheet) && /3 days/.test(sheet) && /30 days/.test(sheet) && /Member: we added/.test(sheet), sheet.slice(0, 200));
   ok('the sheet offers a share card', /Share my 7 days/.test(sheet));
   await t.page.$eval('.wgs-sheet .btn-primary', (e) => e.click()); await wait(300);
   const sh = await text(t.page, '.wgs-sheet');
@@ -208,13 +208,13 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   ok('free: no lesson line', !/lesson/i.test(rule) && !(await has(t.page, '#appToday [data-wgs="lesson"]')));
   await t.close();
   let r7 = await sheetAt7({}, OPEN);
-  ok('free: day 7 points to a First 1,000 place while places are left', /get a program free as one of the first 1,000 women\. Round 1 is open: 92 of 100 places are left\./.test(r7.tx) && r7.links.some((h) => /^\/first-1000/.test(h)), r7.tx);
+  ok('free: day 7 points to a First 1,000 place while places are left', /get a program free as one of the first 100 women\. 92 of 100 places are left\./.test(r7.tx) && r7.links.some((h) => /^\/first/.test(h)), r7.tx);
   ok('free: the badge ladder stays', /3 days/.test(r7.tx) && /14 days/.test(r7.tx) && /30 days/.test(r7.tx));
-  ok('free: no lesson progress and no member line', !/lessons/.test(r7.tx) && !/First 1,000 member/.test(r7.tx));
-  r7 = await sheetAt7(UI({ toast: plus(0), stage: 'pregnancy' }), { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false, round: 10, round_size: 100, round_taken: 100, round_left: 0, round_open: false } });
-  ok('free: with the places gone, day 7 points to her stage’s program', /The program for your stage goes further\./.test(r7.tx) && r7.links.indexOf('/programs/first-pregnancy-plan') > -1 && !/first-1000/.test(r7.links.join()), r7.tx + r7.links.join());
+  ok('free: no lesson progress and no member line', !/lessons/.test(r7.tx) && !/Member: we added/.test(r7.tx));
+  r7 = await sheetAt7(UI({ toast: plus(0), stage: 'pregnancy' }), { '/first1000/status': { ok: true, taken: 100, cap: 100, left: 0, open: false } });
+  ok('free: with the cap full and paused, day 7 says so and points to the waiting list', /All 100 places are taken\./.test(r7.tx) && /Tell me if a place opens/.test(r7.tx) && r7.links.some((h) => /^\/first/.test(h)) && !/Claim my place/.test(r7.tx), r7.tx + r7.links.join());
   r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 29, best: 29, last_day: plus(-1), rest_used_week: null, milestones: [3, 7, 14] } }, OPEN);
-  ok('free: day 30 points to a place too', /30 days in a row/.test(r7.tx) && /first 1,000 women/.test(r7.tx), r7.tx);
+  ok('free: day 30 points to a place too', /30 days in a row/.test(r7.tx) && /first 100 women/.test(r7.tx), r7.tx);
   r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 13, best: 13, last_day: plus(-1), rest_used_week: null, milestones: [3, 7] } }, OPEN);
   ok('free: day 14 shows the badge and no nudge', /14 days in a row/.test(r7.tx) && !/first 1,000 women/.test(r7.tx), r7.tx);
 
@@ -230,7 +230,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), UI({ toast: plus(0) }), mem.seed), '/pregnancy/tools/hospital-bag-checklist', { route: memSteps });
   await t.page.evaluate(() => WGStreak.record('x')); await wait(3000);
   const msh = await text(t.page, '.wgs-sheet');
-  ok('member: the milestone shows the added month and her new end date', /First 1,000 member: we added 1 month\. Your access now runs to/.test(msh), msh);
+  ok('member: the milestone shows the added month and her new end date', /Member: we added 1 month\. Your access now runs to/.test(msh), msh);
   ok('member: no lesson progress line, no free-place nudge', !/lessons/.test(msh) && !/first 1,000 women/.test(msh));
   ok('member: months are posted to /member/step', (await reqs(t.page)).filter((r) => r.path === '/member/step').map((r) => JSON.parse(r.body).step).indexOf('streak_3') > -1);
   await t.close();
@@ -353,7 +353,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   await t.page.evaluate(() => WGStreak.record('x')); await wait(3000);
   const bs = await text(t.page, '.wgs-sheet');
   ok('member who bought: the paid program’s progress and the member’s months both show', bs.indexOf('Parenting: 9 of ' + pbTotal + ' lessons') > -1 || bs.indexOf('9 of ' + pbTotal + ' lessons') > -1, bs);
-  ok('member who bought: her months still count until the free program ends', /First 1,000 member: we added 1 month/.test(bs) && (await reqs(t.page)).some((r) => r.path === '/member/step'), bs);
+  ok('member who bought: her months still count until the free program ends', /Member: we added 1 month/.test(bs) && (await reqs(t.page)).some((r) => r.path === '/member/step'), bs);
   await t.close();
   t = await home(both.seed, both.route);
   ok('member who bought: the steps card stays and the offer does not show', await has(t.page, '#appFirst .f1k-app') && !/Get a program free/.test(await text(t.page, '#appFirst')));
@@ -363,19 +363,19 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   const offer = async (seed, route, wt) => { const x = await open(seed, '/app/', { route: route || OPEN, wait: wt || 1800 }); const tx = await text(x.page, '#appFirst'); return { x, tx }; };
   let o = await offer({});
   ok('signed out, no program: the offer shows with a sign-in link', /Get a program free/.test(o.tx) && /Already bought\? Sign in/.test(o.tx) && (await o.x.page.$eval('#appFirst a[href="/signin/"]', (e) => e.textContent)) === 'Sign in', o.tx);
-  ok('the count line reads "Round 1 is open: 92 of 100 places are left."', /first 1,000 women\. Round 1 is open: 92 of 100 places are left\./.test(o.tx), o.tx);
+  ok('the count line reads "92 of 100 places are left."', /first 100 women\. 92 of 100 places are left\./.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true, round: 1, round_size: 100, round_taken: 0, round_left: 100, round_open: true } });
-  ok('a fresh round reads "Round 1 is open: 100 of 100 places are left." with no bare 1000', /Round 1 is open: 100 of 100 places are left\./.test(o.tx) && !/\b1000\b/.test(o.tx), o.tx);
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 0, cap: 100, left: 100, open: true } });
+  ok('a fresh cap reads "100 of 100 places are left." with no bare 1000', /first 100 women\. 100 of 100 places are left\./.test(o.tx) && !/\b1000\b/.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 999, left: 1, open: true, round: 10, round_size: 100, round_taken: 99, round_left: 1, round_open: true } });
-  ok('one place left: "1 of 100 places is left"', /Round 10 is open: 1 of 100 places is left\./.test(o.tx), o.tx);
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 99, cap: 100, left: 1, open: true } });
+  ok('one place left: "1 of 100 places is left"', /1 of 100 places is left\./.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 1000, left: 0, open: false, round: 10, round_size: 100, round_taken: 100, round_left: 0, round_open: false } });
-  ok('no places left: no offer', o.tx === '');
+  o = await offer({}, { '/first1000/status': { ok: true, taken: 100, cap: 100, left: 0, open: false } });
+  ok('cap full: the card says so and offers the waiting list, no claim', /All 100 places are taken\./.test(o.tx) && /Tell me if a place opens/.test(o.tx) && !/Claim my place/.test(o.tx), o.tx);
   await o.x.close();
   // nothing renders until her status is known
-  t = await open({}, '/app/', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } } }, wait: 900 });
+  t = await open({}, '/app/', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, cap: 100, left: 92, open: true } } }, wait: 900 });
   ok('the offer waits for the server: nothing renders before it answers', (await text(t.page, '#appFirst')) === '' && await t.page.evaluate(() => document.getElementById('appFirst').hidden));
   await t.page.waitForSelector('#appFirst .card', { timeout: 12000 }).catch(() => {});
   ok('the offer shows once the server has answered', /Get a program free/.test(await text(t.page, '#appFirst')));
@@ -404,9 +404,9 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   // the tool pages carry the same check
   const toolOffer = async (seed, route, wt) => { const x = await open(seed, '/pregnancy/tools/hospital-bag-checklist', { route: route || OPEN, wait: wt || 1500 }); const tx = await text(x.page, '.program-cta'); await x.close(); return tx; };
   let tc = await toolOffer({});
-  ok('tool page, signed out with no program: the offer, with a sign-in link and a thousands count', /free/.test(tc) && /Round 1 is open: 92 of 100 places are left/.test(tc) && /Already bought\? Sign in/.test(tc), tc);
-  tc = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, left: 1000, open: true, round: 1, round_size: 100, round_taken: 0, round_left: 100, round_open: true } });
-  ok('tool page: a fresh round reads 100 of 100 places', /Round 1 is open: 100 of 100 places are left/.test(tc), tc);
+  ok('tool page, signed out with no program: the offer, with a sign-in link and a thousands count', /free/.test(tc) && /For the first 100 women\. 92 of 100 places are left/.test(tc) && /Already bought\? Sign in/.test(tc), tc);
+  tc = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, cap: 100, left: 100, open: true } });
+  ok('tool page: a fresh round reads 100 of 100 places', /100 of 100 places are left/.test(tc), tc);
   tc = await toolOffer(owns('wife-material-blueprint'));
   ok('tool page: a buyer of another program never sees the offer', !/ free|Claim my place/.test(tc), tc);
   tc = await toolOffer(owns('complete-motherhood-journey'));
@@ -417,7 +417,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, left: 992, open: true,
   ok('tool page: a member is not offered a place', !/Claim my place/.test(tc), tc);
   tc = await toolOffer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
   ok('tool page: a buyer whose account lists a program is not offered a place', !/Claim my place/.test(tc), tc);
-  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, left: 992, open: true, round: 1, round_size: 100, round_taken: 8, round_left: 92, round_open: true } } }, wait: 900 });
+  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, cap: 100, left: 92, open: true } } }, wait: 900 });
   ok('tool page: no offer before the server answers', !/Claim my place/.test(await text(t.page, '.program-cta')));
   await t.page.waitForFunction(() => /Claim my place/.test((document.querySelector('.program-cta') || {}).innerText || ''), { timeout: 12000 }).catch(() => {});
   ok('tool page: the offer shows once the server has answered', /Claim my place/.test(await text(t.page, '.program-cta')));

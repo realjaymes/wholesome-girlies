@@ -1,6 +1,6 @@
-/* Wholesome Girlies: the day 7 feedback form for the First 1,000 (/first-1000/feedback).
+/* Wholesome Girlies: the day 7 feedback form for the First 1,000 (/first/feedback).
  * Six questions, one per screen, in the same stepper as the claim form (the ff-* classes in wg-first1000-landing.css).
- * It needs a signed-in First 1,000 member: no session goes to /signin/?next=/first-1000/feedback, a signed-in woman who
+ * It needs a signed-in First 1,000 member: no session goes to /signin/?next=/first/feedback, a signed-in woman who
  * is not a member gets a short note. The answers go to WGAccess.first1000.feedback(), which posts to the payment server
  * (POST /member/feedback). The server keeps the first answers only and adds the feedback step (2 months) once.
  * What she types stays in this file's memory until she sends it: never in the address, localStorage or the dataLayer.
@@ -18,9 +18,9 @@
   var STAGE_OF = { relationships: 1, fertility: 1, pregnancy: 1, postpartum: 1, parenting: 1 };
   var TEXT = {
     load: 'One moment...',
-    noMemberTitle: 'This page is for First 1,000 members',
-    noMemberLine: 'You are signed in, but this account does not hold a First 1,000 place.',
-    noMemberLink: 'See the First 1,000',
+    noMemberTitle: 'This page is for members of the free offer',
+    noMemberLine: 'You are signed in, but this account does not hold a free place.',
+    noMemberLink: 'See the free offer',
     sentTitle: 'You have already sent your feedback. Thank you.',
     doneTitle: 'Thank you.',
     doneAdded: '2 months added to your program.',
@@ -213,14 +213,14 @@
     }).catch(function () { busy = false; flow.next.disabled = false; flow.next.textContent = TEXT.send; showErr(TEXT.sendErr); });
   }
 
-  function gotoSignin() { w.location.replace('/signin/?next=/first-1000/feedback'); }
+  function gotoSignin() { w.location.replace('/signin/?next=/first/feedback'); }
 
   // ── start ──
   function start() {
     if (!WA.signedIn()) return gotoSignin();
     var go = function () {
       var m = WA.member();
-      if (!m) return note(TEXT.noMemberTitle, TEXT.noMemberLine, TEXT.noMemberLink, '/first-1000');
+      if (!m) return note(TEXT.noMemberTitle, TEXT.noMemberLine, TEXT.noMemberLink, '/first');
       if (STAGE_OF[m.stage]) html.setAttribute('data-stage', m.stage);
       if (isDone(m, 'feedback_d7')) return note(TEXT.sentTitle, '', TEXT.app, '/app/');
       flow = buildFlow(); clear(); card.appendChild(flow.root); render(false);

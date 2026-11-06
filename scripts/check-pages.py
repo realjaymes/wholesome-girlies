@@ -80,7 +80,7 @@ def kind(p):
         return "ABOUT"
     if p == "index.html":
         return "HOME"
-    if p in ("app/index.html", "offline.html", "signin/index.html", "payment-received/index.html", "first-1000/welcome/index.html", "first-1000/feedback/index.html"):  # sign-in, payment received and the welcome page are part of the app: noindex, no cards
+    if p in ("app/index.html", "offline.html", "signin/index.html", "payment-received/index.html", "first/welcome/index.html", "first/feedback/index.html"):  # sign-in, payment received and the welcome page are part of the app: noindex, no cards
         return "APP"
     return "HUB"
 
@@ -89,9 +89,9 @@ KIND = {p: kind(p) for p in PAGES}
 NOINDEX_KINDS = {"GO", "TY", "READER", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 # Built on a branch and not live yet: sitemap.xml is edited only by wg_release.py on release day, so these skip the sitemap rule.
-NOT_YET_RELEASED = {"first-1000/index.html"}
+NOT_YET_RELEASED = {"first/index.html"}
 # "Free" is allowed on the First 1,000 pages only (the offer is free for a month).
-FREE_OK = {"first-1000/index.html", "first-1000/welcome/index.html", "first-1000/feedback/index.html"}
+FREE_OK = {"first/index.html", "first/welcome/index.html", "first/feedback/index.html"}
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
 
 
@@ -437,7 +437,7 @@ if "app/index.html" in SRC:
         fail("pregnancy/tools/week-by-week-tracker.html", "the tracker must take its week note from WGWeeks.noteFor (wg-weeks.js), not keep its own copy")
     # The footer rule: a browser tab shows the full footer; the installed app, sales pages (.sticky-cta), /go/, thank-you and read pages keep the two short lines; /first-1000 is exempt from the sales page rule.
     if ("function shortFooter()" not in _wga or "f.classList.add('wg-app-foot-on');" not in _wga or "footer.wg-app-foot-on>:not(.wg-app-foot){display:none !important}" not in _wga
-            or "wg-web-foot" in _wga or "foot=full" in _wga or "wg-foot-full" not in _wga or "first-1000" not in _wga or "thank-you|read" not in _wga):
+            or "wg-web-foot" in _wga or "foot=full" in _wga or "wg-foot-full" not in _wga or "first(" not in _wga or "thank-you|read" not in _wga):
         fail("assets/js/wg-app.js", "appFooter() must show the full footer in a browser tab and the two short lines only in the installed app, on sales pages, /go/, thank-you and read pages (not /first-1000), with no ?foot=full switch")
     # The stage line (James's pick, option A): the homepage's five stops open the stage pages, the app home's open the
     # programs, in life order, with no stage cards left; the app home's closing line has no "every tool" link.
@@ -989,6 +989,19 @@ if os.path.isdir("functions"):
         m = re.match(r"programs/([^/]+)/(thank-you|read)\.html$", p)
         if m and m.group(1) not in _flag_homes:
             fail(p, f"{m.group(1)} is not in assets/data/program-flags.json: the gate cannot match a pass to it (run scripts/build-program-homes.py)")
+
+# _redirects (Cloudflare Pages): the First 1,000 pages moved from /first-1000/ to /first/, and the old address must keep 301-ing there
+# (old email links and ads). GitHub Pages ignores the file. It must not touch the paths the Functions run on (_routes.json).
+try:
+    _rd = [l.split() for l in open("_redirects").read().splitlines() if l.strip() and not l.lstrip().startswith("#")]
+    for _src, _dst in (("/first-1000", "/first/"), ("/first-1000/", "/first/"), ("/first-1000/*", "/first/:splat")):
+        if [_src, _dst, "301"] not in _rd:
+            fail("_redirects", f"needs the rule: {_src} {_dst} 301")
+    for _r in _rd:
+        if _r[0].startswith(("/programs", "/api")):
+            fail("_redirects", f"{_r[0]} is a path the Functions run on; keep redirects off it")
+except OSError:
+    fail("_redirects", "missing: the old /first-1000/ address must redirect to /first/")
 
 now = ratchet_counts()
 if "--update-baseline" in sys.argv:

@@ -1,4 +1,4 @@
-/* The day 7 feedback page (/first-1000/feedback). Builds on the claim form's ff-* classes in wg-first1000-landing.css. */
+/* The day 7 feedback page (/first/feedback). Builds on the claim form's ff-* classes in wg-first1000-landing.css. */
 .fb { max-width: 560px; margin: 0 auto; padding: 24px 16px 56px; }
 .fb-card { background: #fff; border: 2px solid var(--ink); border-radius: 22px; box-shadow: 4px 4px 0 var(--ink); padding: 22px 18px 24px; }
 .fb-load { margin: 0; text-align: center; color: var(--plum-soft); }

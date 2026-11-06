@@ -1,0 +1,4 @@
+# The First 1,000 pages moved to /first/ because the old address names the final number. Cloudflare Pages reads this file.
+/first-1000 /first/ 301
+/first-1000/ /first/ 301
+/first-1000/* /first/:splat 301

@@ -1,6 +1,6 @@
 /* Wholesome Girlies: The First 1,000. Two jobs, one file, each only on its own page. The landing page and its claim form
  * are wg-first1000-form.js.
- *   /first-1000/welcome  the thank-you page: her end date, her program and the two steps she can finish now.
+ *   /first/welcome  the thank-you page: her end date, her program and the two steps she can finish now.
  *   /app/                #appFirst: the "Earn more free months" card for a member, or a short offer for a visitor
  *                        who holds no program, while places are left. The offer waits until her status is known (her account
  *                        has loaded, or her program flags are read) and is never shown to a member or a buyer.
@@ -48,7 +48,7 @@
   }
   function inviteLink(m) {
     var v = m && m.invite ? String(m.invite) : ''; if (!v) return '';
-    return /^https?:\/\//.test(v) ? v : 'https://wholesomegirlies.xyz/first-1000?invite=' + encodeURIComponent(v);
+    return /^https?:\/\//.test(v) ? v : 'https://wholesomegirlies.xyz/first?invite=' + encodeURIComponent(v);
   }
 
   // ── welcome ──
@@ -65,7 +65,7 @@
   }
 
   // ── app home ──
-  // On localhost the status answer can be previewed (?f1kleft=N, or ?f1kround=R&f1kroundtaken=M): see wg-access.js.
+  // On localhost the status answer can be previewed (?f1kcap=C&f1ktaken=T or ?f1kleft=N): see wg-access.js.
   var seq = 0;
   // Any program flag on this phone (the bundle writes all four motherhood keys), or any program in her account.
   function holdsProgram() {
@@ -89,7 +89,7 @@
         var done = isDone(m, s[0]), li = el('li', done ? 'done' : '');
         if (s[0] === 'feedback_d7' && !done) {
           li.setAttribute('data-f1k-step', 'feedback_d7');
-          if (dayOf(m) >= 7) { var fa = el('a', '', s[1]); fa.href = '/first-1000/feedback'; li.appendChild(fa); }
+          if (dayOf(m) >= 7) { var fa = el('a', '', s[1]); fa.href = '/first/feedback'; li.appendChild(fa); }
           else { var sp = el('span', '', s[1]); sp.appendChild(el('small', '', 'Opens on day 7')); li.appendChild(sp); }
         } else li.appendChild(el('span', '', s[1]));
         li.appendChild(el('b', '', '+' + s[2])); ul.appendChild(li);
@@ -100,7 +100,7 @@
         card.appendChild(el('p', '', 'You earn 2 months for each friend who joins, up to 3 friends.'));
         var row = el('div', 'row');
         var wa = el('a', 'btn btn-primary', 'Send on WhatsApp'); wa.target = '_blank'; wa.rel = 'noopener';
-        wa.href = 'https://wa.me/?text=' + encodeURIComponent('I am getting a Wholesome Girlies program free as one of the first 1,000 women. You can too: ' + link);
+        wa.href = 'https://wa.me/?text=' + encodeURIComponent('I am getting a Wholesome Girlies program free as one of the first women. You can too: ' + link);
         var cp = el('button', 'btn btn-ghost', 'Copy my invite link'); cp.type = 'button';
         cp.addEventListener('click', function () { try { navigator.clipboard.writeText(link).then(function () { cp.textContent = 'Copied'; }); } catch (e) {} });
         row.appendChild(wa); row.appendChild(cp); card.appendChild(row);
@@ -113,19 +113,16 @@
     if (holdsProgram()) return;
     WGAccess.first1000.status().then(function (s) {
       if (run !== seq || holdsProgram() || (WGAccess.signedIn() && !WGAccess.account())) return;
-      if (!s || !(s.left > 0)) return; // all 1,000 places are gone: no offer
+      if (!s || typeof s.cap !== 'number') return; // no count: no offer
       var card = el('section', 'card f1k-app f1k-offer'); card.appendChild(el('h2', '', 'Get a program free'));
-      var round = typeof s.round === 'number', roundFull = round && !s.round_open;
-      if (roundFull) {
-        // The open round is full: say so and point to the waiting list on the First 1,000 page.
-        card.appendChild(el('p', '', 'Round ' + s.round + ' is full. The next round opens soon.'));
-        var wl = el('a', 'btn btn-primary', 'Tell me when it opens →'); wl.href = '/first-1000'; card.appendChild(wl);
+      if (!(s.open && s.left > 0)) {
+        // The cap is full and paused: say so and point to the waiting list on the First 1,000 page.
+        card.appendChild(el('p', '', 'All ' + fmtN(s.cap) + ' places are taken.'));
+        var wl = el('a', 'btn btn-primary', 'Tell me if a place opens →'); wl.href = '/first'; card.appendChild(wl);
         host.appendChild(card); host.hidden = false; return;
       }
-      if (!s.open) return;
-      var rl = round ? s.round_left : s.left, rs = round ? s.round_size : 1000;
-      card.appendChild(el('p', '', 'This offer is for the first 1,000 women. ' + (round ? 'Round ' + s.round + ' is open: ' + fmtN(rl) + ' of ' + fmtN(rs) + (rl === 1 ? ' places is' : ' places are') + ' left.' : fmtN(s.left) + (s.left === 1 ? ' place is' : ' places are') + ' left.')));
-      var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first-1000'; card.appendChild(a);
+      card.appendChild(el('p', '', 'This offer is for the first ' + fmtN(s.cap) + ' women. ' + fmtN(s.left) + ' of ' + fmtN(s.cap) + (s.left === 1 ? ' places is' : ' places are') + ' left.'));
+      var a = el('a', 'btn btn-primary', 'Claim my place →'); a.href = '/first'; card.appendChild(a);
       var si = el('p', 'muted'); si.appendChild(d.createTextNode('Already bought? ')); var sl = el('a', '', 'Sign in'); sl.href = '/signin/'; si.appendChild(sl); card.appendChild(si);
       host.appendChild(card); host.hidden = false;
     });

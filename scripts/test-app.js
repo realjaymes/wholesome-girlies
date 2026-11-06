@@ -96,9 +96,9 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   await ph2.evaluate(() => { localStorage.setItem('wg_random_last', 'x'); localStorage.setItem('wg_pill_off', '1'); }); await wait(1600);
   ok('phone: spinning for a game is not a saved entry (no bar)', !(await ph2.$('.wg-app-bar')));
   // 7. the footer rule (CLAUDE.md section 10): a browser tab shows the full footer at every width; the installed app, program sales
-  // pages, /go/ pages, thank-you and reader pages keep the two short lines; /first-1000 is full. Then the sales page Back button.
+  // pages, /go/ pages, thank-you and reader pages keep the two short lines; /first is full. Then the sales page Back button.
   const footKids = f => [...f.children].filter(c => getComputedStyle(c).display !== 'none' && c.offsetHeight).map(c => c.className).join(',');
-  for (const [u, w, want] of [['/tools/', 390, 'full'], ['/tools/', 1280, 'full'], ['/', 1280, 'full'], ['/', 390, 'full'], ['/first-1000', 390, 'full'], ['/first-1000', 1280, 'full'],
+  for (const [u, w, want] of [['/tools/', 390, 'full'], ['/tools/', 1280, 'full'], ['/', 1280, 'full'], ['/', 390, 'full'], ['/first', 390, 'full'], ['/first', 1280, 'full'],
                               ['/tools/?preview=installed', 390, 'short'], ['/legal/privacy?preview=installed', 1280, 'short'],
                               ['/programs/wife-material-blueprint', 390, 'short'], ['/programs/wife-material-blueprint', 1280, 'short'],
                               ['/programs/postpartum-reset/thank-you', 1280, 'short'], ['/programs/postpartum-reset/read', 390, 'short']]) {

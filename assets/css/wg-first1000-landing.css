@@ -1,4 +1,4 @@
-/* The First 1,000 landing page (/first-1000): a story of the stages, then the claim form in a sheet (full screen on a phone, a modal on a computer).
+/* The First 1,000 landing page (/first): a story of the stages, then the claim form in a sheet (full screen on a phone, a modal on a computer).
  * Tokens come from styles.css (the sticker look). html[data-stage], set by wg-first1000-form.js from ?stage= or her pick,
  * gives --s, --st and --s-on, so the page takes her stage's colour. */
 
@@ -35,10 +35,8 @@ main.fx ~ footer.site-footer { margin-top: 0; }
 .fx-taken { background: #fff; border: 2px solid var(--ink); border-radius: 20px; box-shadow: var(--sticker); padding: 22px; text-align: center; }
 .fx-taken[hidden] { display: none; }
 .fx-taken h2 { font-size: 1.5rem; }
-html.fx-full [data-claim], html.fx-full .fx-cta-fine, html.fx-full .fx-floatbar, html.fx-full .fx-sheet { display: none !important; }
+html.fx-full [data-claim], html.fx-full .fx-cta-fine, html.fx-full .fx-floatbar, html.fx-full [data-taken-meter], html.fx-full .fx-sheet:not([open]) { display: none !important; }
 html.fx-full .fx-final { display: none !important; }
-/* A full round (not all 1,000): the claim buttons give way to the waiting list. */
-html.fx-round-full [data-claim], html.fx-round-full .fx-cta-fine, html.fx-round-full [data-taken-meter], html.fx-round-full .fx-floatbar, html.fx-round-full .fx-sheet:not([open]) { display: none !important; }
 
 /* her program in the hero */
 .fx-fan { position: relative; display: flex; justify-content: center; padding: 6px 0 4px; }
@@ -285,16 +283,18 @@ main { padding-bottom: 76px; }
 .fx-final-cta .btn { margin: 0; }
 .fx-final-cta .fx-taken[data-taken-meter] { margin-top: 12px; max-width: none; contain: inline-size; text-align: center; }
 .fx-final-cta .fx-taken-line { text-align: center; }
-.fx-final-cta .fx-wait { width: min(420px, calc(100vw - 32px)); }
 
-/* the waiting list shown when the open round is full */
+/* the waiting list shown when the cap is full and James has paused it */
 .fx-wait[hidden] { display: none; }
 .fx-wait-line { margin: 18px 0 0; font-weight: 800; font-size: 1.1rem; }
 .fx-wait .wgc-form { margin-top: 12px; max-width: 420px; }
 .fx-wait .wgc-form .btn { justify-self: stretch; }
 .fx-wait-note { margin: 8px 0 0; font-size: .85rem; font-weight: 700; }
-.fx-final .fx-wait .wgc-form .btn { background: #fff; color: var(--ink); }
 .fx-sheet .fx-wait { margin-top: 6px; }
 .fx-sheet .fx-wait-line { margin-top: 0; font-size: 1.25rem; }
 
 .fx-final .fx-taken-track i { background: var(--ink); }
+.fx-taken .fx-wait-box { max-width: 420px; margin: 12px auto 0; }
+.fx-taken .wgc-form { text-align: left; }
+.fx-taken-programs { margin: 14px 0 0; font-weight: 800; }
+.fx-taken .wgc-form .btn { justify-self: stretch; }
