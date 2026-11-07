@@ -54,6 +54,8 @@ const typeAndSave = async (page, inputSel, formSel, v) => {
   await page.$eval(inputSel, (e, v) => { e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); }, v);
   await page.$eval(formSel + ' button[type=submit]', (b) => b.click()); await wait(300);
 };
+// The only place on the app home to type a name is under "Back up or restore" (the ask card is gone; the capture takes the name with an email).
+const saveName = async (page, v) => { await page.$eval('.app-backup-next', (d) => { d.open = true; }); await typeAndSave(page, '#appNameInput', '#appNameForm', v); };
 const setName = (page, name) => page.evaluate((k, n) => localStorage.setItem(k, JSON.stringify({ v: 1, name: n, asked: true })), KEY, name);
 const answerGirlsGirl = async (page) => {
   await page.evaluate(() => { for (let i = 0; i < 10; i++) { const r = document.querySelector('input[name="s' + i + '"][value="0"]'); if (r) r.checked = true; } readFriend(); });
@@ -69,38 +71,34 @@ const GG = '/relationships/tools/girls-girl-quiz';
   {
     const page = await newPage({ tag: 'ask' });
     await go(page, '/app/?preview=installed');
-    ok('first open: the app home asks "What should we call you?"', await shown(page, '#appAsk') && /What should we call you\?/.test(await text(page, '#appAsk')));
+    ok('first open: the app home has no name ask card', !(await page.$('#appAsk')) && !(await page.$('#appAskForm')));
     ok('first open: the greeting has no name yet', (await text(page, '#appTitle')) === 'You are set');
-    ok('first open: nothing is stored before she answers', (await store(page, KEY)) === null);
-    ok('first open: the field is capped at 30 characters', (await page.$eval('#appAskName', (e) => e.maxLength)) === 30);
-    ok('first open: the ask says it stays on this phone', /stays on this phone\. We never see it/.test(await text(page, '#appAsk')));
+    ok('first open: nothing is stored before she gives a name', (await store(page, KEY)) === null);
+    ok('first open: the name field is capped at 30 characters', (await page.$eval('#appNameInput', (e) => e.maxLength)) === 30);
     await shot(page, 'name-1-first-open');
-    await typeAndSave(page, '#appAskName', '#appAskForm', '  ' + NAME + '  ');
+    await saveName(page, '  ' + NAME + '  ');
     const st = await jstore(page, KEY);
     ok('save: stored as one entry with the name and the asked flag', st && st.v === 1 && st.name === NAME && st.asked === true, JSON.stringify(st));
-    ok('save: the ask is gone and the greeting uses the name', !(await shown(page, '#appAsk')) && (await text(page, '#appTitle')) === 'You are set, ' + NAME);
-    ok('save: a line says where to change it', /Change it under Back up or restore/.test(await text(page, '#appAskDone')));
+    ok('save: the greeting uses the name', (await text(page, '#appTitle')) === 'You are set, ' + NAME);
+    ok('save: a message says it is saved on this phone', /saved on this phone/i.test(await text(page, '#appMsg')));
     await shot(page, 'name-2-saved-first-open');
     await reload(page);
     ok('reload: the greeting reads "Welcome back, <name>"', (await text(page, '#appTitle')) === 'Welcome back, ' + NAME, await text(page, '#appTitle'));
-    ok('reload: the ask does not come back', !(await shown(page, '#appAsk')));
-    ok('reload: her guide still sits beside the greeting', await page.evaluate(() => !!document.querySelector('#appHero .ph-hero-img, #appHero .app-girls') && !document.getElementById('appSayGuide').hidden));
+    ok('reload: the greeting stands on its own (the guide picture moved off the app home with the redesign)', await page.evaluate(() => !document.querySelector('#appHero .ph-hero-img, #appHero .app-girls') && document.getElementById('appSayGuide').hidden));
     await shot(page, 'name-3-welcome-back');
-    ok('browser tab (not installed): the greeting also carries the name', await (async () => { await go(page, '/app/'); return /^Wholesome Girlies on your phone, Adaeze$/.test(await text(page, '#appTitle')); })());
+    ok('browser tab (not installed): the greeting also carries the name', await (async () => { await go(page, '/app/'); return /^Welcome back, Adaeze$/.test(await text(page, '#appTitle')); })());
     await page._ctx.close();
   }
 
-  // ── 2. skip hides the ask for good ────────────────────────────────────
+  // ── 2. the app home never asks; she can still add a name under Back up or restore ──
   {
     const page = await newPage({ tag: 'skip' });
     await go(page, '/app/?preview=installed');
-    await page.$eval('#appAskSkip', (a) => a.click()); await wait(250);
-    const st = await jstore(page, KEY);
-    ok('skip: the ask hides and the skip is remembered with no name', !(await shown(page, '#appAsk')) && st && st.asked === true && st.name === '', JSON.stringify(st));
+    ok('no ask: the app home shows no name card and stores nothing', !(await page.$('#appAsk')) && (await store(page, KEY)) === null);
     await reload(page); await go(page, '/app/?preview=installed');
-    ok('skip: the ask never comes back, and the greeting has no name', !(await shown(page, '#appAsk')) && (await text(page, '#appTitle')) === 'Welcome back');
-    ok('skip: she can still add a name under Back up or restore', await page.evaluate(() => { const f = document.getElementById('appNameForm'); return !!f && !!f.closest('details'); }));
-    ok('skip: Remove my name is hidden when no name is saved', !(await shown(page, '#appNameRemove')) || await page.$eval('#appNameRemove', (e) => e.hidden));
+    ok('no ask: after a reload there is still none, and the greeting has no name', !(await page.$('#appAsk')) && (await text(page, '#appTitle')) === 'Welcome back');
+    ok('no ask: she can add a name under Back up or restore', await page.evaluate(() => { const f = document.getElementById('appNameForm'); return !!f && !!f.closest('details'); }));
+    ok('no ask: Remove my name is hidden when no name is saved', !(await shown(page, '#appNameRemove')) || await page.$eval('#appNameRemove', (e) => e.hidden));
     await page._ctx.close();
   }
 
@@ -108,7 +106,7 @@ const GG = '/relationships/tools/girls-girl-quiz';
   {
     const page = await newPage({ tag: 'edit' });
     await go(page, '/app/?preview=installed');
-    await typeAndSave(page, '#appAskName', '#appAskForm', NAME);
+    await saveName(page, NAME);
     await page.$eval('.app-backup-next', (d) => { d.open = true; });
     ok('edit: the closing area holds her name field, filled in', (await page.$eval('#appNameInput', (e) => e.value)) === NAME);
     ok('edit: the closing area says it goes into the backup', /It goes into your backup, so it comes back when you restore/.test(await page.$eval('.app-backup-next', (e) => e.textContent)));
@@ -120,10 +118,9 @@ const GG = '/relationships/tools/girls-girl-quiz';
     await page.$eval('#appNameRemove', (b) => b.click()); await wait(300);
     const st = await jstore(page, KEY);
     ok('remove: the name is gone, the asked flag stays', st && st.name === '' && st.asked === true, JSON.stringify(st));
-    ok('remove: the greeting drops the name and the ask stays away', (await text(page, '#appTitle')) === 'You are set' && !(await shown(page, '#appAsk')));
+    ok('remove: the greeting drops the name', (await text(page, '#appTitle')) === 'You are set');
     ok('remove: the message says it is removed from this phone', /removed from this phone/.test(await text(page, '#appMsg')));
     await reload(page);
-    ok('remove: still no ask after a reload', !(await shown(page, '#appAsk')));
     await typeAndSave(page, '#appNameInput', '#appNameForm', '   ');
     ok('edit: a blank field saves nothing', (await jstore(page, KEY)).name === '');
     await page._ctx.close();
@@ -134,13 +131,13 @@ const GG = '/relationships/tools/girls-girl-quiz';
     const page = await newPage({ tag: 'xss' });
     await go(page, '/app/?preview=installed');
     const tag = '<img src=x onerror=__x=1>';
-    await typeAndSave(page, '#appAskName', '#appAskForm', tag);
+    await saveName(page, tag);
     ok('script-tag name: shown as text in the greeting', (await text(page, '#appTitle')).endsWith(tag) && (await page.$$('#appTitle img')).length === 0);
     ok('script-tag name: nothing ran and no element was made', await page.evaluate(() => !window.__x && !document.querySelector('img[src="x"]')));
     await page._ctx.close();
     const p2 = await newPage({ tag: 'cap' });
     await go(p2, '/app/?preview=installed');
-    await typeAndSave(p2, '#appAskName', '#appAskForm', 'Oluwatoyosi\n  Ngozi   Chinwe   Adebayo   Obiora');
+    await saveName(p2, 'Oluwatoyosi\n  Ngozi   Chinwe   Adebayo   Obiora');
     const n = (await jstore(p2, KEY)).name;
     ok('sanitise: trimmed, spaces collapsed, capped at 30 characters', n.length <= 30 && !/\s{2}|\n/.test(n) && n === n.trim() && n.startsWith('Oluwatoyosi Ngozi'), JSON.stringify(n));
     // a value planted in storage, not typed: control characters go, length is capped on read
@@ -234,7 +231,7 @@ const GG = '/relationships/tools/girls-girl-quiz';
   {
     const page = await newPage({ tag: 'backup' });
     await go(page, '/app/?preview=installed');
-    await typeAndSave(page, '#appAskName', '#appAskForm', NAME);
+    await saveName(page, NAME);
     const rt = await page.evaluate(async (k) => {
       let blob; const orig = URL.createObjectURL; URL.createObjectURL = (b) => { blob = b; return 'blob:x'; };
       const click = HTMLAnchorElement.prototype.click; HTMLAnchorElement.prototype.click = function () {};
@@ -248,15 +245,15 @@ const GG = '/relationships/tools/girls-girl-quiz';
     ok('backup code: the name is in the backup', rt.inBackup, JSON.stringify(rt));
     ok('backup code: restore puts the name back exactly', rt.same, JSON.stringify(rt));
     await go(page, '/app/?preview=installed');
-    ok('backup code: after a restore the greeting has her name and the ask stays away', (await text(page, '#appTitle')) === 'Welcome back, ' + NAME && !(await shown(page, '#appAsk')));
+    ok('backup code: after a restore the greeting has her name and the ask stays away', (await text(page, '#appTitle')) === 'Welcome back, ' + NAME && !(await page.$('#appAsk')));
     // restoring a backup onto a fresh phone brings the name and the asked flag
     const fresh = await newPage({ tag: 'fresh' });
     await go(fresh, '/app/?preview=installed');
     const n = await fresh.evaluate(async (k, name) => WGApp.restoreBackup(new File([JSON.stringify({ app: 'wholesome-girlies', v: 1, entries: { [k]: JSON.stringify({ v: 1, name, asked: true }) } })], 'b.json')), KEY, 'Chioma');
     await go(fresh, '/app/?preview=installed');
-    ok('backup code: a fresh phone restores the name and is not asked', n === 1 && /Chioma$/.test(await text(fresh, '#appTitle')) && !(await shown(fresh, '#appAsk')));
-    await fresh._ctx.close();
-    await page._ctx.close();
+    ok('backup code: a fresh phone restores the name and is not asked', n === 1 && /Chioma$/.test(await text(fresh, '#appTitle')) && !(await fresh.$('#appAsk')));
+    await fresh._ctx.close().catch(() => {});
+    await page._ctx.close().catch(() => {});
   }
 
   // ── 9. no install bar from a name, and no tool activity ───────────────
@@ -278,18 +275,19 @@ const GG = '/relationships/tools/girls-girl-quiz';
     await setName(app, NAME);
     await go(app, '/app/');
     ok('activity: a name alone shows no saved tools and no program pick', !(await shown(app, '#appMine')) && !(await shown(app, '#appPick')) && !(await shown(app, '#appMore')));
-    ok('activity: a name alone still shows the stage line', await shown(app, '#appStages'));
+    ok('activity: a name alone shows the stage picker in the today row (the old stage line is gone from the app home)', !(await app.$('#appStages')) && (await shown(app, '#appToday')));
     ok('activity: the name key is not read as a saved tool', await app.evaluate(() => WGApp.savedKeys().includes('wg_name_v1') && document.querySelectorAll('#appSaved .ph-tool').length === 0));
-    await app._ctx.close();
+    await app._ctx.close().catch(() => {});
+    await wait(500);
   }
 
   // ── 10. storage blocked ───────────────────────────────────────────────
   {
     const page = await newPage({ tag: 'blocked', blocked: true });
     await go(page, '/app/?preview=installed');
-    ok('blocked: the app home still loads and asks', await shown(page, '#appAsk') && /^(You are set|Welcome back)$/.test(await text(page, '#appTitle')));
-    await typeAndSave(page, '#appAskName', '#appAskForm', NAME);
-    ok('blocked: Save says it could not save, and does not claim it did', /could not save/.test(await text(page, '#appAskDone')) && !(await text(page, '#appTitle')).includes(NAME) && await shown(page, '#appAsk'));
+    ok('blocked: the app home still loads', /^(You are set|Welcome back)$/.test(await text(page, '#appTitle')));
+    await saveName(page, NAME);
+    ok('blocked: Save says it could not save, and does not claim it did', /could not save/.test(await text(page, '#appMsg')) && !(await text(page, '#appTitle')).includes(NAME));
     await go(page, '/programs/first-pregnancy-plan/thank-you');
     ok('blocked: a program home still loads with its normal heading', (await text(page, '.ph-top h1')) === 'Your Plan, your community and your tools are all here.');
     await go(page, GG); await answerGirlsGirl(page);

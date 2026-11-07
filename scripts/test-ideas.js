@@ -51,7 +51,7 @@ const HOME = (stage, slug) => ({ ['wg_' + (stage === 'postpartum' ? 'pp' : stage
   // Idea 2: this week
   t = await open({ wg_stage_pregnancy_v1: { v: 1, due: plus(120), }, wg_stage_check_v1: { v: 1, due: plus(120) } }, '/app/');
   const wk = await txt(t.page, 'week');
-  ok('2 this week card with the week title', /Week \d+/.test(wk), wk.slice(0, 80));
+  ok('2 the separate this-week card is gone from the app home (the today row carries the week)', wk === '' && !(await card(t.page, 'week')), wk.slice(0, 80));
   await shot(t.page, 'idea2-week'); await t.close();
   t = await open({ wg_stage_pregnancy_v1: { v: 1, due: plus(-40) } }, '/app/');
   ok('2 no week card long after the due date', !(await card(t.page, 'week'))); await t.close();
@@ -65,7 +65,7 @@ const HOME = (stage, slug) => ({ ['wg_' + (stage === 'postpartum' ? 'pp' : stage
   // Idea 9: finish getting a program
   const ts = Date.now() - 3 * 864e5;
   t = await open({ wg_lead: { name: 'A', email: 'a@b.co', product: 'The First Pregnancy Plan', ts } }, '/app/?wg_region=open');
-  ok('9 finish card after a recent checkout', !!(await card(t.page, 'finish')), await txt(t.page, 'finish')); await shot(t.page, 'idea9-finish'); await t.close();
+  ok('9 no finish-your-purchase card on the app home (one offer card only, rule book)', !(await card(t.page, 'finish')), await txt(t.page, 'finish')); await shot(t.page, 'idea9-finish'); await t.close();
   t = await open({ wg_lead: { name: 'A', email: 'a@b.co', product: 'The First Pregnancy Plan', ts } }, '/app/?wg_region=consent');
   ok('9 no finish card in a consent region', !(await card(t.page, 'finish'))); await t.close();
   t = await open({ wg_lead: { name: 'A', email: 'a@b.co', product: 'The First Pregnancy Plan', ts }, ...HOME('pregnancy', 'first-pregnancy-plan') }, '/app/?wg_region=open');
@@ -73,7 +73,7 @@ const HOME = (stage, slug) => ({ ['wg_' + (stage === 'postpartum' ? 'pp' : stage
 
   // Idea 13: streak
   t = await open({ wg_daily_mummy: { streak: 3, best: 5, last: '2000-01-01' } }, '/app/');
-  ok('13 streak card names a best streak of 2 or more', /5 days/.test(await txt(t.page, 'streak')), await txt(t.page, 'streak')); await t.close();
+  ok('13 the Finish Mummy\'s Sentence streak card is gone from the app home (the day streak row replaces it)', !(await card(t.page, 'streak')), await txt(t.page, 'streak')); await t.close();
 
   // Idea 10: continue in your stage
   t = await open({ wg_stage_pregnancy_v1: { v: 1, due: plus(120) } }, '/pregnancy/tools/due-date-calculator', { wait: 1500 });
@@ -115,7 +115,7 @@ const HOME = (stage, slug) => ({ ['wg_' + (stage === 'postpartum' ? 'pp' : stage
   // Idea 3 and 4 on the program home; idea 6 lapse
   const half = { done: {}, last: 'x', at: Date.now() - 9 * 864e5, total: 10, n: 6, next: 'Lesson 7', nextId: 'l7' };
   t = await open({ ...HOME('pregnancy', 'first-pregnancy-plan'), 'wg_read_first-pregnancy-plan': half }, '/programs/first-pregnancy-plan/thank-you?wg_region=open', { wait: 2200 });
-  ok('3 bundle card at half way for a single motherhood program', !!(await t.page.$('[data-bundle-offer].ph-member')), '');
+  ok('3 no bundle card at half way (a buyer is offered the bundle once, after she finishes)', !(await t.page.$('[data-bundle-offer].ph-member')), '');
   { const bt = await t.page.evaluate(() => document.body.innerText); ok('6 lapse title names days since reading', /9 days/.test(bt), (bt.match(/.{40}since you last.{40}|UP NEXT[^]{0,200}/i) || [bt.slice(0, 200)])[0]); }
   await shot(t.page, 'idea3-bundle'); await t.close();
   t = await open({ ...HOME('pregnancy', 'first-pregnancy-plan') }, '/programs/first-pregnancy-plan/thank-you?wg_region=consent', { wait: 1000 });

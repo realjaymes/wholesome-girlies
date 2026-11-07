@@ -59,13 +59,16 @@
     h.textContent = /^Welcome in\.\s/.test(t) ? 'Welcome in, ' + n + '. ' + t.replace(/^Welcome in\.\s/, '') : n + ', ' + t.charAt(0).toLowerCase() + t.slice(1);
   });
 
-  d.addEventListener('DOMContentLoaded', function () { // the program table and her flags (wg-next.js) are ready once every deferred script has run
+  d.addEventListener('DOMContentLoaded', function () { // the rule book (wg-next.js) exists once every deferred script has run; its program table loads after, so each rule below waits for ready()
   // 5. A Complete Motherhood Journey owner is never offered the bundle again: the build script marks every next-step
   // card that offers it (or the single programs it holds) with data-bundle-offer, and those cards stay hidden for her.
-  var own = !!(w.WGNext && w.WGNext.bundleHeld());
-  // A campaign member is shown no bundle or paid card during her free months either.
-  var gifted = !!(w.WGNext && w.WGNext.active().some(function (h) { return h.gift; }));
-  if (own || gifted) [].forEach.call(d.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
+  var hide = function () {
+    var own = !!(w.WGNext && w.WGNext.bundleHeld());
+    // A campaign member is shown no bundle or paid card during her free months either.
+    var gifted = !!(w.WGNext && w.WGNext.active().some(function (h) { return h.gift; }));
+    if (own || gifted) [].forEach.call(d.querySelectorAll('[data-bundle-offer]'), function (el) { el.hidden = true; el.style.display = 'none'; });
+  };
+  if (w.WGNext && w.WGNext.ready) w.WGNext.ready().then(hide, hide); else hide();
 
   // 7. The member bundle card moves up. A buyer of a single motherhood program (never a Complete Motherhood Journey owner,
   // never Wife Material only) who has read half of her reader or all of it sees the MOTHER card under her reading card instead
@@ -75,9 +78,9 @@
   function singleMember() {
     return !!(w.WGNext && w.WGNext.paidHeld().some(function (h) { return !h.bundle && MOTHERHOOD.indexOf(h.base) > -1; }));
   }
-  (function () {
+  var moveBundle = function () {
     var rd = d.getElementById('phRead'), links = rd && rd.parentNode.querySelector('.ph-links');
-    if (!rd || !links || own || !singleMember()) return;
+    if (!rd || !links || (w.WGNext && w.WGNext.bundleHeld()) || !singleMember()) return;
     var key = rd.getAttribute('data-read-key') || '', slug = key.replace(/^wg_read_/, ''), base = slug.replace(/-diaspora$/, '');
     if (MOTHERHOOD.indexOf(base) < 0) return;
     var st = null; try { st = JSON.parse(get(key)); } catch (e) {}
@@ -96,7 +99,8 @@
     [].forEach.call(d.querySelectorAll('section[data-bundle-offer]'), function (sec) {
       if (sec.querySelector('a[href*="complete-motherhood-journey"]')) { sec.hidden = true; sec.style.display = 'none'; }
     });
-  })();
+  };
+  if (w.WGNext && w.WGNext.ready) w.WGNext.ready().then(moveBundle, moveBundle); else moveBundle();
   });
 
   // 8. In a region that asks first (Europe, the UK, Canada), with remembering off, in a browser tab: a closed card under the hero.

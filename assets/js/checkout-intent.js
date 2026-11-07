@@ -403,6 +403,11 @@
       p.parentNode.insertBefore(note, p.nextSibling);
     });
   }
-  function bundleRules() { hideBundleOffers(); applyCoupon(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bundleRules); else bundleRules();
+  // What she holds comes from the rule book, which loads the program list first, so the rules wait for it.
+  function bundleRules() {
+    var run = function () { hideBundleOffers(); applyCoupon(); };
+    if (window.WGNext && window.WGNext.ready) window.WGNext.ready().then(run, run); else run();
+  }
+  // Deferred scripts all run before DOMContentLoaded, so the rule book (a later deferred script) exists by then.
+  if (document.readyState !== 'complete') document.addEventListener('DOMContentLoaded', bundleRules); else bundleRules();
 })();

@@ -34,7 +34,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "assets/data/program-homes.json")
 START, END = "<!-- program-home:start -->", "<!-- program-home:end -->"
-ASSET_VERSION = "20261110a"
+ASSET_VERSION = "20261110c"
 CSS_TAG = f'<link rel="stylesheet" href="/assets/css/wg-program-home.css?v={ASSET_VERSION}">'
 JS_TAG = f'<script defer src="/assets/js/wg-program-home.js?v={ASSET_VERSION}"></script>'
 # Every program is sold on Bachs (James, 22 October 2026), so every home loads wg-order.js, which shows the

@@ -118,7 +118,8 @@
   }
 
   d.addEventListener('DOMContentLoaded', function () { // the manuscript's own bundle line is a paid offer: not for a campaign member
-    if (giftOnly()) [].forEach.call(d.querySelectorAll('.rd p a[href^="/programs/complete-motherhood-journey"]'), function (a) { var p = a.closest('p'); if (p) p.remove(); });
+    var trim = function () { if (giftOnly()) [].forEach.call(d.querySelectorAll('.rd p a[href^="/programs/complete-motherhood-journey"]'), function (a) { var p = a.closest('p'); if (p) p.remove(); }); };
+    if (w.WGNext && w.WGNext.ready) w.WGNext.ready().then(trim, trim); else trim();
   });
 
   // ── Who she is, for the member line and the next step ─────────────────────

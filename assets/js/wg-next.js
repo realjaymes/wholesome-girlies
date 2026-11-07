@@ -65,6 +65,8 @@
     var pre = previewStatus();
     statusP = (pre ? Promise.resolve(pre) : (w.fetch ? w.fetch(PAY + '/first1000/status').then(function (r) { return r.json(); }) : Promise.resolve(null)))
       .then(function (j) { STATUS = j && j.ok && typeof j.cap === 'number' ? j : null; return STATUS; }).catch(function () { return null; });
+    // A slow or silent server never holds a page up: after 5 seconds the count is unknown and the slot falls back to the paid program.
+    statusP = Promise.race([statusP, new Promise(function (res) { setTimeout(function () { res(null); }, 5000); })]);
     return statusP;
   }
   // The campaign fills the offer slot only while it is open and has places. Paused, full or silent, the slot holds the paid program.

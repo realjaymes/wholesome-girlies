@@ -194,7 +194,7 @@
         var href = lessonHref(pl);
         if (href) { main = mk('a', 'btn btn-primary wgs-main'); main.href = href; main.setAttribute('data-wgs', 'continue'); main.appendChild(d.createTextNode('Continue reading →')); act = 'next_lesson'; }
       } else if (w.WGNext) {
-        var S = w.WGNext.state(), stg = S && S.name === 'lapsed' ? Object.keys(S.lapsed)[0] : (pl.stage || w.WGNext.stage());
+        var S = w.WGNext.state(), stg = S && S.name === 'lapsed' ? Object.keys(S.lapsed)[0] : (pl.stage || w.WGNext.stage() || w.WGNext.pageStage);
         var f = stg ? w.WGNext.offer(stg) : null;
         if (f && f.kind !== 'none' && f.kind !== 'own') { main = w.WGNext.card(f, { inner: true, surface: 'streak-sheet' }); act = w.WGNext.actionOf(f); }
       }
@@ -473,7 +473,8 @@
         });
         oc.appendChild(on); b.appendChild(oc); return;
       }
-      if (!stage) { pickOrNeed(b, null); return; } // no stage yet: she picks one, and the app home follows it
+      if (!stage) pickOrNeed(b, null); // no stage yet: she picks one, and the app home follows it
+      if (!stage && !s.best && !s.count && !u.rest) return;
       var row = mk('div', 'wgs-row'); row.setAttribute('data-wgs', 'today');
       var ct = mk('div', 'wgs-ct', String(s.count)); ct.appendChild(mk('small', '', s.count === 1 ? 'day in a row' : 'days in a row')); row.appendChild(ct);
       var dots = mk('div', 'wgs-dots'), tt = now();
@@ -484,6 +485,7 @@
         dots.appendChild(dot);
       }
       row.appendChild(dots); b.appendChild(row);
+      restLine(b, s, u);
       var line = mk('p', 'wgs-src', sayLine(s, u, doneToday)); b.appendChild(line);
       if (res && (res.card || res.need)) {
         var det = mk('details', 'wgs-todayd'); det.appendChild(mk('summary', '', doneToday ? 'Today’s card' : 'Read today’s card'));

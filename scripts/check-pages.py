@@ -409,7 +409,7 @@ if "app/index.html" in SRC:
         if re.search(r"\bcommunity\b", _help.group(1), flags=re.I):
             fail("app/index.html", 'the Get help card must not call the open Telegram group "the community"')
     _wga = read("assets/js/wg-app.js")
-    if "    tabBar();\n    appFooter();" not in _wga:
+    if not re.search(r"\n    (afterNext\(tabBar\)|tabBar\(\));[^\n]*\n    appFooter\(\);", _wga):
         fail("assets/js/wg-app.js", "every page must end like the installed app in a browser tab too: the tab bar and the footer rule")
     # Stage, checkout and streak cards (wg-ideas.js) and the shared week logic (wg-weeks.js).
     if not re.search(r"TOOL_KEY\s*=.*stage_check_v1\$.*install_test_v1\$", _wga):

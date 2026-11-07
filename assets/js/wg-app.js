@@ -270,7 +270,7 @@
     if (inApp && !standalone && /^\/programs\/[^/]+\/thank-you$/.test(path)) inAppCard();
     // Every page gets the tab bar in a browser tab (hidden on wide screens, where the header does its job). The footer is
     // the full site footer in a browser tab and the two short lines in the installed app and on the pages named at appFooter().
-    tabBar();
+    afterNext(tabBar); // her programs come from the rule book, which loads the program table first
     appFooter();
     appWords();
   });
@@ -324,6 +324,7 @@
     tools: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
     program: '<path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M9 9h6M9 13h6"/>'
   };
+  function afterNext(fn) { if (w.WGNext && w.WGNext.ready) w.WGNext.ready().then(fn, fn); else fn(); }
   function tabBar() {
     if (d.getElementById('wg-app-nav') || d.getElementById('wg-back')) return;
     style();
@@ -610,9 +611,11 @@
     f.parentNode.appendChild(note);
   });
   d.addEventListener('DOMContentLoaded', function () {
-    var list = owned();
-    if (!list.length) return;
-    mineStyle(); headerMenu(list); programBlocks(list); pill(list);
+    afterNext(function () {
+      var list = owned();
+      if (!list.length) return;
+      mineStyle(); headerMenu(list); programBlocks(list); pill(list);
+    });
   });
 
   w.WGApp = {

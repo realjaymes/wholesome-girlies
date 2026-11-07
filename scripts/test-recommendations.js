@@ -24,7 +24,7 @@ async function newPage(opts = {}) {
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   await page.setUserAgent(IPHONE);
   // a test never reaches a real endpoint (the Checkout Intents sheet)
-  await page.evaluateOnNewDocument(() => { window.fetch = () => Promise.resolve(new Response('{}', { status: 200 })); });
+  await page.evaluateOnNewDocument(() => { const real = window.fetch.bind(window); window.fetch = (u, o) => (/^\/(assets|programs)\//.test(String(u).replace(location.origin, '')) ? real(u, o) : Promise.resolve(new Response('{}', { status: 200 }))); });
   if (opts.blocked) await page.evaluateOnNewDocument(() => { Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('blocked', 'SecurityError'); } }); });
   page.on('pageerror', (e) => errs.push((opts.tag || '') + ' ' + e.message));
   page._ctx = ctx;
@@ -41,10 +41,10 @@ async function lab(page, id, t = 0) {
   await wait(900);
 }
 const vis = (page, sel) => page.evaluate((sel) => [...document.querySelectorAll(sel)].some((e) => !e.hidden && (e.offsetWidth || e.offsetHeight) && getComputedStyle(e).display !== 'none'), sel);
-const picks = (page) => page.evaluate(() => [...document.querySelectorAll('#appPickCard .app-pick')].map((c) => ({
-  h: c.querySelector('h3').textContent, href: c.querySelector('a.btn').getAttribute('href'),
-  line: (c.querySelector('.app-bundle-line') || {}).textContent || '', lineHref: (c.querySelector('.app-bundle-line a') || {}).getAttribute ? c.querySelector('.app-bundle-line a').getAttribute('href') : '' })));
-const pickBox = (page) => vis(page, '#appPick');
+// the app home's one offer card (#appMain, the rule book): its program name, link and whether a bundle is mentioned
+const picks = (page) => page.evaluate(() => [...document.querySelectorAll('#appMain .wgn-offer')].map((c) => ({
+  h: c.querySelector('h3').textContent.replace(/^Get | free$/g, ''), href: c.querySelector('a.btn').getAttribute('href'), line: /Covers every stage|Complete Motherhood/.test(c.textContent) ? c.textContent : '', lineHref: '' })));
+const pickBox = (page) => vis(page, '#appMain .wgn-offer');
 const mainText = (page) => page.evaluate(() => {
   const m = document.querySelector('main'); if (!m) return '';
   const keep = [];
@@ -55,7 +55,7 @@ const mainText = (page) => page.evaluate(() => {
 const store = (page, k) => page.evaluate((k) => localStorage.getItem(k), k);
 const hrefs = (page, sel) => page.evaluate((sel) => [...document.querySelectorAll(sel)].filter((e) => { for (let x = e; x; x = x.parentElement) if (x.hidden || getComputedStyle(x).display === 'none') return false; return true; }).map((a) => a.getAttribute('href')), sel);
 const shot = async (page, name) => { if (!SHOTS) return;
-  await page.evaluate(() => { const t = [...document.querySelectorAll('#appPick,#appStages')].find((e) => !e.hidden && e.offsetHeight); if (t && /^\/app/.test(location.pathname)) { t.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); } }); await wait(700); fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: false }); };
+  await page.evaluate(() => { const t = [...document.querySelectorAll('#appMain,#appToday')].find((e) => !e.hidden && e.offsetHeight); if (t && /^\/app/.test(location.pathname)) { t.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); } }); await wait(700); fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, name + '.png'), fullPage: false }); };
 const BUNDLE = '/programs/complete-motherhood-journey';
 const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'first-pregnancy-plan'], ['pp', 'postpartum-reset'], ['parenting', 'first-baby-playbook']];
 
@@ -101,10 +101,10 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     // ---- her name: the four name scenarios ----
     page = await newPage({ tag: 'names' });
     await lab(page, 'namefirst');
-    ok('name scenario, first open: the ask shows and no name is stored', await page.evaluate(() => { const a = document.getElementById('appAsk'); return !!a && !a.hidden && localStorage.getItem('wg_name_v1') === null; }));
-    ok('name scenario, first open: the greeting is the plain one', /^You are set$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())));
+    ok('name scenario, first open: no name ask card on the app home and no name is stored', await page.evaluate(() => !document.getElementById('appAsk') && localStorage.getItem('wg_name_v1') === null));
+    ok('name scenario, first open: the greeting is the plain one', /^(You are set|Welcome back)$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())));
     await lab(page, 'name', 0);
-    ok('name scenario, saved: the app home greets Ada and does not ask', /, Ada$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())) && await page.evaluate(() => document.getElementById('appAsk').hidden));
+    ok('name scenario, saved: the app home greets Ada and does not ask', /, Ada$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())) && await page.evaluate(() => !document.getElementById('appAsk')));
     await lab(page, 'name', 1);
     await page.evaluate(() => { for (let i = 0; i < 10; i++) { const r = document.querySelector('input[name="s' + i + '"][value="0"]'); if (r) r.checked = true; } readFriend(); }); await wait(500);
     ok('name scenario, saved: the quiz result starts "Ada, you are" with an unticked box', /^Ada, you are /.test(await page.$eval('#headline', (e) => e.textContent.trim())) && await page.evaluate(() => { const t = document.querySelector('#wg-result-share [data-tick]'); return !!t && !t.checked; }));
@@ -113,56 +113,56 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     await lab(page, 'name', 3);
     ok('name scenario, saved: the Mind Check-in shows no name', !/\bAda\b/.test(await page.evaluate(() => document.body.innerText)));
     await lab(page, 'namebuyer', 0);
-    ok('name scenario, buyer: the app home greets Ada and shows her program first', /, Ada$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())) && await page.evaluate(() => !document.getElementById('appProgram').hidden));
+    ok('name scenario, buyer: the app home greets Ada and shows her program first', /, Ada$/.test(await page.$eval('#appTitle', (e) => e.textContent.trim())) && await page.evaluate(() => !document.getElementById('appMain').hidden));
     await lab(page, 'namebuyer', 1);
     ok('name scenario, buyer: her Pregnancy home heading starts "Ada, your Plan"', /^Ada, your Plan, your community and your tools are all here\.$/.test(await page.$eval('.ph-top h1', (e) => e.textContent.trim())));
     await lab(page, 'nameskip');
-    ok('name scenario, skipped: no ask and no name in the greeting', await page.evaluate(() => document.getElementById('appAsk').hidden && !/,/.test(document.getElementById('appTitle').textContent)));
+    ok('name scenario, skipped: no ask and no name in the greeting', await page.evaluate(() => !document.getElementById('appAsk') && !/,/.test(document.getElementById('appTitle').textContent)));
     ok('name scenario, skipped: Remove my name is hidden', await page.evaluate(() => document.getElementById('appNameRemove').hidden));
     await page._ctx.close();
 
     // ---- the app home, non-buyers ----
     page = await newPage({ tag: 'app' });
     await lab(page, 'new');
-    ok('new visitor: the five-stage line, no pick', (await page.$$eval('#appStages .stage-stop', (a) => a.length)) === 5 && await vis(page, '#appStages') && !(await pickBox(page)));
+    ok('new visitor: no stage line and no card (the stage picker sits in the today row)', !(await page.$('#appStages')) && !(await pickBox(page)) && await vis(page, '#appToday'));
     await shot(page, 'app-new-visitor');
 
     await lab(page, 'fert');
     let p = await picks(page);
     ok('one stage: one card, the Trying-to-Conceive Blueprint', p.length === 1 && p[0].h === 'The Trying-to-Conceive Blueprint' && p[0].href === '/programs/trying-to-conceive-blueprint', JSON.stringify(p));
-    ok('one stage: no bundle line, stage cards gone', !p[0].line && !(await vis(page, '#appStages')));
+    ok('one stage: no bundle line, no price, no stage cards', !p[0].line && !(await page.$('#appStages')) && !/[₦$]\s?\d/.test(await page.$eval('#appMain', (e) => e.textContent)));
     ok('one stage: nothing she did went into the dataLayer', await page.evaluate(() => !JSON.stringify(window.dataLayer || []).includes('trying-to-conceive')));
     await shot(page, 'app-one-stage');
 
     await lab(page, 'relfert');
     p = await picks(page);
-    ok('relationships plus fertility: two cards, fertility first', p.length === 2 && p[0].h === 'The Trying-to-Conceive Blueprint' && p[1].h === 'The Wife Material Blueprint', JSON.stringify(p.map((x) => x.h)));
-    ok('two picks: neither shows a bundle line', !p[0].line && !p[1].line);
+    ok('relationships plus fertility: one card, for fertility (the stage she uses most)', p.length === 1 && p[0].h === 'The Trying-to-Conceive Blueprint', JSON.stringify(p.map((x) => x.h)));
+    ok('one card: no bundle line', !p[0].line);
     await shot(page, 'app-two-picks');
 
     await lab(page, 'two');
     p = await picks(page);
     ok('two motherhood stages: the top stage single, not a third card', p.length === 1 && p[0].h === 'The Trying-to-Conceive Blueprint', JSON.stringify(p.map((x) => x.h)));
-    ok('two motherhood stages: bundle line with a link to the bundle', /Covers every stage, from trying to the baby years/.test(p[0].line) && p[0].lineHref === BUNDLE, JSON.stringify(p[0]));
+    ok('two motherhood stages: the app home does not mention the bundle', !p[0].line && !(await hrefs(page, `#appMain a[href^="${BUNDLE}"]`)).length, JSON.stringify(p[0]));
     await shot(page, 'app-two-stages-bundle-line');
 
     await lab(page, 'three');
     p = await picks(page);
-    ok('three motherhood stages: the pick is the bundle', p.length === 1 && p[0].h === 'The Complete Motherhood Journey' && p[0].href === BUNDLE, JSON.stringify(p));
-    ok('three motherhood stages: the bundle line names every stage', /trying, pregnancy, the first six weeks and the baby years/.test(await page.$eval('#appPickCard', (e) => e.textContent)));
+    ok('three motherhood stages: still one single-stage program card, never the bundle', p.length === 1 && p[0].h !== 'The Complete Motherhood Journey' && p[0].href !== BUNDLE && /^\/programs\//.test(p[0].href), JSON.stringify(p));
+    ok('three motherhood stages: no stage list in the card', !/trying, pregnancy, the first six weeks/.test(await page.$eval('#appMain', (e) => e.textContent)));
     await shot(page, 'app-three-stages-bundle');
 
     await lab(page, 'games');
     p = await picks(page);
-    ok('games only: finished games count, relationships (2 games) before pregnancy (1 game)', p.length === 2 && p[0].h === 'The Wife Material Blueprint' && p[1].h === 'The First Pregnancy Plan', JSON.stringify(p.map((x) => x.h)));
-    ok('games only: "More for your stage" shows for the top stage', await vis(page, '#appMore'));
-    ok('games only: stage cards hidden', !(await vis(page, '#appStages')));
+    ok('games only: finished games count, relationships (2 games) before pregnancy (1 game): one card, Wife Material', p.length === 1 && p[0].h === 'The Wife Material Blueprint', JSON.stringify(p.map((x) => x.h)));
+    ok('games only: the old More for your stage list is gone', !(await page.$('#appMore')));
+    ok('games only: stage cards gone', !(await page.$('#appStages')));
 
     // a tie: one finished game in each of two stages, the more recent one wins (list order would pick pregnancy)
     await page.evaluate(() => { localStorage.clear(); const n = Date.now(); localStorage.setItem('wg_played_v1', JSON.stringify({ '/pregnancy/tools/what-kind-of-mum': n - 600000, '/postpartum/tools/omugwo-your-mum-or-his-mum': n - 1000 })); });
     await go(page, '/app/');
     p = await picks(page);
-    ok('tie: the stage played most recently wins', p.length === 1 && p[0].h === 'The 6-Week Postpartum Reset' && /Covers every stage/.test(p[0].line), JSON.stringify(p));
+    ok('tie: the stage played most recently wins', p.length === 1 && p[0].h === 'The 6-Week Postpartum Reset' && !p[0].line, JSON.stringify(p));
     await page.evaluate(() => { const n = Date.now(); localStorage.setItem('wg_played_v1', JSON.stringify({ '/pregnancy/tools/what-kind-of-mum': n - 1000, '/postpartum/tools/omugwo-your-mum-or-his-mum': n - 600000 })); });
     await go(page, '/app/');
     p = await picks(page);
@@ -171,7 +171,7 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem('wg_ttc_checklist_v1', '{"0":true}'); localStorage.setItem('wg_played_v1', JSON.stringify({ '/pregnancy/tools/what-kind-of-mum': Date.now() })); });
     await go(page, '/app/');
     p = await picks(page);
-    ok('weights: one saved tool (2) beats one finished game (1)', p.length === 1 && p[0].h === 'The Trying-to-Conceive Blueprint' && /Covers every stage/.test(p[0].line), JSON.stringify(p));
+    ok('weights: one saved tool (2) beats one finished game (1)', p.length === 1 && p[0].h === 'The Trying-to-Conceive Blueprint' && !p[0].line, JSON.stringify(p));
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem('wg_played_v1', 'not json'); localStorage.setItem('wg_ttc_checklist_v1', '{"0":true}'); });
     await go(page, '/app/');
     ok('a bad played marker is ignored', (await picks(page)).length === 1);
@@ -181,9 +181,8 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     page = await newPage({ tag: 'wm' });
     await lab(page, 'wmbuyer', 0);
     p = await picks(page);
-    ok('Wife Material buyer: one card for her fertility activity', p.length === 1 && p[0].h === 'The Trying-to-Conceive Blueprint', JSON.stringify(p));
-    ok('Wife Material buyer: full price, so no coupon in any link', !/coupon/.test(JSON.stringify(p)) && !/MOTHER/.test(await page.$eval('#appPick', (e) => e.textContent)));
-    ok('Wife Material buyer: Wife Material is not recommended back to her', !p.some((x) => /Wife Material/.test(x.h)));
+    ok('Wife Material buyer: the app home shows no program offer (her main action is her own lesson; the next stage is offered on the tool and hub pages)', p.length === 0, JSON.stringify(p));
+    ok('Wife Material buyer: no coupon and no MOTHER on the app home', !/coupon|MOTHER/.test(await page.$eval('main', (e) => e.innerHTML)));
     await shot(page, 'app-wife-material-buyer');
     await lab(page, 'wmbuyer', 1);
     let txt = await mainText(page);
@@ -200,7 +199,7 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
 
     await lab(page, 'wmbuyerd', 0);
     p = await picks(page);
-    ok('diaspora Wife Material buyer: the pick links to the diaspora page', p.length === 1 && p[0].href === '/programs/trying-to-conceive-blueprint-diaspora', JSON.stringify(p));
+    ok('diaspora Wife Material buyer: the app home shows no program offer either', p.length === 0, JSON.stringify(p));
     await lab(page, 'wmbuyerd', 1);
     hs = await hrefs(page, '.ph-card a');
     ok('diaspora Wife Material home: diaspora links, no coupon, no MOTHER', hs.includes('/programs/trying-to-conceive-blueprint-diaspora') && hs.includes(BUNDLE + '-diaspora') && !hs.some((h) => /coupon/.test(h)) && !/MOTHER/.test(await mainText(page)), JSON.stringify(hs));
@@ -212,11 +211,11 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     await page.evaluate(() => { localStorage.setItem('wg_relationships_home', '{"u":"/programs/wife-material-blueprint/thank-you","l":"Wife Material home"}'); localStorage.setItem('wg_ttc_checklist_v1', '{"0":true}'); localStorage.setItem('wg_hospitalbag_v1', '{"0":true}'); });
     await go(page, '/app/');
     p = await picks(page);
-    ok('Wife Material buyer, two stages: single plus the bundle line, no coupon', p.length === 1 && /Covers every stage/.test(p[0].line) && !/coupon/.test(JSON.stringify(p)), JSON.stringify(p));
+    ok('Wife Material buyer, two stages: no offer on the app home, no coupon', p.length === 0 && !/coupon/.test(await page.$eval('main', (e) => e.innerHTML)), JSON.stringify(p));
     await page.evaluate(() => { localStorage.setItem('wg_postpartum_checklist_v1', '{"0":true}'); });
     await go(page, '/app/');
     p = await picks(page);
-    ok('Wife Material buyer, three stages: the bundle at full price', p.length === 1 && p[0].h === 'The Complete Motherhood Journey' && !/coupon/.test(JSON.stringify(p)), JSON.stringify(p));
+    ok('Wife Material buyer, three stages: still no offer on the app home', p.length === 0 && !/coupon/.test(await page.$eval('main', (e) => e.innerHTML)), JSON.stringify(p));
     // no motherhood activity: no card at all
     await page.evaluate(() => { localStorage.clear(); localStorage.setItem('wg_relationships_home', '{"u":"/programs/wife-material-blueprint/thank-you","l":"Wife Material home"}'); localStorage.setItem('wg_meet_men_v1', '{"0":true}'); });
     await go(page, '/app/');
@@ -277,7 +276,7 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     // ---- a Complete Motherhood Journey owner is never offered the bundle ----
     page = await newPage({ tag: 'owner' });
     await lab(page, 'bundleowner', 0);
-    ok('bundle owner: no recommendation on the app home, even with saved tools and games', !(await pickBox(page)) && !/Complete Motherhood Journey/.test(await page.$eval('#appPick', (e) => e.textContent)));
+    ok('bundle owner: no recommendation on the app home, even with saved tools and games', !(await pickBox(page)) && !/A program for your stage|For the first 100/i.test(await page.$eval('#appMain', (e) => e.textContent)));
     ok('bundle owner: nothing on the app home links to the bundle sales page except her own program home', !(await hrefs(page, `main a[href^="${BUNDLE}"]`)).some((h) => h === BUNDLE || /coupon/.test(h)));
     await shot(page, 'app-bundle-owner');
     for (const [i, slug] of [[1, 'trying-to-conceive-blueprint'], [2, 'postpartum-reset']]) {
@@ -328,7 +327,8 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     ok('a finished game does not offer the install bar', (await page.$$eval('.wg-app-bar', (a) => a.length)) === 0);
     ok('the played marker never reaches the dataLayer', await page.evaluate(() => !JSON.stringify(window.dataLayer || []).includes('wg_played') && !JSON.stringify(window.dataLayer || []).includes('girls-girl-quiz"') ));
     await go(page, '/fertility/tools/ttc-checklist');
-    await page.evaluate(() => localStorage.setItem('wg_ttc_checklist_v1', '{"0":true}'));
+    // the install timing test draws a random group per phone; pin the group that shows the bar after the first saved tool
+    await page.evaluate(() => { localStorage.setItem('wg_install_test_v1', JSON.stringify({ v: 1, g: 'now', s: 'x' })); localStorage.setItem('wg_ttc_checklist_v1', '{"0":true}'); });
     await wait(1800);
     ok('a saved tool entry still offers the install bar', (await page.$$eval('.wg-app-bar', (a) => a.length)) === 1);
     // a two-player game (no result page) counts when she finishes
@@ -353,7 +353,7 @@ const SINGLES = [['fertility', 'trying-to-conceive-blueprint'], ['pregnancy', 'f
     // ---- storage blocked ----
     page = await newPage({ blocked: true, tag: 'blocked' });
     await go(page, '/app/');
-    ok('storage blocked: the app home shows the stage line and no pick', (await page.$$eval('#appStages .stage-stop', (a) => a.length)) === 5 && !(await pickBox(page)));
+    ok('storage blocked: the app home shows the stage picker in the today row and no card', !(await page.$('#appStages')) && !(await pickBox(page)) && await vis(page, '#appToday'));
     await go(page, '/relationships/tools/girls-girl-quiz');
     const thrown = await page.evaluate(() => { try { window.wgPlayed(); window.wgShowResult('certified'); return false; } catch (e) { return String(e); } });
     ok('storage blocked: finishing a game throws nothing', thrown === false, thrown);

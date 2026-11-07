@@ -3,6 +3,8 @@
 // Needs the site on :8008 (python3 serve.py 8008) or WG_PORT.
 //   WG_PORT=8008 NODE_PATH=/tmp/wgog/node_modules node scripts/test-streak.js
 const T = require('./lib-wgtest.js');
+// textContent, so a card behind the "Read today's card" link (a closed details) is read too
+const tc = (page, sel) => page.$eval(sel, (e) => e.textContent).catch(() => '');
 const { ok, wait, plus, isoWeek, open, ls, reqs, text, has } = T;
 const S = (o) => ({ wg_streak_v1: Object.assign({ v: 1, count: 0, best: 0, last_day: '', rest_used_week: null, milestones: [] }, o) });
 const DATE_LIKE = /\d{4}-\d{2}-\d{2}/;
@@ -85,9 +87,9 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   t = await open(S({ count: 10, best: 10, last_day: plus(-2), rest_used_week: null }), '/app/?preview=installed', { wait: 1500 });
   s = await ls(t.page, 'wg_streak_v1');
   ok('one missed day is covered by the rest day', s.count === 10 && s.last_day === missed && s.rest_used_week === isoWeek(missed), JSON.stringify(s));
-  const body = await text(t.page, '#appToday');
+  const body = await tc(t.page, '#appToday');
   ok('the app home says the rest day was used', /rest day/.test(body) && /10-day streak is safe/.test(body), body.slice(0, 200));
-  ok('the strip shows a rest circle', await has(t.page, '.wgs-dot.rest'));
+  ok('the strip shows a rest circle', await has(t.page, '.wgs-dots i.r'));
   await t.page.evaluate(() => WGStreak.record('x'));
   s = await ls(t.page, 'wg_streak_v1');
   ok('the next action makes day 11', s.count === 11);
@@ -97,7 +99,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   t = await open(S({ count: 12, best: 12, last_day: plus(-2), rest_used_week: isoWeek(missed) }), '/app/?preview=installed', { wait: 1500 });
   s = await ls(t.page, 'wg_streak_v1');
   ok('a second miss in a week ends the streak and keeps the best', s.count === 0 && s.best === 12, JSON.stringify(s));
-  const tx = await text(t.page, '#appToday');
+  const tx = await tc(t.page, '#appToday');
   ok('the ended message is kind', /Your last streak was 12 days\. That is your best, and it stays\./.test(tx), tx.slice(0, 260));
   await t.page.evaluate(() => WGStreak.record('x'));
   s = await ls(t.page, 'wg_streak_v1');
@@ -132,7 +134,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   // not signed in: nothing is sent
   t = await open(S({ count: 6, best: 6, last_day: plus(-1) }), '/tools/');
   await t.page.evaluate(() => WGStreak.record('x')); await wait(500);
-  ok('not signed in: no request to the server', (await reqs(t.page)).length === 0);
+  ok('not signed in: no request to the server', (await reqs(t.page)).filter((r) => r.path !== '/first1000/status').length === 0);
   await t.close();
   // a milestone on a quiet page waits
   t = await open(S({ count: 2, best: 2, last_day: plus(-1) }), '/postpartum/tools/mind-check-in');
@@ -143,20 +145,21 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
 
   // app home: option B
   t = await open({}, '/app/?preview=installed', { wait: 1500 });
-  const first = await text(t.page, '#appToday');
-  ok('day 1: the rule card on the first open', /Start your streak/.test(first) && /Miss one day a week and your streak is safe\./.test(first), first.slice(0, 200));
+  const first = await tc(t.page, '#appToday');
+  ok('day 1: no rule card; with no stage she picks one', !/Start your streak/.test(first) && /Which stage are you in\?/.test(first), first.slice(0, 200));
   await t.close();
   t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1) }), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) }, wg_streak_ui_v1: { v: 1, rule: plus(-6), first: plus(-6), days: [1, 2, 3, 4, 5, 6].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });
-  const b = await text(t.page, '#appToday');
+  await t.page.$eval('#appToday summary', (e) => e.click());
+  const b = await tc(t.page, '#appToday');
   ok('day 6: today first with the week', /Today · week 22/i.test(b), b.slice(0, 120));
   ok('day 6: the line under the strip', /6 days in a row\. Read today’s card to make it 7\. Best: 6\./.test(b), b);
   ok('the card carries the source line', /Educational, not medical advice\./.test(b));
-  ok('the strip has seven circles', (await t.page.$$('.wgs-dot')).length === 7);
+  ok('the strip has seven circles', (await t.page.$$('.wgs-dots i')).length === 7);
   await t.page.screenshot({ path: (process.env.WG_SHOTS || '/tmp') + '/streak-day6.png' }).catch(() => {});
   await t.page.$eval('#appToday button.btn-primary', (e) => e.click()); await wait(500);
   s = await ls(t.page, 'wg_streak_v1');
   ok('reading today’s card makes day 7', s.count === 7);
-  ok('after reading, the card links to the guide', /Open|Read/.test(await text(t.page, '#appToday a.btn')));
+  ok('after reading, the card links to the guide', /Open|Read/.test(await t.page.$eval('#appToday a.btn', (e) => e.textContent).catch(() => '')));
   await t.close();
 
   // the stage cards, picked on the phone
@@ -168,22 +171,22 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ];
   for (const [name, seed, rx] of cases) {
     t = await open(Object.assign({ wg_streak_ui_v1: { v: 1, rule: plus(-3), first: plus(-3), days: [] } }, seed), '/app/?preview=installed', { wait: 1500 });
-    const lab = await text(t.page, '#appToday .eyebrow');
+    const lab = await tc(t.page, '#appToday .eyebrow');
     ok('card for ' + name + ' (' + lab + ')', new RegExp(rx.source, 'i').test(lab));
     await t.close();
   }
   t = await open({ wg_streak_ui_v1: { v: 1, rule: plus(-3), first: plus(-4), days: [], stage: 'relationships' } }, '/app/?preview=installed', { wait: 1500 });
-  ok('relationships: day number since her first streak day', /day 5/i.test(await text(t.page, '#appToday .eyebrow')));
+  ok('relationships: day number since her first streak day', /day 5/i.test(await tc(t.page, '#appToday .eyebrow')));
   await t.close();
   t = await open({ wg_streak_ui_v1: { v: 1, rule: plus(-3), days: [] } }, '/app/?preview=installed', { wait: 1500 });
-  ok('no stage yet: she picks one', /Which stage are you in\?/.test(await text(t.page, '#appToday')));
+  ok('no stage yet: she picks one', /Which stage are you in\?/.test(await tc(t.page, '#appToday')));
   await t.close();
 
   // the consent guard: remembering off
   t = await open({}, '/app/?preview=installed', { wait: 1200 });
   await t.page.evaluate(() => { WGConsent.apply({ analytics: false, advertising: false, remember: false }); appRender(); });
   await wait(600);
-  const off = await text(t.page, '#appToday');
+  const off = await tc(t.page, '#appToday');
   ok('remembering off: the Turn it on card', /Turn it on/.test(off) && /cannot be kept on this phone/.test(off), off.slice(0, 160));
   await t.page.evaluate(() => [...document.querySelectorAll('#appToday button')].find((b) => /Turn it on/.test(b.textContent)).click()); await wait(600);
   ok('Turn it on switches remembering back on', await t.page.evaluate(() => WGApp.remembering()));
@@ -204,26 +207,24 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   // 1. free: the card, a tool or a game; no lesson line
   t = await home({});
   let rule = await text(t.page, '#appToday .wgs-rule');
-  ok('free: the rule card lists the card, a tool and a game', /Read today’s card for your stage/.test(rule) && /Use a tool/.test(rule) && /Play a game/.test(rule), rule);
+  ok('free: the app home has no rule card (the rule card is gone); the streak row is the whole of it', rule === '' && !(await has(t.page, '#appToday .wgs-rule')), rule);
   ok('free: no lesson line', !/lesson/i.test(rule) && !(await has(t.page, '#appToday [data-wgs="lesson"]')));
   await t.close();
   let r7 = await sheetAt7({}, OPEN);
-  ok('free: day 7 points to a First 1,000 place while places are left', /get a program free as one of the first 100 women\. 92 of 100 places are left\./.test(r7.tx) && r7.links.some((h) => /^\/first/.test(h)), r7.tx);
+  ok('free: day 7 shows the one offer card, the First 100 place while places are left', /For the first 100 women/i.test(r7.tx) && /92 of 100 places are left\./.test(r7.tx) && /Claim my place/.test(r7.tx) && r7.links.some((h) => /^\/first/.test(h)) && !/[₦$]\s?\d/.test(r7.tx), r7.tx);
   ok('free: the badge ladder stays', /3 days/.test(r7.tx) && /14 days/.test(r7.tx) && /30 days/.test(r7.tx));
-  ok('free: no lesson progress and no member line', !/lessons/.test(r7.tx) && !/Member: we added/.test(r7.tx));
+  ok('free: no lesson progress and no member line', !/lesson \d|\d+ lessons/i.test(r7.tx) && !/Member: we added/.test(r7.tx));
   r7 = await sheetAt7(UI({ toast: plus(0), stage: 'pregnancy' }), { '/first1000/status': { ok: true, taken: 100, cap: 100, left: 0, open: false } });
-  ok('free: with the cap full and paused, day 7 says so and points to the waiting list', /All 100 places are taken\./.test(r7.tx) && /Tell me if a place opens/.test(r7.tx) && r7.links.some((h) => /^\/first/.test(h)) && !/Claim my place/.test(r7.tx), r7.tx + r7.links.join());
+  ok('free: with the cap full and paused, day 7 falls back to the paid program', /A program for your stage/i.test(r7.tx) && /See the program/.test(r7.tx) && r7.links.some((h) => /^\/programs\//.test(h)) && !/Claim my place/.test(r7.tx) && !/[₦$]\s?\d/.test(r7.tx), r7.tx + r7.links.join());
   r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 29, best: 29, last_day: plus(-1), rest_used_week: null, milestones: [3, 7, 14] } }, OPEN);
-  ok('free: day 30 points to a place too', /30 days in a row/.test(r7.tx) && /first 100 women/.test(r7.tx), r7.tx);
+  ok('free: day 30 shows the offer too', /30 days in a row/.test(r7.tx) && /first 100 women/i.test(r7.tx), r7.tx);
   r7 = await sheetAt7({ wg_streak_v1: { v: 1, count: 13, best: 13, last_day: plus(-1), rest_used_week: null, milestones: [3, 7] } }, OPEN);
-  ok('free: day 14 shows the badge and no nudge', /14 days in a row/.test(r7.tx) && !/first 1,000 women/.test(r7.tx), r7.tx);
+  ok('free: day 14 shows the badge and no nudge', /14 days in a row/.test(r7.tx) && !/first 100 women/i.test(r7.tx), r7.tx);
 
   // 2. First 1,000 member: lessons count and link into her program; months at 3, 7 and 30
   const mem = signed([{ slug: 'first-pregnancy-plan', ends: plus(200) + 'T00:00:00Z' }], memberOf('pregnancy'));
   t = await home(mem.seed, mem.route);
-  rule = await text(t.page, '#appToday .wgs-rule');
-  ok('member: the rule card adds "Open a lesson"', /Open a lesson/.test(rule), rule);
-  ok('member: "Open a lesson" links straight into her program', (await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href')).catch(() => '')) === '/programs/first-pregnancy-plan/read');
+  ok('member: the continue row opens her program\'s reader (the rule card is gone)', (await t.page.$eval('#appProgram [data-wgh="continue"]', (e) => e.getAttribute('href')).catch(() => '')).indexOf('/programs/first-pregnancy-plan/read') === 0);
   ok('member: she is a member, not a buyer', await t.page.evaluate(() => WGStreak.who().kind) === 'member');
   await t.close();
   const memSteps = { '/account': mem.route['/account'], '/account/state': { ok: true, state: { streak: { count: 6, best: 6, last_day: plus(-1), rest_used_week: null } } }, '/member/step': { ok: true, ends: plus(230) + 'T00:00:00Z', steps: {} } };
@@ -231,7 +232,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   await t.page.evaluate(() => WGStreak.record('x')); await wait(3000);
   const msh = await text(t.page, '.wgs-sheet');
   ok('member: the milestone shows the added month and her new end date', /Member: we added 1 month\. Your access now runs to/.test(msh), msh);
-  ok('member: no lesson progress line, no free-place nudge', !/lessons/.test(msh) && !/first 1,000 women/.test(msh));
+  ok('member: no lesson progress line, no free-place nudge', !/lessons/.test(msh) && !/first 100 women/.test(msh));
   ok('member: months are posted to /member/step', (await reqs(t.page)).filter((r) => r.path === '/member/step').map((r) => JSON.parse(r.body).step).indexOf('streak_3') > -1);
   await t.close();
   // a woman who is signed in and is not a member never posts a streak step
@@ -246,12 +247,11 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   const pregTotal = await totalOf('first-pregnancy-plan'), wmTotal = await totalOf('wife-material-blueprint');
   ok('the lesson totals come from the reader pages', pregTotal > 10 && wmTotal > 10, pregTotal + ' ' + wmTotal);
   t = await home(owns('first-pregnancy-plan'));
-  rule = await text(t.page, '#appToday .wgs-rule');
-  ok('buyer: the rule card has "Open a lesson", linked to her program', /Open a lesson/.test(rule) && (await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href'))) === '/programs/first-pregnancy-plan/read');
-  ok('buyer: never offered the free program', !(await has(t.page, '#appFirst .card')) && (await t.page.evaluate(() => WGStreak.who().kind)) === 'buyer');
+  ok('buyer: the lesson card opens her program', (await t.page.$eval('#appMain a.btn', (e) => e.getAttribute('href')).catch(() => '')).indexOf('/programs/first-pregnancy-plan/read') === 0);
+  ok('buyer: never offered the free program', !(await has(t.page, '#appMain .wgn-offer')) && (await t.page.evaluate(() => WGStreak.who().kind)) === 'buyer');
   await t.close();
   r7 = await sheetAt7(Object.assign(owns('first-pregnancy-plan'), READ('first-pregnancy-plan', 12)), OPEN);
-  ok('buyer: the milestone shows lessons, not months', r7.tx.indexOf('12 of ' + pregTotal + ' lessons') > -1 && !/months?\./.test(r7.tx) && !/first 1,000 women/.test(r7.tx) && !/^Pregnancy:/m.test(r7.tx), r7.tx);
+  ok('buyer: the milestone shows lessons, not months', r7.tx.indexOf('12 of ' + pregTotal + ' lessons') > -1 && !/months?\./.test(r7.tx) && !/first 100 women/i.test(r7.tx) && !/^Pregnancy:/m.test(r7.tx), r7.tx);
   t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1), milestones: [3] }), UI({ toast: plus(0) }), owns('wife-material-blueprint'), READ('wife-material-blueprint', 3)), '/relationships/tools/is-he-husband-material', { route: OPEN });
   await t.page.evaluate(() => WGStreak.record('x')); await wait(2600);
   ok('buyer of Wife Material: progress in her own program', (await text(t.page, '.wgs-sheet')).indexOf('3 of ' + wmTotal + ' lessons') > -1);
@@ -276,17 +276,17 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ];
   for (const [what, seed, rx, prog] of stageCases) {
     t = await home(Object.assign({}, BUNDLE, UI({}), seed));
-    const lab = await text(t.page, '#appToday .eyebrow'), tb = await text(t.page, '#appToday');
+    const lab = await tc(t.page, '#appToday .eyebrow'), tb = await tc(t.page, '#appToday');
     const stage = await t.page.evaluate(() => WGStreak.stageOf());
     ok('bundle: ' + what + ' (' + stage + ')', rx.test(lab + ' ' + tb) && STAGE_OF[prog] === stage, lab + ' | ' + stage);
     await t.close();
     t = await home(Object.assign({}, BUNDLE, seed));
-    const lh = await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href')).catch(() => 'none');
-    ok('bundle: "Open a lesson" opens ' + prog, lh.indexOf('/programs/' + prog + '/read') === 0, lh);
+    const lh = await t.page.$eval('#appMain a.btn', (e) => e.getAttribute('href')).catch(() => 'none');
+    ok('bundle: the lesson card opens ' + prog, lh.indexOf('/programs/' + prog + '/read') === 0, lh);
     await t.close();
   }
   t = await home(Object.assign({}, owns('complete-motherhood-journey-diaspora'), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) } }));
-  ok('diaspora bundle: the lesson opens the diaspora stage program', (await t.page.$eval('#appToday [data-wgs="lesson"]', (e) => e.getAttribute('href')).catch(() => '')).indexOf('/programs/first-pregnancy-plan-diaspora/read') === 0);
+  ok('diaspora bundle: the lesson opens the diaspora stage program', (await t.page.$eval('#appMain a.btn', (e) => e.getAttribute('href')).catch(() => '')).indexOf('/programs/first-pregnancy-plan-diaspora/read') === 0);
   await t.close();
   const ppTotal = await totalOf('postpartum-reset'), pbTotal = await totalOf('first-baby-playbook'), ttcTotal = await totalOf('trying-to-conceive-blueprint');
   for (const [what, seed, line] of [
@@ -299,25 +299,25 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
     ok('bundle milestone, ' + what + ': "' + line + '", one stage and not a total', r7.tx.indexOf(line) > -1 && (r7.tx.match(/lessons/g) || []).length === 1, r7.tx);
   }
   t = await home(BUNDLE);
-  ok('bundle: never offered the bundle, another program or the free place', !(await has(t.page, '#appFirst .card')) && !(await has(t.page, '#appPick .app-pick')) && await t.page.evaluate(() => document.getElementById('appPick').hidden));
+  ok('bundle: never offered the bundle, another program or the free place', !(await has(t.page, '#appFirst .card')) && !(await has(t.page, '#appMain .wgn-offer')));
   await t.close();
 
   // 5. Wife Material plus motherhood
   const WM = owns('wife-material-blueprint', 'first-pregnancy-plan');
   t = await home(Object.assign({}, WM, UI({})));
-  let eb = await text(t.page, '#appToday .eyebrow'), sw = await text(t.page, '#appToday [data-wgs="switch"]');
+  let eb = await tc(t.page, '#appToday .eyebrow'), sw = await tc(t.page, '#appToday [data-wgs="switch"]');
   ok('Wife Material plus motherhood, no stage date: relationships, with a switch to motherhood', /Today · day/i.test(eb) && sw === 'Switch to motherhood', eb + '|' + sw);
   await t.page.$eval('#appToday [data-wgs="switch"]', (e) => e.click()); await wait(900);
-  ok('the switch opens the motherhood card and saves her pick on this phone', (await ls(t.page, 'wg_streak_ui_v1')).pref === 'motherhood' && /Which|Add your due date|week/i.test(await text(t.page, '#appToday')) && await text(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
+  ok('the switch opens the motherhood card and saves her pick on this phone', (await ls(t.page, 'wg_streak_ui_v1')).pref === 'motherhood' && /Which|Add your due date|week/i.test(await tc(t.page, '#appToday')) && await tc(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
   await t.page.reload({ waitUntil: 'load' }); await wait(1600);
-  ok('her pick is still there after a reload', await text(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
+  ok('her pick is still there after a reload', await tc(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
   await t.close();
   t = await home(Object.assign({}, WM, UI({}), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) } }));
-  eb = await text(t.page, '#appToday .eyebrow'); sw = await text(t.page, '#appToday [data-wgs="switch"]');
+  eb = await tc(t.page, '#appToday .eyebrow'); sw = await tc(t.page, '#appToday [data-wgs="switch"]');
   ok('Wife Material plus motherhood with a stage date: the motherhood card, with a switch to relationships', /week 22/i.test(eb) && sw === 'Switch to relationships', eb + '|' + sw);
   await t.page.$eval('#appToday [data-wgs="switch"]', (e) => e.click()); await wait(900);
-  ok('switching to relationships shows the relationships card', /Today · day/i.test(await text(t.page, '#appToday .eyebrow')) && (await ls(t.page, 'wg_streak_ui_v1')).pref === 'relationships');
-  ok('she is offered nothing she already owns', !(await has(t.page, '#appFirst .card')) && await t.page.evaluate(() => document.getElementById('appPick').hidden));
+  ok('switching to relationships shows the relationships card', /Today · day/i.test(await tc(t.page, '#appToday .eyebrow')) && (await ls(t.page, 'wg_streak_ui_v1')).pref === 'relationships');
+  ok('she is offered nothing she already owns', !(await has(t.page, '#appFirst .card')) && !(await has(t.page, '#appMain .wgn-offer')));
   await t.close();
   t = await home(Object.assign({}, owns('wife-material-blueprint'), UI({})));
   ok('Wife Material alone: no switch link', !(await has(t.page, '#appToday [data-wgs="switch"]')));
@@ -326,8 +326,8 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('one motherhood program: no switch link', !(await has(t.page, '#appToday [data-wgs="switch"]')));
   await t.close();
   t = await home(Object.assign({}, owns('wife-material-blueprint', 'complete-motherhood-journey'), UI({}), { wg_vax_dob: plus(-130) }));
-  eb = await text(t.page, '#appToday .eyebrow');
-  ok('Wife Material plus the bundle: the bundle follows the stage date', /month 5/i.test(eb) && await text(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships', eb);
+  eb = await tc(t.page, '#appToday .eyebrow');
+  ok('Wife Material plus the bundle: the bundle follows the stage date', /month 5/i.test(eb) && await tc(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships', eb);
   await t.close();
   // the milestone follows the program she read most recently
   for (const [what, a, b, line] of [
@@ -356,88 +356,89 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('member who bought: her months still count until the free program ends', /Member: we added 1 month/.test(bs) && (await reqs(t.page)).some((r) => r.path === '/member/step'), bs);
   await t.close();
   t = await home(both.seed, both.route);
-  ok('member who bought: the steps card stays and the offer does not show', await has(t.page, '#appFirst .f1k-app') && !/Get a program free/.test(await text(t.page, '#appFirst')));
+  ok('member who bought: the lesson card is main, her second program is a line, and no offer shows', await has(t.page, '#appMain .wgh-step') && await has(t.page, '#appProgram [data-wgh="second"]') && !(await has(t.page, '#appMain .wgn-offer')));
   await t.close();
 
-  // ═══ The free offer reaches the right women ══════════════════════════════
-  const offer = async (seed, route, wt) => { const x = await open(seed, '/app/', { route: route || OPEN, wait: wt || 1800 }); const tx = await text(x.page, '#appFirst'); return { x, tx }; };
-  let o = await offer({});
-  ok('signed out, no program: the offer shows with a sign-in link', /Get a program free/.test(o.tx) && /Already bought\? Sign in/.test(o.tx) && (await o.x.page.$eval('#appFirst a[href="/signin/"]', (e) => e.textContent)) === 'Sign in', o.tx);
-  ok('the count line reads "92 of 100 places are left."', /first 100 women\. 92 of 100 places are left\./.test(o.tx), o.tx);
+  // ═══ The offer reaches the right women (the one offer card in #appMain; the rule book decides) ═══
+  const offer = async (seed, route, wt) => { const x = await open(seed, '/app/', { route: route || OPEN, wait: wt || 1800 }); const tx = await text(x.page, '#appMain'); return { x, tx }; };
+  const STPICK = { wg_streak_ui_v1: { v: 1, stage: 'pregnancy' } };
+  let o = await offer(STPICK);
+  ok('signed out, no program: the one offer card shows', /For the first 100 women/i.test(o.tx) && /Claim my place/.test(o.tx), o.tx);
+  ok('the count line reads "92 of 100 places are left."', /92 of 100 places are left\./.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 0, cap: 100, left: 100, open: true } });
-  ok('a fresh cap reads "100 of 100 places are left." with no bare 1000', /first 100 women\. 100 of 100 places are left\./.test(o.tx) && !/\b1000\b/.test(o.tx), o.tx);
+  o = await offer(STPICK, { '/first1000/status': { ok: true, taken: 0, cap: 100, left: 100, open: true } });
+  ok('a fresh cap reads "100 of 100 places are left." with no bare 1000', /100 of 100 places are left\./.test(o.tx) && !/\b1000\b/.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 99, cap: 100, left: 1, open: true } });
-  ok('one place left: "1 of 100 places is left"', /1 of 100 places is left\./.test(o.tx), o.tx);
+  o = await offer(STPICK, { '/first1000/status': { ok: true, taken: 99, cap: 100, left: 1, open: true } });
+  ok('one place left: "1 of 100 place is left."', /1 of 100 place is left\./.test(o.tx), o.tx);
   await o.x.close();
-  o = await offer({}, { '/first1000/status': { ok: true, taken: 100, cap: 100, left: 0, open: false } });
-  ok('cap full: the card says so and offers the waiting list, no claim', /All 100 places are taken\./.test(o.tx) && /Tell me if a place opens/.test(o.tx) && !/Claim my place/.test(o.tx), o.tx);
+  o = await offer(STPICK, { '/first1000/status': { ok: true, taken: 100, cap: 100, left: 0, open: false } });
+  ok('cap full: the slot falls back to the paid program, no claim', /A program for your stage/i.test(o.tx) && /See the program/.test(o.tx) && !/Claim my place/.test(o.tx) && !/[₦$]\s?\d/.test(o.tx), o.tx);
   await o.x.close();
   // nothing renders until her status is known
-  t = await open({}, '/app/', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, cap: 100, left: 92, open: true } } }, wait: 900 });
-  ok('the offer waits for the server: nothing renders before it answers', (await text(t.page, '#appFirst')) === '' && await t.page.evaluate(() => document.getElementById('appFirst').hidden));
-  await t.page.waitForSelector('#appFirst .card', { timeout: 12000 }).catch(() => {});
-  ok('the offer shows once the server has answered', /Get a program free/.test(await text(t.page, '#appFirst')));
+  t = await open(STPICK, '/app/', { route: { '/first1000/status': { __delay: 4200, __body: { ok: true, taken: 8, cap: 100, left: 92, open: true } } }, wait: 900 });
+  ok('the offer waits for the server: nothing renders before it answers', (await text(t.page, '#appMain')) === '' && await t.page.evaluate(() => document.getElementById('appMain').hidden));
+  await t.page.waitForSelector('#appMain .wgn-offer', { timeout: 12000 }).catch(() => {});
+  ok('the offer shows once the server has answered', /Claim my place/.test(await text(t.page, '#appMain')));
   await t.close();
   const unloaded = signed([], null);
   o = await offer({ wg_session_v1: unloaded.seed.wg_session_v1 }, { '/account': { ok: false }, '/first1000/status': OPEN['/first1000/status'] });
   ok('signed in with her account not loaded: no offer', o.tx === '', o.tx);
   await o.x.close();
-  o = await offer(unloaded.seed, unloaded.route);
-  ok('a signed-in woman with no program sees the offer', /Get a program free/.test(o.tx));
+  o = await offer(Object.assign({}, unloaded.seed, STPICK), unloaded.route);
+  ok('a signed-in woman with no program sees the offer', /Claim my place/.test(o.tx), o.tx);
   await o.x.close();
   o = await offer(owns('first-pregnancy-plan'));
-  ok('a buyer on this phone never sees the offer', o.tx === '');
+  ok('a buyer on this phone never sees the offer', !/Claim my place|A program for your stage/.test(o.tx), o.tx);
   await o.x.close();
   o = await offer(owns('complete-motherhood-journey'));
-  ok('a bundle buyer never sees the offer', o.tx === '');
+  ok('a bundle buyer never sees the offer', !/Claim my place|A program for your stage/.test(o.tx), o.tx);
   await o.x.close();
   const elsewhere = signed([{ slug: 'first-baby-playbook' }], null);
   o = await offer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
-  ok('a buyer who bought on another device (her account lists it) never sees the offer', o.tx === '', o.tx);
+  ok('a buyer who bought on another device (her account lists it) never sees the offer', !/Claim my place|A program for your stage/.test(o.tx), o.tx);
   await o.x.close();
   o = await offer(mem.seed, mem.route);
-  ok('a member sees her steps card, not the offer', /Earn more free months/.test(o.tx) && !/Get a program free/.test(o.tx), o.tx);
+  ok('a member sees her step card, not the offer', /Today’s step/i.test(o.tx) && !/Claim my place/.test(o.tx), o.tx);
   await o.x.close();
 
-  // the tool pages carry the same check
-  const toolOffer = async (seed, route, wt) => { const x = await open(seed, '/pregnancy/tools/hospital-bag-checklist', { route: route || OPEN, wait: wt || 1500 }); const tx = await text(x.page, '.program-cta'); await x.close(); return tx; };
-  let tc = await toolOffer({});
-  ok('tool page, signed out with no program: the offer, with a sign-in link and a thousands count', /free/.test(tc) && /For the first 100 women\. 92 of 100 places are left/.test(tc) && /Already bought\? Sign in/.test(tc), tc);
-  tc = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, cap: 100, left: 100, open: true } });
-  ok('tool page: a fresh round reads 100 of 100 places', /100 of 100 places are left/.test(tc), tc);
-  tc = await toolOffer(owns('wife-material-blueprint'));
-  ok('tool page: a buyer of another program never sees the offer', !/ free|Claim my place/.test(tc), tc);
-  tc = await toolOffer(owns('complete-motherhood-journey'));
-  ok('tool page: a bundle buyer is not offered a place', !/Claim my place/.test(tc), tc);
-  tc = await toolOffer({ wg_session_v1: unloaded.seed.wg_session_v1 });
-  ok('tool page: signed in with no account on the phone yet, no offer', !/Claim my place/.test(tc), tc);
-  tc = await toolOffer(mem.seed, mem.route);
-  ok('tool page: a member is not offered a place', !/Claim my place/.test(tc), tc);
-  tc = await toolOffer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
-  ok('tool page: a buyer whose account lists a program is not offered a place', !/Claim my place/.test(tc), tc);
-  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 7000, __body: { ok: true, taken: 8, cap: 100, left: 92, open: true } } }, wait: 900 });
-  ok('tool page: no offer before the server answers', !/Claim my place/.test(await text(t.page, '.program-cta')));
+  // the tool pages carry the same slot
+  const toolOffer = async (seed, route, wt) => { const x = await open(seed, '/pregnancy/tools/hospital-bag-checklist', { route: route || OPEN, wait: wt || 1800 }); const tx = await text(x.page, '.program-cta'); await x.close(); return tx; };
+  let tcx = await toolOffer({});
+  ok('tool page, signed out with no program: the offer with the count', /free/.test(tcx) && /92 of 100 places are left/.test(tcx), tcx);
+  tcx = await toolOffer({}, { '/first1000/status': { ok: true, taken: 0, cap: 100, left: 100, open: true } });
+  ok('tool page: a fresh cap reads 100 of 100 places', /100 of 100 places are left/.test(tcx), tcx);
+  tcx = await toolOffer(owns('wife-material-blueprint'));
+  ok('tool page: a buyer of another program is never offered the campaign', !/ free|Claim my place/.test(tcx), tcx);
+  tcx = await toolOffer(owns('complete-motherhood-journey'));
+  ok('tool page: a bundle buyer is not offered a place', !/Claim my place/.test(tcx), tcx);
+  tcx = await toolOffer({ wg_session_v1: unloaded.seed.wg_session_v1 });
+  ok('tool page: signed in with no account on the phone yet, no offer', !/Claim my place/.test(tcx), tcx);
+  tcx = await toolOffer(mem.seed, mem.route);
+  ok('tool page: a member is not offered a place', !/Claim my place/.test(tcx), tcx);
+  tcx = await toolOffer({ wg_session_v1: elsewhere.seed.wg_session_v1, wg_account_v1: elsewhere.seed.wg_account_v1 }, elsewhere.route);
+  ok('tool page: a buyer whose account lists a program is not offered a place', !/Claim my place/.test(tcx), tcx);
+  t = await open({}, '/pregnancy/tools/hospital-bag-checklist', { route: { '/first1000/status': { __delay: 4200, __body: { ok: true, taken: 8, cap: 100, left: 92, open: true } } }, wait: 900 });
+  ok('tool page: no campaign offer before the server answers', !/Claim my place/.test(await text(t.page, '.program-cta')));
   await t.page.waitForFunction(() => /Claim my place/.test((document.querySelector('.program-cta') || {}).innerText || ''), { timeout: 12000 }).catch(() => {});
   ok('tool page: the offer shows once the server has answered', /Claim my place/.test(await text(t.page, '.program-cta')));
   await t.close();
 
   // the lab scenarios (James loads them with a button)
-  for (const [id, rx, what] of [['streak6', /week 22[\s\S]*6 days in a row/i, 'day 6'], ['streakrest', /rest day[\s\S]*10-day streak is safe/, 'the rest day used'], ['streakended', /Your last streak was 12 days\. That is your best, and it stays\./, 'a streak ended'], ['streak1', /Start your streak/, 'day 1']]) {
+  for (const [id, rx, what] of [['streak6', /6 days in a row[\s\S]*week 22/i, 'day 6'], ['streakrest', /rest day[\s\S]*10-day streak is safe/, 'the rest day used'], ['streakended', /Your last streak was 12 days\. That is your best, and it stays\./, 'a streak ended'], ['streak1', /Which stage are you in\?/, 'day 1: no rule card, she picks a stage']]) {
     t = await open({}, '/lab/', { wait: 500 });
     await Promise.all([t.page.waitForNavigation({ waitUntil: 'load' }), t.page.$eval('button[data-run="' + id + '"][data-t="0"]', (e) => e.click())]);
     await wait(1500);
-    const lt = await text(t.page, '#appToday');
+    const lt = await tc(t.page, '#appToday');
     ok('lab scenario ' + id + ': ' + what, rx.test(lt), lt.slice(0, 160));
     await t.close();
   }
   // the group scenarios in the lab
-  for (const [id, rx, what] of [['sgnew', /Open a lesson/, 'a buyer’s rule card has the lesson line'], ['sgbpp', /week 3/i, 'the bundle follows a delivery date'], ['sgbbaby', /month 5/i, 'the bundle follows a baby’s birth date'], ['sgwm', /Switch to motherhood/, 'Wife Material plus motherhood offers the switch'], ['sgwmdate', /week 22[\s\S]*Switch to relationships/i, 'a due date moves the card to motherhood'], ['sgmember', /Add your due date/i, 'a member follows her program’s stage'], ['sgfree', /Start your streak|week 22/i, 'a free woman']]) {
+  for (const [id, rx, what] of [['sgnew', /Continue reading/, 'a buyer’s main action is the lesson card'], ['sgbpp', /week 3/i, 'the bundle follows a delivery date'], ['sgbbaby', /month 5/i, 'the bundle follows a baby’s birth date'], ['sgwm', /Switch to motherhood/, 'Wife Material plus motherhood offers the switch'], ['sgwmdate', /week 22[\s\S]*Switch to relationships/i, 'a due date moves the card to motherhood'], ['sgmember', /Add your due date/i, 'a member follows her program’s stage'], ['sgfree', /Start your streak|week 22/i, 'a free woman']]) {
     t = await open({}, '/lab/', { wait: 500 });
     await Promise.all([t.page.waitForNavigation({ waitUntil: 'load' }), t.page.$eval('button[data-run="' + id + '"][data-t="0"]', (e) => e.click())]);
     await wait(1800);
-    const lt = await text(t.page, '#appToday');
+    const lt = await tc(t.page, id === 'sgnew' ? '#appMain' : '#appToday');
     ok('lab scenario ' + id + ': ' + what, rx.test(lt), lt.slice(0, 200));
     await t.close();
   }

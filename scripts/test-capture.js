@@ -150,7 +150,7 @@ const cap = async (page) => (await page.evaluate(() => window.dataLayer.filter((
     t = await open({ wg_streak_v1: { v: 1, count: 2, best: 2, last_day: plus(-1), rest_used_week: null, milestones: [] } }, '/tools/', { wait: 900 });
     await t.page.evaluate(() => WGStreak.record('x')); await wait(4600);
     ok('day 3: the milestone sheet first', /3 days in a row/.test(await text(t.page, '.wgs-sheet')));
-    await t.page.$eval('.wgs-sheet .btn-ghost', (e) => e.click()); await wait(900);
+    await t.page.$eval('.wgs-sheet .wgs-link', (e) => e.click()); await wait(900);
     const rs = await text(t.page, '.wgc-sheet');
     ok('then the reminder sheet', /Keep your 3-day streak/.test(rs) && /reminder at 8pm/.test(rs) && /Or by email|Email me reminders/.test(rs), rs.slice(0, 160));
     ok('not installed: the email option only', !/phone notification/.test(rs));
