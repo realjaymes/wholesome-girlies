@@ -75,7 +75,7 @@
           '<h3>The free places are taken for now</h3>' +
           '<p class="muted">All ' + fmtN(+j.cap) + ' places are taken. We can email you if one opens.</p>' +
           '<a href="/first?stage=' + stage + '" class="btn btn-primary" data-first1000="tool_card_wait">Tell me if a place opens &rarr;</a>' +
-          (href ? '<p class="muted" style="margin:14px auto 0;font-size:.92rem">Or <a href="' + esc(href) + '">get the program now</a></p>' : '');
+          (href ? '<p class="muted cta-note">Or <a href="' + esc(href) + '">get the program now</a></p>' : '');
         return;
       }
       var n = +j.left;
@@ -84,7 +84,7 @@
         '<h3>Get ' + esc(name) + ' free</h3>' +
         '<p class="muted">For the first ' + fmtN(+j.cap) + ' women. ' + fmtN(n) + ' of ' + fmtN(+j.cap) + (n === 1 ? ' places is' : ' places are') + ' left.</p>' +
         '<a href="/first?stage=' + stage + '" class="btn btn-primary" data-first1000="tool_card">Claim my place &rarr;</a>' +
-        '<p class="muted" style="margin:14px auto 0;font-size:.92rem">Already bought? <a href="/signin/">Sign in</a></p>';
+        '<p class="muted cta-note">Already bought? <a href="/signin/">Sign in</a></p>';
     }).catch(function () {});
   }
   var m = location.pathname.match(/^\/(fertility|pregnancy|postpartum|parenting|relationships)\//);

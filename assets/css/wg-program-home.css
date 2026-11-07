@@ -100,7 +100,7 @@ body.wg-in-app .ph-site{display:none}
 .ph-card .eyebrow{font-size:.74rem;letter-spacing:.1em;margin-bottom:4px}
 .ph-card h3{font-size:1.1rem;margin:0 0 6px}
 .ph-card p{font-size:.92rem;margin:0}
-.ph-card .btn{margin-top:12px;display:block;width:100%;text-align:center}
+.ph-card .btn{display:block;width:100%;text-align:center}
 .ph-safety{background:#fff;border:1px solid var(--line);border-left:4px solid var(--sage);border-radius:14px;padding:14px 16px}
 .ph-safety h3,.ph-help h3{font-size:1rem;margin:0 0 4px}
 .ph-safety p,.ph-help p{font-size:.9rem;margin:0}
@@ -120,5 +120,5 @@ body.wg-in-app .ph-site{display:none}
 .ph-remember summary::-webkit-details-marker{display:none}
 .ph-remember[open] summary{border-bottom:1px dashed var(--line)}
 .ph-remember p{margin:12px 18px 0}
-.ph-remember .btn{margin:12px 18px 0;width:auto;display:inline-flex}
+.ph-remember .btn{margin-left:18px;margin-right:18px;width:auto;display:inline-flex}
 .ph-remember .ph-later{display:block;margin:10px 18px 16px;padding:0;background:none;border:0;font:inherit;font-size:.88rem;font-weight:700;color:var(--terracotta);text-decoration:underline;cursor:pointer}

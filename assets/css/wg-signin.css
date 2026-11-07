@@ -9,7 +9,7 @@
 .signin-step input { width: 100%; box-sizing: border-box; font-size: 1.05rem; padding: 14px 16px; border: 2px solid var(--line); border-radius: 14px; background: var(--cream); font-family: var(--sans); }
 .signin-step input:focus { outline: none; border-color: var(--terracotta); background: #fff; }
 .signin-otp { letter-spacing: .5em; text-align: center; font-size: 1.5rem !important; font-weight: 800; }
-.signin-btn { width: 100%; margin-top: 14px; }
+.signin-btn { width: 100%; }
 .signin-btn[disabled] { opacity: .6; cursor: wait; }
 .signin-error { color: #A4402B; font-weight: 700; margin: 8px 0 0; font-size: .95rem; }
 .signin-hint { font-size: .88rem; opacity: .75; margin: 8px 0 0; line-height: 1.5; }

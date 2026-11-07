@@ -76,6 +76,26 @@ img { max-width: 100%; display: block; }
 .btn-ghost:hover { background: var(--cream-2); text-decoration: none; }
 .btn-lg { padding: 17px 34px; font-size: 1.08rem; }
 
+/* Button spacing. The one place the space around a button is set; no other rule, inline style or injected sheet sets a margin on a button.
+   --cta-above: the block above (text, a card line, a field) to the button.
+   --cta-below: the button to the small line under it ("Already bought? Sign in").
+   --cta-stack: one button to the next, stacked or side by side.
+   A wrapper that holds only buttons counts as a button. The rule that clears the margin under the block above a button names the wrappers by class, because :has() cannot nest; give a new row wrapper's class to every list below.
+   scripts/check-cta-spacing.js measures every button on the site and the app and fails a gap more than 2px off these. */
+:root { --cta-above: 16px; --cta-below: 14px; --cta-stack: 10px; }
+:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, .err__links, .wc-actions, .cc-more, .wr-acts, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)))))) { margin-top: var(--cta-above) !important; margin-bottom: 0 !important; }
+:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, .err__links, .wc-actions, .cc-more, .wr-acts, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)))))):first-child { margin-top: 0 !important; }
+:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, .err__links, .wc-actions, .cc-more, .wr-acts, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn))))))) > :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)))))) + :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)))))) { margin-top: var(--cta-stack) !important; }
+:has(+ :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, .err__links, .wc-actions, .cc-more, .wr-acts)) { margin-bottom: 0 !important; }
+:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, .err__links, .wc-actions, .cc-more, .wr-acts, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)))))) + :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, :where(div, p):where(:has(> :is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn)):not(:has(> :not(:is(.btn, .signin-btn, .fx-cta, .wg-app-btn, .wg-mine-btn))))))) { margin-top: var(--cta-below) !important; }
+:is(.capture form, .wgc-form, .toolsearch, .addrow, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .fx-final-cta, .cta-wrap, .cta-row, .hub-program, .wg-app-card, .wc-actions, .err__links, .cc-more, .wr-acts):is(.capture form, .wgc-form, .toolsearch, .addrow, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .fx-final-cta, .cta-wrap, .cta-row, .hub-program, .wg-app-card, .wc-actions, .err__links, .cc-more, .wr-acts):is(.capture form, .wgc-form, .toolsearch, .addrow, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .fx-final-cta, .cta-wrap, .cta-row, .hub-program, .wg-app-card, .wc-actions, .err__links, .cc-more, .wr-acts) > * { margin-top: 0 !important; margin-bottom: 0 !important; }
+:is(.toolsearch, .app-btns, .wg-app-btns, .hub-ctas, .hero-actions, .tl-btns, .cta-wrap, .cta-row, .wc-actions, .err__links, .cc-more, .wr-acts) { gap: var(--cta-stack); }
+:is(.capture form, .wgc-form, .addrow, .hub-program, .wg-app-card, .cc-more) { gap: var(--cta-above) var(--cta-stack); }
+.fx-final-cta { gap: var(--cta-below); }
+.cta-row { display: flex; flex-wrap: wrap; }
+.cta-note { font-size: .92rem; }
+textarea { vertical-align: top; } /* no line-height gap between a text box and the button under it */
+
 /* Header / nav */
 .site-header { position: sticky; top: 0; z-index: 50; background: rgba(251, 247, 240, .9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 70px; }
@@ -119,7 +139,7 @@ body:has(.nav-links.open) .wg-pill { display: none; }
 .hero { padding: 72px 0 56px; background: radial-gradient(1000px 500px at 80% -10%, var(--blush), transparent), var(--cream); }
 .hero h1 { max-width: 14ch; }
 .hero .lead { font-size: 1.2rem; color: var(--plum-soft); max-width: 52ch; margin: 0 0 1.6rem; }
-.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-actions { display: flex; flex-wrap: wrap; }
 .reviewed-strip { margin-top: 22px; font-size: .9rem; color: var(--plum-soft); display: flex; align-items: center; gap: 8px; }
 .reviewed-strip .badge { background: var(--sage); color: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .75rem; }
 .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
@@ -271,8 +291,8 @@ h1, h2, h3, h4 { overflow-wrap: break-word; }
 .program-cta > * { text-align: center !important; margin-left: auto; margin-right: auto; }
 .program-cta .eyebrow { margin: 0 auto 6px; }
 .program-cta h3 { margin: 0 auto 8px; }
-.program-cta p { margin: 0 auto 16px; max-width: 46ch; }
-.program-cta .btn { margin: 2px auto 0; display: inline-block; }
+.program-cta p { margin: 0 auto; max-width: 46ch; }
+.program-cta .btn { display: inline-block; }
 
 /* FAQ accordion (native <details>, crawlable) */
 .faq-item { border: 1px solid var(--line); border-radius: 12px; background: var(--white); margin-bottom: 12px; overflow: hidden; }
@@ -415,9 +435,9 @@ html[data-stage="parenting"] { --s: var(--denim); --st: var(--denim-t); }
 
 /* Stage hub program buttons and card (hero buttons, then a full-width card after the first three tools).
    A buyer who owns the stage's program (her wg_<stage>_home flag) gets "Open my program" and no sales card. */
-.hub-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 108px 4px 0; }
+.hub-ctas { display: flex; flex-wrap: wrap; margin-right: 108px; }
 .hub-ctas .btn { padding: 12px 22px; }
-.hub-program { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 18px; text-align: left; background: var(--white); border: 2px solid var(--ink); box-shadow: var(--sticker); border-radius: var(--radius); padding: 22px 24px; }
+.hub-program { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; text-align: left; background: var(--white); border: 2px solid var(--ink); box-shadow: var(--sticker); border-radius: var(--radius); padding: 22px 24px; }
 .hub-program h3 { margin: 2px 0 6px; }
 .hub-program p { margin: 0; max-width: 52ch; }
 .hub-program .btn { flex: none; }

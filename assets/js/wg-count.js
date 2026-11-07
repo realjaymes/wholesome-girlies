@@ -61,7 +61,7 @@
     '.wc-back{background:none;border:0;font:inherit;font-weight:800;color:var(--ink,#33322A);cursor:pointer;padding:8px 0;margin:0 0 6px}' +
     '.wc-back[disabled]{visibility:hidden}' +
     '.wc-hide{display:none!important}' +
-    '.wc-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}' +
+    '.wc-actions{display:flex;flex-wrap:wrap;gap:var(--cta-stack);align-items:center}' +
     '.wc-hint{font-size:.9rem;margin:10px 0 0;color:var(--plum-soft,#555)}' +
     '@media (max-width:520px){.tool-app.wc{padding:14px 10px}.wc-hands{gap:12px}.wc-line{padding:11px 12px}}' +
     '@media (prefers-reduced-motion:reduce){.wc-cell,.wc-f,.wc-stbar span{transition:none}.wc-cell.wc-win,.wc-card.wc-in{animation:none}}';

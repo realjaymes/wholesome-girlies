@@ -29,7 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261026a">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261110a">
 <link rel="stylesheet" href="/assets/css/wg-arrows.css?v=20261010b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -90,7 +90,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <ul class="prompts"><li>What do I actually want from this relationship?</li><li>What do I need to know about where he stands?</li><li>What have I been afraid to say out loud?</li><li>What will I do if his answer is not what I hope?</li><li>How do I want to feel walking away from this talk?</li></ul>
       <label for="reflect" style="display:block;font-weight:700;color:var(--plum);margin-top:16px;">Your notes</label>
       <textarea id="reflect" class="reflect" placeholder="Write whatever you need to. This is just for you, and it stays on your own device."></textarea>
-      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;"><span class="muted" id="savedNote" style="font-size:.85rem;align-self:center;"></span><button class="btn btn-ghost" style="padding:8px 16px;margin-left:auto;" onclick="clearReflect()">Clear</button></div>
+      <div class="cta-row"><span class="muted" id="savedNote" style="font-size:.85rem;align-self:center;"></span><button class="btn btn-ghost" style="padding:8px 16px;margin-left:auto;" onclick="clearReflect()">Clear</button></div>
       <div class="support"><h3>Ask for what you want, and listen to the answer</h3><p class="muted" style="margin:0;">The aim is clarity. Say what you want, ask what you need to know, and listen to the answer, including the one his actions give you. You are allowed to want commitment, and you are allowed to walk if it is not there. If a partner ever frightens, controls, or hurts you, please reach out to someone you trust and a domestic-violence helpline. Your safety comes before any relationship.</p></div>
     </div>
 
@@ -146,14 +146,14 @@ try{ta.value=localStorage.getItem(KEY)||'';}catch(e){}
 var t; ta.addEventListener('input',function(){ try{localStorage.setItem(KEY,ta.value);}catch(e){} note.textContent='Saved on this device'; clearTimeout(t); t=setTimeout(function(){note.textContent='';},1500); });
 function clearReflect(){ ta.value=''; try{localStorage.removeItem(KEY);}catch(e){} note.textContent=''; }
 </script>
-<script src="/assets/js/member-cta.js?v=20261109c" defer></script>
+<script src="/assets/js/member-cta.js?v=20261110a" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20261024c"></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261109b"></script>
-<script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
-<script defer src="/assets/js/wg-streak.js?v=20261109c"></script>
+<script defer src="/assets/js/wg-app.js?v=20261110a"></script>
+<script defer src="/assets/js/wg-ideas.js?v=20261110a"></script>
+<script defer src="/assets/js/wg-streak.js?v=20261110a"></script>
 <script defer src="/assets/js/wg-capture.js?v=20261109b"></script>
 </body>
 </html>

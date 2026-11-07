@@ -80,7 +80,7 @@
     var s = mk('style'); s.id = 'wgi-css';
     s.textContent = '.wgi-card{margin:0;text-align:left}.wgi-card .eyebrow{margin:0 0 6px}.wgi-card h3{margin:0 0 6px}.wgi-card p{margin:0 0 12px}' +
       '.wgi-card p.wgi-note{font-size:.92rem;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line,#E3E0CF)}' +
-      '.wgi-card .btn{margin:2px 8px 4px 0}.wgi-card .wgi-link{display:block;margin:6px 0 0;padding:0;background:none;border:0;font:inherit;font-size:.88rem;font-weight:700;color:var(--terracotta,#6E7A3F);text-decoration:underline;cursor:pointer}' +
+      '.wgi-card .wgi-link{display:block;margin:6px 0 0;padding:0;background:none;border:0;font:inherit;font-size:.88rem;font-weight:700;color:var(--terracotta,#6E7A3F);text-decoration:underline;cursor:pointer}' +
       '.wgi-card .wgi-lbl{margin:14px 0 6px;font-size:.78rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--plum-soft,#66645A)}' +
       '.wgi-card .ph-tools{margin:0 0 6px}.wgi-wrap{margin-top:14px;margin-bottom:6px}.wgi-sec{padding-top:8px;padding-bottom:8px}' +
       '.wgi-next{padding:14px 16px}.wgi-next .wgi-lbl{margin-top:0}.wgi-next .wgi-tools{display:grid;gap:6px}.wgi-next .wgi-tools a{display:block;padding:9px 12px;border:2px solid var(--ink,#33322A);border-radius:12px;background:var(--st,#E3E6CC);color:var(--ink,#33322A);font-weight:700;font-size:.92rem;text-decoration:none}';

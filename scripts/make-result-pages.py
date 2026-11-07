@@ -268,8 +268,8 @@ JS = """// Share a quiz or checker result. Written by scripts/make-result-pages.
     box.innerHTML = '<p class="sub">Share your result</p><div class="wg-share" data-share-size="sm"></div>' +
       (n ? '<div class="wg-namecard"><img alt="" width="104" height="185" data-pic src="' + img + '"><div><label class="wg-namecheck"><input type="checkbox" data-tick> <span>Put my name on my result card</span></label>' +
         '<p class="muted" style="font-size:.85rem;margin:6px 0 0;">Off unless you tick it. The link never carries your name. The picture is made on your phone.</p></div></div>' +
-        '<p style="margin:14px 0 0;"><a class="btn btn-ghost" style="background:#fff;" data-save href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>' :
-      '<p style="margin:12px 0 0;"><a class="btn btn-ghost" style="background:#fff;" data-save href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>') +
+        '<p class="cta-wrap"><a class="btn btn-ghost" style="background:#fff;" data-save href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>' :
+      '<p class="cta-wrap"><a class="btn btn-ghost" style="background:#fff;" data-save href="' + img + '" download="wholesome-girlies-' + type + '.jpg">Save for your Status</a></p>') +
       '<p class="muted" style="font-size:.85rem;margin:8px 0 0;">The link and the picture show your result only, never your answers.</p>';
     var s = box.querySelector(".wg-share");
     s.setAttribute("data-share-id", id);

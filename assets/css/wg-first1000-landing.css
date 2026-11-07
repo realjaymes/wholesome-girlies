@@ -190,8 +190,8 @@ html.fx-sheet-open { overflow: hidden; }
 .fx-hero-in { padding-top: 30px; padding-bottom: 54px; gap: 8px; }
 .fx-copy h1 { font-size: clamp(2.2rem, 9.5vw, 3.7rem); line-height: 1.04; max-width: 22ch; margin-top: 16px; text-wrap: balance; }
 .fx-copy .lead { font-size: 1.15rem; max-width: 52ch; margin-top: 10px; line-height: 1.5; }
-.fx-cta { margin-top: 20px; width: 100%; }
-.fx-cta-fine { margin-top: 10px; font-weight: 700; }
+.fx-cta { width: 100%; }
+.fx-cta-fine { font-weight: 700; }
 .fx-visual { margin-top: 18px; }
 .fx-fan img { width: 27%; max-width: 170px; }
 .fx-her-cover { width: min(50%, 300px); box-shadow: 6px 6px 0 var(--ink); }
@@ -279,9 +279,8 @@ main { padding-bottom: 76px; }
 }
 
 /* the closing claim: one centred column, the same pattern as the hero (button, thin bar, count line), the bar as wide as the button */
-.fx-final-cta { display: grid; justify-items: stretch; width: max-content; max-width: 100%; margin: 18px auto 0; }
-.fx-final-cta .btn { margin: 0; }
-.fx-final-cta .fx-taken[data-taken-meter] { margin-top: 12px; max-width: none; contain: inline-size; text-align: center; }
+.fx-final-cta { display: grid; justify-items: stretch; width: max-content; max-width: 100%; margin-left: auto; margin-right: auto; }
+.fx-final-cta .fx-taken[data-taken-meter] { max-width: none; contain: inline-size; text-align: center; }
 .fx-final-cta .fx-taken-line { text-align: center; }
 
 /* the waiting list shown when the cap is full and James has paused it */

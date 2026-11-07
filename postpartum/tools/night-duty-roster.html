@@ -29,7 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css?v=20261026a">
+<link rel="stylesheet" href="/assets/css/styles.css?v=20261110a">
 <link rel="stylesheet" href="/assets/css/wg-arrows.css?v=20261010b">
 <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -100,7 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <thead><tr><th style="width:34%">Night part</th><th>Who</th><th>What they do</th><th style="width:36px"></th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
-      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+      <div class="cta-row">
         <button class="btn btn-ghost" style="padding:8px 16px;" onclick="addRow()">Add a row</button>
         <button class="btn btn-ghost" style="padding:8px 16px;" onclick="resetRota()">Reset</button>
         <button class="btn btn-ghost" style="padding:8px 16px;" data-wg-print onclick="window.print()">Print or save as PDF</button>
@@ -201,15 +201,15 @@ function addRow(){ rows.push({part:"", who:"", what:""}); save(rows); render(); 
 function resetRota(){ rows = DEFAULT.slice(); save(rows); render(); }
 render();
 </script>
-<script src="/assets/js/member-cta.js?v=20261109c" defer></script>
+<script src="/assets/js/member-cta.js?v=20261110a" defer></script>
 <script src="/assets/js/wg-article.js?v=20261007c" defer></script>
 <script src="/assets/js/wg-print.js?v=20261006b" defer></script>
 <script defer src="/assets/vendor/cookieconsent/cookieconsent.umd.js?v=3.1.0"></script>
 <script defer src="/assets/js/wg-consent.js?v=20261024c"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
-<script defer src="/assets/js/wg-app.js?v=20261109b"></script>
-<script defer src="/assets/js/wg-ideas.js?v=20261012a"></script>
-<script defer src="/assets/js/wg-streak.js?v=20261109c"></script>
+<script defer src="/assets/js/wg-app.js?v=20261110a"></script>
+<script defer src="/assets/js/wg-ideas.js?v=20261110a"></script>
+<script defer src="/assets/js/wg-streak.js?v=20261110a"></script>
 <script defer src="/assets/js/wg-capture.js?v=20261109b"></script>
 </body>
 </html>

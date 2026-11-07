@@ -92,7 +92,7 @@
       '.wg-app-bar .wg-app-btns{display:flex;gap:8px;flex:none;flex-direction:column}' +
       '.wg-app-btn{border:0;border-radius:999px;background:var(--terracotta,#6E7A3F);color:#fff;font-weight:800;padding:9px 16px;cursor:pointer;font-size:.9rem}' +
       '.wg-app-btn.ghost{background:none;color:var(--plum-soft,#66645A);font-weight:700;padding:4px 8px}' +
-      '.wg-app-card{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:16px;padding:14px;margin:18px 0 0;box-shadow:0 6px 18px rgba(51,50,42,.08);text-align:left}' +
+      '.wg-app-card{display:flex;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line,#E3E0CF);border-radius:16px;padding:14px;margin:18px 0 0;box-shadow:0 6px 18px rgba(51,50,42,.08);text-align:left}' +
       '.wg-app-card img{flex:none;width:44px;height:44px;border-radius:11px}' +
       '.wg-app-card div{flex:999 1 200px;min-width:0}' +
       '.wg-app-card b{display:block;font-size:1rem;line-height:1.3;color:var(--plum,#33322A)}' +
@@ -118,7 +118,7 @@
   function sheet(html) {
     style(); closeSheet();
     var el = d.createElement('div'); el.className = 'wg-app-sheet'; el.id = 'wg-app-sheet';
-    el.innerHTML = '<div class="in" role="dialog" aria-modal="true" aria-labelledby="wg-app-sheet-t">' + html + '<p style="margin:16px 0 0"><button type="button" class="wg-app-btn ghost" data-close>Close</button></p></div>';
+    el.innerHTML = '<div class="in" role="dialog" aria-modal="true" aria-labelledby="wg-app-sheet-t">' + html + '<p class="cta-wrap"><button type="button" class="wg-app-btn ghost" data-close>Close</button></p></div>';
     el.addEventListener('click', function (e) { if (e.target === el || e.target.hasAttribute('data-close')) closeSheet(); });
     d.body.appendChild(el);
     var v = el.querySelector('video');
@@ -525,7 +525,7 @@
       '.wg-pill img{flex:none;width:30px;height:38px;object-fit:cover;border-radius:4px}' +
       '.wg-pill button{flex:none;width:36px;height:36px;margin-right:4px;border:0;background:none;font-size:1.3rem;line-height:1;color:var(--plum-soft,#6b6a60);cursor:pointer;border-radius:50%}.wg-pill button:hover{background:var(--olive-t,#E3E6CC)}' +
       '.wg-own{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--line,#e5e2d8)}.wg-own:first-of-type{border-top:0}' +
-      '.wg-own b{font-family:var(--serif);font-size:1.12rem;font-weight:600}.wg-own span{font-size:.9rem;color:var(--plum-soft,#6b6a60)}.wg-own .btn{justify-self:start;margin-top:6px}' +
+      '.wg-own b{font-family:var(--serif);font-size:1.12rem;font-weight:600}.wg-own span{font-size:.9rem;color:var(--plum-soft,#6b6a60)}.wg-own .btn{justify-self:start}' +
       '.card .tag.wg-yours{background:var(--olive,#6E7A3F);color:#fff}';
     d.head.appendChild(css);
   }
