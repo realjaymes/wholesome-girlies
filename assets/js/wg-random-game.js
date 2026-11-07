@@ -41,7 +41,7 @@
     '.rg-card .rg-go{display:inline-block;margin-top:10px;font-weight:800;color:var(--ink,#222)}' +
     '.rg-card.spin b{animation:rgp .14s linear infinite}@keyframes rgp{0%{transform:translateY(-4px);opacity:.5}100%{transform:translateY(0);opacity:1}}' +
     '@media (prefers-reduced-motion:reduce){.rg-card.spin b{animation:none}}';
-  css.textContent += '.rg-app{margin:6px 0 18px}.rg-app .rg-help{display:none}';
+  css.textContent += '.rg-app{margin:16px 0 0}.rg-app .rg-help{display:none}';
   d.head.appendChild(css);
   var box = d.createElement('div'); box.className = 'rg';
   var btn = d.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-primary'; btn.textContent = COPY.btn;

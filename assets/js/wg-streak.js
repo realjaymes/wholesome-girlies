@@ -138,7 +138,7 @@
       '.wgs-src a,.wgs-rule li a{font-weight:800;text-decoration:underline}.wgs-more:empty{display:none}' +
       '.wgs-rule ul{margin:8px 0 10px;padding-left:20px}.wgs-pick{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:14px 0 4px}.wgs-pick::before{content:"";position:absolute;left:10%;right:10%;top:21px;border-top:3px dashed var(--ink);opacity:.35}.wgs-stop{position:relative;background:none;border:0;padding:0;font:inherit;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0;-webkit-tap-highlight-color:transparent}.wgs-dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;background:var(--t);border:2px solid var(--ink);transition:transform .15s}.wgs-stop:hover .wgs-dot,.wgs-stop:focus-visible .wgs-dot{background:var(--c);box-shadow:var(--sticker-sm);transform:scale(1.08)}.wgs-stop b{font-size:clamp(.6rem,2.65vw,.78rem);line-height:1.2;letter-spacing:-.01em}.wgs-stop small{font-size:clamp(.6rem,2.45vw,.7rem);line-height:1.2;opacity:.75}';
     s.textContent += '.wgs-link{display:block;margin:6px auto 0;padding:8px 12px;background:none;border:0;color:inherit;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer}' +
-      '.wgs-tail{margin-top:14px}.wgs-tail .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box;margin:0}.wgs-more .wgs-main{display:flex;width:100%;justify-content:center;box-sizing:border-box;margin:12px 0 0}.wgs-more .wgn-offer{margin:12px 0 0}' +
+      '.wgs-tail .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box}.wgs-more .wgs-main{display:flex;width:100%;justify-content:center;box-sizing:border-box}.wgs-more .wgn-offer{margin:12px 0 0}' +
       '.wgs-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 6px}.wgs-ct{font-family:var(--serif,Georgia,serif);font-size:2rem;line-height:1}.wgs-ct small{display:block;font:800 .72rem var(--sans,system-ui);letter-spacing:.04em;color:var(--plum-soft,#66645A)}' +
       '.wgs-dots{display:flex;gap:6px}.wgs-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink,#33322A);background:#fff}.wgs-dots i.d{background:var(--olive,#6E7A3F)}.wgs-dots i.r{background:repeating-linear-gradient(45deg,#fff 0 3px,var(--peach,#F0C9A8) 3px 6px)}.wgs-dots i.t{box-shadow:0 0 0 3px var(--mustard,#D49A2A)}' +
       '.wgs-todayd{margin:6px 0 0}.wgs-todayd summary{cursor:pointer;font-weight:800;text-decoration:underline}.wgs-todayd .wgs-today{margin-top:10px}';
@@ -183,7 +183,7 @@
       sh.addEventListener('click', function () { shareView(box, n, function () { close(); }); });
     }
     var go = mk('button', 'wgs-link', 'Keep going'); go.type = 'button'; go.addEventListener('click', close);
-    var tail = mk('div', 'wgs-tail'); if (sh) tail.appendChild(sh); tail.appendChild(go); box.appendChild(tail);
+    var tail = mk('div', 'wgs-tail cta-wrap'); if (sh) tail.appendChild(sh); tail.appendChild(go); box.appendChild(tail);
     var rb = w.WGNext ? w.WGNext.ready({ status: true }) : Promise.resolve(null);
     rb.then(function () {
       if (!ov.isConnected) return;

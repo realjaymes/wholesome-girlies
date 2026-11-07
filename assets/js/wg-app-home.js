@@ -25,7 +25,7 @@
   function style() {
     if ($('wgh-css')) return;
     var s = mk('style'); s.id = 'wgh-css';
-    s.textContent = '.wgh-step{text-align:left}.wgh-step .eyebrow{margin:0 0 8px}.wgh-step h2{margin:0 0 12px;font-size:1.3rem;line-height:1.25}.wgh-step .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box;margin:0}' +
+    s.textContent = '.wgh-step{text-align:left}.wgh-step .eyebrow{margin:0 0 8px}.wgh-step h2{margin:0 0 12px;font-size:1.3rem;line-height:1.25}.wgh-step .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box}' +
       '.wgh-row{display:flex;gap:12px;align-items:center;padding:10px 12px;border:2px solid var(--ink,#33322A);border-radius:14px;background:#fff;text-decoration:none;color:inherit}.wgh-row:hover{text-decoration:none}' +
       '.wgh-row img{width:36px;height:45px;border-radius:4px;border:2px solid var(--ink,#33322A);object-fit:cover;flex:none}.wgh-row b{display:block}.wgh-row small{display:block;color:var(--muted,#6b6b60);font-size:.85rem}' +
       '.wgh-note{margin:10px 0 0;font-size:.92rem}.wgh-more summary{cursor:pointer;font-weight:800;text-decoration:underline;margin:4px 0}.wgh-more .f1k-app{margin-top:10px}' +

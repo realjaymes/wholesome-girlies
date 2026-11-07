@@ -314,13 +314,13 @@
     var s = mk('style'); s.id = 'wgn-css';
     s.textContent =
       '.card.wgn-offer{text-align:left!important}.wgn-offer .eyebrow{margin:0 0 10px!important;text-align:left!important}' +
-      '.wgn-row{display:flex;gap:14px;align-items:center;margin:0 0 10px}.wgn-cover{width:64px;height:80px;border-radius:6px;border:2px solid var(--ink,#33322A);object-fit:cover;flex:none}' +
+      '.wgn-row{display:flex;gap:14px;align-items:center}.wgn-row+.wgn-meta{margin-top:10px!important}.wgn-cover{width:64px;height:80px;border-radius:6px;border:2px solid var(--ink,#33322A);object-fit:cover;flex:none}' +
       '.wgn-offer h3{margin:0 0 4px!important;font-size:1.2rem;line-height:1.2;text-align:left!important}.wgn-offer .wgn-row p{margin:0!important;max-width:none!important;font-size:.92rem;line-height:1.45;color:var(--muted,#6b6b60);text-align:left!important}' +
-      '.wgn-offer p.wgn-meta{margin:0 0 12px!important;max-width:none!important;font-size:.92rem;line-height:1.45;color:var(--plum,#33322A);text-align:left!important}.wgn-meta b{display:block;margin-top:2px;font-size:.88rem}' +
-      '.wgn-offer .btn{display:flex!important;width:100%;justify-content:center;box-sizing:border-box;margin:0!important}' +
+      '.wgn-offer p.wgn-meta{margin:0!important;max-width:none!important;font-size:.92rem;line-height:1.45;color:var(--plum,#33322A);text-align:left!important}.wgn-meta b{display:block;margin-top:2px;font-size:.88rem}' +
+      '.wgn-offer .btn{display:flex!important;width:100%;justify-content:center;box-sizing:border-box}' +
       '.wgn-in{text-align:left;border:2px solid var(--ink,#33322A);border-radius:16px;padding:12px;background:#fff}' +
       '.wgn-in h3{font-size:1.05rem!important}' +
-      '.wgn-gap{margin-top:18px}.wgn-tail{margin-top:12px}' +
+      '.wgn-gap{margin-top:18px}' +
       '.wgn-step h2{margin:0 0 10px;font-size:1.3rem;line-height:1.25}.wgn-step .meta{margin:0 0 10px}.wgn-step .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box}' +
       '.wgn-hub{margin-top:18px;margin-bottom:6px;max-width:34rem}.wgn-hero{margin-left:auto;margin-right:auto}.wgn-hub-solo{display:block}';
     d.head.appendChild(s);

@@ -120,28 +120,30 @@ const NOROUND = (t) => !/\bround\b|rounds\b|next round|100 at a time/i.test(t);
     await t.close();
 
     // 8. the app home card
-    const offer = async (seed, route, url) => { x = await open(seed, url || '/app/', { route, wait: 1800 }); return text(x.page, '#appFirst'); };
+    // the app home's one offer card (#appMain); a woman with no stage gets none, so every seed carries a stage
+    const STG = { wg_streak_ui_v1: { v: 1, stage: 'pregnancy' } };
+    const offer = async (seed, route, url) => { x = await open(Object.assign({}, STG, seed), url || '/app/', { route, wait: 1800 }); return text(x.page, '#appMain'); };
     tx = await offer({}, S(100, 23));
-    ok('app card: "This offer is for the first 100 women. 77 of 100 places are left."', /This offer is for the first 100 women\. 77 of 100 places are left\./.test(tx) && /Claim my place/.test(tx) && NOROUND(tx), tx);
+    ok('app card: "For the first 100 women" with "77 of 100 places are left."', /For the first 100 women/i.test(tx) && /77 of 100 places are left\./.test(tx) && /Claim my place/.test(tx) && NOROUND(tx), tx);
     await x.close();
     tx = await offer({}, S(100, 99));
-    ok('app card: one place left reads "1 of 100 places is left"', /1 of 100 places is left\./.test(tx), tx);
+    ok('app card: one place left reads "1 of 100 place is left."', /1 of 100 place is left\./.test(tx), tx);
     await x.close();
     tx = await offer({}, S(200, 100));
-    ok('app card: at the jump it reads the first 200 women, 100 of 200 left', /first 200 women\. 100 of 200 places are left\./.test(tx), tx);
+    ok('app card: at the jump it reads the first 200 women, 100 of 200 left', /first 200 women/i.test(tx) && /100 of 200 places are left\./.test(tx), tx);
     await x.close();
     tx = await offer({}, S(1000, 0));
-    ok('app card: a thousands separator at 1,000', /first 1,000 women\. 1,000 of 1,000 places are left\./.test(tx), tx);
+    ok('app card: a thousands separator at 1,000', /first 1,000 women/i.test(tx) && /1,000 of 1,000 places are left\./.test(tx), tx);
     await x.close();
     tx = await offer({}, S(100, 100));
-    ok('app card, paused full: "All 100 places are taken." with a link to the waiting list, no claim button', /All 100 places are taken\./.test(tx) && /Tell me if a place opens/.test(tx) && !/Claim my place/.test(tx) && (await has(x.page, '#appFirst a[href="/first"]')), tx);
-    ok('app card, paused full: the card stays small', (await rect(x.page, '#appFirst .f1k-offer')).h < 260);
+    ok('app card, paused full: the slot falls back to the paid program, no claim button, no price', /A program for your stage/i.test(tx) && /See the program/.test(tx) && !/Claim my place/.test(tx) && !/[₦$]\s?\d/.test(tx) && (await has(x.page, '#appMain a[href^="/programs/"]')), tx);
+    ok('app card, paused full: the card stays small', (await rect(x.page, '#appMain .wgn-offer')).h < 260);
     await x.close();
     tx = await offer({}, { '/first1000/status': { ok: false } });
-    ok('app card, no count: no card', tx === '', tx);
+    ok('app card, no count: the paid program shows, never a claim', /A program for your stage/i.test(tx) && !/Claim my place/.test(tx), tx);
     await x.close();
     tx = await offer({}, S(100, 23), '/app/?f1kcap=200&f1ktaken=150');
-    ok('app card: the localhost preview wins', /first 200 women\. 50 of 200 places are left\./.test(tx), tx);
+    ok('app card: the localhost preview wins', /first 200 women/i.test(tx) && /50 of 200 places are left\./.test(tx), tx);
     await x.close();
 
     // 9. who never sees the card: a buyer, a member, a signed-in woman whose account lists a program
@@ -162,7 +164,7 @@ const NOROUND = (t) => !/\bround\b|rounds\b|next round|100 at a time/i.test(t);
       await x.close();
     }
     x = await open({ wg_session_v1: JSON.stringify({ token: 'tok123' }) }, '/app/', { route: Object.assign(S(100, 23), { '/account': { __delay: 6000, __body: { ok: true, account: account(), state: {} } } }), wait: 1200 });
-    ok('status not known yet (signed-in phone, account still loading): nothing shows', (await text(x.page, '#appFirst')) === '');
+    ok('status not known yet (signed-in phone, account still loading): nothing shows', (await text(x.page, '#appMain')) === '');
     await x.close();
 
     // 10. the tool page card

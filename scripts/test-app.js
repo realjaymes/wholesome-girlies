@@ -30,14 +30,14 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
   await page.goto(B + '/pregnancy/tools/hospital-bag-checklist', { waitUntil: 'load' }).catch(e => errs.push('nav ' + e.message));
   ok('unvisited tool opens offline', /Hospital Bag/i.test(await page.$eval('h1', h => h.textContent)));
   await page.goto(B + '/app/', { waitUntil: 'load' }).catch(() => {});
-  ok('app home opens offline', /phone/i.test(await page.$eval('h1', h => h.textContent).catch(() => '')));
+  ok('app home opens offline', /phone|welcome back/i.test(await page.$eval('h1', h => h.textContent).catch(() => '')));
   await page.setOfflineMode(false);
   // 3. app home lists saved tools and program
   await page.evaluate(() => { localStorage.setItem('wg_hospitalbag_v1', JSON.stringify({ a: 1 })); localStorage.setItem('wg_feedsleep_2026', '[]'); localStorage.setItem('wg_pp_home', JSON.stringify({ u: '/programs/postpartum-reset/thank-you', l: 'Your 6-Week Postpartum Reset home' })); });
   await page.goto(B + '/app/', { waitUntil: 'load' });
-  const home = await page.evaluate(() => ({ remember: WGApp.remembering(), saved: [...document.querySelectorAll('#appSaved b')].map(h => h.textContent), prog: [...document.querySelectorAll('#appProgramList h3')].map(h => h.textContent), progHidden: document.getElementById('appProgram').hidden, mineTitle: document.getElementById('appMineTitle').textContent, stagesHidden: document.getElementById('appStages').hidden }));
+  const home = await page.evaluate(() => ({ remember: WGApp.remembering(), saved: [...document.querySelectorAll('#appSaved b')].map(h => h.textContent), prog: [...document.querySelectorAll('#appMain h2, #appMain h3')].map(h => h.textContent), progHidden: document.getElementById('appMain').hidden, mineTitle: document.getElementById('appMineTitle').textContent, stagesHidden: !document.getElementById('appStages') }));
   ok('app home shows saved tools', home.saved.includes('Hospital Bag Checklist') && home.saved.includes('Feeding & Sleep Tracker'), home.saved.join(', ') + ' remember=' + home.remember);
-  ok('app home shows program', !home.progHidden && home.prog.length === 1, home.prog.join(', '));
+  ok('app home shows her program as the main action (the lesson card)', !home.progHidden && home.prog.length === 1, home.prog.join(', '));
   ok('buyer app home: her tools, no tool videos, no stage cards', home.mineTitle === 'Your tools' && home.stagesHidden, JSON.stringify(home));
   // 4. backup round trip
   const rt = await page.evaluate(async () => { const file = new File([JSON.stringify({ app: "wholesome-girlies", v: 1, entries: { wg_hospitalbag_v1: localStorage.getItem('wg_hospitalbag_v1') } })], 'backup.json'); localStorage.removeItem('wg_hospitalbag_v1'); const n = await WGApp.restoreBackup(file); return { n, back: localStorage.getItem('wg_hospitalbag_v1') }; });
