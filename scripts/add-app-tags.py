@@ -20,7 +20,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 APP_JS_VERSION = "20261110b"
 IDEAS_JS_VERSION = "20261110a"
-NEXT_JS_VERSION = "20261110d"  # wg-next.js, the rule book
+NEXT_JS_VERSION = "20261110e"  # wg-next.js, the rule book
 STREAK_JS_VERSION = "20261110c"  # wg-streak.js and wg-capture.js
 HEAD = ('<link rel="manifest" href="/manifest.webmanifest">\n'
         '<meta name="theme-color" content="#6E7A3F">\n'

@@ -256,7 +256,12 @@
     first1000: {
       // { ok, taken, cap, left, open }. cap is the public number ("the first N women"), left is cap minus taken, and open is true only
       // when a claim would succeed now. On localhost, ?f1kcap=C&f1ktaken=T (or ?f1kleft=N) stands in for the server, with no request: see previewStatus.
-      status: function () { return w.WGNext ? w.WGNext.status() : request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); },
+      // The rule book (wg-next.js, a deferred script) owns the one status call and the localhost preview, so a call made before it exists waits for DOMContentLoaded.
+      status: function () {
+        var go = function () { return w.WGNext ? w.WGNext.status(true) : request('GET', '/first1000/status').then(function (j) { return j.ok ? j : null; }, function () { return null; }); };
+        if (w.WGNext || w.document.readyState === "complete") return go();
+        return new Promise(function (res) { w.document.addEventListener("DOMContentLoaded", function () { res(go()); }); });
+      },
       claim: function (body) {
         return request('POST', '/first1000/claim', body).then(function (j) {
           if (!j.ok) return j;

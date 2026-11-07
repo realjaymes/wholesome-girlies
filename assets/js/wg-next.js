@@ -60,8 +60,9 @@
     return { ok: true, taken: taken, cap: cap, left: cap - taken, open: cap - taken > 0 };
   }
   var statusP = null, STATUS = null;
-  function status() {
-    if (statusP) return statusP;
+  // status(true) asks the server again (the claim form does, after a refusal); every other caller shares the first answer.
+  function status(fresh) {
+    if (statusP && !fresh) return statusP;
     var pre = previewStatus();
     statusP = (pre ? Promise.resolve(pre) : (w.fetch ? w.fetch(PAY + '/first1000/status').then(function (r) { return r.json(); }) : Promise.resolve(null)))
       .then(function (j) { STATUS = j && j.ok && typeof j.cap === 'number' ? j : null; return STATUS; }).catch(function () { return null; });
