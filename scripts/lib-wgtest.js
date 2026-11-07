@@ -15,8 +15,9 @@ async function launch() { browser = await puppeteer.launch({ executablePath: '/A
 async function open(seed, url, o = {}) {
   const ctx = await browser.createBrowserContext();
   const page = await ctx.newPage();
-  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-  await page.setUserAgent(o.ua || IPHONE);
+  const wide = o.width && o.width > 600; // o.width: a desktop-size run (the CTA spacing check spot-checks 1280)
+  await page.setViewport({ width: o.width || 390, height: wide ? 800 : 844, deviceScaleFactor: wide ? 1 : 2, isMobile: !wide, hasTouch: !wide });
+  if (!wide) await page.setUserAgent(o.ua || IPHONE);
   page.on('pageerror', (e) => errs.push(url + ' ' + e.message));
   await page.evaluateOnNewDocument((seed, route) => {
     window.__reqs = [];

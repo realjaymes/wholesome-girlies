@@ -9,3 +9,7 @@ if command -v node >/dev/null 2>&1; then
 else
   echo "pre-push: node not found, skipping the one-screen test."
 fi
+# Button spacing: every gap around a button sits on the --cta-* tokens (every 5th page here, every state; run it without WG_SAMPLE for all pages).
+if command -v node >/dev/null 2>&1; then
+  WG_PORT=8001 WG_SAMPLE=5 NODE_PATH=${NODE_PATH:-/tmp/wgog/node_modules} node scripts/check-cta-spacing.js || { echo "pre-push: a button gap is off the --cta-* tokens, push blocked."; exit 1; }
+fi
