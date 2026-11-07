@@ -73,8 +73,8 @@ const NOROUND = (t) => !/\bround\b|rounds\b|next round|100 at a time/i.test(t);
 
     // 5. paused and full: "All 100 places are taken." and the waiting list, never a later tier
     t = await open({}, '/first/', { route: S(100, 100), wait: 1800 });
-    const fullTx = await text(t.page, '[data-taken]');
-    ok('paused full: "All 100 places are taken" with an email field and "Tell me if a place opens"', /All 100 places are taken/.test(fullTx) && (await vis(t.page, '[data-taken] input[type=email]')) && /Tell me if a place opens/.test(await text(t.page, '[data-taken] button')), fullTx);
+    const fullTx = await text(t.page, '.fx-hero');
+    ok('paused full: the hero reads "All 100 places for the first 100 women are taken" with an email field and "Tell me if a place opens"', /All 100 places for the first 100 women are taken/.test(fullTx) && (await vis(t.page, '[data-taken] input[type=email]')) && /Tell me if a place opens/.test(await text(t.page, '[data-taken] button')), fullTx);
     ok('paused full: no Claim button, no floating bar, no bar, no closing section', !(await vis(t.page, '.fx-hero [data-claim]')) && !(await vis(t.page, '[data-floatbar]')) && !(await vis(t.page, '.fx-hero [data-taken-meter]')) && !(await vis(t.page, '.fx-final')));
     const fb2 = await body(t.page);
     ok('paused full: no later tier and no round wording', NOROUND(fb2) && !/200|500|1,000/.test(fullTx));
@@ -102,7 +102,7 @@ const NOROUND = (t) => !/\bround\b|rounds\b|next round|100 at a time/i.test(t);
     const sheet = await text(t.page, '#fxSheet');
     ok('refusal: the sheet says "All 100 places are taken." and offers the waiting list, not a generic error', /All 100 places are taken\./.test(sheet) && /Tell me if a place opens/.test(sheet) && !/could not save/i.test(sheet), sheet.slice(0, 200));
     ok('refusal: her email is filled in', (await t.page.$eval('#fxSheet input[type=email]', (e) => e.value).catch(() => '')) === 'ngozi@example.com');
-    ok('refusal: the page behind shows the full state too', /All 100 places are taken/.test(await text(t.page, '[data-taken]')) && !(await vis(t.page, '.fx-hero [data-claim]')) && NOROUND(sheet));
+    ok('refusal: the page behind shows the full state too', /All 100 places for the first 100 women are taken/.test(await text(t.page, '.fx-hero')) && !(await vis(t.page, '.fx-hero [data-claim]')) && NOROUND(sheet));
     await t.close();
 
     // 7. localhost previews
@@ -113,7 +113,7 @@ const NOROUND = (t) => !/\bround\b|rounds\b|next round|100 at a time/i.test(t);
     ok('preview ?f1kleft=1 is one place left of 100', (await text(t.page, '.fx-hero [data-taken-line]')) === '99 of 100 places taken');
     await t.close();
     t = await open({}, '/first/?f1kleft=0', { wait: 1500 });
-    ok('preview ?f1kleft=0 is the paused full state', /All 100 places are taken/.test(await text(t.page, '[data-taken]')));
+    ok('preview ?f1kleft=0 is the paused full state', /All 100 places for the first 100 women are taken/.test(await text(t.page, '.fx-hero')));
     await t.close();
     t = await open({}, '/first/?f1ktaken=23', { wait: 1500 });
     ok('preview ?f1ktaken=23 is 23 of 100', (await text(t.page, '.fx-hero [data-taken-line]')) === '23 of 100 places taken');
