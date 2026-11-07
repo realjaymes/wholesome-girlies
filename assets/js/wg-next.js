@@ -323,7 +323,7 @@
       '.wgn-in h3{font-size:1.05rem!important}' +
       '.wgn-gap{margin-top:18px}' +
       '.wgn-step h2{margin:0 0 10px;font-size:1.3rem;line-height:1.25}.wgn-step .meta{margin:0 0 10px}.wgn-step .btn{display:flex;width:100%;justify-content:center;box-sizing:border-box}' +
-      '.wgn-hub{margin-top:18px;margin-bottom:6px;max-width:34rem}.wgn-hero{margin-left:auto;margin-right:auto}.wgn-hub-solo{display:block}';
+      '.wgn-hub{margin-top:18px;margin-bottom:6px;max-width:34rem;position:relative;z-index:1}.wgn-hero{margin-left:auto;margin-right:auto}.wgn-hub-solo{display:block}';
     d.head.appendChild(s);
   }
   var CTAS = { f1k: 'Claim my place', paid: 'See the program', lapsed: 'Keep my program', own: 'Open my program' };

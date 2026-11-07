@@ -446,6 +446,9 @@ document.addEventListener('DOMContentLoaded', function(){
     $('appTitle').textContent = APP_TITLE;
     $('appLead').textContent = first ? 'Girlies is on your home screen now. Every tool here works without data.' : 'Your saved tools, your program and the newest games.';
   } else {
+    // A first visit in a browser tab is not a return: "Welcome back" waits for her second visit (wg_app_seen, skipped by TOOL_KEY).
+    var seen = true; try { seen = !!(localStorage.getItem('wg_app_seen') || localStorage.getItem('wg_app_welcomed') || localStorage.getItem('wg_streak_ui_v1') || localStorage.getItem('wg_session_v1') || WGApp.nameState().name); localStorage.setItem('wg_app_seen', '1'); } catch (e) {}
+    if (!seen) { APP_TITLE = 'Welcome to Wholesome Girlies'; $('appTitle').textContent = APP_TITLE; }
     $('appInstall').hidden = false;
     if (!WGApp.phone) {
       $('appInstall').classList.add('no-btn'); $('appShot').hidden = true; $('appQr').hidden = false;
@@ -489,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script defer src="/assets/js/wg-first1000.js?v=20261110a"></script>
 <script defer src="/assets/js/wg-member-step.js?v=20261106a"></script>
 <script defer src="/assets/js/wg-app-home.js?v=20261110b"></script>
-<script defer src="/assets/js/wg-next.js?v=20261110e"></script>
+<script defer src="/assets/js/wg-next.js?v=20261110f"></script>
 <script defer src="/assets/js/wg-arrows.js?v=20261010b"></script>
 <script defer src="/assets/js/wg-app.js?v=20261110b"></script>
 <script defer src="/assets/js/wg-ideas.js?v=20261110a"></script>

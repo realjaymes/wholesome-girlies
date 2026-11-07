@@ -82,7 +82,7 @@
     if (on) st.done[id] = 1; else delete st.done[id];
     save(); paint();
     (w.dataLayer = w.dataLayer || []).push({ event: 'reader_lesson', reader_program: main.getAttribute('data-program'),
-      reader_lesson_id: id, reader_state: on ? 'done' : 'undone', reader_done_count: Object.keys(st.done).length });
+      reader_lesson: id, reader_state: on ? 'done' : 'undone', reader_done_count: Object.keys(st.done).length });
     if (on && w.WGNext) { var S = w.WGNext.state(); w.WGNext.step('activated', S && S.gift && !S.paid ? 'campaign' : 'purchase'); w.WGNext.useful('tool'); }
     var i = ids.indexOf(id);
     if (on) w.location.hash = i < ids.length - 1 ? ids[i + 1] : '';
