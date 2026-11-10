@@ -156,10 +156,28 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('the card carries the source line', /Educational, not medical advice\./.test(b));
   ok('the strip has seven circles', (await t.page.$$('.wgs-dots i')).length === 7);
   await t.page.screenshot({ path: (process.env.WG_SHOTS || '/tmp') + '/streak-day6.png' }).catch(() => {});
-  await t.page.$eval('#appToday button.btn-primary', (e) => e.click()); await wait(500);
+  // The button is a link to the card. Tapping it marks nothing until the card's page has opened.
+  const cardHref = await t.page.$eval('#appToday [data-wgs="today-card"] a.btn-primary', (e) => e.getAttribute('href'));
+  ok('the card button is a link to the card page', /^\/pregnancy\//.test(cardHref) && /Read today’s card/.test(await tc(t.page, '#appToday [data-wgs="today-card"] a.btn-primary')), cardHref);
+  // a card that cannot open: the page answers 404, so nothing is marked and she sees why
+  await t.page.setRequestInterception(true);
+  t.page.on('request', (r) => (r.url().endsWith(cardHref) || r.url().endsWith(cardHref + '/') ? r.respond({ status: 404, contentType: 'text/html', body: 'gone' }) : r.continue()));
+  await t.page.$eval('#appToday [data-wgs="today-card"] a.btn-primary', (e) => e.click()); await wait(700);
   s = await ls(t.page, 'wg_streak_v1');
-  ok('reading today’s card makes day 7', s.count === 7);
-  ok('after reading, the card links to the guide', /Open|Read/.test(await t.page.$eval('#appToday a.btn', (e) => e.textContent).catch(() => '')));
+  ok('a card that cannot open marks nothing', s.count === 6 && s.last_day === plus(-1), JSON.stringify(s));
+  ok('and she is told', /could not open today’s card/.test(await tc(t.page, '#appToday')));
+  ok('and she stays on the app home', /\/app\//.test(t.page.url()), t.page.url());
+  await t.close();
+  t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1) }), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) }, wg_streak_ui_v1: { v: 1, rule: plus(-6), first: plus(-6), days: [1, 2, 3, 4, 5, 6].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });
+  await t.page.$eval('#appToday summary', (e) => e.click());
+  await t.page.$eval('#appToday [data-wgs="today-card"] a.btn-primary', (e) => e.click());
+  await t.page.waitForFunction((h) => location.pathname.replace(/\/$/, '').replace(/\.html$/, '') === h.replace(/\/$/, ''), { timeout: 8000 }, cardHref).catch(() => {});
+  await wait(900);
+  ok('tapping the card opens it', t.page.url().indexOf(cardHref.replace(/\/$/, '')) > -1 && !/\/app\//.test(t.page.url()), t.page.url());
+  s = await ls(t.page, 'wg_streak_v1');
+  ok('reading today’s card makes day 7, once the card has opened', s.count === 7 && s.last_day === plus(0), JSON.stringify(s));
+  await t.page.goto(T.B + '/app/?preview=installed', { waitUntil: 'load' }); await wait(1200);
+  ok('back on the app home the card links to the guide', /Open|Read/.test(await t.page.$eval('#appToday a.btn', (e) => e.textContent).catch(() => '')));
   await t.close();
 
   // the stage cards, picked on the phone

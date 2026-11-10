@@ -523,13 +523,11 @@
     } else {
       f.appendChild(mk('p', 'eyebrow', res.label));
       f.appendChild(mk('p', '', res.card.t));
-      var slot = mk('p'), go = function () { var a = mk('a', 'btn btn-primary'); a.href = res.card.p; a.appendChild(d.createTextNode(res.card.l + ' →')); slot.innerHTML = ''; slot.appendChild(a); };
-      if (doneToday) go();
-      else {
-        var rb = mk('button', 'btn btn-primary'); rb.type = 'button'; rb.appendChild(d.createTextNode('Read today’s card →'));
-        rb.addEventListener('click', function () { record('card'); }); slot.appendChild(rb);
-      }
-      f.appendChild(slot);
+      // Reading the card means opening it. The page the card opens marks the day (markCardOpened, below), never the tap.
+      var slot = mk('p'), a = mk('a', 'btn btn-primary'); a.href = res.card.p;
+      a.appendChild(d.createTextNode((doneToday ? res.card.l : 'Read today’s card') + ' →'));
+      if (!doneToday) a.addEventListener('click', function (e) { e.preventDefault(); openCard(a, res.card.p, slot); });
+      slot.appendChild(a); f.appendChild(slot);
       f.appendChild(mk('p', 'wgs-src', 'Educational, not medical advice.'));
     }
     if (curPlan && curPlan.canSwitch) {
@@ -544,6 +542,36 @@
       f.appendChild(mk('p', 'wgs-count', sayLine(s, u, doneToday)));
     }
     return f;
+  }
+
+  // ── opening today's card ────────────────────────────────────────────────
+  // The tap checks that the card's page loads, leaves a note for that page in sessionStorage (a path, nothing else, never sent),
+  // and opens it. The page that opens marks the day. If the page cannot be reached, nothing is marked and she sees a short line.
+  var OPEN_KEY = 'wg_card_open_v1';
+  function cardPath(p) { return String(p || '').split('#')[0].split('?')[0].replace(/\/index\.html$/, '/').replace(/\.html$/, '').replace(/(.)\/$/, '$1'); }
+  function openCard(a, path, slot) {
+    var note = slot.querySelector('.wgs-open-err'); if (note) note.parentNode.removeChild(note);
+    var okPath = /^\/[^/]/.test(String(path || ''));
+    var fail = function () {
+      var m = mk('span', 'wgs-src wgs-open-err', 'We could not open today’s card. Check your connection and try again.'); m.setAttribute('role', 'alert');
+      m.style.display = 'block'; m.style.marginTop = '8px'; slot.appendChild(m); a.removeAttribute('aria-busy');
+    };
+    if (!okPath || !w.fetch) { if (okPath) w.location.href = path; else fail(); return; }
+    a.setAttribute('aria-busy', 'true');
+    w.fetch(path, { credentials: 'same-origin' }).then(function (r) {
+      if (!r.ok) { fail(); return; }
+      try { w.sessionStorage.setItem(OPEN_KEY, JSON.stringify({ p: cardPath(path), t: Date.now() })); }
+      catch (e) { record('card'); } // no session storage: the page is known to load, so mark as she leaves
+      w.location.href = path;
+    }).catch(fail);
+  }
+  // Runs on every page: if she got here from the card's button, this is the card, so the day is marked now.
+  function markCardOpened() {
+    var o = null; try { o = JSON.parse(w.sessionStorage.getItem(OPEN_KEY) || 'null'); } catch (e) {}
+    if (!o) return;
+    try { w.sessionStorage.removeItem(OPEN_KEY); } catch (e) {}
+    if (!o.p || Date.now() - o.t > 600000 || cardPath(w.location.pathname) !== o.p) return;
+    record('card');
   }
 
   // ── what counts as a useful action ──────────────────────────────────────
@@ -563,6 +591,7 @@
   });
 
   function boot() {
+    markCardOpened();
     var st = settle();
     if (st.s.last_day) sync();
     if (!quiet()) setTimeout(maybeSheet, 1200);
