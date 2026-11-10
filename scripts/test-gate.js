@@ -91,8 +91,14 @@ const TY = (s) => `/programs/${s}/thank-you`;
   ok(locked(await get(`${TY(FBP)}?order=${order}`), FBP), '?order= without t is locked');
   ok(locked(await get(`/programs/${FBP}/read?order=${order}&t=${t}`), FBP), 'the reader is not opened by ?order=');
 
-  // 7. Never gated: sales pages, tools, the app, sign-in, go bridges, assets, the home page.
-  for (const p of [`/programs/${FBP}`, `/programs/${FBP}-diaspora`, '/programs/', '/tools/', '/pregnancy/tools/due-date-calculator', '/app/', '/signin/', '/signin/?program=' + FBP, '/', '/assets/data/program-flags.json', '/legal/privacy'])
+  // 7. Never gated: tools, the app, sign-in, assets, the home page. The sales pages are not gated either: while campaign.json says
+  // redirect:true they send everybody, a signed-in buyer included, to /first/ (functions/_lib/campaign-redirect.js, scripts/test-campaign-redirect.mjs).
+  for (const p of [`/programs/${FBP}`, `/programs/${FBP}-diaspora`, '/programs/']) {
+    const r = await get(p); ok(r.status === 302 && r.location.startsWith('/first/'), `sales page goes to /first/ (the First 1,000 redirect): ${p}`);
+  }
+  const buyer = await get(`/programs/${FBP}`, 'wg_pass=' + mint([FBP]));
+  ok(buyer.status === 302 && /\/first\/\?stage=parenting$/.test(buyer.location), 'a signed-in buyer is redirected too');
+  for (const p of ['/tools/', '/pregnancy/tools/due-date-calculator', '/app/', '/signin/', '/signin/?program=' + FBP, '/', '/assets/data/program-flags.json', '/legal/privacy'])
     ok((await get(p)).status === 200, `never gated: ${p}`);
   const go = await get('/go/'); ok(go.status !== 302 || !/signin/.test(go.location), 'never gated: /go/');
 

@@ -1,0 +1,5 @@
+{
+  "_about": "The First 1,000 program-page redirect. While redirect is true, every sales page (/programs/, the six programs in their Nigerian and diaspora versions, the bundle, and the /go/ bridge pages) sends visitors to /first/ with a 302. Set redirect to false and deploy to turn it off. It also ends by itself when the payment server reports 1,000 places taken, or on endDate if one is set (YYYY-MM-DD, empty means no end date). Code: functions/_lib/campaign-redirect.js.",
+  "redirect": true,
+  "endDate": ""
+}

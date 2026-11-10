@@ -950,7 +950,7 @@ for p in PAGES:
 # program pages and /api/ to them, and every program home must be a slug the gate can look up in program-flags.json.
 if os.path.isdir("functions"):
     fns = sorted(glob.glob("functions/**/*.js", recursive=True))
-    for need in ("functions/programs/_middleware.js", "functions/api/pass.js", "functions/_lib/pass.js"):
+    for need in ("functions/programs/_middleware.js", "functions/api/pass.js", "functions/_lib/pass.js", "functions/_lib/campaign-redirect.js", "functions/go/_middleware.js"):
         if need not in fns:
             fail(need, "missing: the gate on the paid program pages needs it")
     if shutil.which("node"):
@@ -960,10 +960,23 @@ if os.path.isdir("functions"):
                 fail(f, "does not parse: " + (r.stderr.strip().splitlines() or ["?"])[-1])
     try:
         routes = json.load(open("_routes.json"))
-        if "/programs/*/*" not in routes.get("include", []) or "/api/*" not in routes.get("include", []):
-            fail("_routes.json", 'include must list "/programs/*/*" and "/api/*", or the gate never runs')
+        for _need in ("/programs", "/programs/*", "/go/*", "/api/*"):
+            if _need not in routes.get("include", []):
+                fail("_routes.json", f'include must list "{_need}", or the gate and the First 1,000 redirect never run')
     except (OSError, ValueError):
         fail("_routes.json", "missing or not valid JSON: Cloudflare Pages needs it to run the gate")
+    try:
+        _camp = json.load(open("campaign.json"))
+        if not isinstance(_camp.get("redirect"), bool) or not isinstance(_camp.get("endDate"), str):
+            fail("campaign.json", 'needs "redirect": true or false and "endDate": a YYYY-MM-DD string (empty for no end date)')
+    except (OSError, ValueError):
+        fail("campaign.json", "missing or not valid JSON: it is the switch for the First 1,000 program-page redirect")
+    # The redirect sends every sales page to /first/, so a link on a /first/ page to a sales page would bounce straight back.
+    for p in PAGES:
+        if p.startswith("first/"):
+            for _h in re.findall(r'href="(/(?:programs|go)/?[^"#?]*)', read(p)):
+                if not re.search(r"/(read|thank-you)(\.html)?$", _h):
+                    fail(p, f"links to {_h}, a sales page the First 1,000 redirect sends straight back here; link to /first/#programs")
     _flag_homes = json.load(open("assets/data/program-flags.json")).get("homes", {})
     for p in PAGES:
         m = re.match(r"programs/([^/]+)/(thank-you|read)\.html$", p)

@@ -1,9 +1,11 @@
 // The gate on the paid program pages: /programs/<slug>/thank-you and /programs/<slug>/read (and .html).
 // A device with a wg_pass cookie that lists the program (or the bundle that covers it) gets the page. Any other
-// visitor goes to the sign-in screen for that program. Sales pages (/programs/<slug>), /go/, tools, /app/ and
-// /signin/ are not under /programs/<slug>/ or never reach this file (_routes.json). Closing the program pages
+// visitor goes to the sign-in screen for that program. Sales pages (/programs/<slug>) go to /first/ while campaign.json says so
+// (functions/_lib/campaign-redirect.js), otherwise they pass. Tools, /app/ and
+// /signin/ never reach this file (_routes.json). Closing the program pages
 // is phase 8 of the Selar to Bachs migration; CLAUDE.md section 4 holds the rule.
 import { cookiePass, covers, openSlugs } from "../_lib/pass.js";
+import { campaignRedirect } from "../_lib/campaign-redirect.js";
 
 const NO_STORE = "private, no-store";
 
@@ -38,6 +40,9 @@ async function justPaid(url, env) {
 
 export async function onRequest({ request, env, next }) {
   if (request.method !== "GET" && request.method !== "HEAD") return next();
+  // The First 1,000 redirect (campaign.json) takes every sales page to /first/. Read and thank-you pages never match it.
+  const sent = await campaignRedirect(request, env);
+  if (sent) return sent;
   const url = new URL(request.url);
   // Read the path the way the file server will, so %74hank-you or a double slash cannot get past the check.
   let path;
