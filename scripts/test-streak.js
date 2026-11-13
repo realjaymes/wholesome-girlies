@@ -160,13 +160,13 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('Spin for a game is a text link on the app home', await has(t.page, '#appSpin .rg-link') && !(await has(t.page, '#appSpin .btn')));
   await t.page.screenshot({ path: (process.env.WG_SHOTS || '/tmp') + '/streak-day6.png' }).catch(() => {});
   // The tap shows the card here and then opens the link on it. Nothing is marked until the card's page has opened.
-  const cardHref = await t.page.$eval('#appToday [data-wgs="today-card"] a.wgs-go', (e) => e.getAttribute('href'));
-  ok('the link on the card goes to the card page', /^\/pregnancy\//.test(cardHref), cardHref);
+  const cardHref = await t.page.$eval('#appToday a[data-wgs="today-card"]', (e) => e.getAttribute('href'));
+  ok('the whole card is a link to the card page', /^\/pregnancy\//.test(cardHref), cardHref);
   // a card that cannot open: the page answers 404, so nothing is marked and she sees why
   await t.page.setRequestInterception(true);
   t.page.on('request', (r) => (r.url().endsWith(cardHref) || r.url().endsWith(cardHref + '/') ? r.respond({ status: 404, contentType: 'text/html', body: 'gone' }) : r.continue()));
   await t.page.$eval('#appToday .wgs-cardbtn button', (e) => e.click()); await wait(300);
-  ok('the tap shows the card on the app home first', !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden)) && /Opening/.test(await tc(t.page, '#appToday a.wgs-go')));
+  ok('the tap shows the card on the app home first', !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden)) && /Opening/.test(await tc(t.page, '#appToday .wgs-go')));
   await wait(2200);
   s = await ls(t.page, 'wg_streak_v1');
   ok('a card that cannot open marks nothing', s.count === 6 && s.last_day === plus(-1), JSON.stringify(s));
@@ -174,14 +174,15 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('and she stays on the app home with the card open', /\/app\//.test(t.page.url()) && !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden)), t.page.url());
   await t.close();
   t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1) }), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) }, wg_streak_ui_v1: { v: 1, rule: plus(-6), first: plus(-6), days: [1, 2, 3, 4, 5, 6].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });
-  await t.page.$eval('#appToday .wgs-cardbtn button', (e) => e.click());
+  await t.page.$eval('#appToday .wgs-cardbtn button', (e) => e.click()); await wait(200);
+  await t.page.$eval('#appToday [data-wgs="today-card"] .wgs-line', (e) => e.click()); // anywhere on the card, during the pause
   await t.page.waitForFunction((h) => location.pathname.replace(/\/$/, '').replace(/\.html$/, '') === h.replace(/\/$/, ''), { timeout: 8000 }, cardHref).catch(() => {});
   await wait(900);
-  ok('one tap opens the link on the card', t.page.url().indexOf(cardHref.replace(/\/$/, '')) > -1 && !/\/app\//.test(t.page.url()), t.page.url());
+  ok('a tap anywhere on the card opens its page', t.page.url().indexOf(cardHref.replace(/\/$/, '')) > -1 && !/\/app\//.test(t.page.url()), t.page.url());
   s = await ls(t.page, 'wg_streak_v1');
   ok('reading today’s card makes day 7, once the card has opened', s.count === 7 && s.last_day === plus(0), JSON.stringify(s));
   await t.page.goto(T.B + '/app/?preview=installed', { waitUntil: 'load' }); await wait(1200);
-  ok('back on the app home the card shows open, its link to the guide', !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden).catch(() => true)) && !(await has(t.page, '#appToday .wgs-cardbtn:not([hidden])')) && /Open|Read/.test(await tc(t.page, '#appToday a.wgs-go')));
+  ok('back on the app home the card shows open, its link to the guide', !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden).catch(() => true)) && !(await has(t.page, '#appToday .wgs-cardbtn:not([hidden])')) && /Open|Read/.test(await tc(t.page, '#appToday .wgs-go')));
   await t.close();
   // no due date yet: the card asks for it and opens the tool that saves it, and nothing is marked
   t = await open(Object.assign(S({ count: 2, best: 2, last_day: plus(-1) }), { wg_streak_ui_v1: { v: 1, stage: 'pregnancy', first: plus(-2), days: [1, 2].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });

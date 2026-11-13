@@ -143,7 +143,7 @@
       '.wgs-dots{display:flex;gap:6px}.wgs-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink,#33322A);background:#fff}.wgs-dots i.d{background:var(--olive,#6E7A3F)}.wgs-dots i.r{background:repeating-linear-gradient(45deg,#fff 0 3px,var(--peach,#F0C9A8) 3px 6px)}.wgs-dots i.t{box-shadow:0 0 0 3px var(--mustard,#D49A2A)}' +
       '.wgs-reveal{display:block;padding:14px 16px;background:#fff;color:var(--ink,#33322A);border:2px solid var(--ink,#33322A);border-radius:16px;box-shadow:var(--sticker-sm,3px 3px 0 #33322A);text-align:left}.wgs-reveal[hidden],.wgs-cardbtn[hidden]{display:none}' +
       '.wgs-tag{display:inline-block;margin-bottom:6px;padding:2px 10px;border-radius:999px;background:var(--olive,#6E7A3F);color:#fff;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}' +
-      '.wgs-line{margin:0 0 8px}.wgs-go{display:inline-block;font-weight:800;color:var(--ink,#33322A)}.wgs-reveal .wgs-src{margin:8px 0 0}' +
+      'a.wgs-reveal,a.wgs-reveal:hover{text-decoration:none}.wgs-line{display:block;margin:0 0 8px}.wgs-go{display:inline-block;font-weight:800;color:var(--ink,#33322A)}.wgs-reveal .wgs-src{display:block;margin:8px 0 0}' +
       '.wgs-reveal.in{animation:wgsin .35s ease-out}@keyframes wgsin{0%{transform:translateY(-6px);opacity:0}100%{transform:none;opacity:1}}@media (prefers-reduced-motion:reduce){.wgs-reveal.in{animation:none}}';
     d.head.appendChild(s);
   }
@@ -523,16 +523,21 @@
   function todayCard(res, doneToday) {
     var f = d.createDocumentFragment(), c = res.card || { t: res.need.text, p: res.need.p, l: res.need.l }, open = !!res.card && doneToday;
     var slot = mk('p', 'wgs-cardbtn'), btn = mk('button', 'btn btn-ghost', 'Read today’s card'); btn.type = 'button'; slot.appendChild(btn);
-    var card = mk('div', 'wgs-reveal'); card.setAttribute('data-wgs', 'today-card'); card.setAttribute('aria-live', 'polite');
+    // The whole card is the link, like Spin's game card. Tapped during the pause or after a failed open, it opens the card's
+    // page straight away through openCard, so that page still marks the day; once the day is marked it is a plain link.
+    var card = mk('a', 'wgs-reveal'); card.href = c.p; card.setAttribute('data-wgs', 'today-card'); card.setAttribute('aria-live', 'polite');
     card.appendChild(mk('span', 'wgs-tag', res.card ? res.label : 'Today'));
-    card.appendChild(mk('p', 'wgs-line', c.t));
-    var go = mk('a', 'wgs-go', c.l + ' →'); go.href = c.p; card.appendChild(go);
-    if (res.card) card.appendChild(mk('p', 'wgs-src', 'Educational, not medical advice.'));
+    card.appendChild(mk('span', 'wgs-line', c.t));
+    var go = mk('span', 'wgs-go', c.l + ' →'); card.appendChild(go);
+    if (res.card) card.appendChild(mk('span', 'wgs-src', 'Educational, not medical advice.'));
     slot.hidden = open; card.hidden = !open;
+    var timer = 0, armed = false;
+    function now1() { clearTimeout(timer); openCard(go, c.p, card, !!res.card, c.l); }
+    card.addEventListener('click', function (e) { if (armed) { e.preventDefault(); now1(); } });
     btn.addEventListener('click', function () {
-      slot.hidden = true; card.hidden = false; card.className = 'wgs-reveal in';
+      slot.hidden = true; card.hidden = false; card.className = 'wgs-reveal in'; armed = true;
       go.setAttribute('aria-busy', 'true'); go.textContent = 'Opening ' + c.l.replace(/^(Open|Read) (the )?/, '') + '…';
-      setTimeout(function () { openCard(go, c.p, card, !!res.card, c.l); }, CARD_PAUSE);
+      timer = setTimeout(now1, CARD_PAUSE);
     });
     f.appendChild(slot); f.appendChild(card);
     if (curPlan && curPlan.canSwitch) {
