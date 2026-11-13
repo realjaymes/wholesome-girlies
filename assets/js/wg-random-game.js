@@ -1,7 +1,9 @@
 /* Random game button on /tools/ and /app/ (CLAUDE.md section 10). "Spin for a game" spins through the game names,
    stops on one card with its line and "Play it", and turns into "Spin again", so she chooses what to open.
    Pool: /assets/data/games.json, built from the Game and Quiz cards on /tools/ by scripts/build-game-pool.py.
-   It never repeats the game she was last given, and pushes random_game to the dataLayer when she opens one. */
+   It never repeats the game she was last given, and pushes random_game to the dataLayer when she opens one.
+   On /tools/ it is a filled button, the page's main action. On /app/ it is a bold text link under today's card, because the
+   app home's one filled button is her main action and "Read today's card" is the outlined one. */
 (function (w, d) {
   var path = w.location.pathname.replace(/\/$/, ''), surface = /^\/app/.test(path) ? 'app' : 'tools';
   var LAST = 'wg_random_last', pool = null, busy = false;
@@ -41,7 +43,8 @@
     '.rg-card .rg-go{display:inline-block;margin-top:10px;font-weight:800;color:var(--ink,#222)}' +
     '.rg-card.spin b{animation:rgp .14s linear infinite}@keyframes rgp{0%{transform:translateY(-4px);opacity:.5}100%{transform:translateY(0);opacity:1}}' +
     '@media (prefers-reduced-motion:reduce){.rg-card.spin b{animation:none}}';
-  css.textContent += '.rg-app{margin:16px 0 0}.rg-app .rg-help{display:none}';
+  css.textContent += '.rg-app{margin:16px 0 0}.rg-app .rg-help{display:none}' +
+    '.rg-link{display:inline;padding:0;background:none;border:0;font:inherit;font-weight:800;color:var(--plum,#33322A);text-decoration:underline;cursor:pointer}';
   d.head.appendChild(css);
   var box = d.createElement('div'); box.className = 'rg';
   var btn = d.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-primary'; btn.textContent = COPY.btn;
@@ -78,7 +81,7 @@
 
   function mount() {
     var anchor = d.querySelector('.toolsearch'), spin = d.getElementById('appSpin');
-    if (spin) { spin.appendChild(box); box.classList.add('rg-app'); }
+    if (spin) { spin.appendChild(box); box.classList.add('rg-app'); btn.className = 'rg-link'; }
     else if (anchor) anchor.parentNode.insertBefore(box, anchor);
     else return;
     load(function () {});

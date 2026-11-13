@@ -3,7 +3,7 @@
 // Needs the site on :8008 (python3 serve.py 8008) or WG_PORT.
 //   WG_PORT=8008 NODE_PATH=/tmp/wgog/node_modules node scripts/test-streak.js
 const T = require('./lib-wgtest.js');
-// textContent, so a card behind the "Read today's card" link (a closed details) is read too
+// textContent, so today's card is read before the "Read today's card" button has shown it
 const tc = (page, sel) => page.$eval(sel, (e) => e.textContent).catch(() => '');
 const { ok, wait, plus, isoWeek, open, ls, reqs, text, has } = T;
 const S = (o) => ({ wg_streak_v1: Object.assign({ v: 1, count: 0, best: 0, last_day: '', rest_used_week: null, milestones: [] }, o) });
@@ -149,35 +149,48 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('day 1: no rule card; with no stage she picks one', !/Start your streak/.test(first) && /Which stage are you in\?/.test(first), first.slice(0, 200));
   await t.close();
   t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1) }), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) }, wg_streak_ui_v1: { v: 1, rule: plus(-6), first: plus(-6), days: [1, 2, 3, 4, 5, 6].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });
-  await t.page.$eval('#appToday summary', (e) => e.click());
   const b = await tc(t.page, '#appToday');
   ok('day 6: today first with the week', /Today · week 22/i.test(b), b.slice(0, 120));
   ok('day 6: the line under the strip', /6 days in a row\. Read today’s card to make it 7\. Best: 6\./.test(b), b);
   ok('the card carries the source line', /Educational, not medical advice\./.test(b));
   ok('the strip has seven circles', (await t.page.$$('.wgs-dots i')).length === 7);
+  // One outlined button; the card waits behind it, and Spin is a text link under it, so the main action keeps the one filled button.
+  ok('Read today’s card is an outlined button', (await tc(t.page, '#appToday .wgs-cardbtn button.btn-ghost')) === 'Read today’s card');
+  ok('the card is closed until she taps', await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden));
+  ok('Spin for a game is a text link on the app home', await has(t.page, '#appSpin .rg-link') && !(await has(t.page, '#appSpin .btn')));
   await t.page.screenshot({ path: (process.env.WG_SHOTS || '/tmp') + '/streak-day6.png' }).catch(() => {});
-  // The button is a link to the card. Tapping it marks nothing until the card's page has opened.
-  const cardHref = await t.page.$eval('#appToday [data-wgs="today-card"] a.btn-primary', (e) => e.getAttribute('href'));
-  ok('the card button is a link to the card page', /^\/pregnancy\//.test(cardHref) && /Read today’s card/.test(await tc(t.page, '#appToday [data-wgs="today-card"] a.btn-primary')), cardHref);
+  // The tap shows the card here and then opens the link on it. Nothing is marked until the card's page has opened.
+  const cardHref = await t.page.$eval('#appToday [data-wgs="today-card"] a.wgs-go', (e) => e.getAttribute('href'));
+  ok('the link on the card goes to the card page', /^\/pregnancy\//.test(cardHref), cardHref);
   // a card that cannot open: the page answers 404, so nothing is marked and she sees why
   await t.page.setRequestInterception(true);
   t.page.on('request', (r) => (r.url().endsWith(cardHref) || r.url().endsWith(cardHref + '/') ? r.respond({ status: 404, contentType: 'text/html', body: 'gone' }) : r.continue()));
-  await t.page.$eval('#appToday [data-wgs="today-card"] a.btn-primary', (e) => e.click()); await wait(700);
+  await t.page.$eval('#appToday .wgs-cardbtn button', (e) => e.click()); await wait(300);
+  ok('the tap shows the card on the app home first', !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden)) && /Opening/.test(await tc(t.page, '#appToday a.wgs-go')));
+  await wait(2200);
   s = await ls(t.page, 'wg_streak_v1');
   ok('a card that cannot open marks nothing', s.count === 6 && s.last_day === plus(-1), JSON.stringify(s));
   ok('and she is told', /could not open today’s card/.test(await tc(t.page, '#appToday')));
-  ok('and she stays on the app home', /\/app\//.test(t.page.url()), t.page.url());
+  ok('and she stays on the app home with the card open', /\/app\//.test(t.page.url()) && !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden)), t.page.url());
   await t.close();
   t = await open(Object.assign(S({ count: 6, best: 6, last_day: plus(-1) }), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) }, wg_streak_ui_v1: { v: 1, rule: plus(-6), first: plus(-6), days: [1, 2, 3, 4, 5, 6].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });
-  await t.page.$eval('#appToday summary', (e) => e.click());
-  await t.page.$eval('#appToday [data-wgs="today-card"] a.btn-primary', (e) => e.click());
+  await t.page.$eval('#appToday .wgs-cardbtn button', (e) => e.click());
   await t.page.waitForFunction((h) => location.pathname.replace(/\/$/, '').replace(/\.html$/, '') === h.replace(/\/$/, ''), { timeout: 8000 }, cardHref).catch(() => {});
   await wait(900);
-  ok('tapping the card opens it', t.page.url().indexOf(cardHref.replace(/\/$/, '')) > -1 && !/\/app\//.test(t.page.url()), t.page.url());
+  ok('one tap opens the link on the card', t.page.url().indexOf(cardHref.replace(/\/$/, '')) > -1 && !/\/app\//.test(t.page.url()), t.page.url());
   s = await ls(t.page, 'wg_streak_v1');
   ok('reading today’s card makes day 7, once the card has opened', s.count === 7 && s.last_day === plus(0), JSON.stringify(s));
   await t.page.goto(T.B + '/app/?preview=installed', { waitUntil: 'load' }); await wait(1200);
-  ok('back on the app home the card links to the guide', /Open|Read/.test(await t.page.$eval('#appToday a.btn', (e) => e.textContent).catch(() => '')));
+  ok('back on the app home the card shows open, its link to the guide', !(await t.page.$eval('#appToday [data-wgs="today-card"]', (e) => e.hidden).catch(() => true)) && !(await has(t.page, '#appToday .wgs-cardbtn:not([hidden])')) && /Open|Read/.test(await tc(t.page, '#appToday a.wgs-go')));
+  await t.close();
+  // no due date yet: the card asks for it and opens the tool that saves it, and nothing is marked
+  t = await open(Object.assign(S({ count: 2, best: 2, last_day: plus(-1) }), { wg_streak_ui_v1: { v: 1, stage: 'pregnancy', first: plus(-2), days: [1, 2].map((n) => plus(-n)) } }), '/app/?preview=installed', { wait: 1500 });
+  ok('no due date: the card asks for it', /Add your due date/.test(await tc(t.page, '#appToday [data-wgs="today-card"]')));
+  await t.page.$eval('#appToday .wgs-cardbtn button', (e) => e.click());
+  await t.page.waitForFunction(() => /due-date-calculator/.test(location.pathname), { timeout: 8000 }).catch(() => {});
+  ok('one tap opens the Due Date Calculator', /due-date-calculator/.test(t.page.url()), t.page.url());
+  s = await ls(t.page, 'wg_streak_v1');
+  ok('and marks nothing', s.count === 2 && s.last_day === plus(-1), JSON.stringify(s));
   await t.close();
 
   // the stage cards, picked on the phone
@@ -189,12 +202,12 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ];
   for (const [name, seed, rx] of cases) {
     t = await open(Object.assign({ wg_streak_ui_v1: { v: 1, rule: plus(-3), first: plus(-3), days: [] } }, seed), '/app/?preview=installed', { wait: 1500 });
-    const lab = await tc(t.page, '#appToday .eyebrow');
+    const lab = await tc(t.page, '#appToday .wgs-tag');
     ok('card for ' + name + ' (' + lab + ')', new RegExp(rx.source, 'i').test(lab));
     await t.close();
   }
   t = await open({ wg_streak_ui_v1: { v: 1, rule: plus(-3), first: plus(-4), days: [], stage: 'relationships' } }, '/app/?preview=installed', { wait: 1500 });
-  ok('relationships: day number since her first streak day', /day 5/i.test(await tc(t.page, '#appToday .eyebrow')));
+  ok('relationships: day number since her first streak day', /day 5/i.test(await tc(t.page, '#appToday .wgs-tag')));
   await t.close();
   t = await open({ wg_streak_ui_v1: { v: 1, rule: plus(-3), days: [] } }, '/app/?preview=installed', { wait: 1500 });
   ok('no stage yet: she picks one', /Which stage are you in\?/.test(await tc(t.page, '#appToday')));
@@ -294,7 +307,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ];
   for (const [what, seed, rx, prog] of stageCases) {
     t = await home(Object.assign({}, BUNDLE, UI({}), seed));
-    const lab = await tc(t.page, '#appToday .eyebrow'), tb = await tc(t.page, '#appToday');
+    const lab = await tc(t.page, '#appToday .wgs-tag'), tb = await tc(t.page, '#appToday');
     const stage = await t.page.evaluate(() => WGStreak.stageOf());
     ok('bundle: ' + what + ' (' + stage + ')', rx.test(lab + ' ' + tb) && STAGE_OF[prog] === stage, lab + ' | ' + stage);
     await t.close();
@@ -323,7 +336,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   // 5. Wife Material plus motherhood
   const WM = owns('wife-material-blueprint', 'first-pregnancy-plan');
   t = await home(Object.assign({}, WM, UI({})));
-  let eb = await tc(t.page, '#appToday .eyebrow'), sw = await tc(t.page, '#appToday [data-wgs="switch"]');
+  let eb = await tc(t.page, '#appToday .wgs-tag'), sw = await tc(t.page, '#appToday [data-wgs="switch"]');
   ok('Wife Material plus motherhood, no stage date: relationships, with a switch to motherhood', /Today · day/i.test(eb) && sw === 'Switch to motherhood', eb + '|' + sw);
   await t.page.$eval('#appToday [data-wgs="switch"]', (e) => e.click()); await wait(900);
   ok('the switch opens the motherhood card and saves her pick on this phone', (await ls(t.page, 'wg_streak_ui_v1')).pref === 'motherhood' && /Which|Add your due date|week/i.test(await tc(t.page, '#appToday')) && await tc(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
@@ -331,10 +344,10 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('her pick is still there after a reload', await tc(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships');
   await t.close();
   t = await home(Object.assign({}, WM, UI({}), { wg_stage_pregnancy_v1: { v: 1, due: plus(120) }, wg_stage_check_v1: { v: 1, due: plus(120) } }));
-  eb = await tc(t.page, '#appToday .eyebrow'); sw = await tc(t.page, '#appToday [data-wgs="switch"]');
+  eb = await tc(t.page, '#appToday .wgs-tag'); sw = await tc(t.page, '#appToday [data-wgs="switch"]');
   ok('Wife Material plus motherhood with a stage date: the motherhood card, with a switch to relationships', /week 22/i.test(eb) && sw === 'Switch to relationships', eb + '|' + sw);
   await t.page.$eval('#appToday [data-wgs="switch"]', (e) => e.click()); await wait(900);
-  ok('switching to relationships shows the relationships card', /Today · day/i.test(await tc(t.page, '#appToday .eyebrow')) && (await ls(t.page, 'wg_streak_ui_v1')).pref === 'relationships');
+  ok('switching to relationships shows the relationships card', /Today · day/i.test(await tc(t.page, '#appToday .wgs-tag')) && (await ls(t.page, 'wg_streak_ui_v1')).pref === 'relationships');
   ok('she is offered nothing she already owns', !(await has(t.page, '#appFirst .card')) && !(await has(t.page, '#appMain .wgn-offer')));
   await t.close();
   t = await home(Object.assign({}, owns('wife-material-blueprint'), UI({})));
@@ -344,7 +357,7 @@ const OPEN = { '/first1000/status': { ok: true, taken: 8, cap: 100, left: 92, op
   ok('one motherhood program: no switch link', !(await has(t.page, '#appToday [data-wgs="switch"]')));
   await t.close();
   t = await home(Object.assign({}, owns('wife-material-blueprint', 'complete-motherhood-journey'), UI({}), { wg_vax_dob: plus(-130) }));
-  eb = await tc(t.page, '#appToday .eyebrow');
+  eb = await tc(t.page, '#appToday .wgs-tag');
   ok('Wife Material plus the bundle: the bundle follows the stage date', /month 5/i.test(eb) && await tc(t.page, '#appToday [data-wgs="switch"]') === 'Switch to relationships', eb);
   await t.close();
   // the milestone follows the program she read most recently
