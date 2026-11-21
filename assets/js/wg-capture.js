@@ -49,7 +49,7 @@
       '.wgc-card{margin:18px 0 0;text-align:left;clear:both}.wgc-card h3{margin:0 0 6px}.wgc-card p{margin:0 0 10px}.wgc-card .muted,.wgc-note{color:var(--plum-soft,#66645A);font-size:.88rem}' +
       '.wgc-form{display:grid;gap:10px;margin:10px 0 0}.wgc-form input[type=email]{width:100%;box-sizing:border-box;padding:12px 14px;font:inherit;border:2px solid var(--ink,#33322A);border-radius:12px;background:#fff}' +
       '.wgc-form .btn{justify-self:start}.app-install.no-btn .wgc-form .btn{display:inline-flex}.wgc-consent{display:flex;gap:8px;align-items:flex-start;font-size:.86rem;line-height:1.4;color:var(--plum-soft,#66645A)}.wgc-consent input{margin-top:3px;flex:none}' +
-      '.wgc-msg{font-weight:800;margin:8px 0 0}.wgc-cal{margin:14px 0 0}' +
+      '.wgc-form+.wgc-note{margin-top:var(--cta-below,14px)}.wgc-msg{font-weight:800;margin:8px 0 0}.wgc-cal{margin:14px 0 0}' +
       '.wgc-bar{position:fixed;left:12px;right:12px;bottom:calc(var(--wg-nav-h,66px) + 12px);z-index:880;max-width:560px;margin:0 auto;background:#fff;border:2px solid var(--ink,#33322A);border-radius:16px;box-shadow:var(--sticker-sm,3px 3px 0 #33322A);padding:12px 14px;max-height:70vh;overflow:auto}' +
       '.wgc-bar-row{display:flex;gap:10px;align-items:center}.wgc-bar-row p{margin:0;flex:1;font-weight:800;font-size:.95rem;line-height:1.3}' +
       '.wgc-x{flex:none;width:36px;height:36px;border:0;background:none;font-size:1.4rem;line-height:1;color:var(--plum-soft,#66645A);cursor:pointer;border-radius:50%}' +
