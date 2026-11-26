@@ -1,7 +1,7 @@
 {
   "name": "Wholesome Girlies",
   "short_name": "Girlies",
-  "description": "Tools, guides and programs for African women, from dating to the baby years.",
+  "description": "A health app and community for African women at home and abroad. We help you through the hardest stretches of reproductive life: relationships, fertility, pregnancy and postpartum.",
   "id": "/app/",
   "start_url": "/app/?home=first-baby-playbook-diaspora",
   "scope": "/",
