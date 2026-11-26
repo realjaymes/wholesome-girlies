@@ -5,7 +5,7 @@
 - In <head>, after the styles.css link: /assets/css/wg-arrows.css, the site arrow (CLAUDE.md section 7).
 - Before </body>: /assets/js/wg-arrows.js (swaps the text arrows for the site arrow), then /assets/js/wg-app.js
   (registers the service worker and shows the add-to-home-screen offers).
-- In the footer's Explore list: a "Get the app" link to /app/. Never in the site menu, which is full.
+- In the footer's Explore list: a "Get the app" link to /app/, and a "Press" link to /press/ after About us. Never in the site menu, which is full.
 
 Run from anywhere after adding pages:  python3 scripts/add-app-tags.py
 When wg-app.js changes, bump APP_JS_VERSION here and run it again; it rewrites the version on every page. wg-ideas.js (the cards that read
@@ -51,6 +51,10 @@ for p in sorted(glob.glob("**/*.html", recursive=True)):
     s = s[:reel.start()] + SCRIPT + "\n" + s[reel.start():] if reel else s.replace("</body>", SCRIPT + "\n</body>", 1)
     s = re.sub(r"(<h4>Explore</h4>\s*<ul>)((?:(?!</ul>).)*?)(</ul>)",
                lambda m: m.group(0) if 'href="/app/"' in m.group(2) else m.group(1) + m.group(2) + '<li><a href="/app/">Get the app</a></li>' + m.group(3),
+               s, count=1, flags=re.S)
+    # and a "Press" link to the press and media kit page, after About us
+    s = re.sub(r"(<h4>Explore</h4>\s*<ul>)((?:(?!</ul>).)*?)(</ul>)",
+               lambda m: m.group(0) if 'href="/press/"' in m.group(2) else m.group(1) + re.sub(r'(<li><a href="/about/">About us</a></li>)', r'\1<li><a href="/press/">Press</a></li>', m.group(2), count=1) + m.group(3),
                s, count=1, flags=re.S)
     if s != before:
         open(p, "w", encoding="utf-8").write(s)

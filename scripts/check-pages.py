@@ -89,7 +89,7 @@ KIND = {p: kind(p) for p in PAGES}
 NOINDEX_KINDS = {"GO", "TY", "READER", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 # Built on a branch and not live yet: sitemap.xml is edited only by wg_release.py on release day, so these skip the sitemap rule.
-NOT_YET_RELEASED = {"first/index.html", "press/index.html"}
+NOT_YET_RELEASED = {"first/index.html"}
 # "Free" is allowed on the First 1,000 pages only (the offer is free for a month).
 FREE_OK = {"first/index.html", "first/welcome/index.html", "first/feedback/index.html"}
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
@@ -853,6 +853,8 @@ for p in PAGES:
     m = re.search(r"<h4>Explore</h4>\s*<ul>(.*?)</ul>", SRC[p], flags=re.S)
     if m and 'href="/app/"' not in m.group(1):
         fail(p, 'footer Explore list is missing "Get the app": run python3 scripts/add-app-tags.py')
+    if m and 'href="/press/"' not in m.group(1):
+        fail(p, 'footer Explore list is missing "Press": run python3 scripts/add-app-tags.py')
 # Tools that read another tool's entries and save none of their own, so the app's saved tools never lists them.
 READS_ONLY = {"postpartum/tools/mum-wrapped.html"}  # reads the Feeding and Sleep Tracker's wg_feedsleep_ entries
 if os.path.exists("app/index.html"):
