@@ -244,6 +244,8 @@ const PAGE_CARDS = [
   { name: "parenting", look: "c", stage: "parenting", chip: "Parenting", title: "What should my baby be doing at this age?", bubble: "Tools and guides for baby.", guides: ["funmi"] },
   { name: "about", look: "a", stage: "fertility", chip: "About", title: "Women-led, and built on research and real data", pill: "Who we are", scene: "fertility-amaka-planner.jpg", guides: ["amaka"] },
   { name: "press", look: "c", stage: "fertility", chip: "Press", title: "Press and media kit", bubble: "Images, logos and facts.", guides: ["amaka"] },
+  { name: "insights", look: "c", stage: "pregnancy", chip: "Insights", title: "Research on Nigerian women's health", bubble: "Studies from our own data.", guides: ["zainab"] },
+  { name: "compare", look: "c", stage: "fertility", chip: "Compare", title: "Compare women's health apps in Nigeria", bubble: "Find the one that fits you.", guides: ["amaka"] },
   { name: "who-answers-nigerian-womens-health-searches", look: "c", stage: "pregnancy", chip: "Original research", title: "Who answers Nigerian women's health searches?", bubble: "2,370 Google results studied.", guides: ["zainab"] },
   { name: "editorial-policy", look: "c", stage: "pregnancy", chip: "About", title: "Editorial policy", bubble: "How we write our pages.", guides: ["zainab"] },
   { name: "medical-policy", look: "a", stage: "postpartum", chip: "About", title: "Medical policy", pill: "How we keep it safe", guides: ["funmi"] },
