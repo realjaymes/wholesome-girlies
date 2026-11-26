@@ -307,7 +307,7 @@ async function extras(browser) {
     const el = await pg.$(".m");
     await el.screenshot({ path: path.join(PRESS, file), omitBackground: true });
   }
-  await pg.setContent(FACT_SHEET({ contact: process.env.WG_PRESS_CONTACT || "Interviews, data and other sizes: email James Praise, founder, at james@wholesomegirlies.xyz." }), { waitUntil: "load" });
+  await pg.setContent(FACT_SHEET({ contact: process.env.WG_PRESS_CONTACT || "For an interview with our founder James Praise, data or other image sizes, email hello@wholesomegirlies.xyz." }), { waitUntil: "load" });
   await pg.evaluate(() => document.fonts.ready);
   await pg.pdf({ path: path.join(PRESS, "wholesome-girlies-fact-sheet.pdf"), format: "A4", printBackground: true });
   console.log("logos and fact sheet written to", path.relative(ROOT, PRESS));
