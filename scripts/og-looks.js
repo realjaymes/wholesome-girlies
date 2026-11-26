@@ -243,6 +243,7 @@ const PAGE_CARDS = [
   { name: "postpartum", look: "a", stage: "postpartum", chip: "Postpartum", title: "What should I be doing in my first six weeks postpartum?", pill: "Start here", guides: ["funmi"] },
   { name: "parenting", look: "c", stage: "parenting", chip: "Parenting", title: "What should my baby be doing at this age?", bubble: "Tools and guides for baby.", guides: ["funmi"] },
   { name: "about", look: "a", stage: "fertility", chip: "About", title: "Women-led, and built on research and real data", pill: "Who we are", scene: "fertility-amaka-planner.jpg", guides: ["amaka"] },
+  { name: "press", look: "c", stage: "fertility", chip: "Press", title: "Press and media kit", bubble: "Images, logos and facts.", guides: ["amaka"] },
   { name: "editorial-policy", look: "c", stage: "pregnancy", chip: "About", title: "Editorial policy", bubble: "How we write our pages.", guides: ["zainab"] },
   { name: "medical-policy", look: "a", stage: "postpartum", chip: "About", title: "Medical policy", pill: "How we keep it safe", guides: ["funmi"] },
   { name: "programs", look: "c", stage: "fertility", chip: "Programs", title: "Support that meets you where you are", bubble: "One for every stage.", guides: FOUR },

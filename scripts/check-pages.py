@@ -89,7 +89,7 @@ KIND = {p: kind(p) for p in PAGES}
 NOINDEX_KINDS = {"GO", "TY", "READER", "PROG-D", "404", "MOCKUP", "RESULT", "APP"}
 INDEXABLE = [p for p in PAGES if KIND[p] not in NOINDEX_KINDS]
 # Built on a branch and not live yet: sitemap.xml is edited only by wg_release.py on release day, so these skip the sitemap rule.
-NOT_YET_RELEASED = {"first/index.html"}
+NOT_YET_RELEASED = {"first/index.html", "press/index.html"}
 # "Free" is allowed on the First 1,000 pages only (the offer is free for a month).
 FREE_OK = {"first/index.html", "first/welcome/index.html", "first/feedback/index.html"}
 RESOURCES = [p for p in PAGES if KIND[p] in ("TOOL", "GUIDE") or "/games/" in p or p.startswith("games/")]
