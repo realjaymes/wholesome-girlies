@@ -30,7 +30,8 @@ const GH = { tolu: [392, 620], amaka: [255, 569], zainab: [289, 563], funmi: [29
 
 // Each tool: its page, its stage, the words on the image (what she gets, in plain words) and how to fill it
 // with sample data so the screen shows a real result. Days are counted back from today.
-// A paid fertility buyer's phone: her program flag, 7 of 32 lessons read, a cycle date and a 12 day streak with its days filled in. Dates are set
+// A paid fertility buyer, signed in on her phone: her account and name (Amaka, the fertility guide in the picture), her
+// program flag, 7 of 32 lessons read, a cycle date and a 12 day streak with its days filled in. Dates are set
 // relative to the day of the run, so the app home always reads "Lesson 8 of 32 is next" and "12 days in a row".
 const BUYER = () => {
   const day = (d) => new Date(Date.now() + d * 864e5).toISOString().slice(0, 10);
@@ -38,6 +39,11 @@ const BUYER = () => {
     "your-cycle-in-plain-words", "your-fertile-window", "how-to-tell-you-have-ovulated"];
   return {
     wg_acct_skip_v1: "1",
+    wg_session_v1: "media-kit-sample",
+    wg_account_v1: { v: 1, at: Date.now(), saved: [], account: { email: "amaka@example.com", name: "Amaka",
+      programs: [{ slug: "trying-to-conceive-blueprint", home: "/programs/trying-to-conceive-blueprint/thank-you" }] } },
+    wg_name_v1: { v: 1, name: "Amaka", asked: true },
+    wg_app_welcomed: "1",
     wg_fertility_home: { u: "/programs/trying-to-conceive-blueprint/thank-you", l: "Conception home" },
     "wg_read_trying-to-conceive-blueprint": { done: Object.fromEntries(read.map((i) => [i, 1])), last: read[read.length - 1] },
     wg_stage_fertility_v1: { v: 1, lmp: day(-10), cycle: 28, starts: [day(-38), day(-10)] },
