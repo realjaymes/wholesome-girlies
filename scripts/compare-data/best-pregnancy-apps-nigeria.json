@@ -1,0 +1,271 @@
+{
+  "updated": "November 2026",
+  "updated_iso": "2026-11-26",
+  "disclaimer": {
+    "strong": "This page compares pregnancy and cycle apps.",
+    "rest": "It is educational, not medical advice, and no clinician has reviewed it yet."
+  },
+  "doctor": "Call your hospital or doctor if you have heavy bleeding, severe pain, trouble breathing, a severe headache, blurred vision, a high fever, or reduced baby movement after movements have started.",
+  "type": "best-of",
+  "stage": "pregnancy",
+  "slug": "best-pregnancy-apps-nigeria",
+  "title": "Best Pregnancy Apps in Nigeria: Seven Options Ranked",
+  "description": "Compare seven pregnancy apps available in Nigeria. See week by week guidance, clinic tools, doctor access, communities, offline use and prices.",
+  "share": "Compare seven pregnancy apps in Nigeria by clinic tools, daily guidance, doctor access, community, offline use and price.",
+  "eyebrow": "Best apps",
+  "h1": "Best pregnancy apps in Nigeria",
+  "crumb": "Best pregnancy apps in Nigeria",
+  "kicker": "For Nigerian women choosing help during pregnancy",
+  "answer": "Wholesome Girlies comes first for a Nigerian first pregnancy because it gives you clinic questions, checklists and a plan written for here. Babymigo is strongest for its Nigerian provider directory and forum. What to Expect, BabyCentre and Pregnancy+ give more daily tracking and articles. Koyo Health gives you a doctor chat. MamaAlert works offline and is built for African women.",
+  "image": {
+    "src": "/assets/img/cast/pregnancy-zainab-chart.jpg",
+    "alt": "Illustration of Zainab comparing pregnancy apps"
+  },
+  "method_title": "How we ranked",
+  "method": [
+    "Does it help with Nigerian antenatal visits?",
+    "Can you use useful tools without paying?",
+    "Does it give daily tracking, community or access to a doctor?",
+    "Does it work when your data is off?"
+  ],
+  "table_title": "The comparison",
+  "cols": [
+    "Wholesome Girlies",
+    "Babymigo",
+    "What to Expect",
+    "BabyCentre",
+    "Pregnancy+",
+    "Koyo Health",
+    "MamaAlert"
+  ],
+  "rows": [
+    {
+      "label": "Best for",
+      "cells": [
+        "a Nigerian first pregnancy",
+        "a Nigerian provider directory and forum",
+        "daily pregnancy reading and community",
+        "pregnancy through baby's first year",
+        "a full set of pregnancy tools",
+        "chatting with a Nigerian doctor",
+        "offline African pregnancy tracking"
+      ],
+      "cells_short": [
+        "a Nigerian first pregnancy",
+        "a Nigerian provider directory and forum",
+        "daily pregnancy reading and community",
+        "pregnancy through baby's first year",
+        "a full set of pregnancy tools",
+        "chatting with a Nigerian doctor",
+        "offline African pregnancy tracking"
+      ],
+      "win": []
+    },
+    {
+      "label": "Price in Nigeria",
+      "cells": [
+        "The tools need no payment. The Plan is ₦5,700 (about $4) early-bird or ₦13,700 (about $10) standard.",
+        "The forum and public tools show no payment. PreggClass was not readable today, so no class price is stated.",
+        "The Nigerian App Store shows no payment and no in-app purchase price.",
+        "The Nigerian App Store shows no payment and no in-app purchase price.",
+        "Pregnancy+ users pay ₦4,900 (about $4) to ₦24,900 (about $19).",
+        "A consultation costs ₦2,000 (about $2). A monthly plan costs ₦3,500 (about $3).",
+        "Google Play shows in-app purchases but does not publish the Nigerian price."
+      ],
+      "cells_short": [
+        "Tools need no payment",
+        "Public tools show no payment",
+        "No purchase price shown",
+        "No purchase price shown",
+        "₦4,900 ($4) to ₦24,900 ($19)",
+        "₦2,000 ($2) per chat",
+        "Price not published"
+      ],
+      "win": []
+    },
+    {
+      "label": "Works for Nigerian care?",
+      "cells": [
+        "Yes. It includes Nigerian clinic questions.",
+        "Yes. It lists Nigerian providers.",
+        "No local schedule stated.",
+        "No local schedule stated.",
+        "No local schedule stated.",
+        "Yes. Nigerian doctors answer.",
+        "Built for African women."
+      ],
+      "cells_short": [
+        "Written for Nigeria",
+        "Nigerian directory",
+        "Global guidance",
+        "Global guidance",
+        "Global guidance",
+        "Nigerian doctors",
+        "African focus"
+      ],
+      "win": [
+        0,
+        1,
+        5,
+        6
+      ]
+    }
+  ],
+  "apps": [
+    {
+      "rank": 1,
+      "name": "Wholesome Girlies",
+      "label": "Best for a Nigerian first pregnancy",
+      "suits": "You want clinic questions, checklists and a plan written for Nigerian life.",
+      "price": "The tools need no payment. The Plan is ₦5,700 (about $4) early-bird or ₦13,700 (about $10) standard.",
+      "can": [
+        "See your week and due date.",
+        "Print antenatal questions.",
+        "Build a hospital bag list and birth plan."
+      ],
+      "cannot": [
+        "No live doctor or provider directory."
+      ],
+      "rating": "No app store needed",
+      "key": "wg"
+    },
+    {
+      "rank": 2,
+      "name": "Babymigo",
+      "label": "Best for a Nigerian provider directory and forum",
+      "suits": "You want local providers, a large Nigerian forum or a live antenatal class.",
+      "price": "The forum and public tools show no payment. PreggClass was not readable today, so no class price is stated.",
+      "can": [
+        "Search Nigerian maternity hospitals and lactation consultants.",
+        "Ask questions in the forum.",
+        "Read Nigerian pregnancy articles."
+      ],
+      "cannot": [
+        "No live app store listing was found."
+      ],
+      "rating": "250,000+ members by its count",
+      "key": "bm"
+    },
+    {
+      "rank": 3,
+      "name": "What to Expect",
+      "label": "Best for daily pregnancy reading and community",
+      "suits": "You want daily updates, videos and parent discussions.",
+      "price": "The Nigerian App Store shows no payment and no in-app purchase price.",
+      "can": [
+        "See week by week videos.",
+        "You can keep your symptoms, weight and baby movements in one log.",
+        "Join community discussions."
+      ],
+      "cannot": [
+        "Not written for Nigerian clinic schedules."
+      ],
+      "rating": "4.8 from 1.5k ratings",
+      "key": "wte"
+    },
+    {
+      "rank": 4,
+      "name": "BabyCentre",
+      "label": "Best for pregnancy through baby's first year",
+      "suits": "You want daily updates and baby guidance in one app.",
+      "price": "The Nigerian App Store shows no payment and no in-app purchase price.",
+      "can": [
+        "See daily development updates.",
+        "Use a kick tracker and contraction timer.",
+        "Join birth clubs."
+      ],
+      "cannot": [
+        "Not written for Nigerian clinic schedules."
+      ],
+      "rating": "4.8 from 6.2k ratings",
+      "key": "bc"
+    },
+    {
+      "rank": 5,
+      "name": "Pregnancy+",
+      "label": "Best for a full set of pregnancy tools",
+      "suits": "You want a kick counter, contraction timer, birth plan and hospital bag list.",
+      "price": "Purchases cost ₦4,900 (about $4) to ₦24,900 (about $19).",
+      "can": [
+        "Use a kick counter.",
+        "Time contractions.",
+        "Make a birth plan and hospital bag list."
+      ],
+      "cannot": [
+        "Written for a global audience."
+      ],
+      "rating": "4.5 from 425 ratings",
+      "key": "pp"
+    },
+    {
+      "rank": 6,
+      "name": "Koyo Health",
+      "label": "Best for chatting with a Nigerian doctor",
+      "suits": "You want to ask a licensed Nigerian doctor about a pregnancy concern.",
+      "price": "A consultation costs ₦2,000 (about $2). A monthly plan costs ₦3,500 (about $3).",
+      "can": [
+        "Chat with a Nigerian doctor.",
+        "Ask follow-up questions.",
+        "Get guidance on when to visit a hospital."
+      ],
+      "cannot": [
+        "It does not give you a week by week pregnancy tracker."
+      ],
+      "rating": "1K+ Google Play downloads",
+      "key": "koyo"
+    },
+    {
+      "rank": 7,
+      "name": "MamaAlert",
+      "label": "Best for offline African pregnancy tracking",
+      "suits": "You want an app built for African women that works without data.",
+      "price": "Google Play shows in-app purchases but does not publish the Nigerian price.",
+      "can": [
+        "Use pregnancy and cycle tracking offline.",
+        "Find nearby clinics.",
+        "See symptom information from your entries."
+      ],
+      "cannot": [
+        "Voice navigation and text message updates are marked as coming soon."
+      ],
+      "rating": "Google Play listing",
+      "key": "mama"
+    }
+  ],
+  "apps_title": "The seven apps, in our order",
+  "faq": [
+    {
+      "q": "Which pregnancy app is best in Nigeria?",
+      "a": "Choose by the job. Wholesome Girlies suits clinic preparation. Babymigo suits provider search and community. Koyo suits doctor chat. Pregnancy+ suits tracking tools."
+    },
+    {
+      "q": "Which app works without data?",
+      "a": "MamaAlert says its health information works offline. The Wholesome Girlies tools also work after you add the Girlies app to your phone."
+    }
+  ],
+  "sources": [
+    "bm_home",
+    "wte_apple",
+    "babycenter_apple",
+    "pregplus_apple",
+    "koyo_site",
+    "koyo_play",
+    "mamaalert_play"
+  ],
+  "related": [
+    {
+      "tag": "Tool",
+      "h": "Due Date Calculator",
+      "p": "Work out your due date and pregnancy week.",
+      "href": "/pregnancy/tools/due-date-calculator",
+      "cta": "Open"
+    },
+    {
+      "tag": "Tool",
+      "h": "Antenatal Appointment Questions",
+      "p": "Tick and print your questions for the clinic.",
+      "href": "/pregnancy/tools/antenatal-appointment-questions",
+      "cta": "Open"
+    }
+  ]
+}

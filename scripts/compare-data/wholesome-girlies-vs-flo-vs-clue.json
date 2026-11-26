@@ -1,0 +1,186 @@
+{
+  "updated": "November 2026",
+  "updated_iso": "2026-11-26",
+  "disclaimer": {
+    "strong": "This page compares pregnancy and cycle apps.",
+    "rest": "It is educational, not medical advice, and no clinician has reviewed it yet."
+  },
+  "doctor": "Call your hospital or doctor if you have heavy bleeding, severe pain, trouble breathing, a severe headache, blurred vision, a high fever, or reduced baby movement after movements have started.",
+  "type": "head-to-head",
+  "stage": "fertility",
+  "slug": "wholesome-girlies-vs-flo-vs-clue",
+  "title": "Wholesome Girlies vs Flo vs Clue: Cycle Tracker Guide",
+  "description": "Compare Wholesome Girlies, Flo and Clue for cycle tracking, fertile days, symptoms, privacy and prices in Nigeria, the UK and the United States.",
+  "share": "Compare Wholesome Girlies, Flo and Clue by symptoms, fertile days, privacy, sign-up and price.",
+  "eyebrow": "Compare",
+  "h1": "Wholesome Girlies vs Flo vs Clue",
+  "crumb": "Wholesome Girlies vs Flo vs Clue",
+  "kicker": "For women choosing a period tracker while trying to conceive",
+  "answer": "Choose Flo if you want daily symptom entries, reminders and a large health library. Choose Clue if you want detailed cycle guides and more than 200 symptoms and experiences to track. Choose Wholesome Girlies if you want a simple fertile day calculator, dates kept on your phone, clinic questions and a plan written for Nigerian women.",
+  "image": {
+    "src": "/assets/img/cast/fertility-amaka-calendar.jpg",
+    "alt": "Illustration of Amaka comparing three cycle trackers"
+  },
+  "table_title": "The comparison",
+  "legend": "A tick marks the option that is ahead on that question.",
+  "cols": [
+    "Wholesome Girlies",
+    "Flo",
+    "Clue"
+  ],
+  "rows": [
+    {
+      "label": "Do I have to sign up?",
+      "cells": [
+        "No sign-up for the tools.",
+        "Optional with Anonymous Mode.",
+        "An account is required."
+      ],
+      "cells_short": [
+        "No sign-up",
+        "Optional",
+        "Account required"
+      ],
+      "win": [
+        0
+      ]
+    },
+    {
+      "label": "Where are my health dates kept?",
+      "cells": [
+        "On your phone.",
+        "On Flo servers. Flo says it does not sell health data.",
+        "On European servers. Clue says sensitive health data is never sold to advertisers."
+      ],
+      "cells_short": [
+        "On your phone",
+        "Flo servers",
+        "European servers"
+      ],
+      "win": [
+        0
+      ]
+    },
+    {
+      "label": "Can I note symptoms?",
+      "cells": [
+        "No. It saves period start dates.",
+        "Yes. More than 70 symptoms.",
+        "Yes. More than 200 symptoms and experiences."
+      ],
+      "cells_short": [
+        "Period dates only",
+        "70+ symptoms",
+        "200+ factors"
+      ],
+      "win": [
+        1,
+        2
+      ]
+    },
+    {
+      "label": "What does it cost?",
+      "cells": [
+        "The tools need no payment. The Blueprint is paid once.",
+        "Android users in Nigeria get Premium for one year with no payment. iPhone users pay ₦3,900 (about $3) to ₦29,900 (about $22).",
+        "Nigerian users pay ₦1,500 (about $1) to ₦12,900 (about $10). UK users pay £7.99 monthly or up to £24.99 yearly. US users pay $9.99 monthly or $39.99 yearly."
+      ],
+      "cells_short": [
+        "Tools need no payment",
+        "Platform prices differ",
+        "Three market prices"
+      ],
+      "win": []
+    },
+    {
+      "label": "Can I prepare for my clinic visit?",
+      "cells": [
+        "Print fertility questions and send your husband a sperm health checklist.",
+        "Read the health library and use its symptom checker.",
+        "Read expert cycle guides and use Clue Conceive for fertile day estimates."
+      ],
+      "cells_short": [
+        "Print questions",
+        "Library and checker",
+        "Guides and Conceive"
+      ],
+      "win": [
+        0
+      ]
+    }
+  ],
+  "wins_title": "Where Wholesome Girlies is ahead",
+  "wins": [
+    {
+      "h": "Your dates stay on your phone",
+      "b": "The period dates you enter are saved on your phone. A forget button clears them."
+    },
+    {
+      "h": "Clinic questions for both of you",
+      "b": "Print your questions for the fertility doctor. Send your husband a checklist for his sperm health and sperm test questions."
+    }
+  ],
+  "other_ahead_title": "Where Flo and Clue are ahead",
+  "other_ahead": [
+    {
+      "h": "Flo has deeper daily tracking",
+      "b": "Flo lets you note more than 70 symptoms, sends reminders and has a large health library."
+    },
+    {
+      "h": "Clue tracks more factors",
+      "b": "Clue lets you note more than 200 symptoms and experiences. Its Conceive mode estimates fertile days."
+    }
+  ],
+  "reviews": [
+    "flo"
+  ],
+  "reviews_title": "What women say about Flo",
+  "picks_title": "Which should you use?",
+  "picks": [
+    {
+      "h": "Pick Flo",
+      "b": "if you want daily symptoms, reminders and a large health library."
+    },
+    {
+      "h": "Pick Clue",
+      "b": "if you want detailed cycle guides and more factors to track."
+    },
+    {
+      "h": "Pick Wholesome Girlies",
+      "b": "if you want a simple calculator, phone-only dates and clinic questions."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Does Clue sell health data to advertisers?",
+      "a": "Clue's privacy policy says the sensitive health data you track is never shared with or sold to advertisers. It says limited technical and usage data may be shared for advertising when permission is on."
+    },
+    {
+      "q": "How much is Clue Plus?",
+      "a": "The listed price depends on the store. Nigeria shows ₦1,500 (about $1) to ₦12,900 (about $10). The United Kingdom shows £7.99 monthly and up to £24.99 yearly. The United States shows $9.99 monthly and $39.99 yearly."
+    }
+  ],
+  "sources": [
+    "flo_apple",
+    "flo_play",
+    "flo_privacy",
+    "clue_apple",
+    "clue_privacy"
+  ],
+  "related": [
+    {
+      "tag": "Tool",
+      "h": "Ovulation Calculator",
+      "p": "Estimate your fertile days from your dates.",
+      "href": "/fertility/tools/ovulation-calculator",
+      "cta": "Open"
+    },
+    {
+      "tag": "Tool",
+      "h": "Period Tracker",
+      "p": "Find your own average cycle length.",
+      "href": "/fertility/tools/period-tracker",
+      "cta": "Open"
+    }
+  ]
+}

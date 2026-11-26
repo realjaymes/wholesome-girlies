@@ -147,6 +147,12 @@
       "url": "https://pc.abishkking.com/privacypolicy.html",
       "publisher": "ABISHKKING LIMITED"
     },
+    "wte_apple": {"title": "What to Expect on the Nigerian App Store", "publisher": "Apple App Store", "url": "https://apps.apple.com/ng/app/pregnancy-baby-tracker-wte/id289560144"},
+    "babycenter_apple": {"title": "BabyCentre on the Nigerian App Store", "publisher": "Apple App Store", "url": "https://apps.apple.com/ng/app/babycentre-pregnancy-tracker/id386022579"},
+    "pregplus_apple": {"title": "Pregnancy+ on the Nigerian App Store", "publisher": "Apple App Store", "url": "https://apps.apple.com/ng/app/pregnancy-tracker-app/id505864483"},
+    "mamaalert_play": {"title": "MamaAlert on Google Play", "publisher": "Google Play", "url": "https://play.google.com/store/apps/details?id=com.mamaalert.app"},
+    "koyo_site": {"title": "Koyo Health plans and pregnancy support", "publisher": "Koyo HealthTech", "url": "https://koyohealthtech.com/"},
+    "koyo_play": {"title": "Koyo Navigate on Google Play", "publisher": "Google Play", "url": "https://play.google.com/store/apps/details?id=com.koyohealthtech.koyo_navigate"},
     "pc_datasafety": {
       "title": "Period Calendar data safety page on Google Play",
       "url": "https://play.google.com/store/apps/datasafety?id=com.popularapp.periodcalendar&hl=en&gl=NG",

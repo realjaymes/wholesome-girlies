@@ -259,6 +259,10 @@ const PAGE_CARDS = [
   { name: "wholesome-girlies-vs-flo", look: "c", stage: "fertility", chip: "Compare", title: "Wholesome Girlies vs Flo", bubble: "Which do you need to conceive?", guides: ["amaka"], scene: "fertility-amaka-calendar.jpg" },
   { name: "flo-alternatives-nigeria", look: "a", stage: "fertility", chip: "Compare", title: "Flo alternatives in Nigeria", pill: "Four trackers compared", guides: ["amaka"], scene: "fertility-amaka-planner.jpg" },
   { name: "best-period-tracker-apps-nigeria", look: "c", stage: "fertility", chip: "Compare", title: "Best period and ovulation tracker apps in Nigeria", bubble: "Four apps, one table.", guides: ["amaka"], scene: "fertility-amaka-window.jpg" },
+  { name: "period-calendar-alternatives-nigeria", look: "a", stage: "fertility", chip: "Compare", title: "Period Calendar alternatives in Nigeria", pill: "Three trackers compared", guides: ["amaka"], scene: "fertility-amaka-planner.jpg" },
+  { name: "babymigo-alternatives-nigeria", look: "a", stage: "pregnancy", chip: "Compare", title: "Babymigo alternatives in Nigeria", pill: "Four apps compared", guides: ["zainab"], scene: "pregnancy-zainab-chart.jpg" },
+  { name: "wholesome-girlies-vs-flo-vs-clue", look: "c", stage: "fertility", chip: "Compare", title: "Wholesome Girlies vs Flo vs Clue", bubble: "Three trackers, compared.", guides: ["amaka"], scene: "fertility-amaka-calendar.jpg" },
+  { name: "best-pregnancy-apps-nigeria", look: "c", stage: "pregnancy", chip: "Compare", title: "Best pregnancy apps in Nigeria", bubble: "Seven apps, one table.", guides: ["zainab"], scene: "pregnancy-zainab-chart.jpg" },
   { name: "wholesome-girlies-vs-period-calendar", look: "a", stage: "fertility", chip: "Compare", title: "Wholesome Girlies vs Period Calendar", pill: "Find your fertile window", guides: ["amaka"], scene: "fertility-amaka-calendar.jpg" },
   { name: "wholesome-girlies-vs-babymigo", look: "c", stage: "pregnancy", chip: "Compare", title: "Wholesome Girlies vs Babymigo", bubble: "For a first pregnancy in Nigeria.", guides: ["zainab"], scene: "pregnancy-zainab-chart.jpg" },
 ];

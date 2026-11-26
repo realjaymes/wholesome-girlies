@@ -240,7 +240,8 @@ def intro(common, p):
 
 def body_head_to_head(common, p, S):
     S.add(intro(common, p))
-    S.add(f'<h2>{e(p["table_title"])}</h2>' + table(p["cols"], p["rows"], "h2h") + f'<p class="cmp-legend">{e(p["legend"])}</p>')
+    row_kind = "multi" if len(p["cols"]) > 2 else "h2h"
+    S.add(f'<h2>{e(p["table_title"])}</h2>' + table(p["cols"], p["rows"], row_kind) + f'<p class="cmp-legend">{e(p["legend"])}</p>')
     S.add(f'<h2>{e(p["wins_title"])}</h2>' + cards(p["wins"]))
     S.add(f'<h2>{e(p["other_ahead_title"])}</h2>' + cards(p["other_ahead"], True))
     if p.get("statements"):

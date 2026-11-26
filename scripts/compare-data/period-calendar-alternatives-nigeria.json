@@ -1,0 +1,137 @@
+{
+  "updated": "November 2026",
+  "updated_iso": "2026-11-26",
+  "disclaimer": {
+    "strong": "This page compares pregnancy and cycle apps.",
+    "rest": "It is educational, not medical advice, and no clinician has reviewed it yet."
+  },
+  "doctor": "Call your hospital or doctor if you have heavy bleeding, severe pain, trouble breathing, a severe headache, blurred vision, a high fever, or reduced baby movement after movements have started.",
+  "type": "alternatives",
+  "stage": "fertility",
+  "slug": "period-calendar-alternatives-nigeria",
+  "other": "Period Calendar",
+  "title": "Period Calendar Alternatives in Nigeria: Three Picks",
+  "description": "Compare three Period Calendar alternatives in Nigeria for fertile days, reminders, ads, sign-up, prices and what happens to the dates you save.",
+  "share": "If you want another option beside Period Calendar, compare three cycle trackers by price, reminders, sign-up and where your dates are kept.",
+  "eyebrow": "Alternatives",
+  "h1": "Period Calendar alternatives in Nigeria",
+  "crumb": "Period Calendar alternatives in Nigeria",
+  "kicker": "For Nigerian women who want another cycle tracker",
+  "answer": "Choose Wholesome Girlies if you want to see your fertile days without an account or ads. Choose Flo if you want to note symptoms and get reminders in the app. Choose Clue if you want a tracker with detailed cycle guides. Period Calendar still suits women who want reminders, daily entries and years of history.",
+  "image": {
+    "src": "/assets/img/cast/fertility-amaka-planner.jpg",
+    "alt": "Illustration of Amaka comparing cycle trackers"
+  },
+  "picks_title": "Our three picks, ranked",
+  "picks": [
+    {
+      "rank": 1,
+      "name": "Wholesome Girlies",
+      "label": "Best for fertile days and clinic questions",
+      "suits": "You want your dates kept on your phone and questions you can print for your doctor.",
+      "price": "The tools need no payment. The Blueprint is one payment of ₦5,700 (about $4) early-bird or ₦13,700 (about $10) standard.",
+      "can": [
+        "See fertile days from your last period and cycle length.",
+        "Print questions for your fertility doctor.",
+        "Send your husband a sperm health checklist."
+      ],
+      "cannot": [
+        "You cannot note symptoms or moods.",
+        "It counts cycle days and cannot detect ovulation."
+      ],
+      "rating": "No app store needed"
+    },
+    {
+      "rank": 2,
+      "name": "Flo",
+      "label": "Best for symptoms and reminders",
+      "suits": "You want to note symptoms each day and see your entries on another phone.",
+      "price": "Android users in Nigeria get Premium at no payment for one year. On iPhone it costs ₦3,900 (about $3) to ₦29,900 (about $22).",
+      "can": [
+        "Note more than 70 symptoms.",
+        "Get reminders from the app.",
+        "Use Anonymous Mode without a name or email."
+      ],
+      "cannot": [
+        "Its articles serve a global audience."
+      ],
+      "rating": "Number 1 in Nigeria"
+    },
+    {
+      "rank": 3,
+      "name": "Clue",
+      "label": "Best for cycle guides",
+      "suits": "You want detailed cycle guides beside your tracker.",
+      "price": "Clue Plus costs ₦1,500 (about $1) to ₦12,900 (about $10) on the Nigerian App Store.",
+      "can": [
+        "Track more than 200 symptoms and experiences.",
+        "Read cycle guides.",
+        "Clue says your health data is never sold to advertisers."
+      ],
+      "cannot": [
+        "The guidance is not written for Nigerian care."
+      ],
+      "rating": "4.4 from 3k ratings"
+    }
+  ],
+  "glance_title": "At a glance",
+  "glance_rows": [
+    "label",
+    "rating",
+    "price"
+  ],
+  "glance_labels": {
+    "label": "Best for",
+    "rating": "Nigerian App Store",
+    "price": "Price in Nigeria"
+  },
+  "reviews": [
+    {
+      "key": "pc",
+      "title": "Why women look elsewhere: what they say about Period Calendar"
+    }
+  ],
+  "why_title": "Why women look elsewhere",
+  "why": "Period Calendar is widely used and gives women reminders, symptom entries and years of history. Google Play says it contains ads. Some reviewers also mention full-screen ads and trouble moving their entries to a new phone.",
+  "criteria_title": "What to check",
+  "criteria": [
+    "Check whether the app shows ads.",
+    "Check how you move your dates to a new phone.",
+    "Check whether you can take anything useful to your clinic."
+  ],
+  "faq": [
+    {
+      "q": "Which Period Calendar alternative has no ads?",
+      "a": "The Wholesome Girlies Period Tracker and Ovulation Calculator show no ads. Flo and Clue have their own payment and feature rules."
+    },
+    {
+      "q": "Can I use Period Calendar without an account?",
+      "a": "Yes. Its App Store listing says you can use it without creating an account. An account or email is used for backup."
+    }
+  ],
+  "sources": [
+    "pc_apple",
+    "pc_play",
+    "pc_privacy",
+    "flo_apple",
+    "flo_play",
+    "clue_apple",
+    "clue_privacy"
+  ],
+  "related": [
+    {
+      "tag": "Tool",
+      "h": "Ovulation Calculator",
+      "p": "Estimate your fertile days from your dates.",
+      "href": "/fertility/tools/ovulation-calculator",
+      "cta": "Open"
+    },
+    {
+      "tag": "Tool",
+      "h": "Period Tracker",
+      "p": "Find your own average cycle length.",
+      "href": "/fertility/tools/period-tracker",
+      "cta": "Open"
+    }
+  ]
+}
