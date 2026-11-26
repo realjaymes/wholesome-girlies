@@ -145,7 +145,7 @@
     if (ios && standalone) { w.location.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(text); return; } // the installed iPhone app: a blob link does not open there
     var u = URL.createObjectURL(new Blob([text], { type: 'text/calendar;charset=utf-8' }));
     if (ios) { w.location.href = u; return; } // iPhone Safari hands a calendar file to Calendar
-    var a = mk('a'); a.href = u; a.download = 'girlies-reminders.ics'; d.body.appendChild(a); a.click(); a.remove();
+    var a = mk('a'); a.href = u; a.download = 'wholesome-girlies-reminders.ics'; d.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
   }
   function calButton() {

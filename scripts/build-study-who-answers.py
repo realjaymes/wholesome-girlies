@@ -20,8 +20,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SLUG = "who-answers-nigerian-womens-health-searches"
 STUDY = ROOT / "insights" / SLUG
 PAGE = STUDY / "index.html"
-CSV = STUDY / "nigerian-womens-health-search-results-summary.csv"
-PNG, PDF = "chart-by-topic.png", f"{SLUG}.pdf"
+NAMES = kit.file_names(SLUG)
+CSV = STUDY / NAMES["csv"]
+PNG, PDF = NAMES["png"], NAMES["pdf"]
 ANCHOR = '<div class="study-table-wrap">'  # the chart sits above the topic table
 
 SERIES = [("foreign", "Foreign health publishers", "#3A70B8"),

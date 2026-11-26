@@ -94,25 +94,26 @@ body{font-family:'Nunito Sans',sans-serif;color:#33322A;font-size:11.5px;line-he
 .top{display:flex;align-items:center;gap:12px;font-family:'DM Serif Display',serif;font-size:22px}
 .eyebrow{margin:22px 0 0;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C0763F}
 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:34px;line-height:1.1;margin:6px 0 8px}
-h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:19px;margin:16px 0 5px;break-after:avoid}
+h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:19px;margin:12px 0 5px;break-after:avoid}
 h3{font-size:13px;font-weight:800;margin:0 0 2px;break-after:avoid}
-p{margin:0 0 8px} ul{margin:0 0 8px 18px;padding:0} li{margin:0 0 4px}
+p{margin:0 0 8px} ul{margin:0 0 6px 18px;padding:0} li{margin:0 0 2px}
 a{color:#33322A}
 .meta{font-size:11px;color:#55534A}
 .lead{font-size:13px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 16px}
 .stat{background:#fff;border:2px solid #33322A;border-radius:14px;box-shadow:4px 4px 0 #33322A;padding:12px 14px;font-size:11.5px;line-height:1.35}
 .stat b{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1;margin-bottom:5px}
-.finding{border-left:4px solid #D49A2A;padding:1px 0 1px 14px;margin:0 0 9px;break-inside:avoid}
+.finding{border-left:4px solid #D49A2A;padding:1px 0 1px 14px;margin:0 0 7px;break-inside:avoid}
 .finding p{margin:0 0 4px}
 table.data{width:100%;border-collapse:collapse;margin:8px 0 10px;break-inside:avoid;background:#fff;font-size:11.5px}
-table.data th,table.data td{padding:5px 9px;border-bottom:1px solid #D7D3C8;text-align:left;vertical-align:top}
+table.data th,table.data td{padding:4px 9px;border-bottom:1px solid #D7D3C8;text-align:left;vertical-align:top}
 table.data th{background:#33322A;color:#fff;font-weight:700}
 table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
-.quote{margin:6px 0 16px;padding:14px 18px;background:#fff;border:2px solid #33322A;border-left:8px solid #6E7B3F;border-radius:14px;break-inside:avoid}
-.quote blockquote{margin:0;font-size:13px;line-height:1.5}
-.quote figcaption{margin-top:8px;font-size:11px;color:#55534A}
-.cite{background:#E3E6CC;border-radius:14px;padding:14px 18px;margin:16px 0 10px;break-inside:avoid}
+.quote{margin:10px 0 10px;padding:10px 16px;background:#fff;border:2px solid #33322A;border-left:8px solid #6E7B3F;border-radius:14px;break-inside:avoid}
+.quote .qlabel{margin:0 0 4px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#6E7B3F}
+.quote blockquote{margin:0;font-size:12px;line-height:1.42}
+.quote figcaption{margin-top:5px;font-size:11px;color:#55534A}
+.cite{background:#E3E6CC;border-radius:14px;padding:11px 16px;margin:12px 0 8px;break-inside:avoid}
 .small{font-size:11px;color:#55534A}
 .wgc.wgc-print{box-shadow:4px 4px 0 #33322A;border-radius:14px;padding:18px 20px;margin:14px 0 16px;break-inside:avoid}
 .wgc-print .wgc-title{font-size:15px}.wgc-print .wgc-sub,.wgc-print .wgc-legend{font-size:11px;margin-bottom:10px}
@@ -142,6 +143,13 @@ def _seg(color, n, total, row_label, series_label):
             f'aria-label="{aria}" title="{aria}" data-tip="{tip}"></span>')
 
 
+def file_names(slug):
+    """Every download a study offers is named for Wholesome Girlies, so a saved file says whose research it is.
+    check-pages.py fails a download link whose file name does not start with wholesome-girlies-."""
+    base = f"wholesome-girlies-original-research-{slug}"
+    return {"png": f"{base}-chart.png", "pdf": f"{base}-report.pdf", "csv": f"{base}-data.csv"}
+
+
 def stacked_bars(*, title, subtitle, series, rows, source, downloads=(), export=False):
     """One 100% stacked bar per row.
 
@@ -159,7 +167,7 @@ def stacked_bars(*, title, subtitle, series, rows, source, downloads=(), export=
     legend = "".join(f'<li><span class="wgc-key" style="background:{c}"></span>{html.escape(lab)}</li>' for _k, lab, c in series)
     ticks = "".join(f'<span style="left:{25 * i}%">{25 * i}%</span>' for i in range(5))
     links = "" if export or not downloads else (
-        "<span>" + " · ".join(f'<a class="wgc-dl" href="{h}" download>{html.escape(t)}</a>' for h, t in downloads) + "</span>")
+        "<span>" + " · ".join(f'<a class="wgc-dl" href="{h}" download="{h}">{html.escape(t)}</a>' for h, t in downloads) + "</span>")
     return (f'<h3 class="wgc-title">{html.escape(title)}</h3><p class="wgc-sub">{html.escape(subtitle)}</p>'
             f'<ul class="wgc-legend" aria-hidden="true">{legend}</ul>'
             f'<div class="wgc-body"><div class="wgc-rows">{"".join(body)}</div>'
@@ -215,7 +223,7 @@ def report_html(page, *, chart_html, sections_html, scope_note):
     stats = "".join(f'<div class="stat"><b>{esc(n)}</b>{esc(l)}</div>' for n, l in p["stats"])
     finds = "".join(f'<div class="finding"><h3>{esc(h)}</h3>' + "".join(f"<p>{esc(x)}</p>" for x in ps) + "</div>"
                     for h, ps in p["findings"])
-    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(p['title'])}</title>{FONTS}
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(p['title'])}: Wholesome Girlies original research</title>{FONTS}
 <style>{REPORT_CSS}{CSS}</style></head><body>
 <div class="first"><div class="top">{LOGO}Wholesome Girlies</div>
 <p class="eyebrow">Original research</p>
@@ -227,8 +235,7 @@ def report_html(page, *, chart_html, sections_html, scope_note):
 <figure class="wgc wgc-print">{chart_html}</figure>
 <h2>{esc(p['findings_h2'])}</h2>
 {finds}
-<h2>{esc(p['quote_h2'])}</h2>
-<figure class="quote"><blockquote>{esc(p['quote'])}</blockquote><figcaption>{esc(p['quote_by'])}</figcaption></figure>
+<figure class="quote"><p class="qlabel">{esc(p['quote_h2'])}</p><blockquote>{esc(p['quote'])}</blockquote><figcaption>{esc(p['quote_by'])}</figcaption></figure>
 {sections_html}
 <h2>Method</h2>
 {''.join(f'<p>{esc(x)}</p>' for x in p['method'])}

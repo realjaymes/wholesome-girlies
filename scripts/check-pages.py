@@ -857,6 +857,25 @@ for p in PAGES:
         fail(p, 'footer Explore list is missing "Press": run python3 scripts/add-app-tags.py')
     if m and 'href="/insights/"' not in m.group(1):
         fail(p, 'footer Explore list is missing "Insights": run python3 scripts/add-insights-links.py')
+# Every file a page offers as a download is saved under a name that says it is Wholesome Girlies', so a file in
+# someone's Downloads folder, a newsroom drive or an email attachment still carries the brand. The link names the
+# saved file (download="wholesome-girlies-...") and the file itself starts with wholesome-girlies-.
+for p in PAGES:
+    for href, named in re.findall(r'<a\b[^>]*?href="([^"]+)"[^>]*?\bdownload(?:="([^"]*)")?', SRC[p]):
+        if href.startswith(("data:", "blob:", "mailto:")):
+            continue
+        fname = href.split("?")[0].rsplit("/", 1)[-1]
+        if not named.startswith("wholesome-girlies-"):
+            fail(p, f'download link to {fname} must name the saved file: download="wholesome-girlies-..."')
+        elif not (fname.startswith("wholesome-girlies-") or href.startswith("/assets/img/team/")):
+            fail(p, f"downloadable file {fname} must be renamed to start with wholesome-girlies-")
+# A study page's title and description name Wholesome Girlies, so a search result says whose research it is.
+for p in PAGES:
+    if re.match(r"insights/[^/]+/index\.html$", p) or p == "insights/index.html":
+        for what, rx in (("title", r"<title>(.*?)</title>"), ("description", r'<meta name="description" content="([^"]*)"')):
+            m = re.search(rx, SRC[p], re.S)
+            if m and "Wholesome Girlies" not in m.group(1):
+                fail(p, f"research page {what} must name Wholesome Girlies")
 # Original research (/insights/<slug>/): every study ships its chart (scripts/study_kit.py, run from its own
 # scripts/build-study-<name>.py), the chart as an image, a PDF report and its data file, carries a quote from
 # James Praise that he chose (a <figure class="study-quote"> after the findings, which the PDF repeats), and is carded on /insights/.

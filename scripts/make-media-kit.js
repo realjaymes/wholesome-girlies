@@ -244,7 +244,8 @@ figure img{display:block;height:440px;max-width:calc(100vw - 52px);object-fit:co
 }
 
 // ---------- the press page's files (/press/) ----------
-// --site: from the finished set, a JPG of every image (the download) and a small WebP preview, in assets/img/press/.
+// --site: from the finished set, a JPG of every image (the download, named wholesome-girlies-<tool>-<size>.jpg so a
+// saved file says whose it is) and a small WebP preview, in assets/img/press/.
 // --extras: the logo pack (icon 1024px, wordmark in ink and in cream, transparent) and the fact sheet PDF.
 const PRESS = path.join(ROOT, "assets/img/press");
 const finalName = (k, z) => `${TOOLS[k].name === "Wholesome Girlies" ? "Wholesome Girlies home" : "Wholesome Girlies " + TOOLS[k].name} ${z}.png`;
@@ -254,7 +255,7 @@ function siteAssets() {
   for (const k of Object.keys(TOOLS)) for (const z of Object.keys(SIZES)) {
     const src = path.join(FINAL, "Tool screenshots", finalName(k, z));
     if (!fs.existsSync(src)) throw new Error("render the finished set first (--final c): missing " + src);
-    execFileSync("magick", [src, "-quality", "88", path.join(PRESS, `${k}-${z}.jpg`)]);
+    execFileSync("magick", [src, "-quality", "88", path.join(PRESS, `wholesome-girlies-${k}-${z}.jpg`)]);
     execFileSync("magick", [src, "-resize", z === "wide" ? "640x" : "360x", "-quality", "80", path.join(PRESS, "thumb", `${k}-${z}.webp`)]);
   }
   console.log("press images written to", path.relative(ROOT, PRESS));

@@ -142,7 +142,7 @@
     box.appendChild(el('p', 'wgw-note', sum.example
       ? 'These are example numbers, so this picture is marked as an example.'
       : 'This picture shows counts only. It never shows a name, a date or anything about your health. It is made on your phone and not sent anywhere.'));
-    var name = (sum.filename || 'mum-wrapped') + '.png';
+    var base = sum.filename || 'wrapped', name = (base.indexOf('wholesome-girlies-') === 0 ? base : 'wholesome-girlies-' + base) + '.png';
     var ready = (w.document.fonts && w.document.fonts.load)
       ? Promise.all([w.document.fonts.load('112px "DM Serif Display"'), w.document.fonts.load('800 36px "Nunito Sans"')]).catch(function () {})
       : Promise.resolve();
