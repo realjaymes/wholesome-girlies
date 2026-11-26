@@ -4,6 +4,12 @@
     "role": "community and editorial lead",
     "url": "/about/cynthia-obinatu"
   },
+  "co_author": {
+    "name": "James Praise",
+    "role": "founder and researcher",
+    "schema_role": "Founder and researcher",
+    "url": "/about/james-praise"
+  },
   "fx": {
     "naira_per_dollar": 1333,
     "line": "Dollar amounts use the official rate of about ₦1,333 to the dollar."

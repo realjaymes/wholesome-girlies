@@ -296,7 +296,8 @@ def schema(common, p):
         {"@type": "ListItem", "position": 3, "name": p["crumb"], "item": url}]}
     art = {"@context": "https://schema.org", "@type": "Article", "name": p["h1"], "headline": p["h1"], "description": p["description"],
            "datePublished": p["updated_iso"], "dateModified": p["updated_iso"], "inLanguage": "en",
-           "author": {"@type": "Person", "name": common["author"]["name"], "jobTitle": common["author"]["role"], "url": SITE + common["author"]["url"]},
+           "author": [{"@type": "Person", "name": common["author"]["name"], "jobTitle": common["author"]["role"], "url": SITE + common["author"]["url"]},
+                      {"@type": "Person", "name": common["co_author"]["name"], "jobTitle": common["co_author"]["schema_role"], "url": SITE + common["co_author"]["url"]}],
            "publisher": {"@type": "Organization", "name": "Wholesome Girlies", "logo": {"@type": "ImageObject", "url": SITE + "/assets/img/icon-512.png"}},
            "image": SITE + p["image"]["src"], "mainEntityOfPage": url, "citation": cites}
     return "\n".join(f'<script type="application/ld+json">\n{json.dumps(x, ensure_ascii=False)}\n</script>' for x in (faq, crumbs, art))
@@ -319,6 +320,7 @@ def render(common, p):
         f'<meta name="twitter:title" content="{t}">', f'<meta name="twitter:description" content="{d}">',
         f'<meta name="twitter:image" content="{og}">', ""])
     a = common["author"]
+    c = common["co_author"]
     S = Sections()
     BODY[p["type"]](common, p, S)
     S.add(sources_block(common, p["sources"]))
@@ -332,7 +334,7 @@ def render(common, p):
     <p class="eyebrow">{e(p["eyebrow"])}</p>
     <h1>{e(p["h1"])}</h1>
     <p class="muted" style="font-size:.85rem;margin:.5rem 0 0;">Last updated: {e(p["updated"])}</p>
-    <div class="byline"><span class="av" style="background:none;overflow:hidden;"><img src="/assets/img/team/cynthia-obinatu-sm.jpg" alt="{ea(a["name"])}" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></span> <span>Written by <a href="{a["url"]}">{e(a["name"])}</a>, {e(a["role"])} &middot; Every claim comes from a cited source. Not yet reviewed by a clinician, so read it with our <a href="/about/medical-policy">medical policy</a>.</span></div>
+    <div class="byline"><span class="av" style="background:none;overflow:hidden;"><img src="/assets/img/team/cynthia-obinatu-sm.jpg" alt="{ea(a["name"])}" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></span><span class="av" style="background:none;overflow:hidden;margin-left:-18px;box-shadow:0 0 0 2px var(--cream);"><img src="/assets/img/team/james-praise-sm.jpg" alt="{ea(c["name"])}" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></span> <span>Written by <a href="{a["url"]}">{e(a["name"])}</a>, {e(a["role"])}, and <a href="{c["url"]}">{e(c["name"])}</a>, {e(c["role"])} &middot; Every claim comes from a cited source. Not yet reviewed by a clinician, so read it with our <a href="/about/medical-policy">medical policy</a>.</span></div>
   </div>
 </section>
 
