@@ -12,7 +12,7 @@ embeds the image, not the page.
 
 The PDF report takes its findings, method and limits from the page itself and its
 numbers from the study CSV, so the page stays the single source. It follows the
-house document format (Arial, black text, 10pt body, 1.15 line spacing).
+press fact sheet's look (cream page, the leaf logo, DM Serif Display headings, Nunito Sans body).
 
     python3 scripts/build-study-charts.py              # page markup, PNG and PDF
     python3 scripts/build-study-charts.py --no-render  # page markup only
@@ -148,35 +148,56 @@ def report_html(page, rows):
         f"<td>{r['foreign_health_slots']} ({r['foreign_health_share_percent']}%)</td>"
         f"<td>{r['nigerian_slots']} ({r['nigerian_share_percent']}%)</td>"
         f"<td>{r['clusters_with_no_nigerian_source']} of {r['sampled_clusters']}</td></tr>" for r in rows)
-    finds = "".join(f"<h3>{esc(text_of(h))}</h3>" + "".join(f"<p>{esc(text_of(p))}</p>" for p in re.findall(r"<p>(.*?)</p>", b, re.S))
+    finds = "".join(f'<div class="finding"><h3>{esc(text_of(h))}</h3>' + "".join(f"<p>{esc(text_of(p))}</p>" for p in re.findall(r"<p>(.*?)</p>", b, re.S)) + "</div>"
                     for h, b in findings)
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Who answers Nigerian women's health searches</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-@page{{size:A4;margin:18mm 18mm 20mm}}
-body{{font-family:Arial,Helvetica,sans-serif;font-size:10pt;line-height:1.15;color:#000;margin:0}}
-h1{{font-size:20pt;font-weight:normal;margin:0 0 6pt}}
-h2{{font-size:16pt;font-weight:normal;margin:16pt 0 6pt;break-after:avoid}}
-h3{{font-size:12pt;font-weight:normal;margin:10pt 0 3pt;break-after:avoid}}
-p{{margin:0 0 6pt}} ul{{margin:0 0 6pt;padding-left:16pt}} li{{margin:0 0 3pt}}
-a{{color:#000}}
-.meta{{margin:0 0 10pt}}
-.stats{{width:100%;border-collapse:collapse;margin:8pt 0 10pt}}
-.stats td{{border:0.75pt solid #000;padding:6pt 8pt;width:25%;vertical-align:top}}
-.stats .n{{font-size:16pt;display:block;margin-bottom:2pt}}
-figure{{margin:8pt 0 10pt;break-inside:avoid}} figure img{{width:100%;box-sizing:border-box;display:block;border:0.75pt solid #000}}
-table.topics{{width:100%;border-collapse:collapse;margin:6pt 0 8pt;break-inside:avoid}}
-table.topics th,table.topics td{{border:0.75pt solid #000;padding:4pt 6pt;text-align:left;font-weight:normal}}
-table.topics th{{background:#eee}}
-.cite{{border:0.75pt solid #000;padding:8pt 10pt;margin-top:12pt;break-inside:avoid}}
+@page{{size:A4;margin:14mm 0;background:#FBF8EF}}
+@page:first{{margin-top:0}}
+*{{box-sizing:border-box}}
+html{{background:#FBF8EF;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+body{{font-family:'Nunito Sans',sans-serif;color:#33322A;font-size:11.5px;line-height:1.45;margin:0;padding:0 52px}}
+.first{{padding-top:46px}}
+.top{{display:flex;align-items:center;gap:12px;font-family:'DM Serif Display',serif;font-size:22px}}
+.eyebrow{{margin:22px 0 0;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C0763F}}
+h1{{font-family:'DM Serif Display',serif;font-weight:400;font-size:34px;line-height:1.1;margin:6px 0 8px}}
+h2{{font-family:'DM Serif Display',serif;font-weight:400;font-size:19px;margin:16px 0 5px;break-after:avoid}}
+h3{{font-size:13px;font-weight:800;margin:0 0 2px;break-after:avoid}}
+p{{margin:0 0 8px}} ul{{margin:0 0 8px 18px;padding:0}} li{{margin:0 0 4px}}
+a{{color:#33322A}}
+.meta{{font-size:11px;color:#55534A}}
+.lead{{font-size:13px}}
+.stats{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 16px}}
+.stat{{background:#fff;border:2px solid #33322A;border-radius:14px;box-shadow:4px 4px 0 #33322A;padding:12px 14px;font-size:11.5px;line-height:1.35}}
+.stat b{{display:block;font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1;margin-bottom:5px}}
+figure{{margin:14px 0 16px;break-inside:avoid}}
+figure img{{width:100%;display:block;border:2px solid #33322A;border-radius:14px;box-shadow:4px 4px 0 #33322A;background:#fff}}
+.finding{{border-left:4px solid #D49A2A;padding:1px 0 1px 14px;margin:0 0 9px;break-inside:avoid}}
+.finding p{{margin:0 0 4px}}
+table.topics{{width:100%;border-collapse:collapse;margin:8px 0 10px;break-inside:avoid;background:#fff;font-size:11.5px}}
+table.topics th,table.topics td{{padding:5px 9px;border-bottom:1px solid #D7D3C8;text-align:left;vertical-align:top}}
+table.topics th{{background:#33322A;color:#fff;font-weight:700}}
+table.topics td:nth-child(n+2){{font-variant-numeric:tabular-nums}}
+.cite{{background:#E3E6CC;border-radius:14px;padding:14px 18px;margin:16px 0 10px;break-inside:avoid}}
+.small{{font-size:11px;color:#55534A}}
+{CSS}
+.wgc.wgc-print{{box-shadow:4px 4px 0 #33322A;border-radius:14px;padding:18px 20px;margin:14px 0 16px;break-inside:avoid}}
+.wgc-print .wgc-title{{font-size:15px}}.wgc-print .wgc-sub,.wgc-print .wgc-legend{{font-size:11px;margin-bottom:10px}}
+.wgc-print .wgc-rows{{gap:9px}}.wgc-print .wgc-row,.wgc-print .wgc-axis{{grid-template-columns:110px 1fr 120px}}
+.wgc-print .wgc-label{{font-size:11.5px}}.wgc-print .wgc-val{{font-size:11px}}.wgc-print .wgc-foot{{font-size:10px;margin-top:12px;padding-top:10px}}
 </style></head><body>
+<div class="first">
+<div class="top"><svg viewBox="0 0 56 56" width="40" height="40" aria-hidden="true"><circle cx="28" cy="28" r="27" fill="#6E7A3F"/><path d="M18 38c0-11 8-18 20-18 0 11-8 18-20 18z" fill="#FBF8EF"/><path d="M20 37c5-6 11-10 17-12" stroke="#6E7A3F" stroke-width="1.9" fill="none" stroke-linecap="round"/></svg>Wholesome Girlies</div>
+<p class="eyebrow">Original research</p>
 <h1>Who answers Nigerian women's health searches</h1>
-<p class="meta">Original research by Wholesome Girlies. Published 26 November 2026, by James Praise, founder and researcher.<br>
-The full study, with every Nigerian source named: <a href="{URL}">{SHORT_URL}</a></p>
-<p>{esc(lead)}</p>
-<table class="stats"><tr><td><span class="n">237</span>searches studied</td><td><span class="n">2,370</span>organic result places</td>
-<td><span class="n">572</span>distinct domains</td><td><span class="n">1.9%</span>of places held by Nigerian sources</td></tr></table>
+<p class="meta">Published 26 November 2026, by James Praise, founder and researcher. The full study, with every Nigerian source named: <a href="{URL}">{SHORT_URL}</a></p>
+</div>
+<p class="lead">{esc(lead)}</p>
+<div class="stats"><div class="stat"><b>237</b>searches studied</div><div class="stat"><b>2,370</b>organic result places</div>
+<div class="stat"><b>572</b>distinct domains</div><div class="stat"><b>1.9%</b>of places held by Nigerian sources</div></div>
 {''.join(f'<p>{esc(p)}</p>' for p in intro)}
-<figure><img src="{(STUDY / PNG).as_uri()}" alt="In every topic, Nigerian sources held under 5% of the first ten results"></figure>
+<figure class="wgc wgc-print">{chart(rows, export=True)}</figure>
 <h2>Five findings</h2>
 {finds}
 <h2>Who holds the results, by topic</h2>
@@ -187,7 +208,8 @@ The full study, with every Nigerian source named: <a href="{URL}">{SHORT_URL}</a
 <h3>Limits</h3>
 <ul>{''.join(f'<li>{esc(l)}</li>' for l in limits)}</ul>
 <div class="cite"><p><b>How to cite this study.</b> Wholesome Girlies (2026). Who answers Nigerian women's health searches. {URL}</p>
-<p>You may quote or republish the findings with a link to the study page. The topic data is on the page as a CSV file. Questions about the method: care@wholesomegirlies.xyz</p></div>
+<p>You may quote or republish the findings with a link to the study page. The topic data is on the page as a CSV file. Questions about the method: hello@wholesomegirlies.xyz</p></div>
+<p class="small">Wholesome Girlies is a health app and community that helps women through the hardest stretches of reproductive life: relationships, fertility, pregnancy and postpartum. This study measures who appears in search results. It does not assess the medical quality of any page.</p>
 </body></html>"""
 
 
