@@ -857,6 +857,20 @@ for p in PAGES:
         fail(p, 'footer Explore list is missing "Press": run python3 scripts/add-app-tags.py')
     if m and 'href="/insights/"' not in m.group(1):
         fail(p, 'footer Explore list is missing "Insights": run python3 scripts/add-insights-links.py')
+# Original research (/insights/<slug>/): every study ships its chart (scripts/study_kit.py, run from its own
+# scripts/build-study-<name>.py), the chart as an image, a PDF report and its data file, and is carded on /insights/.
+_hub = SRC.get("insights/index.html", "")
+for p in PAGES:
+    m = re.match(r"insights/([^/]+)/index\.html$", p)
+    if not m:
+        continue
+    if "<!-- study-chart:start -->" not in SRC[p]:
+        fail(p, "study page has no chart: build it with a scripts/build-study-<name>.py that uses scripts/study_kit.py")
+    for ext, what in ((".png", "chart image"), (".pdf", "PDF report"), (".csv", "data file")):
+        if not re.search(r'href="[^"/]+' + re.escape(ext) + r'"[^>]*\bdownload\b', SRC[p]):
+            fail(p, f"study page has no download link for its {what}")
+    if f"/insights/{m.group(1)}" not in _hub:
+        fail(p, "study page is not carded on /insights/")
 # Tools that read another tool's entries and save none of their own, so the app's saved tools never lists them.
 READS_ONLY = {"postpartum/tools/mum-wrapped.html"}  # reads the Feeding and Sleep Tracker's wg_feedsleep_ entries
 if os.path.exists("app/index.html"):
