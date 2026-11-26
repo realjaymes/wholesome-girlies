@@ -30,6 +30,22 @@ const GH = { tolu: [392, 620], amaka: [255, 569], zainab: [289, 563], funmi: [29
 
 // Each tool: its page, its stage, the words on the image (what she gets, in plain words) and how to fill it
 // with sample data so the screen shows a real result. Days are counted back from today.
+// A paid fertility buyer's phone: her program flag, 7 of 32 lessons read, a cycle date and a 12 day streak with its days filled in. Dates are set
+// relative to the day of the run, so the app home always reads "Lesson 8 of 32 is next" and "12 days in a row".
+const BUYER = () => {
+  const day = (d) => new Date(Date.now() + d * 864e5).toISOString().slice(0, 10);
+  const read = ["welcome", "everything-in-one-place", "your-safety-first", "you-are-not-alone-come-inside-first",
+    "your-cycle-in-plain-words", "your-fertile-window", "how-to-tell-you-have-ovulated"];
+  return {
+    wg_acct_skip_v1: "1",
+    wg_fertility_home: { u: "/programs/trying-to-conceive-blueprint/thank-you", l: "Conception home" },
+    "wg_read_trying-to-conceive-blueprint": { done: Object.fromEntries(read.map((i) => [i, 1])), last: read[read.length - 1] },
+    wg_stage_fertility_v1: { v: 1, lmp: day(-10), cycle: 28, starts: [day(-38), day(-10)] },
+    wg_streak_v1: { v: 1, count: 12, best: 12, last_day: day(-1), rest_used_week: null, milestones: [3, 7] },
+    wg_streak_ui_v1: { v: 1, first: day(-12), days: Array.from({ length: 12 }, (_, i) => day(i - 12)), stage: "fertility" },
+  };
+};
+
 const TOOLS = {
   "period-tracker": {
     name: "Period Tracker",
@@ -68,10 +84,10 @@ const TOOLS = {
   },
   "app": {
     name: "Wholesome Girlies",
-    url: "/", stage: "fertility",
+    url: "/app/", stage: "fertility",
     head: "Wholesome Girlies on your phone",
     sub: "Tools and guides for relationships, fertility, pregnancy and life after birth.",
-    fill: { top: true, storage: { wg_acct_skip_v1: "1" } },
+    fill: { top: true, storage: BUYER() }, // the app home of a woman who bought the Trying-to-Conceive Blueprint
   },
   "mind-check-in": {
     name: "Postpartum Mind Check-in",
@@ -99,7 +115,7 @@ const sprig = (s, w = 56) => `<svg viewBox="0 0 56 56" width="${w}" height="${w}
 async function phoneScreen(page, t) {
   await page.goto(og.BASE + t.url + "?preview=installed", { waitUntil: "networkidle2", timeout: 60000 });
   if (t.fill.storage) { // a first-open sheet would cover the screen: mark it seen, then open the page again
-    await page.evaluate((kv) => Object.entries(kv).forEach(([k, v]) => localStorage.setItem(k, v)), t.fill.storage);
+    await page.evaluate((kv) => Object.entries(kv).forEach(([k, v]) => localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v))), t.fill.storage);
     await page.goto(og.BASE + t.url + "?preview=installed", { waitUntil: "networkidle2", timeout: 60000 });
   }
   await new Promise((r) => setTimeout(r, 800));
@@ -255,12 +271,12 @@ p{margin:0 0 8px}ul{margin:0 0 8px 18px;padding:0}li{margin:0 0 4px}.top{display
 <p>James Praise and his wife built Wholesome Girlies because Nigerian women meet the same problems at every stage: too few specialists to ask, warning signs that are hard to read, and care after birth that is often overlooked. Wholesome Girlies gives women the tools, resources and research-backed guidance to close that information gap at each stage. Every woman who uses it learns what to ask, what to watch out for, and when to go to hospital.</p>
 <h2>What is live</h2>
 <div class="cols"><ul>
-<li><b>Relationships:</b> games and checklists such as Are You a Girl's Girl? and the Green and Red Flags Checker.</li>
-<li><b>Trying to conceive:</b> the Period Tracker and the Ovulation and Fertile Window Calculator.</li>
-<li><b>Pregnancy:</b> the Due Date Calculator and the Week-by-Week Tracker.</li></ul><ul>
-<li><b>After birth:</b> the Recovery Timeline Calculator and the Postpartum Mind Check-in.</li>
-<li><b>Parenting:</b> the Vaccination Tracker, on Nigeria's childhood immunisation schedule.</li>
-<li><b>Visit question lists</b> for antenatal, fertility, six-week and children's clinic appointments.</li></ul></div>
+<li><b>Relationships:</b> games and checklists such as <a href="https://wholesomegirlies.xyz/relationships/tools/girls-girl-quiz">Are You a Girl's Girl?</a> and the <a href="https://wholesomegirlies.xyz/relationships/tools/green-red-flags-checker">Green and Red Flags Checker</a>.</li>
+<li><b>Trying to conceive:</b> the <a href="https://wholesomegirlies.xyz/fertility/tools/period-tracker">Period Tracker</a> and the <a href="https://wholesomegirlies.xyz/fertility/tools/ovulation-calculator">Ovulation and Fertile Window Calculator</a>.</li>
+<li><b>Pregnancy:</b> the <a href="https://wholesomegirlies.xyz/pregnancy/tools/due-date-calculator">Due Date Calculator</a> and the <a href="https://wholesomegirlies.xyz/pregnancy/tools/week-by-week-tracker">Week-by-Week Tracker</a>.</li></ul><ul>
+<li><b>After birth:</b> the <a href="https://wholesomegirlies.xyz/postpartum/tools/recovery-timeline-calculator">Recovery Timeline Calculator</a> and the <a href="https://wholesomegirlies.xyz/postpartum/tools/mind-check-in">Postpartum Mind Check-in</a>.</li>
+<li><b>Parenting:</b> the <a href="https://wholesomegirlies.xyz/parenting/tools/vaccination-tracker">Vaccination Tracker</a>, on Nigeria's childhood immunisation schedule.</li>
+<li><b>Visit question lists</b> for <a href="https://wholesomegirlies.xyz/pregnancy/tools/antenatal-appointment-questions">antenatal</a>, <a href="https://wholesomegirlies.xyz/fertility/tools/fertility-appointment-questions">fertility</a>, <a href="https://wholesomegirlies.xyz/postpartum/tools/check-up-questions">six-week</a> and <a href="https://wholesomegirlies.xyz/parenting/tools/paediatric-visit-questions">children's clinic</a> appointments.</li></ul></div>
 <p>It opens in the phone's browser and can be added to the home screen with no app store download. Once added, the tools keep working without data.</p>
 <h2>How women's data is handled</h2>
 <p>What a woman types into a tool stays on her phone, and we never collect it. An account is optional and keeps only her stage, her progress and the tools she saved. She can switch off advertising and analytics at any time, or ask us to delete her account. We do not sell health data, and our code is public, so anyone can check this.</p>
@@ -285,7 +301,7 @@ async function extras(browser) {
     const el = await pg.$(".m");
     await el.screenshot({ path: path.join(PRESS, file), omitBackground: true });
   }
-  await pg.setContent(FACT_SHEET({ contact: process.env.WG_PRESS_CONTACT || "Interviews, data and other sizes: email James Praise, founder, at the address on wholesomegirlies.xyz/press." }), { waitUntil: "load" });
+  await pg.setContent(FACT_SHEET({ contact: process.env.WG_PRESS_CONTACT || "Interviews, data and other sizes: email James Praise, founder, at james@wholesomegirlies.xyz." }), { waitUntil: "load" });
   await pg.evaluate(() => document.fonts.ready);
   await pg.pdf({ path: path.join(PRESS, "wholesome-girlies-fact-sheet.pdf"), format: "A4", printBackground: true });
   console.log("logos and fact sheet written to", path.relative(ROOT, PRESS));
