@@ -109,6 +109,9 @@ table.data{width:100%;border-collapse:collapse;margin:8px 0 10px;break-inside:av
 table.data th,table.data td{padding:5px 9px;border-bottom:1px solid #D7D3C8;text-align:left;vertical-align:top}
 table.data th{background:#33322A;color:#fff;font-weight:700}
 table.data td:nth-child(n+2){font-variant-numeric:tabular-nums}
+.quote{margin:6px 0 16px;padding:14px 18px;background:#fff;border:2px solid #33322A;border-left:8px solid #6E7B3F;border-radius:14px;break-inside:avoid}
+.quote blockquote{margin:0;font-size:13px;line-height:1.5}
+.quote figcaption{margin-top:8px;font-size:11px;color:#55534A}
 .cite{background:#E3E6CC;border-radius:14px;padding:14px 18px;margin:16px 0 10px;break-inside:avoid}
 .small{font-size:11px;color:#55534A}
 .wgc.wgc-print{box-shadow:4px 4px 0 #33322A;border-radius:14px;padding:18px 20px;margin:14px 0 16px;break-inside:avoid}
@@ -197,11 +200,15 @@ def page_parts(page):
                      for h, b in re.findall(r'<div class="finding"><h3>(.*?)</h3>(.*?)</div>', page, re.S)],
         "method": [text_of(p) for p in re.findall(r"<p>(.*?)</p>", method_block.split("<h3>Limits</h3>")[0], re.S)],
         "limits": [text_of(li) for li in re.findall(r"<li>(.*?)</li>", method_block, re.S)],
+        # James's quote on what the finding means. Every study carries one he chose, so a missing quote stops the build.
+        "quote_h2": text_of(one(r"<h2>([^<]+)</h2>\s*<figure class=\"study-quote\"")),
+        "quote": text_of(one(r'<figure class="study-quote"[^>]*>\s*<blockquote>(.*?)</blockquote>')),
+        "quote_by": text_of(one(r'<figure class="study-quote"[^>]*>.*?<figcaption[^>]*>(.*?)</figcaption>')),
     }
 
 
 def report_html(page, *, chart_html, sections_html, scope_note):
-    """The PDF report. sections_html goes between the findings and the method (a data table)."""
+    """The PDF report. James's quote follows the findings; sections_html goes after it, before the method (a data table)."""
     p, esc = page_parts(page), html.escape
     short = p["canonical"].split("://", 1)[1].rstrip("/")
     year = p["published"].split()[-1]
@@ -220,6 +227,8 @@ def report_html(page, *, chart_html, sections_html, scope_note):
 <figure class="wgc wgc-print">{chart_html}</figure>
 <h2>{esc(p['findings_h2'])}</h2>
 {finds}
+<h2>{esc(p['quote_h2'])}</h2>
+<figure class="quote"><blockquote>{esc(p['quote'])}</blockquote><figcaption>{esc(p['quote_by'])}</figcaption></figure>
 {sections_html}
 <h2>Method</h2>
 {''.join(f'<p>{esc(x)}</p>' for x in p['method'])}
