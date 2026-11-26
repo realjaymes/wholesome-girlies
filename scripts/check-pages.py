@@ -855,6 +855,8 @@ for p in PAGES:
         fail(p, 'footer Explore list is missing "Get the app": run python3 scripts/add-app-tags.py')
     if m and 'href="/press/"' not in m.group(1):
         fail(p, 'footer Explore list is missing "Press": run python3 scripts/add-app-tags.py')
+    if m and 'href="/insights/"' not in m.group(1):
+        fail(p, 'footer Explore list is missing "Insights": run python3 scripts/add-insights-links.py')
 # Tools that read another tool's entries and save none of their own, so the app's saved tools never lists them.
 READS_ONLY = {"postpartum/tools/mum-wrapped.html"}  # reads the Feeding and Sleep Tracker's wg_feedsleep_ entries
 if os.path.exists("app/index.html"):

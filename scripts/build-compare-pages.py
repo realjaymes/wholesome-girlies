@@ -330,7 +330,7 @@ def render(common, p):
     hero = f'''<main>
 <section class="tool-hero">
   <div class="wrap narrow">
-    <div class="breadcrumb"><a href="/">Home</a> / <a href="/{p["stage"]}/">{STAGE_NAME[p["stage"]]}</a> / Compare</div>
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/{p["stage"]}/">{STAGE_NAME[p["stage"]]}</a> / <a href="/compare/">Compare</a></div>
     <p class="eyebrow">{e(p["eyebrow"])}</p>
     <h1>{e(p["h1"])}</h1>
     <p class="muted" style="font-size:.85rem;margin:.5rem 0 0;">Last updated: {e(p["updated"])}</p>
