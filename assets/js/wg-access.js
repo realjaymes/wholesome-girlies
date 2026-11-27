@@ -23,6 +23,16 @@
     if (/^(localhost|127\.0\.0\.1)$/.test(w.location.hostname)) { var o = w.localStorage.getItem('wg_pay_api'); if (/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(o || '')) PAY_API = o; }
   } catch (e) {}
   var SESSION = 'wg_session_v1', ACCOUNT = 'wg_account_v1', NAME = 'wg_name_v1';
+  // The tags on the link she landed with (utm_source and the rest), sent with a First 1,000 claim so her member record says
+  // where she came from. Read from this page's address, which keeps the tags through the sales-page redirect, or else from the
+  // wg_utm copy a sales page kept for the tab. Read once at load, never written here, never put in an event.
+  var LANDING_UTM = (function () {
+    var out = {}, n = 0, keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    function take(q) { keys.forEach(function (k) { var v = q.get(k); if (v && !out[k]) { out[k] = v; n++; } }); }
+    try { take(new URLSearchParams(w.location.search)); } catch (e) {}
+    if (!n) { try { var kept = w.sessionStorage.getItem('wg_utm'); if (kept) take(new URLSearchParams(kept)); } catch (e) {} }
+    return n ? out : null;
+  })();
   var HOME_KEYS = []; // filled from the program table (assets/data/program-flags.json): the flag key of each stage
   var data = null;
 
@@ -263,6 +273,7 @@
         return new Promise(function (res) { w.document.addEventListener("DOMContentLoaded", function () { res(go()); }); });
       },
       claim: function (body) {
+        if (LANDING_UTM && body && !body.utm) body.utm = LANDING_UTM;
         return request('POST', '/first1000/claim', body).then(function (j) {
           if (!j.ok) return j;
           push('first1000_claim');
